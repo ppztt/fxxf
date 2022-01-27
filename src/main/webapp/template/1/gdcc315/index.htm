@@ -1,0 +1,1090 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <#include "head-file.htm" />
+    <title>广东消费网(广东省消委会消费维权网)</title>
+</head>
+<body>
+<!--header-->
+<div id="header">
+    <#include "header.htm" />
+    <#include "nav.htm" />
+    <#include "header2.htm" />
+</div>
+
+<div id="content" class="w">
+    <!--mod-1-->
+    <div class="mod mod-1">
+        <h1>
+            {ms:arclist size=1 ispaging=true typeid="6" flag="c"}
+                        <a href="{ms:global.url/}${field.link}"
+                           target="_blank">${field.title}</a>
+            {/ms:arclist}
+            <!--
+            <a href="http://www.gdcc315.cn/show-6-53824-1.html" target="_blank">重磅！广东省消委会就虚假宣传减肥产品行为提起公益诉讼 在全国率先探索“公益诉讼+集体诉讼”维权新模式</a>
+            -->
+        </h1>
+        <div class="toplist">
+
+            <#assign top = 4>
+            {ms:arclist size=4 ispaging=true typeid="6" }
+                <#if top==4 && field.flag=="c" && (field.index<4)>
+                <#assign top = field.index>
+                <#elseif field.index != top>
+                <!--<li>-->
+                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title[0..20]}</a>|
+                    
+                <!--</li>-->
+                <#else>
+                </#if>
+            {/ms:arclist}
+            <!--
+            <a href="http://www.gdcc315.cn/show-21-53765-1.html" target="_blank">· 中消协观点：少一些套路，多一些真诚 视频平...</a> |
+            <a href="http://www.gdcc315.cn/show-6-53738-1.html" target="_blank">· 警惕&ldquo;心理服务&rdquo;消费陷阱！广东省消委会发布...</a> |
+            <a href="http://www.gdcc315.cn/show-8-53737-1.html" target="_blank">· 27批次食品不合格！涉及这些饮料、膨化食品、...</a> |
+            -->
+            <a href="/list-6-1.html" target="_blank">更多>></a></div>
+    </div>
+    <!--mod-2-->
+    <div class="mod mod-2 flex">
+        <div class="left">
+            <div class="c">
+                <ul>
+
+                    {ms:arclist size=4 ispaging=true flag="f"}
+                    <li>
+                        <div class="fl pic">
+                            <a href="{ms:global.url/}${field.link}">
+                                <img src="{@ms:file field.litpic/}" width="625px" height="350px"></a><p>
+                                     <!-- alt="${field.title}”" -->
+                            <a href="{ms:global.url/}${field.link}" target="_blank">"${field.title}”</a></p>
+                        </div>
+                        <!-- <div class="fr txt">
+                            <p class="h1">
+                                <a href="{ms:global.url/}${field.link}">${field.title}</a>
+                            </p>
+                            <p class="desc">
+                                ${field.descrip}
+                            </p>
+                        </div> -->
+                        <div class="clear">
+                        </div>
+                    </li>
+                    {/ms:arclist}
+<!-- 
+                    <li><a href="http://www.gdcc315.cn/show-6-53824-1.html" target="_blank">
+                        <img src="{ms:global.host/}{ms:global.style/}/Picture/20220111045810181.jpg" width="625px" height="350px"></a><p>
+                        <a href="http://www.gdcc315.cn/show-6-53824-1.html" target="_blank">重磅！广东省消委会就虚假宣传减肥产品行为提起公益诉讼 在全国率先探索“公益诉讼+集体诉讼”维权新模式</a></p>
+                    </li>
+                    <li><a href="http://www.gdcc315.cn/show-6-53823-1.html" target="_blank">
+                        <img src="{ms:global.host/}{ms:global.style/}/Picture/thumb_900_383_20211223100654377.png" width="625px" height="350px"></a><p>
+                        <a href="http://www.gdcc315.cn/show-6-53823-1.html" target="_blank">广东省消委会组织网售“三无产品”问题整改效果“回头看”调查发现： 淘宝、天猫、拼多多仍有问题商品在售</a></p>
+                    </li>
+                    <li><a href="http://www.gdcc315.cn/show-6-53801-1.html" target="_blank">
+                        <img src="{ms:global.host/}{ms:global.style/}/Picture/thumb_747_419_20211125084617977.jpg" width="625px" height="350px"></a><p>
+                        <a href="http://www.gdcc315.cn/show-6-53801-1.html" target="_blank">四宗个人信息保护公益诉讼全胜！ 彰显多手段治理信息侵权顽疾成效</a></p>
+                    </li>
+                    <li><a href="http://www.gdcc315.cn/show-6-53777-1.html" target="_blank">
+                        <img src="{ms:global.host/}{ms:global.style/}/Picture/20211019095637328.jpg" width="625px" height="350px"></a><p>
+                        <a href="http://www.gdcc315.cn/show-6-53777-1.html" target="_blank">广东消委会系统2021年第三季度投诉情况分析报告</a></p>
+                    </li> -->
+
+                </ul>
+            </div>
+            <div class="prev"><a href="javascript:void(0)"></a></div>
+            <div class="next"><a href="javascript:void(0)"></a></div>
+        </div>
+        <div class="right">
+
+            <h2>
+                {ms:arclist size=1 ispaging=true typeid="21" flag="c"}
+                    <a href="{ms:global.url/}${field.link}"
+                        target="_blank">${field.title}</a>
+                {/ms:arclist}
+                <!--
+                <a href="http://www.gdcc315.cn/show-6-53823-1.html" target="_blank">广东省消委会组织网售“三无产品”问题整改效果“回头看”调查发现： 淘宝、天猫、拼多多仍有问题商品在售</a>
+                -->
+            </h2>
+
+            <ul>
+                <#assign top = 4>
+                    {ms:arclist size=4 ispaging=true typeid="21" }
+                    <#if top==4 && field.flag=="c" && (field.index<4)>
+                    <#assign top = field.index>
+                    <#elseif field.index != top>
+                    <li class="flex">
+                        <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                        <div>${field.date?date?string("yyyy-MM-dd")}</div>
+                    </li>
+                    <#else>
+                    </#if>
+                {/ms:arclist}
+                    <!--
+                <li class="flex">
+                    <a href="http://www.gdcc315.cn/show-21-53820-1.html" target="_blank">《网络短视频内容审核标准细则》修订版发布 制作和发布短视频有哪些新规？</a>
+                    <div>2021-12-20</div>
+                </li>
+                <li class="flex">
+                    <a href="http://www.gdcc315.cn/show-25-53819-1.html" target="_blank">影视剧控评现象屡禁不绝 莫让点评再“超前”</a>
+                    <div>2021-12-20</div>
+                </li>
+                <li class="flex">
+                    <a href="http://www.gdcc315.cn/show-25-53814-1.html" target="_blank">餐饮行业共享店铺也要共担风险</a>
+                    <div>2021-12-10</div>
+                </li>
+                    -->
+
+            </ul>
+
+            <h2>
+                {ms:arclist size=1 ispaging=true typeid="16" flag="c"}
+                <a href="{ms:global.url/}${field.link}"
+                    target="_blank">${field.title}</a>
+                {/ms:arclist}
+                <!--
+                <a href="http://www.gdcc315.cn/show-21-53815-1.html" target="_blank">深圳消委会发布长租公寓“消费评价指数”排行榜 驿点公寓得分偏低</a>
+                -->
+            </h2>
+
+            <ul>
+                <#assign top = 4>
+                    {ms:arclist size=4 ispaging=true typeid="16" }
+                    <#if top==4 && field.flag=="c" && (field.index<4)>
+                    <#assign top = field.index>
+                    <#elseif field.index != top>
+                    <li class="flex">
+                        <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                        <div>${field.date?date?string("yyyy-MM-dd")}</div>
+                    </li>
+                    <#else>
+                    </#if>
+                {/ms:arclist}
+
+                <!-- <li class="flex">
+                    <a href="http://www.gdcc315.cn/show-25-53822-1.html" target="_blank">快递“送货不到家” 问题出在哪</a>
+                    <div>2021-12-20</div>
+                </li>
+                <li class="flex">
+                    <a href="http://www.gdcc315.cn/show-12-53821-1.html" target="_blank">短视频带货 近八成受访者最关心商品质量</a>
+                    <div>2021-12-20</div>
+                </li>
+                <li class="flex">
+                    <a href="http://www.gdcc315.cn/show-10-53817-1.html" target="_blank">29批次食品不合格！这些蛋糕、炒货、海鲜你吃过吗？</a>
+                    <div>2021-12-10</div>
+                </li> -->
+
+
+            </ul>
+        </div>
+    </div>
+    <!--mod-3-->
+    <div class="mod mod-3 flex">
+        <!--left-->
+        <div class="left">
+            <!--left-1-->
+            <div class="left-1">
+                <ul class=" flex">
+                    <li><a href="/show-20-48617-1.html" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_09.png"/></a></li>
+                    <li><a href="http://ts.gdcc315.cn/dologin" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_10.png"/></li>
+                    <li><a href="http://ts.gdcc315.cn/dologin" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_11.png"/></a></li>
+                    <li><a href="/show-20-211-1.html" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_12.png"/></a></li>
+                    <li><a href="/show-20-48618-1.html" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_13.png"/></a></li>
+                </ul>
+            </div>
+            <!--left-2-->
+            <div class="left-2 flex">
+                <div class="flex-1">
+                    <div class="title">
+                        <span class="on"><a href="http://www.gdcc315.cn/list-21-1.html">维权要闻</a></span>
+                    </div>
+                    <div class="con">
+                        <div class="txt flex-1">
+                            <div class="h1">
+
+                                <h2 class="txt">
+                                    {ms:arclist size=1 ispaging=true typeid="21" flag="c"}
+                                    <a href="{ms:global.url/}${field.link}"
+                                        target="_blank">${field.title}</a>
+                                    {/ms:arclist}
+                                </h2>    
+                                <!-- <a href="http://www.gdcc315.cn/show-21-53791-1.html" target="_blank">市场监管总局：严打儿童青少年近视防控产品虚假宣传</a></h2> -->
+                                {ms:arclist size=1 ispaging=true typeid="21" flag="c"}
+                                <!-- 这里需要写css截断，title改成content -->
+                                <p style="text-overflow: ellipsis;">
+                                    ${field.title}
+                                </p>
+                                {/ms:arclist}
+                                <!-- <p>市场监管总局办公厅日前发布《关于开展儿童青少年近视防控产品违法违规商业营销宣传专项整治行动的通知》（以...</p> -->
+
+                            </div>
+                            <ul>
+                                <#assign top = 5>
+                                    {ms:arclist size=5 ispaging=true typeid="21" }
+                                    <#if top==5 && field.flag=="c" && (field.index<5)>
+                                    <#assign top = field.index>
+                                    <#elseif field.index != top>
+                                    <li class="flex">·&nbsp;
+                                        <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                        
+                                    </li>
+                                    <#else>
+                                    </#if>
+                                {/ms:arclist}
+
+                                <!-- <li>·&nbsp;<a href="http://www.gdcc315.cn/show-21-53820-1.html" target="_blank">《网络短视频内容审核标准细则》修订版发布 制作和发布短视频有哪些新规？</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-21-53815-1.html" target="_blank">深圳消委会发布长租公寓“消费评价指数”排行榜 驿点公寓得分偏低</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-21-53812-1.html" target="_blank">家长注意！购买儿童化妆品，请认准“小金盾”</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-21-53811-1.html" target="_blank">中消协向全社会公开征集2022年消费维权年主题</a></li> -->
+
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab flex-1">
+                    <div class="title">
+                        <span class="on"><a href="http://www.gdcc315.cn/list-25-1.html">消费热议</a></span>/<span><a href="http://www.gdcc315.cn/list-9-1.html">媒体报道</a></span>
+                    </div>
+                    <div class="con">
+                        <div class="txt flex-1">
+                            <div class="h1">
+                                <h2 class="txt">
+                                    {ms:arclist size=1 ispaging=true typeid="25" flag="c"}
+                                    <a href="{ms:global.url/}${field.link}"
+                                        target="_blank">${field.title}</a>
+                                    {/ms:arclist}
+                                </h2>    
+                                <!-- <a href="http://www.gdcc315.cn/show-21-53791-1.html" target="_blank">市场监管总局：严打儿童青少年近视防控产品虚假宣传</a></h2> -->
+                                {ms:arclist size=1 ispaging=true typeid="25" flag="c"}
+                                <!-- 这里需要写css截断，title改成content -->
+                                <p style="text-overflow: ellipsis;">
+                                    ${field.title}
+                                </p>
+                                {/ms:arclist}
+                                
+                                <!-- <h2 class="txt"><a href="http://www.gdcc315.cn/show-25-53783-1.html" target="_blank">国家药监局：儿童化妆品不得标注“食品级”、“可食用”</a></h2>
+                                <p>近日，国家药监局发布的《&ldquo;食品级&rdquo;化妆品是对消费者的误导》称，不存在&ldquo;食品级&rdquo;化妆品、化妆品的安全性跟...</p> -->
+
+                            </div>
+                            <ul>
+
+                                <#assign top = 5>
+                                    {ms:arclist size=5 ispaging=true typeid="25" }
+                                    <#if top==5 && field.flag=="c" && (field.index<5)>
+                                    <#assign top = field.index>
+                                    <#elseif field.index != top>
+                                    <li class="flex">·&nbsp;
+                                        <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                        
+                                    </li>
+                                    <#else>
+                                    </#if>
+                                {/ms:arclist}
+
+                                <!-- <li>·&nbsp;<a href="http://www.gdcc315.cn/show-25-53822-1.html" target="_blank">快递“送货不到家” 问题出在哪</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-25-53819-1.html" target="_blank">影视剧控评现象屡禁不绝 莫让点评再“超前”</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-25-53814-1.html" target="_blank">餐饮行业共享店铺也要共担风险</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-25-53813-1.html" target="_blank">婚恋机构把用户当“肥肉”，让人怎敢大胆去爱</a></li> -->
+
+
+                            </ul>
+                        </div>
+                        <div class="txt flex-1">
+                            <div class="h1">
+
+                                <h2 class="txt">
+                                    {ms:arclist size=1 ispaging=true typeid="9" flag="c"}
+                                    <a href="{ms:global.url/}${field.link}"
+                                        target="_blank">${field.title}</a>
+                                    {/ms:arclist}
+                                </h2>    
+                                <!-- <a href="http://www.gdcc315.cn/show-21-53791-1.html" target="_blank">市场监管总局：严打儿童青少年近视防控产品虚假宣传</a></h2> -->
+                                {ms:arclist size=1 ispaging=true typeid="9" flag="c"}
+                                <!-- 这里需要写css截断，title改成content -->
+                                <p style="text-overflow: ellipsis;">
+                                    ${field.title}
+                                </p>
+                                {/ms:arclist}
+                                <!-- <h2 class="txt"><a href="http://www.gdcc315.cn/show-9-53712-1.html" target="_blank">南方日报：广东成立家政消费纠纷调解委</a></h2>
+                                <p>近日，广东省消费者委员会发起成立了省内首个“家政服务消费纠纷调解专业委员会”。</p> -->
+
+                            </div>
+                            <ul>
+
+                                <#assign top = 5>
+                                    {ms:arclist size=5 ispaging=true typeid="9" }
+                                    <#if top==5 && field.flag=="c" && (field.index<5)>
+                                    <#assign top = field.index>
+                                    <#elseif field.index != top>
+                                    <li class="flex">·&nbsp;
+                                        <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                        
+                                    </li>
+                                    <#else>
+                                    </#if>
+                                {/ms:arclist}
+                                <!-- <li>·&nbsp;<a href="http://www.gdcc315.cn/show-9-53712-1.html" target="_blank">南方日报：广东成立家政消费纠纷调解委</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-9-53703-1.html" target="_blank">央广网：粤上半年消费投诉分析报告发布</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-9-52549-1.html" target="_blank">央广网：广东全面铺开“放心消费承诺”活动 线下消费也可无理由退货</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-9-52548-1.html" target="_blank">羊城晚报：广东214家商家承诺——线下消费也可以无理由退货</a></li> -->
+
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--left-2-->
+            <div class="left-2 flex">
+                <div class="flex-1">
+                    <div class="title">
+                        <span class="on"><a href="http://www.gdcc315.cn/list-10-1.html">侵权曝光</a></span>
+                    </div>
+                    <div class="con">
+                        <div class="txt flex-1">
+                            <div class="h1 flex">
+                                <!-- 这里是需要图片资源 -->
+                                {ms:arclist size=1 ispaging=true flag="f" typeid="10"}
+                                <div style="margin-right: 15px;margin-bottom: 10px">
+                                    <a href="{ms:global.url/}${field.link}"></a>
+                                        <img src="{@ms:file field.litpic/}" width="170px" height="100px"
+                                        ></a>
+                                    <!-- <a href="http://www.gdcc315.cn/show-10-53386-1.html" target="_blank">
+                                        <img  src="{ms:global.host/}{ms:global.style/}/Picture/20210121110133941.jpg" alt="泄露40万条个人信息！圆通速递被约谈！  " width="170px" height="100px"/>
+                                    </a> -->
+                                </div>
+                                <h2><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></h2>
+                                {/ms:arclist}
+                                <!-- <h2><a href="http://www.gdcc315.cn/show-10-53386-1.html" target="_blank">泄露40万条个人信息！圆通速递被约谈！  </a></h2> -->
+
+
+                            </div>
+                            <ul>
+
+                                <#assign top = 4>
+                                {ms:arclist size=4 ispaging=true typeid="10" }
+                                <#if top==4 && field.flag=="c" && (field.index<4)>
+                                <#assign top = field.index>
+                                <#elseif field.index != top>
+                                <li class="flex">·&nbsp;
+                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    
+                                </li>
+                                <#else>
+                                </#if>
+                                {/ms:arclist}
+                                <!-- <li>·&nbsp;<a href="http://www.gdcc315.cn/show-10-53817-1.html" target="_blank">29批次食品不合格！这些蛋糕、炒货、海鲜你吃过吗？</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-10-53756-1.html" target="_blank">20批次食品抽检不合格，有你爱吃的吗？</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-10-53713-1.html" target="_blank">肉制品、冷冻饮品、酒……这24批次食品不合格</a></li> -->
+
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab flex-1">
+                    <div class="title">
+                        <span class="on"><a href="http://www.gdcc315.cn/list-11-1.html">商品检测</a></span>/<span><a href="http://www.gdcc315.cn/list-12-1.html">消费调查</a></span>
+                    </div>
+                    <div class="con">
+                        <div class="txt flex-1">
+                            <div class="h1 flex">
+                                <!-- 这里是需要图片资源 -->
+                                {ms:arclist size=1 ispaging=true flag="f" typeid="11"}
+                                <div style="margin-right: 15px;margin-bottom: 10px">
+                                    <a href="{ms:global.url/}${field.link}"></a>
+                                        <img src="{@ms:file field.litpic/}" width="170px" height="100px"
+                                        ></a>
+                                    <!-- <a href="http://www.gdcc315.cn/show-10-53386-1.html" target="_blank">
+                                        <img  src="{ms:global.host/}{ms:global.style/}/Picture/20210121110133941.jpg" alt="泄露40万条个人信息！圆通速递被约谈！  " width="170px" height="100px"/>
+                                    </a> -->
+                                </div>
+                                <h2><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></h2>
+                                {/ms:arclist}
+                                <!-- <div style="margin-right: 15px;margin-bottom: 10px">
+                                    <a href="http://www.gdcc315.cn/show-11-53733-1.html" target="_blank">
+                                        <img  src="{ms:global.host/}{ms:global.style/}/Picture/20210812105654136.jpg" alt="奶酪棒真的营养又补钙? 天天吃可以吗?12款奶酪棒检测结果发布" width="170px" height="100px"/>
+                                    </a>
+                                </div>
+                                <h2><a href="http://www.gdcc315.cn/show-11-53733-1.html" target="_blank">奶酪棒真的营养又补钙? 天天吃可以吗?12款奶酪棒检测结果发布</a></h2> -->
+
+
+                            </div>
+                            <ul>
+                                <#assign top = 4>
+                                {ms:arclist size=4 ispaging=true typeid="11" }
+                                <#if top==4 && field.flag=="c" && (field.index<4)>
+                                <#assign top = field.index>
+                                <#elseif field.index != top>
+                                <li class="flex">·&nbsp;
+                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    
+                                </li>
+                                <#else>
+                                </#if>
+                                {/ms:arclist}
+                                <!-- <li>·&nbsp;<a href="http://www.gdcc315.cn/show-11-53816-1.html" target="_blank">蜂蜜比较试验结果大公开 16款蜂蜜表现较好</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-11-53735-1.html" target="_blank">你买的弹射玩具枪安全吗？30款弹射玩具枪比较试验结果来了</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-11-53733-1.html" target="_blank">奶酪棒真的营养又补钙? 天天吃可以吗?12款奶酪棒检测结果发布</a></li> -->
+
+
+                            </ul>
+                        </div>
+                        <div class="txt flex-1">
+                            <div class="h1 flex">
+
+                                <!-- 这里是需要图片资源 -->
+                                {ms:arclist size=1 ispaging=true flag="f" typeid="12"}
+                                <div style="margin-right: 15px;margin-bottom: 10px">
+                                    <a href="{ms:global.url/}${field.link}"></a>
+                                        <img src="{@ms:file field.litpic/}" width="170px" height="100px"
+                                        ></a>
+                                    <!-- <a href="http://www.gdcc315.cn/show-10-53386-1.html" target="_blank">
+                                        <img  src="{ms:global.host/}{ms:global.style/}/Picture/20210121110133941.jpg" alt="泄露40万条个人信息！圆通速递被约谈！  " width="170px" height="100px"/>
+                                    </a> -->
+                                </div>
+                                <h2><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></h2>
+                                {/ms:arclist}
+                                <!-- <div style="margin-right: 15px;margin-bottom: 10px">
+                                    <a href="http://www.gdcc315.cn/show-12-53480-1.html" target="_blank">
+                                        <img  src="{ms:global.host/}{ms:global.style/}/Picture/20210209032929432.jpg" alt="网约车计时计费为何总与预估不符？“暗访”10家平台发现~" width="170px" height="100px"/>
+                                    </a>
+                                </div>
+                                <h2><a href="http://www.gdcc315.cn/show-12-53480-1.html" target="_blank">网约车计时计费为何总与预估不符？“暗访”10家平台发现~</a></h2> -->
+
+
+                            </div>
+                            <ul>
+
+                                <#assign top = 4>
+                                {ms:arclist size=4 ispaging=true typeid="12" }
+                                <#if top==4 && field.flag=="c" && (field.index<4)>
+                                <#assign top = field.index>
+                                <#elseif field.index != top>
+                                <li class="flex">·&nbsp;
+                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    
+                                </li>
+                                <#else>
+                                </#if>
+                                {/ms:arclist}
+                                <!-- <li>·&nbsp;<a href="http://www.gdcc315.cn/show-12-53821-1.html" target="_blank">短视频带货 近八成受访者最关心商品质量</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-12-53818-1.html" target="_blank">中消协发布《50款APP账号注销及自动化推荐退订测评报告》</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-12-53806-1.html" target="_blank">小学生花2000元买盲盒套笔？谨防未成年人成瘾风险</a></li> -->
+
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--right-->
+        <div class="right">
+            <a href="http://gdfxxfcj.gdcc315.cn:8081" target="_blank">
+                <img src="{ms:global.host/}{ms:global.style/}/Picture/2020gdfxxfcn.jpg" width="320px" height="115px" alt=""  style="display: block;margin-bottom:10px"/>
+            </a>
+
+            <!--right-1-->
+            <div class="right-1">
+                <div style="text-align: right;margin-bottom: 10px"><a href="/list-62-1.html" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_15.png"/></a></div>
+                <div>
+
+                    <a href="http://www.gdcc315.cn/show-13-53554-1.html" target="_blank">
+                        <img src="{ms:global.host/}{ms:global.style/}/Picture/2020xfbg.jpg" width="320px" height="120px" alt=""/>
+                    </a>
+                </div>
+            </div>
+            <!--right-2-->
+            <div class="right-2 flex">
+                <div><a href="/index.php?m=member&c=content&a=publish&siteid=1&catid=210" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_22.png"/></a></div>
+                <div class="c">
+                    <ul>
+                        <!--<li>罗卫光 广东省消委会秘书长</li>
+                        <li>廖学颜 广东省消委会副会长</li>
+                        <li>杨淑娜 广东省消委会副秘书长</li>-->
+                        <!--  <li>廖学颜 广东省消委会副会长</li>
+                         <li>龚宪平 广东省消委会党支部书记</li> -->
+                        <li>杨淑娜 广东省消委会秘书长</li>
+                        <li>黄冠英 广东省消委会副秘书长</li>
+                        <li>张开仕 广州市消委会负责人</li>
+                        <li>李廷义 深圳市消委会秘书长</li>
+                        <li>钟颖瑶 佛山市消委会秘书长</li>
+                        <li>李  志 珠海市消委会负责人</li>
+                        <li>李镇宇 汕头市消委会副秘书长</li>
+                        <li>李良勋 韶关市消委会秘书长</li>
+                        <li>黄新铃 河源市消委会秘书长</li>
+                        <li>刘文年 梅州市消委会秘书长</li>
+                        <li>王剑平 惠州市消委会秘书长</li>
+                        <li>蔡辉东 汕尾市消委会秘书长</li>
+                        <li>吴  凯 东莞市消委会秘书长</li>
+                        <li>谢 辉 中山市消委会秘书长</li>
+                        <li>何达民 江门市消保委秘书长</li>
+                        <li>许 敢 阳江市消委会负责人</li>
+                        <li>武新建 湛江市消委会秘书长</li>
+                        <li>廖 党 茂名市消委会秘书长</li>
+                        <li>陈彧军 肇庆市消委会负责人</li>
+                        <li>谭浩良 清远市消委会负责人</li>
+                        <li>刘幼彪 潮州市消委会负责人</li>
+                        <li>林玉爽 揭阳市消委会负责人</li>
+                        <li>陈 平 云浮市消委会秘书长</li>
+                        <li>黄宜妙 横琴新区消协秘书长</li>
+                    </ul>
+                </div>
+            </div>
+            <!--right-3-->
+            <div class="right-3">
+                <div class="title"><a href="/list-210-1.html" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_25.png"/></a></div>
+                <div class="con" style="height: 170px;">
+                    <ul>
+
+                        <#assign top = 50>
+                        {ms:arclist size=50 ispaging=true typeid="17" }
+                        <#if top==50 && field.flag=="c" && (field.index<50)>
+                        <#assign top = field.index>
+                        <#elseif field.index != top>
+                        <li>
+                            <!-- ${field.author}是作者，需数据库内容对上 -->
+                            <em>${field.author}</em>问:<a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                            <!-- <span class="fr">${field.date?date?string("[MM-dd]")}</span> -->
+                        </li>
+                        <#else>
+                        </#if>
+                        {/ms:arclist}
+
+                        <!-- <li><em>张某某</em>问:<a href="http://www.gdcc315.cn/show-210-7046-1.html" target="_blank">台风天无法出游，申请退款无果，咋办？</a></li>
+                        <li><em>杨某某</em>问:<a href="http://www.gdcc315.cn/show-210-7044-1.html" target="_blank">运营商擅自办理业务并扣费， 如何维权？</a></li>
+                        <li><em>周某某</em>问:<a href="http://www.gdcc315.cn/show-210-7043-1.html" target="_blank">黄金饰品以旧换新，是否有统一规范？</a></li>
+                        <li><em>芥菜子</em>问:<a href="http://www.gdcc315.cn/show-210-7040-1.html" target="_blank">网购实木沙发，发现质量有问题怎么办？</a></li>
+                        <li><em>刘某某</em>问:<a href="http://www.gdcc315.cn/show-210-7037-1.html" target="_blank">私加商家微信进行交易存风险，消费者请勿轻信！</a></li>
+                        <li><em>沈某某</em>问:<a href="http://www.gdcc315.cn/show-210-7009-1.html" target="_blank">通信运营商存侵权行为，该如何维权？</a></li>
+                        <li><em>韩某某</em>问:<a href="http://www.gdcc315.cn/show-210-7007-1.html" target="_blank">未成年人为游戏充值，怎样退款？</a></li>
+                        <li><em>qq</em>问:<a href="http://www.gdcc315.cn/show-210-7004-1.html" target="_blank">邮寄快递到国外出现问题，怎么办？</a></li>
+                        <li><em>彭某某</em>问:<a href="http://www.gdcc315.cn/show-210-6999-1.html" target="_blank">游戏账号被封号，该怎么维权？</a></li>
+                        <li><em>王某某</em>问:<a href="http://www.gdcc315.cn/show-210-6998-1.html" target="_blank">快递丢件，该怎么寻求帮助？</a></li>
+                        <li><em>彭某某</em>问:<a href="http://www.gdcc315.cn/show-210-6993-1.html" target="_blank">快递迟迟不派送生鲜变“不鲜”，该怎么维权？</a></li>
+                        <li><em>王某</em>问:<a href="http://www.gdcc315.cn/show-210-6991-1.html" target="_blank">网购知名品牌项链，怀疑是假冒的？</a></li>
+                        <li><em>郭某</em>问:<a href="http://www.gdcc315.cn/show-210-6990-1.html" target="_blank">网购品牌巧克力，吃出劣质巧克力的味~</a></li>
+                        <li><em>秦某某</em>问:<a href="http://www.gdcc315.cn/show-210-6987-1.html" target="_blank">遇到医美类纠纷 该怎么投诉举报？</a></li>
+                        <li><em>张某某</em>问:<a href="http://www.gdcc315.cn/show-210-6986-1.html" target="_blank">线上购买课程说好了可以全额退款 商家一直拖延怎么办？</a></li>
+                        <li><em>李某某</em>问:<a href="http://www.gdcc315.cn/show-210-6985-1.html" target="_blank">因疫情原因无法回国，消费者可以怎样维权？</a></li>
+                        <li><em>彭某某</em>问:<a href="http://www.gdcc315.cn/show-210-6984-1.html" target="_blank">球鞋存在瑕疵要求退货，消费者还需要承担运费及手续费？</a></li>
+                        <li><em>区某某</em>问:<a href="http://www.gdcc315.cn/show-210-6979-1.html" target="_blank">“消委会”跟“12315”两个投诉渠道的职能有什么样的区别？</a></li>
+                        <li><em>王某某</em>问:<a href="http://www.gdcc315.cn/show-210-6978-1.html" target="_blank">微信买家具，想要退货怎么办？</a></li>
+                        <li><em>蒋某某</em>问:<a href="http://www.gdcc315.cn/show-210-6977-1.html" target="_blank">租车平台押金不退怎么办</a></li>
+                        <li><em>刘某某</em>问:<a href="http://www.gdcc315.cn/show-210-6976-1.html" target="_blank">商家涉嫌虚假宣传 消费者可以怎样举报</a></li>
+                        <li><em>叶先生</em>问:<a href="http://www.gdcc315.cn/show-210-6972-1.html" target="_blank">商家宣传X年质保 质保期间维修费用怎么结算？</a></li>
+                        <li><em>李某某</em>问:<a href="http://www.gdcc315.cn/show-210-6960-1.html" target="_blank">承诺预存费用免除电视的服务费，商家不兑现怎么办？</a></li>
+                        <li><em>范某某</em>问:<a href="http://www.gdcc315.cn/show-210-6958-1.html" target="_blank">运营商擅自改变通信套餐 如何维权？</a></li>
+                        <li><em>胡某某</em>问:<a href="http://www.gdcc315.cn/show-210-6957-1.html" target="_blank">租房合同没到期却被房主赶出出租房？</a></li>
+                        <li><em>林某某</em>问:<a href="http://www.gdcc315.cn/show-210-6954-1.html" target="_blank">商品房首付款莫名变服务费，怎么办？</a></li>
+                        <li><em>许某某</em>问:<a href="http://www.gdcc315.cn/show-210-6953-1.html" target="_blank">饭堂吃出蛆虫、回形针等异物？</a></li>
+                        <li><em>熊某某</em>问:<a href="http://www.gdcc315.cn/show-210-6952-1.html" target="_blank">在二手平台购买商品出现问题该如何维权</a></li>
+                        <li><em>林某</em>问:<a href="http://www.gdcc315.cn/show-210-6950-1.html" target="_blank">网购平台买到了盗版书籍，可以要求假一赔三吗？</a></li>
+                        <li><em>熊某某</em>问:<a href="http://www.gdcc315.cn/show-210-6920-1.html" target="_blank">合同写明车辆过户不收取费用，现在却要求交钱，如何维权？</a></li>
+                        <li><em>杨某某</em>问:<a href="http://www.gdcc315.cn/show-210-6919-1.html" target="_blank">订购家具时没注意到先后签的两份合同内容不一致，该怎么办？</a></li>
+                        <li><em>吴某某</em>问:<a href="http://www.gdcc315.cn/show-210-6913-1.html" target="_blank">商家突然停止营业，消费者充值的会员费用怎么办？</a></li>
+                        <li><em>李某某</em>问:<a href="http://www.gdcc315.cn/show-210-6904-1.html" target="_blank">未成年人玩游戏充值上千元，家长该如何退款？</a></li>
+                        <li><em>殷某某</em>问:<a href="http://www.gdcc315.cn/show-210-6901-1.html" target="_blank">参与预存话费送平板活动，返话费却要缴纳换购费？</a></li>
+                        <li><em>张某某</em>问:<a href="http://www.gdcc315.cn/show-210-6899-1.html" target="_blank">购买玉器后要求退货被扣10%手续费，合理吗？</a></li>
+                        <li><em>刘某某</em>问:<a href="http://www.gdcc315.cn/show-210-6898-1.html" target="_blank">二手交易平台上买的美容产品致脸部产生不良反应，如何维权？</a></li>
+                        <li><em>陈某某</em>问:<a href="http://www.gdcc315.cn/show-210-6897-1.html" target="_blank">交了预付款后瑜伽馆要搬，能否要求退款？</a></li>
+                        <li><em>曾某某</em>问:<a href="http://www.gdcc315.cn/show-210-6894-1.html" target="_blank">物业以是租户为由收取高额停车费，合理吗？</a></li>
+                        <li><em>胡某某</em>问:<a href="http://www.gdcc315.cn/show-210-6887-1.html" target="_blank">4S店一拖再拖拒不交车，该如何维权？</a></li>
+                        <li><em>刘某某</em>问:<a href="http://www.gdcc315.cn/show-210-6867-1.html" target="_blank">上课地点与约定不符，能否要求退回注册费？</a></li>
+                        <li><em>陈某某</em>问:<a href="http://www.gdcc315.cn/show-210-6861-1.html" target="_blank">商家承诺的全年最低价比原本的门店价格高，合理吗？</a></li>
+                        <li><em>曾某某</em>问:<a href="http://www.gdcc315.cn/show-210-6851-1.html" target="_blank">交了买车订金后，是否能要求退订？</a></li>
+                        <li><em>黄某某</em>问:<a href="http://www.gdcc315.cn/show-210-6848-1.html" target="_blank">商城购买的家具出现质量问题，厂家、销售商迟迟不担责</a></li>
+                        <li><em>高某某</em>问:<a href="http://www.gdcc315.cn/show-210-6846-1.html" target="_blank">说好的续费可免费升级宽带没兑现，续费费用还比原套餐高</a></li>
+                        <li><em>安某某</em>问:<a href="http://www.gdcc315.cn/show-210-6841-1.html" target="_blank">培训课学费太贵了，能否要求退费？</a></li>
+                        <li><em>顾某某</em>问:<a href="http://www.gdcc315.cn/show-210-6835-1.html" target="_blank">QQ号没有违规行为却被无故封号，该怎么办？</a></li>
+                        <li><em>罗某某</em>问:<a href="http://www.gdcc315.cn/show-210-6834-1.html" target="_blank">找代购买的商品发货了却没物流信息，还找不到卖家，该如何维权？</a></li>
+                        <li><em>汪某某</em>问:<a href="http://www.gdcc315.cn/show-210-6832-1.html" target="_blank">店铺换了商家经营，我的商品押金该找谁退？</a></li>
+                        <li><em>陈某某</em>问:<a href="http://www.gdcc315.cn/show-210-6830-1.html" target="_blank">接受牙齿矫正服务后出现长期牙龈发炎，该如何维权？</a></li>
+                        <li><em>sookw</em>问:<a href="http://www.gdcc315.cn/show-210-6823-1.html" target="_blank">收到转运公司寄送过来的商品发现货不对板，该怎么办？</a></li> -->
+
+                    </ul>
+                </div>
+            </div>
+            <!--right-4-->
+            <div class="right-4">
+                <a href="/list-307-1.html" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_27.png"/> </a>
+                <div class="c">
+                    <a href="http://www.gdcc315.cn/show-307-40-1.html" target="_blank ">
+                        <img src="{ms:global.host/}{ms:global.style/}/Picture/20200315100323477.jpg" alt="重磅！广东消委会发布“广东放心消费承诺”官方宣传视频" width="230px" height="145px" /></a>
+                    </li>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--mod-4-->
+
+    <!--mod-5-->
+    <div class="mod mod-3 mod-5 flex">
+        <!--left-->
+        <div class="left">
+            <!--left-1-->
+            <div class="left-2 flex" style="margin-top: 0">
+                <div class="flex-1">
+                    <div class="title">
+                        <span class="on"><a href="http://www.gdcc315.cn/list-13-1.html">投诉分析</a></span>
+                    </div>
+                    <div class="con">
+                        <div class="txt flex-1">
+                            <div class="h1">
+
+                                <h2 class="txt">
+                                    {ms:arclist size=1 ispaging=true typeid="13" flag="c"}
+                                    <a href="{ms:global.url/}${field.link}"
+                                        target="_blank">${field.title}</a>
+                                    {/ms:arclist}
+                                    <!-- <a href="http://www.gdcc315.cn/show-13-53714-1.html" target="_blank">2021年上半年广东消委会系统消费投诉分析报告</a> -->
+                                </h2>
+                                {ms:arclist size=1 ispaging=true typeid="13" flag="c"}
+                                <!-- 这里需要写css截断，title改成content -->
+                                <p style="text-overflow: ellipsis;">
+                                    ${field.title}
+                                </p>
+                                {/ms:arclist}
+                                <!-- <p>2021年上半年，广东全省各级消委会共接待消费者来访和咨询约5 3万人次，处理消费者投诉164500件，为消费者挽...</p> -->
+
+                            </div>
+                            <ul>
+
+                                <#assign top = 4>
+                                {ms:arclist size=4 ispaging=true typeid="13" }
+                                <#if top==4 && field.flag=="c" && (field.index<4)>
+                                <#assign top = field.index>
+                                <#elseif field.index != top>
+                                <li class="flex">·&nbsp;
+                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    
+                                </li>
+                                <#else>
+                                </#if>
+                            {/ms:arclist}
+                                <!-- <li>·&nbsp;<a href="http://www.gdcc315.cn/show-13-53714-1.html" target="_blank">2021年上半年广东消委会系统消费投诉分析报告</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-13-53653-1.html" target="_blank">广东消委会系统2021年第一季度投诉情况分析报告</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-13-53554-1.html" target="_blank">2020年度广东省消委会系统消费投诉分析报告</a></li> -->
+
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab flex-1">
+                    <div class="title">
+                        <span class="on"><a href="http://www.gdcc315.cn/list-14-1.html">经典案例</a></span>/<span><a href="http://www.gdcc315.cn/list-15-1.html">以案解法</a></span>
+                    </div>
+                    <div class="con">
+                        <div class="txt flex-1">
+                            <div class="h1">
+
+                                <h2 class="txt">
+                                    {ms:arclist size=1 ispaging=true typeid="14" flag="c"}
+                                    <a href="{ms:global.url/}${field.link}"
+                                        target="_blank">${field.title}</a>
+                                    {/ms:arclist}
+                                    <!-- <a href="http://www.gdcc315.cn/show-14-53747-1.html" target="_blank">药害致315亩槟榔芋绝收 消委会为消费者挽回经济损失57.5万元</a> -->
+                                </h2>
+                                {ms:arclist size=1 ispaging=true typeid="14" flag="c"}
+                                <!-- 这里需要写css截断，title改成content -->
+                                <p style="text-overflow: ellipsis;">
+                                    ${field.title}
+                                </p>
+                                {/ms:arclist}
+                                <!-- <p>本意花8450元买26瓶农药用于预防农作物槟榔芋的病害，却造成槟榔芋枯萎，导致315亩槟榔芋减产甚至绝收。8月23...</p> -->
+
+                            </div>
+                            <ul>
+                                <#assign top = 4>
+                                {ms:arclist size=4 ispaging=true typeid="14" }
+                                <#if top==4 && field.flag=="c" && (field.index<4)>
+                                <#assign top = field.index>
+                                <#elseif field.index != top>
+                                <li class="flex">·&nbsp;
+                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    
+                                </li>
+                                <#else>
+                                </#if>
+                                {/ms:arclist}
+                                <!-- <li>·&nbsp;<a href="http://www.gdcc315.cn/show-14-53767-1.html" target="_blank">新买的手机被“提前激活” 手机店赔偿消费者</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-14-53748-1.html" target="_blank">中介公司员工携租金“潜逃” 租户损失谁担</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-14-53747-1.html" target="_blank">药害致315亩槟榔芋绝收 消委会为消费者挽回经济损失57.5万元</a></li> -->
+
+
+                            </ul>
+                        </div>
+                        <div class="txt flex-1">
+                            <div class="h1">
+
+                                <h2 class="txt">
+                                    {ms:arclist size=1 ispaging=true typeid="15" flag="c"}
+                                    <a href="{ms:global.url/}${field.link}"
+                                        target="_blank">${field.title}</a>
+                                    {/ms:arclist}
+                                    <!-- <a href="http://www.gdcc315.cn/show-15-53798-1.html" target="_blank">【11号案例】缴纳万元挽救感情却换来男友拉黑 情感咨询服务靠谱吗？</a> -->
+                                </h2>
+                                {ms:arclist size=1 ispaging=true typeid="15" flag="c"}
+                                <!-- 这里需要写css截断，title改成content -->
+                                <p style="text-overflow: ellipsis;">
+                                    ${field.title}
+                                </p>
+                                {/ms:arclist}
+                                <!-- <p>【案情简介】罗女士投诉称，因跟男友闹分手，一时情绪失控找到某情感咨询有限公司，要求帮其挽回与男友的感情...</p> -->
+
+                            </div>
+                            <ul>
+                                <#assign top = 4>
+                                {ms:arclist size=4 ispaging=true typeid="15" }
+                                <#if top==4 && field.flag=="c" && (field.index<4)>
+                                <#assign top = field.index>
+                                <#elseif field.index != top>
+                                <li class="flex">·&nbsp;
+                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    
+                                </li>
+                                <#else>
+                                </#if>
+                                {/ms:arclist}
+                                <!-- <li>·&nbsp;<a href="http://www.gdcc315.cn/show-15-53798-1.html" target="_blank">【11号案例】缴纳万元挽救感情却换来男友拉黑 情感咨询服务靠谱吗？</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-15-53764-1.html" target="_blank">【10号案例】新表外圈仅两月就“不翼而飞”商家收取维修费合理吗？</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-15-53717-1.html" target="_blank">【9号案例】新车落地不久就出现故障，可以要求退车吗？</a></li> -->
+
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--left-2-->
+            <div class="left-2 flex">
+                <div class="flex-1">
+                    <div class="title">
+                        <span class="on"><a href="http://www.gdcc315.cn/list-22-1.html">消费警示</a></span>
+                    </div>
+                    <div class="con">
+                        <div class="txt flex-1">
+                            <div class="h1 flex">
+                                <!-- 这里是需要图片资源 -->
+                                {ms:arclist size=1 ispaging=true flag="f" typeid="22"}
+                                <div style="margin-right: 15px;margin-bottom: 10px">
+                                    <a href="{ms:global.url/}${field.link}"></a>
+                                        <img src="{@ms:file field.litpic/}" width="170px" height="100px"
+                                        ></a>
+                                    <!-- <a href="http://www.gdcc315.cn/show-10-53386-1.html" target="_blank">
+                                        <img  src="{ms:global.host/}{ms:global.style/}/Picture/20210121110133941.jpg" alt="泄露40万条个人信息！圆通速递被约谈！  " width="170px" height="100px"/>
+                                    </a> -->
+                                </div>
+                                <h2><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></h2>
+                                {/ms:arclist}
+
+                                <!-- <div style="margin-right: 15px;margin-bottom: 10px">
+                                    <a href="http://www.gdcc315.cn/show-22-53753-1.html" target="_blank">
+                                        <img  src="{ms:global.host/}{ms:global.style/}/Picture/20210906043052458.jpg" alt="中消发布消费警示：警惕老旧、劣质充电数据线带来“安全隐患”！" width="170px" height="100px"/>
+                                    </a>
+                                </div>
+                                <h2><a href="http://www.gdcc315.cn/show-22-53753-1.html" target="_blank">中消发布消费警示：警惕老旧、劣质充电数据线带来“安全隐患”！</a></h2> -->
+
+
+                            </div>
+                            <ul>
+
+                                <#assign top = 4>
+                                {ms:arclist size=4 ispaging=true typeid="22" }
+                                <#if top==4 && field.flag=="c" && (field.index<4)>
+                                <#assign top = field.index>
+                                <#elseif field.index != top>
+                                <li class="flex">·&nbsp;
+                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    
+                                </li>
+                                <#else>
+                                </#if>
+                                {/ms:arclist}
+                                <!-- <li>·&nbsp;<a href="http://www.gdcc315.cn/show-22-53809-1.html" target="_blank">自燃3分钟烧光整间房！这类数据线一定要换！</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-22-53795-1.html" target="_blank">新标准为橄榄油“提纯” 分装生产日期须标注</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-22-53794-1.html" target="_blank">食品安全消费提示 面包起酥油到底是啥油</a></li> -->
+
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab flex-1">
+                    <div class="title">
+                        <span class="on"><a href="http://www.gdcc315.cn/list-16-1.html">生活百科</a></span>/<span><a href="http://www.gdcc315.cn/list-23-1.html">法律法规</a></span>
+                    </div>
+                    <div class="con">
+                        <div class="txt flex-1">
+                            <div class="h1 flex">
+
+                                <!-- 这里是需要图片资源 -->
+                                {ms:arclist size=1 ispaging=true flag="f" typeid="16"}
+                                <div style="margin-right: 15px;margin-bottom: 10px">
+                                    <a href="{ms:global.url/}${field.link}"></a>
+                                        <img src="{@ms:file field.litpic/}" width="170px" height="100px"
+                                        ></a>
+                                    <!-- <a href="http://www.gdcc315.cn/show-10-53386-1.html" target="_blank">
+                                        <img  src="{ms:global.host/}{ms:global.style/}/Picture/20210121110133941.jpg" alt="泄露40万条个人信息！圆通速递被约谈！  " width="170px" height="100px"/>
+                                    </a> -->
+                                </div>
+                                <h2><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></h2>
+                                {/ms:arclist}
+
+                                <!-- <div style="margin-right: 15px;margin-bottom: 10px">
+                                    <a href="http://www.gdcc315.cn/show-16-53751-1.html" target="_blank">
+                                        <img  src="Picture/thumb_900_383_20210830092915308.png" alt="奶茶店为何提示“2小时内饮用完毕”" width="170px" height="100px"/>
+                                    </a>
+                                </div>
+                                <h2><a href="http://www.gdcc315.cn/show-16-53751-1.html" target="_blank">奶茶店为何提示“2小时内饮用完毕”</a></h2> -->
+
+
+                            </div>
+                            <ul>
+                                <#assign top = 4>
+                                {ms:arclist size=4 ispaging=true typeid="16" }
+                                <#if top==4 && field.flag=="c" && (field.index<4)>
+                                <#assign top = field.index>
+                                <#elseif field.index != top>
+                                <li class="flex">·&nbsp;
+                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    
+                                </li>
+                                <#else>
+                                </#if>
+                                {/ms:arclist}
+                                <!-- <li>·&nbsp;<a href="http://www.gdcc315.cn/show-16-53807-1.html" target="_blank">加工温度会对牛奶的营养价值造成影响吗？</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-16-53752-1.html" target="_blank">路由器要不要每天重启？很多人都做错了，难怪网速慢</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-16-53751-1.html" target="_blank">奶茶店为何提示“2小时内饮用完毕”</a></li> -->
+                            </ul>
+                        </div>
+                        <div class="txt flex-1">
+                            <div class="h1 flex">
+                                <!-- 这里是需要图片资源 -->
+                                {ms:arclist size=1 ispaging=true flag="f" typeid="23"}
+                                <div style="margin-right: 15px;margin-bottom: 10px">
+                                    <a href="{ms:global.url/}${field.link}"></a>
+                                        <img src="{@ms:file field.litpic/}" width="170px" height="100px"
+                                        ></a>
+                                    <!-- <a href="http://www.gdcc315.cn/show-10-53386-1.html" target="_blank">
+                                        <img  src="{ms:global.host/}{ms:global.style/}/Picture/20210121110133941.jpg" alt="泄露40万条个人信息！圆通速递被约谈！  " width="170px" height="100px"/>
+                                    </a> -->
+                                </div>
+                                <h2><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></h2>
+                                {/ms:arclist}
+                                <!-- <div style="margin-right: 15px;margin-bottom: 10px">
+                                    <a href="http://www.gdcc315.cn/show-23-53782-1.html" target="_blank">
+                                        <img  src="" alt="《儿童化妆品监督管理规定》" width="170px" height="100px"/>
+                                    </a>
+                                </div>
+                                <h2><a href="http://www.gdcc315.cn/show-23-53782-1.html" target="_blank">《儿童化妆品监督管理规定》</a></h2> -->
+                            </div>
+                            <ul>
+                                <#assign top = 4>
+                                {ms:arclist size=4 ispaging=true typeid="23" }
+                                <#if top==4 && field.flag=="c" && (field.index<4)>
+                                <#assign top = field.index>
+                                <#elseif field.index != top>
+                                <li class="flex">·&nbsp;
+                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    
+                                </li>
+                                <#else>
+                                </#if>
+                                {/ms:arclist}
+
+                                <!-- <li>·&nbsp;<a href="http://www.gdcc315.cn/show-23-53782-1.html" target="_blank">《儿童化妆品监督管理规定》</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-23-53763-1.html" target="_blank">《中华人民共和国个人信息保护法》</a></li>
+                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-23-53762-1.html" target="_blank">《化妆品生产经营监督管理办法》</a></li> -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--left-3-->
+            <div class="left-3">
+                <div class="title flex">
+                    <div class=""><a href="/list-304-1.html" target="_blank" style="color: #4aad42">维权手册</a></div>
+                    <div class="flex-1"><span></span></div>
+                </div>
+                <div class="c">
+                    <ul>
+
+                        <li><a href="http://www.gdcc315.cn/zazhi/2021yhk/" target="_blank">
+                            <img src="{ms:global.host/}{ms:global.style/}/Picture/20210507114941685.jpg" width="200px" height="280px"></a>
+                        </li>
+                        <li><a href="http://www.gdcc315.cn/zazhi/2021xfzn/" target="_blank">
+                            <img src="{ms:global.host/}{ms:global.style/}/Picture/20210507114721778.jpg" width="200px" height="280px"></a>
+                        </li>
+                        <li><a href="http://www.gdcc315.cn/zazhi/2021spaq/" target="_blank">
+                            <img src="{ms:global.host/}{ms:global.style/}/Picture/20210507114859958.jpg" width="200px" height="280px"></a>
+                        </li>
+                        <li><a href="http://www.gdcc315.cn/zazhi/2021rsbx/" target="_blank">
+                            <img src="{ms:global.host/}{ms:global.style/}/Picture/20210507114800384.jpg" width="200px" height="280px"></a>
+                        </li>
+                        <li><a href="http://www.gdcc315.cn/zazhi/2021mfd/" target="_blank">
+                            <img src="{ms:global.host/}{ms:global.style/}/Picture/20210507114443486.jpg" width="200px" height="280px"></a>
+                        </li>
+                        <li><a href="http://www.gdcc315.cn/zazhi/2021jy/" target="_blank">
+                            <img src="{ms:global.host/}{ms:global.style/}/Picture/20210507114635759.jpg" width="200px" height="280px"></a>
+                        </li>
+                        <li><a href="http://www.gdcc315.cn/zazhi/2021ccbx/" target="_blank">
+                            <img src="{ms:global.host/}{ms:global.style/}/Picture/20210507114558217.jpg" width="200px" height="280px"></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="prev"><a href="javascript:void(0)"></a></div>
+                <div class="next"><a href="javascript:void(0)"></a></div>
+            </div>
+        </div>
+        <!--right-->
+        <div class="right">
+
+            <!--right-5-->
+            <div class="right-5" style="margin-bottom: 23px;">
+                <div class="title">历年年主题<a href="/list-303-1.html"  target="_blank">more>></a></div>
+                <div class="con">
+                    <div style="padding-left: 2px;padding-top: 5px;"><img src="{ms:global.host/}{ms:global.style/}/Picture/zhuti_pic.jpg"/></div>
+                    <ul style="text-align:justify;text-align-last:justify;">
+                        <li><a href="javascript:;">2021：守护安全 畅通消费</a></li>
+                        <li><a href="http://www.gdcc315.cn/show-303-52214-1.html">2020：凝聚你我力量</a></li>
+                        <li><a href="javascript:;">2019：信用让消费更放心</a></li>
+                        <li><a href="javascript:;">2018：品质消费 美好生活</a></li>
+                        <li><a href="javascript:;">2017：网络诚信 消费无忧</a></li>
+                        <li><a href="javascript:;">2016：新 消 费&nbsp;&nbsp;我 做 主</a></li>
+
+
+                    </ul>
+                </div>
+            </div>
+            <!--right-1-->
+            <div class="right-1" style="display:none">
+                <a href="/list-314-1.html" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/2020042901.jpg"/></a>
+            </div>
+            <!--right-2-->
+            <div class="right-1">
+                <a href="http://shopsmart.org.hk/shopsmart/index.php" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_51.png"/></a>
+            </div>
+            <!--right-3-->
+            <div class="right-1">
+                <a href="http://www.consumer.gov.mo/Shop/Intro.aspx?lang=zh" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_53.png"/></a>
+            </div>
+            <!--right-4-->
+            <div class="right-1" >
+                <a href="/html/shouxin/index.html" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_58.png"/></a>
+            </div>
+            <div class="right-1" style="margin-bottom: 0">
+                <a href="http://yst.gdzwfw.gov.cn/web/pc/?adt=ZWFWW_62004_gd" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/yst.png"/></a>
+            </div>
+            <!--right-4-->
+        </div>
+    </div>
+    <!--mod-6-->
+    <div class="mod mod-6">
+        <div class="title flex">
+            <div class="">315网盟</div>
+            <div class="flex-1"><span></span></div>
+        </div>
+        <div class="con">
+            <ul class="flex">
+                <li><a href="http://www.samr.gov.cn/" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_66.png"/></a></li>
+                <li><a href="http://www.cca.org.cn/" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_70.png"/></a></li>
+                <li><a href="http://amr.gd.gov.cn/" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_68.png"/></a></li>
+                <li><a href="https://www.consumer.org.hk/" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_72.png"/></a></li>
+                <li><a href="https://www.consumer.gov.mo/Default.aspx?lang=zh" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_74.png"/></a></li>
+            </ul>
+        </div>
+    </div>
+    <!--mod-7-->
+    <div class="mod mod-7">
+        <div class="con flex">
+            <div class="c-left">网站导航</div>
+            <div class="c-txt flex-1">
+                <select name="select4" class="box" onchange="if(this.options[this.selectedIndex].value!=''){window.open(this.options[this.selectedIndex].value,'_blank');}">
+                    <option selected="">--------- 各省消费者委员会 ---------</option>
+                    <option value="http://www.bj315.org">北京市消费者协会</option>
+                    <option value="http://www.heb315.org.cn/">河北省消费者协会</option>
+                    <option style="display:none;"  value="http://www.nm315.com.cn">内蒙古自治区消费者协会</option>
+                    <option value="http://www.315ln.cn">辽宁省消费者协会</option>
+                    <option value="http://www.jl315.org">吉林省消费者协会</option>
+                    <option style="display:none;" value="http://www.57315.net">黑龙江省消费者协会</option>
+                    <option value="http://www.315.sh.cn">上海市消费者权益保护委员会</option>
+                    <option value="http://www.ah315.cn">安徽省消费者委员会</option>
+                    <option value="http://www.nm315.com.cn">内蒙古自治区消费者协会</option>
+                    <option value="http://www.zj315.org">浙江省消费者权益保护委员会</option>
+                    <option value="http://www.ah315.org.cn">安徽省消费者协会</option>
+                    <option value="http://www.tj315.org.cn/">天津市消费者协会</option>
+                    <option style="display:none;" value="http://www.sd315.org.cn">山东省消费者协会</option>
+                    <option value="http://www.hub315.org.cn/">湖北省消费者委员会</option>
+                    <option value="http://www.hn315.net.cn">海南省消费者委员会</option>
+                    <option value="http://www.cq315.org">重庆市消费者权益保护委员会</option>
+                    <option style="display:none;" value="http://www.gzxx315.org.cn">贵州省消费者协会</option>
+                    <option value="http://www.yn315.com">云南省消费者协会</option>
+                    <option value="http://www.sxwq.org.cn">陕西省消费者协会</option>
+                    <option value="http://www.gs12315.com/web/web.action">甘肃省消费者协会</option>
+                    <option value="http://www.qh315.org">青海省消费者委员会</option>
+                    <option style="display:none;" value="http://www.xj315.com">新疆自治区消费者协会</option>
+                </select>
+                <select name="select4" class="box" onchange="if(this.options[this.selectedIndex].value!=''){window.open(this.options[this.selectedIndex].value,'_blank');}">
+                    <option selected="">---------- 市消费者委员会 ---------</option>
+                    <option value="http://www.guangzhou315.com/">广州市消费者委员会</option>
+                    <option value="http://www.sz315.org/">深圳市消费者委员会</option>
+                    <option value="http://www.zhuhai315.com">珠海市消费者委员会</option>
+                    <option value="http://www.shantou315.com">汕头市消费者委员会</option>
+                    <option value="http://www.fs315.org">佛山市消费者委员会</option>
+                    <option value="http://www.dongguanshi315.com">东莞市消费者委员会</option>
+                    <option style="display:none;" value="http://www.gdzs315.gov.cn">中山市消费者委员会</option>
+                    <option value="http://www.zhaoqing315.com">肇庆市消费者委员会</option>
+                    <option value="http://www.gdzj315.com">湛江市消费者委员会</option>
+                </select>
+                <select name="select4" class="box" onchange="if(this.options[this.selectedIndex].value!=''){window.open(this.options[this.selectedIndex].value,'_blank');}">
+                    <option value="#" selected="">------省行业协会------</option>
+                    <option value="http://www.gdeba.org.cn">广东省网商协会</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+    <#include "footer.htm" />
+</body>
+</html><div class="fad" style="display:none">
+    <a class="close" href="javascript:;">X</a><a target="_blank" href="https://www.wjx.cn/jq/62992630.aspx"><img width="150" height="200" src="{ms:global.host/}{ms:global.style/}/Picture/2020dtdfg.jpg"></a></div>
+
+<div class="rad" >
+    <a class="close" href="javascript:;">X</a><a target="_blank" href="http://ts.gdcc315.cn/dologin"><img width="150" height="200" src="{ms:global.host/}{ms:global.style/}/Picture/tsptad.jpg"></a></div>
+
+<script type="text/javascript">
+    jQuery('.fad .close').click(function(){
+        jQuery('.fad').hide();
+    })
+</script>
+<style>
+    .fad
+    {
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+        z-index: 999;
+    }
+    .fad .close, .rad .close
+    {
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        border: 1px solid #ddd;
+        padding: 2px 5px;
+        background: #fff;
+        color: #f00;
+        font-family: arial, '\5b8b\4f53';
+    }
+    .rad
+    {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        z-index: 999;
+    }
+
+</style>

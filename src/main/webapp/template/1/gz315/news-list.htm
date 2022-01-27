@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <#include "head-file.htm" />
+    <title>{ms:global.name/} - 广州市消费者委员会</title>
+</head>
+
+<body>
+<#include "header.htm" />
+<#include "nav.htm" />
+<div id="app" v-cloak>
+    <div class="w mt10">
+        <div class="fl list">
+            <div class="pson"><a href="/">首页</a><span> &gt; </span>
+                <!--        <a href="http://www.guangzhou315.cn/list-6-1.html">消费新闻</a> > 列表</div>-->
+                {ms:channel type="path"}<a href="{ms:global.url/}${field.typelink}">${field.typetitle}</a>{/ms:channel}
+                > 列表
+            </div>
+            <ul>
+                {ms:arclist size=25 ispaging=true}
+                <li><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a><span
+                        class="fr">${field.date?date?string("yyyy-MM-dd")}</span></li>
+                {/ms:arclist}
+            </ul>
+            <div class="clear"></div>
+
+            <div class="pages">
+                <el-pagination
+                        background
+                        @current-change="handleCurrentChange"
+                        :page-size="pageSize"
+                        :current-page.sync="pageCur"
+                        layout="total, prev, pager, next"
+                        prev-text="上一页"
+                        next-text="下一页"
+                        :total="contentCount"></el-pagination>
+            </div>
+
+        </div>
+        <!--l end-->
+        <#include "news-right.htm" />
+        <div class="clear"></div>
+    </div>
+</div>
+<#include "footer.htm" />
+</body>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        watch: {},
+        data: {
+            //当前页数
+            pageCur: ${(page.cur)!1},
+            //每页文章条数
+            pageSize: ${(page.size)!25},
+            //页数总数
+            pageTotal: ${(page.total)!0},
+            //内容总数
+            contentCount: ${(page.rcount)!0}
+        },
+        methods: {
+            switchShow: function (arr) {
+                var that = this
+                arr.forEach(function (x) {
+                    let e = that.$el.querySelector("#key_" + x)
+                    if (e) {
+                        e.style.display = e.style.display == 'none' ? 'flex' : 'none'
+                    }
+                })
+            },
+            handleCurrentChange: function (val) {
+                if (val == 1) {
+                    location.href = "{ms:global.url/}/${field.categoryPath}/index.html";
+                } else {
+                    location.href = "{ms:global.url/}/${field.categoryPath}/list-" + val + ".html";
+                }
+            }
+        },
+        created() {
+        }
+    })
+</script>
+<style>
+
+</style>
+
+</html>

@@ -1,0 +1,54 @@
+<div class="fr r">
+    <div class="mod1" style="display:none;"><a href="#"><img src="{ms:global.host/}{ms:global.style/}/Picture/12315.jpg" alt="" width="235px"
+                                                             height="125px" /></a></div>
+    <div class="mt10 mod2">
+        <div class="strong yh"><a href="">视频中心</a></div>
+        {ms:arclist size=1 typeid="21" ispaging=true}
+        <div class="con">
+
+            <a href="{ms:global.url/}${field.link}" target="_blank">
+                <img src="{@ms:file field.litpic/}" width="200px" height="130px"></a>
+        </div>
+        <div class="title">
+            <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+        </div>
+        {/ms:arclist}
+    </div>
+    <div class="mt10 mod2 mod3 zhuanti">
+        <div class="strong yh"><a href="">专题报道</a></div>
+        <div class="con">
+            <div class="title"></div>
+            <ul>
+                {ms:arclist size=5 typeid="19" ispaging=true}
+                <li>
+                    <a href="{ms:global.url/}${field.link}" target="_blank">
+                        <img src="{@ms:file field.litpic/}" width="200px" height="130px">
+                    </a>
+                </li>
+                {/ms:arclist}
+            </ul>
+        </div>
+        <ul class="listt">
+            {ms:arclist size=3 typeid="19" ispaging=true}
+            <li>·<a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></li>
+            {/ms:arclist}
+        </ul>
+    </div>
+    <script type="text/javascript">
+        var i = $(".zhuanti .con li").length; //www.170m.com
+        for (j = 1; j < i + 1; j++) { $('.zhuanti .title').append("<span>" + j + "</span>") }
+        jQuery(".zhuanti").slide({ mainCell: ".con ul", effect: "leftLoop", defaultIndex: 0, vis: 2, scroll: 1, titCell: ".title span", titOnClassName: "on", autoPlay: true });
+    </script>
+
+    <div class="mt10 mod5 mod6">
+        <div class="title"><strong>法律法规</strong>
+            <span class="fr"><a href="/html/web/zhengcefagui/index.html" target="_blank">更多>></a></span>
+        </div>
+        <ul>
+            {ms:arclist size=10 typeid="10" ispaging=true}
+            <li>·<a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></li>
+            {/ms:arclist}
+        </ul>
+    </div>
+</div>
+<!--r end-->

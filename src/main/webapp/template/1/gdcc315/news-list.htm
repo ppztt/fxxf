@@ -1,0 +1,146 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <#include "head-file.htm" />
+    <title>广东消费网(广东省消委会消费维权网)</title>
+</head>
+<body>
+<!--header-->
+<div id="header">
+    <#include "header.htm" />
+    <#include "nav.htm" />
+</div>
+<script>
+    jQuery(".h_fy").slide({
+        mainCell: ".c ul",
+        delayTime :5,
+        effect: "leftLoop",
+        defaultIndex: 0,
+        vis: 2,
+        scroll: 1,
+        autoPlay: true
+    });
+</script><!--main-->
+<div class="w list" id="app" v-cloak>
+    <div class="fl ll">
+        
+        <div class="crumbs">您现在的位置：<a href="http://www.gdcc315.cn">首页</a><span> &gt; </span>{ms:channel type="path"}<a href="{ms:global.url/}${field.typelink}">${field.typetitle}</a>{/ms:channel}>列表</div>
+        <!-- <div class="crumbs">您现在的位置：<a href="http://www.gdcc315.cn">首页</a><span> > </span><a href="http://www.gdcc315.cn/list-6-1.html">本会动态</a> >  列表</div> -->
+        <!--crumbs end-->
+        <ul>
+            
+            {ms:arclist size=25 ispaging=true}
+                <li class="on"><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a><span>${field.author}</span><span
+                        class="fr">${field.date?date?string("yyyy-MM-dd")}</span></li>
+            {/ms:arclist}
+            <!-- <li class=""><a href="http://www.gdcc315.cn/show-6-53824-1.html" target="_blank" class="title">重磅！广东省消委会就虚假宣传减肥产品行为提起公益诉讼 在全国率先探索“公益诉讼+集体诉讼”维权新模式</a><span class="username">广东省消委会</span><span class="rt">2022-01-11</span></li>
+            <li class="on"><a href="http://www.gdcc315.cn/show-6-53823-1.html" target="_blank" class="title">广东省消委会组织网售“三无产品”问题整改效果“回头看”调查发现： 淘宝、天猫、拼多多仍有问题商品在售</a><span class="username">广东消委会</span><span class="rt">2021-12-23</span></li>
+             -->
+        </ul>
+
+        <!-- 页码暂时用不了 -->
+        <div class="pages">
+            <el-pagination
+                    background
+                    @current-change="handleCurrentChange"
+                    :page-size="pageSize"
+                    :current-page.sync="pageCur"
+                    layout="total, prev, pager, next"
+                    prev-text="上一页"
+                    next-text="下一页"
+                    :total="contentCount"></el-pagination>
+        </div>
+        <!-- <div id="pages" class="text-c"><a class="a1">392条</a> <a href="list-6-0.html" class="a1">上一页</a> <span>1</span> <a href="list-6-2.html">2</a> <a href="list-6-3.html">3</a> <a href="list-6-4.html">4</a> <a href="list-6-5.html">5</a> <a href="list-6-6.html">6</a> <a href="list-6-7.html">7</a> <a href="list-6-8.html">8</a> <a href="list-6-9.html">9</a> <a href="list-6-10.html">10</a> ..<a href="list-6-16.html">16</a> <a href="list-6-2.html" class="a1">下一页</a></div> -->
+    </div>
+
+    <!--ll end-->
+    <div class="fr lr">
+        <div class="mod mod1"><a href="javascript:;"><img src="{ms:global.host/}{ms:global.style/}/Picture/pic-10.jpg" width="240px" height="257px" /></a></div>
+        <!--mod1 end-->
+        <div class="mod mod2">
+            <div class="t">推荐文章</div>
+            <div class="c">
+                <ul>
+                    <!-- 这里需要改成 <li><span>1</span>、 循环生成有序数形式 -->
+                    {ms:arclist size=8 ispaging=true}
+                    <li class="on"><span>·</span><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></li>
+                    {/ms:arclist}
+
+                    <!-- <li><span>1</span>、<a href="http://www.gdcc315.cn/show-6-53824-1.html">重磅！广东省消委会就虚假宣传减肥产品行为提起公益诉讼 在全国率先探索“公益诉讼+集体诉讼”维权新模式</a></li>
+                    <li><span>2</span>、<a href="http://www.gdcc315.cn/show-6-53823-1.html">广东省消委会组织网售“三无产品”问题整改效果“回头看”调查发现： 淘宝、天猫、拼多多仍有问题商品在售</a></li>
+                    <li><span>3</span>、<a href="http://www.gdcc315.cn/show-6-53801-1.html">四宗个人信息保护公益诉讼全胜！ 彰显多手段治理信息侵权顽疾成效</a></li>
+                    <li><span>4</span>、<a href="http://www.gdcc315.cn/show-6-53800-1.html">网购平台“三无产品”仍较多 标签标识、页面展示、“好评返现”等问题明显</a></li>
+                    <li><span>5</span>、<a href="http://www.gdcc315.cn/show-6-53787-1.html">广东省消委会发布“常见类型App非必要个人信息收集情况”调查结果，呼吁—— 经营者依法规范收集使用消费者个人信息</a></li>
+                    <li><span>6</span>、<a href="http://www.gdcc315.cn/show-6-53777-1.html">广东消委会系统2021年第三季度投诉情况分析报告</a></li>
+                    <li><span>7</span>、<a href="http://www.gdcc315.cn/show-6-53773-1.html">广东省消委会发布老花镜比较试验报告—— 呼吁厂家重视产品信息规范标注  保障消费者知情权和使用正确</a></li>
+                    <li><span>8</span>、<a href="http://www.gdcc315.cn/show-6-53739-1.html">如何选到一款安全又舒适的头盔？广东消委会发布比较试验结果给出答案</a></li> -->
+                </ul>
+            </div>
+        </div>
+        <!--mod2 end-->
+        <div class="mod mod2">
+            <div class="t">热点文章</div>
+            <div class="c">
+                <ul>
+
+                    {ms:arclist size=8 ispaging=true}
+                    <li class="on"><span>·</span><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></li>
+                    {/ms:arclist}
+
+                    <!-- <li><span>1</span>、<a href="http://www.gdcc315.cn/show-6-50943-1.html" target="_blank">广东省消费者委员会部门决算公示</a></li>
+                    <li><span>2</span>、<a href="http://www.gdcc315.cn/show-6-50955-1.html" target="_blank">广东省消费者委员会2018年度部门整体支出绩效自评报告</a></li>
+                    <li><span>3</span>、<a href="http://www.gdcc315.cn/show-6-53111-1.html" target="_blank">广东省消委会发布上半年广东消委会系统消费投诉分析报告</a></li>
+                    <li><span>4</span>、<a href="http://www.gdcc315.cn/show-6-53697-1.html" target="_blank">2021年上半年广东消委会系统消费投诉分析报告</a></li>
+                    <li><span>5</span>、<a href="http://www.gdcc315.cn/show-6-53338-1.html" target="_blank">广东省市场监管局、省消委会联合发布“双十一”消费提示：欢乐购物  安全消费</a></li>
+                    <li><span>6</span>、<a href="http://www.gdcc315.cn/show-6-52540-1.html" target="_blank">省消委会发布“粤港澳大湾区消费维权十大事件” 三地消费者组织通力合作打造放心消费湾区</a></li>
+                    <li><span>7</span>、<a href="http://www.gdcc315.cn/show-6-52793-1.html" target="_blank">省消委会党支部开展“扶贫帮困学习交流”主题党日活动</a></li> -->
+                </ul>
+            </div>
+        </div>
+        <!--mod2 end-->
+    </div>
+    <!--lr end-->
+    <div class="clear"></div>
+</div>
+    <#include "footer.htm" />
+</body>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        watch: {},
+        data: {
+            //当前页数
+            pageCur: ${(page.cur)!1},
+            //每页文章条数
+            pageSize: ${(page.size)!25},
+            //页数总数
+            pageTotal: ${(page.total)!0},
+            //内容总数
+            contentCount: ${(page.rcount)!0}
+        },
+        methods: {
+            switchShow: function (arr) {
+                var that = this
+                arr.forEach(function (x) {
+                    let e = that.$el.querySelector("#key_" + x)
+                    if (e) {
+                        e.style.display = e.style.display == 'none' ? 'flex' : 'none'
+                    }
+                })
+            },
+            handleCurrentChange: function (val) {
+                if (val == 1) {
+                    location.href = "{ms:global.url/}/${field.categoryPath}/index.html";
+                } else {
+                    location.href = "{ms:global.url/}/${field.categoryPath}/list-" + val + ".html";
+                }
+            }
+        },
+        created() {
+        }
+    })
+</script>
+</html>

@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <#include "head-file.htm" />
+    <title>{ms:global.name/} - 广州市消费者委员会</title>
+</head>
+
+<body>
+    <#include "header.htm" />
+    <#include "nav.htm" />
+    <div id="app" v-cloak>
+    <div class="w mt10">
+        <div class="shipin-list">
+            <div class="pson"><a href="/">首页</a><span> &gt; </span>
+<!--                <a href="http://www.guangzhou315.cn/list-21-1.html">视频中心</a> > 列表</div>-->
+                {ms:channel type="path"}<a href="{ms:global.url/}${field.typelink}">${field.typetitle}</a>{/ms:channel} > 列表</div>
+            <ul>
+                {ms:arclist size=25 ispaging=true}
+                <li>
+                    <div class="list_thumb">
+                        <a href="{ms:global.url/}${field.link}" target="_blank">
+                            <img src="{@ms:file field.litpic/}" width="140" height="115px" />
+                        </a>
+                    </div>
+                    <div class="list_article">
+                        <div class="list_article_title"><a href="{ms:global.url/}${field.link}"
+                                target="_blank">${field.title}</a></div>
+                        <div class="list_article_content">
+                            <label style="margin-right: 20px;">来源：${field.source}</label> <a
+                                href="{ms:global.url/}${field.link}" target="_blank">阅读更多</a>
+                        </div>
+                    </div>
+                    <div class="list_time">
+                        <div>${field.date?date?string("yyyy-MM-dd")}</div>
+                    </div>
+                </li>
+                {/ms:arclist}
+            </ul>
+
+            <div class="pages">
+                <el-pagination
+                        background
+                        @current-change="handleCurrentChange"
+                        :page-size="pageSize"
+                        :current-page.sync="pageCur"
+                        layout="total, prev, pager, next"
+                        prev-text="上一页"
+                        next-text="下一页"
+                        :total="contentCount"> </el-pagination>
+            </div>
+        </div>
+        <!--l end-->
+    </div>
+    </div>
+    <#include "footer.htm" />
+</body>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        watch:{
+        },
+        data: {
+            //当前页数
+            pageCur: ${(page.cur)!1},
+            //每页文章条数
+            pageSize: ${(page.size)!25},
+            //页数总数
+            pageTotal: ${(page.total)!0},
+            //内容总数
+            contentCount: ${(page.rcount)!0}
+        },
+        methods: {
+            switchShow:function(arr){
+                var that = this
+                arr.forEach(function(x){
+                    let e = that.$el.querySelector("#key_"+x)
+                    if(e){
+                        e.style.display=e.style.display=='none'?'flex':'none'
+                    }
+                })
+            },
+            handleCurrentChange:function(val) {
+                if(val==1) {
+                    location.href = "{ms:global.url/}/${field.categoryPath}/index.html";
+                } else {
+                    location.href = "{ms:global.url/}/${field.categoryPath}/list-" + val + ".html";
+                }
+            }
+        },
+        created(){
+        }
+    })
+</script>
+
+</html>

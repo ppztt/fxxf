@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <#include "head-file.htm" />
+  <title>{ms:global.name/} - 广州市消费者委员会</title>
+</head>
+
+<body>
+  <#include "header.htm" />
+  <#include "nav.htm" />
+
+  <div class="w mt10">
+    <div class="fl show">
+      <div class="pson"><a href="http://www.guangzhou315.com">首页</a><span> &gt; </span>
+<!--        <a href="http://www.guangzhou315.cn/list-11-1.html">信息公开</a> > 正文</div>-->
+        {ms:channel type="path"}<a href="{ms:global.url/}${field.typelink}">${field.typetitle}</a>{/ms:channel} > 正文</div>
+      <div class="con">
+        <h1 class="h1">${field.title} </h1>
+        <div class="laiyuan">
+          <div class="bdsharebuttonbox fr" style="width:140px;"><a href="#" class="bds_more" data-cmd="more"></a><a
+              href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina"
+              data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a
+              href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin"
+              data-cmd="weixin" title="分享到微信"></a></div>
+          <script>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "2", "bdMiniList": false, "bdPic": "", "bdStyle": "1", "bdSize": "16" }, "share": {}, "image": { "viewList": ["qzone", "tsina", "tqq", "renren", "weixin"], "viewText": "分享到：", "viewSize": "16" }, "selectShare": { "bdContainerClass": null, "bdSelectMiniList": ["qzone", "tsina", "tqq", "renren", "weixin"] } }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];</script>
+          <p class="fr">来源：${field.source} 发布时间：${field.date?date?string("yyyy-MM-dd")}</p>
+        </div>
+
+        <div class="clear">
+          <span> ${field.content} </span>
+        </div>
+        <!--内容关联投票-->
+      </div>
+
+      <div class="prenext">
+        <p><strong>上一篇：</strong>
+          <#if pre.title?has_content>
+          <a href="{ms:global.url/}${pre.link}"> ${pre.title} </a>
+          <#else>
+          第一页
+        </#if>
+        </p>
+        <p style="margin-top:10px;"><strong>下一篇：</strong>
+          <#if next.title?has_content>
+          <a href="{ms:global.url/}${next.link}"> ${next.title} </a>
+          <#else>
+          最后一页
+        </#if>
+        </p>
+      </div>
+
+      <div class="talk"></div>
+      <div class="clear"></div>
+    </div>
+    <!--l end-->
+
+    <#include "news-right.htm" />
+    <div class="clear"></div>
+  </div>
+  <script language="JavaScript" src="{ms:global.host/}{ms:global.style/}/js/api.js"></script>
+
+  <#include "footer.htm" />
+</body>
+
+<style>
+  /*表格宽度限制*/
+  table {
+    width: 100% !important;
+  }
+</style>
+</html>
