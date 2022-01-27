@@ -124,6 +124,7 @@
                     <exclude>html/</exclude>
                     <exclude>upload/</exclude>
                     <exclude>template/</exclude>
+                    <exclude>uploadfile/</exclude>
                     <!-- 如果生产需要实时修改WEB-INF/下的页面可，启用这行并手动将项目中的WEB-INF目录复制到运行环境 -->
                     <!-- <exclude>WEB-INF/</exclude>-->
                 </excludes>

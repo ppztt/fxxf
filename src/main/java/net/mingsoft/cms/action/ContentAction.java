@@ -31,17 +31,20 @@ import net.mingsoft.basic.bean.EUListBean;
 import net.mingsoft.basic.constant.e.BusinessTypeEnum;
 import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.basic.util.StringUtil;
+import net.mingsoft.cms.bean.CategoryBean;
 import net.mingsoft.cms.bean.ContentBean;
 import net.mingsoft.cms.biz.ICategoryBiz;
 import net.mingsoft.cms.biz.IContentBiz;
 import net.mingsoft.cms.constant.e.CategoryTypeEnum;
 import net.mingsoft.cms.entity.CategoryEntity;
 import net.mingsoft.cms.entity.ContentEntity;
+import net.mingsoft.cms.util.CmsParserUtil;
 import net.mingsoft.mdiy.biz.IModelBiz;
 import net.mingsoft.mdiy.entity.ModelEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -51,6 +54,7 @@ import springfox.documentation.annotations.ApiIgnore;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -103,27 +107,27 @@ public class ContentAction extends BaseAction {
 	 */
 	@ApiOperation(value = "查询文章列表接口")
 	@ApiImplicitParams({
-    	@ApiImplicitParam(name = "contentTitle", value = "文章标题", required =false,paramType="query"),
-    	@ApiImplicitParam(name = "categoryId", value = "所属栏目", required =false,paramType="query"),
-    	@ApiImplicitParam(name = "contentType", value = "文章类型", required =false,paramType="query"),
-    	@ApiImplicitParam(name = "contentDisplay", value = "是否显示", required =false,paramType="query"),
-    	@ApiImplicitParam(name = "contentAuthor", value = "文章作者", required =false,paramType="query"),
-    	@ApiImplicitParam(name = "contentSource", value = "文章来源", required =false,paramType="query"),
-    	@ApiImplicitParam(name = "contentDatetime", value = "发布时间", required =false,paramType="query"),
-    	@ApiImplicitParam(name = "contentSort", value = "自定义顺序", required =false,paramType="query"),
-    	@ApiImplicitParam(name = "contentImg", value = "文章缩略图", required =false,paramType="query"),
-    	@ApiImplicitParam(name = "contentDescription", value = "描述", required =false,paramType="query"),
-    	@ApiImplicitParam(name = "contentKeyword", value = "关键字", required =false,paramType="query"),
-    	@ApiImplicitParam(name = "contentDetails", value = "文章内容", required =false,paramType="query"),
-    	@ApiImplicitParam(name = "contentUrl", value = "文章跳转链接地址", required =false,paramType="query"),
-    	@ApiImplicitParam(name = "appid", value = "文章管理的应用id", required =false,paramType="query"),
-    	@ApiImplicitParam(name = "createBy", value = "创建人", required =false,paramType="query"),
-    	@ApiImplicitParam(name = "createDate", value = "创建时间", required =false,paramType="query"),
-    	@ApiImplicitParam(name = "updateBy", value = "修改人", required =false,paramType="query"),
-    	@ApiImplicitParam(name = "updateDate", value = "修改时间", required =false,paramType="query"),
-    	@ApiImplicitParam(name = "del", value = "删除标记", required =false,paramType="query"),
-    	@ApiImplicitParam(name = "id", value = "编号", required =false,paramType="query"),
-    })
+			@ApiImplicitParam(name = "contentTitle", value = "文章标题", required =false,paramType="query"),
+			@ApiImplicitParam(name = "categoryId", value = "所属栏目", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentType", value = "文章类型", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentDisplay", value = "是否显示", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentAuthor", value = "文章作者", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentSource", value = "文章来源", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentDatetime", value = "发布时间", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentSort", value = "自定义顺序", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentImg", value = "文章缩略图", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentDescription", value = "描述", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentKeyword", value = "关键字", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentDetails", value = "文章内容", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentUrl", value = "文章跳转链接地址", required =false,paramType="query"),
+			@ApiImplicitParam(name = "appid", value = "文章管理的应用id", required =false,paramType="query"),
+			@ApiImplicitParam(name = "createBy", value = "创建人", required =false,paramType="query"),
+			@ApiImplicitParam(name = "createDate", value = "创建时间", required =false,paramType="query"),
+			@ApiImplicitParam(name = "updateBy", value = "修改人", required =false,paramType="query"),
+			@ApiImplicitParam(name = "updateDate", value = "修改时间", required =false,paramType="query"),
+			@ApiImplicitParam(name = "del", value = "删除标记", required =false,paramType="query"),
+			@ApiImplicitParam(name = "id", value = "编号", required =false,paramType="query"),
+	})
 	@PostMapping("/list")
 	@ResponseBody
 	public ResultData list(@ModelAttribute @ApiIgnore ContentBean content, HttpServletResponse response, HttpServletRequest request, @ApiIgnore ModelMap model, BindingResult result) {
@@ -146,7 +150,7 @@ public class ContentAction extends BaseAction {
 	 * @param content 文章实体
 	 */
 	@ApiOperation(value = "获取文章列表接口")
-    @ApiImplicitParam(name = "id", value = "编号", required =true,paramType="query")
+	@ApiImplicitParam(name = "id", value = "编号", required =true,paramType="query")
 	@GetMapping("/get")
 	@ResponseBody
 	public ResultData get(@ModelAttribute @ApiIgnore ContentEntity content, HttpServletResponse response, HttpServletRequest request, @ApiIgnore ModelMap model){
@@ -161,7 +165,7 @@ public class ContentAction extends BaseAction {
 	 * @param content 文章实体
 	 */
 	@ApiOperation(value = "根据封面获取文章列表接口")
-    @ApiImplicitParam(name = "categoryId", value = "分类编号", required =true,paramType="query")
+	@ApiImplicitParam(name = "categoryId", value = "分类编号", required =true,paramType="query")
 	@GetMapping("/getFromFengMian")
 	@ResponseBody
 	public ResultData getFromFengMian(@ModelAttribute @ApiIgnore ContentEntity content){
@@ -176,33 +180,33 @@ public class ContentAction extends BaseAction {
 	}
 
 	@ApiOperation(value = "保存文章列表接口")
-	 @ApiImplicitParams({
-    	@ApiImplicitParam(name = "contentTitle", value = "文章标题", required =true,paramType="query"),
-		@ApiImplicitParam(name = "categoryId", value = "所属栏目", required =false,paramType="query"),
-		@ApiImplicitParam(name = "contentType", value = "文章类型", required =false,paramType="query"),
-		@ApiImplicitParam(name = "contentDisplay", value = "是否显示", required =false,paramType="query"),
-		@ApiImplicitParam(name = "contentAuthor", value = "文章作者", required =false,paramType="query"),
-		@ApiImplicitParam(name = "contentSource", value = "文章来源", required =false,paramType="query"),
-    	@ApiImplicitParam(name = "contentDatetime", value = "发布时间", required =true,paramType="query"),
-		@ApiImplicitParam(name = "contentSort", value = "自定义顺序", required =false,paramType="query"),
-		@ApiImplicitParam(name = "contentImg", value = "文章缩略图", required =false,paramType="query"),
-		@ApiImplicitParam(name = "contentDescription", value = "描述", required =false,paramType="query"),
-		@ApiImplicitParam(name = "contentKeyword", value = "关键字", required =false,paramType="query"),
-		@ApiImplicitParam(name = "contentDetails", value = "文章内容", required =false,paramType="query"),
-		@ApiImplicitParam(name = "contentUrl", value = "文章跳转链接地址", required =false,paramType="query"),
-		@ApiImplicitParam(name = "appid", value = "文章管理的应用id", required =false,paramType="query"),
-		@ApiImplicitParam(name = "createBy", value = "创建人", required =false,paramType="query"),
-		@ApiImplicitParam(name = "createDate", value = "创建时间", required =false,paramType="query"),
-		@ApiImplicitParam(name = "updateBy", value = "修改人", required =false,paramType="query"),
-		@ApiImplicitParam(name = "updateDate", value = "修改时间", required =false,paramType="query"),
-		@ApiImplicitParam(name = "del", value = "删除标记", required =false,paramType="query"),
-		@ApiImplicitParam(name = "id", value = "编号", required =false,paramType="query"),
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "contentTitle", value = "文章标题", required =true,paramType="query"),
+			@ApiImplicitParam(name = "categoryId", value = "所属栏目", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentType", value = "文章类型", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentDisplay", value = "是否显示", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentAuthor", value = "文章作者", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentSource", value = "文章来源", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentDatetime", value = "发布时间", required =true,paramType="query"),
+			@ApiImplicitParam(name = "contentSort", value = "自定义顺序", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentImg", value = "文章缩略图", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentDescription", value = "描述", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentKeyword", value = "关键字", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentDetails", value = "文章内容", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentUrl", value = "文章跳转链接地址", required =false,paramType="query"),
+			@ApiImplicitParam(name = "appid", value = "文章管理的应用id", required =false,paramType="query"),
+			@ApiImplicitParam(name = "createBy", value = "创建人", required =false,paramType="query"),
+			@ApiImplicitParam(name = "createDate", value = "创建时间", required =false,paramType="query"),
+			@ApiImplicitParam(name = "updateBy", value = "修改人", required =false,paramType="query"),
+			@ApiImplicitParam(name = "updateDate", value = "修改时间", required =false,paramType="query"),
+			@ApiImplicitParam(name = "del", value = "删除标记", required =false,paramType="query"),
+			@ApiImplicitParam(name = "id", value = "编号", required =false,paramType="query"),
 	})
 
 	/**
-	* 保存文章
-	* @param content 文章实体
-	*/
+	 * 保存文章
+	 * @param content 文章实体
+	 */
 	@PostMapping("/save")
 	@ResponseBody
 	@LogAnn(title = "保存文章", businessType = BusinessTypeEnum.INSERT)
@@ -229,6 +233,7 @@ public class ContentAction extends BaseAction {
 			return ResultData.build().error(getResString("err.length", this.getResString("content.url"), "0", "200"));
 		}
 		contentBiz.save(content);
+		generaterArticle(content);
 		return ResultData.build().success(content);
 	}
 
@@ -262,39 +267,39 @@ public class ContentAction extends BaseAction {
 		return ResultData.build().success();
 	}
 	/**
-	*	更新文章列表
-	* @param content 文章实体
-	*/
-	 @ApiOperation(value = "更新文章列表接口")
-	 @ApiImplicitParams({
-	    @ApiImplicitParam(name = "id", value = "编号", required =true,paramType="query"),
-    	@ApiImplicitParam(name = "contentTitle", value = "文章标题", required =true,paramType="query"),
-		@ApiImplicitParam(name = "categoryId", value = "所属栏目", required =false,paramType="query"),
-		@ApiImplicitParam(name = "contentType", value = "文章类型", required =false,paramType="query"),
-		@ApiImplicitParam(name = "contentDisplay", value = "是否显示", required =false,paramType="query"),
-		@ApiImplicitParam(name = "contentAuthor", value = "文章作者", required =false,paramType="query"),
-		@ApiImplicitParam(name = "contentSource", value = "文章来源", required =false,paramType="query"),
-    	@ApiImplicitParam(name = "contentDatetime", value = "发布时间", required =true,paramType="query"),
-		@ApiImplicitParam(name = "contentSort", value = "自定义顺序", required =false,paramType="query"),
-		@ApiImplicitParam(name = "contentImg", value = "文章缩略图", required =false,paramType="query"),
-		@ApiImplicitParam(name = "contentDescription", value = "描述", required =false,paramType="query"),
-		@ApiImplicitParam(name = "contentKeyword", value = "关键字", required =false,paramType="query"),
-		@ApiImplicitParam(name = "contentDetails", value = "文章内容", required =false,paramType="query"),
-		@ApiImplicitParam(name = "contentUrl", value = "文章跳转链接地址", required =false,paramType="query"),
-		@ApiImplicitParam(name = "appid", value = "文章管理的应用id", required =false,paramType="query"),
-		@ApiImplicitParam(name = "createBy", value = "创建人", required =false,paramType="query"),
-		@ApiImplicitParam(name = "createDate", value = "创建时间", required =false,paramType="query"),
-		@ApiImplicitParam(name = "updateBy", value = "修改人", required =false,paramType="query"),
-		@ApiImplicitParam(name = "updateDate", value = "修改时间", required =false,paramType="query"),
-		@ApiImplicitParam(name = "del", value = "删除标记", required =false,paramType="query"),
-		@ApiImplicitParam(name = "id", value = "编号", required =false,paramType="query"),
+	 *	更新文章列表
+	 * @param content 文章实体
+	 */
+	@ApiOperation(value = "更新文章列表接口")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "id", value = "编号", required =true,paramType="query"),
+			@ApiImplicitParam(name = "contentTitle", value = "文章标题", required =true,paramType="query"),
+			@ApiImplicitParam(name = "categoryId", value = "所属栏目", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentType", value = "文章类型", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentDisplay", value = "是否显示", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentAuthor", value = "文章作者", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentSource", value = "文章来源", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentDatetime", value = "发布时间", required =true,paramType="query"),
+			@ApiImplicitParam(name = "contentSort", value = "自定义顺序", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentImg", value = "文章缩略图", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentDescription", value = "描述", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentKeyword", value = "关键字", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentDetails", value = "文章内容", required =false,paramType="query"),
+			@ApiImplicitParam(name = "contentUrl", value = "文章跳转链接地址", required =false,paramType="query"),
+			@ApiImplicitParam(name = "appid", value = "文章管理的应用id", required =false,paramType="query"),
+			@ApiImplicitParam(name = "createBy", value = "创建人", required =false,paramType="query"),
+			@ApiImplicitParam(name = "createDate", value = "创建时间", required =false,paramType="query"),
+			@ApiImplicitParam(name = "updateBy", value = "修改人", required =false,paramType="query"),
+			@ApiImplicitParam(name = "updateDate", value = "修改时间", required =false,paramType="query"),
+			@ApiImplicitParam(name = "del", value = "删除标记", required =false,paramType="query"),
+			@ApiImplicitParam(name = "id", value = "编号", required =false,paramType="query"),
 	})
 	@PostMapping("/update")
 	@ResponseBody
 	@LogAnn(title = "更新文章", businessType = BusinessTypeEnum.UPDATE)
 	@RequiresPermissions("cms:content:update")
 	public ResultData update(@ModelAttribute @ApiIgnore ContentEntity content, HttpServletResponse response,
-                             HttpServletRequest request) {
+							 HttpServletRequest request) {
 		//验证文章标题的值是否合法
 		if(StringUtil.isBlank(content.getContentTitle())){
 			return ResultData.build().error(getResString("err.empty", this.getResString("content.title")));
@@ -316,6 +321,35 @@ public class ContentAction extends BaseAction {
 			return ResultData.build().error(getResString("err.length", this.getResString("content.url"), "0", "200"));
 		}
 		contentBiz.saveOrUpdate(content);
+		generaterArticle(content);
 		return ResultData.build().success(content);
+	}
+
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+	@Value("${ms.html-dir:html}")
+	private String htmlDir;
+
+	private void generaterArticle(ContentEntity content) {
+		try {
+			List<CategoryBean> articleIdList = null;
+			ContentBean contentBean = new ContentBean();
+			contentBean.setBeginTime(sdf.format(content.getContentDatetime()));
+			contentBean.setCategoryId(content.getCategoryId());
+			contentBean.setCategoryType("1");
+			articleIdList = contentBiz.queryIdsByCategoryIdForParser(contentBean);
+
+			for (int i = articleIdList.size() - 1; i >= 0; i--) {
+				if (!articleIdList.get(i).getArticleId().equals(content.getId())) {
+					articleIdList.remove(i);
+				}
+			}
+			// 有符合条件的就更新
+			if (!articleIdList.isEmpty()) {
+				CmsParserUtil.generateBasic(articleIdList, htmlDir);
+			}
+		} catch (Exception e) {
+			LOG.error("生成详情页失败：" + content.getId(), e);
+		}
 	}
 }

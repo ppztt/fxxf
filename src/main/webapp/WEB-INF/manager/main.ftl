@@ -16,296 +16,296 @@
         <div  class="class-6" >
         </div>
         <div  class="panel" style="min-height:200px;">
-        <div   class="panel-title" style="display:inline;">
-              常用功能
-              <el-tooltip effect="dark" content="鼠标移至上方功能大全，点击菜单右侧五角星即可添加到常用功能。" placement="left">
-            <i class="el-icon-question"></i>
-          </el-tooltip>
-            </div>
-            <div class="v-space"></div>
-            <div class="panel-content" style="flex-direction: row;flex-wrap: wrap; flex: unset;margin-top:20px;">
-              <div class="mitem"
-                   @click="window.parent.indexVue.openParentMenuInTitle(item.title)"
-                   v-for="item in alwaysList">
-                <!--图标开始-->
-                <i :class="['iconfont',item.icon]"></i>
-                <div class="item-title">
-                  {{ item.title }}
-                </div>
-                <!--文本结束-->
+          <div   class="panel-title" style="display:inline;">
+            常用功能
+            <el-tooltip effect="dark" content="鼠标移至上方功能大全，点击菜单右侧五角星即可添加到常用功能。" placement="left">
+              <i class="el-icon-question"></i>
+            </el-tooltip>
+          </div>
+          <div class="v-space"></div>
+          <div class="panel-content" style="flex-direction: row;flex-wrap: wrap; flex: unset;margin-top:20px;">
+            <div class="mitem"
+                 @click="window.parent.indexVue.openParentMenuInTitle(item.title)"
+                 v-for="item in alwaysList">
+              <!--图标开始-->
+              <i :class="['iconfont',item.icon]"></i>
+              <div class="item-title">
+                {{ item.title }}
               </div>
+              <!--文本结束-->
             </div>
+          </div>
         </div>
         <!--大容器开始-->
-        <div  class="class-43" >
-          <!--大容器开始-->
-          <div  class="class-44" >
-            <!--文本开始-->
-            <div class="class-45">
-              MMall
-            </div>
-            <!--文本结束-->
-            <!--文本开始-->
-            <div class="class-46">
-              单商户、多商户、社区商城
-            </div>
-            <!--文本结束-->
-          </div>
-          <!--大容器结束-->
-          <!--大容器开始-->
-          <div  class="class-47" >
-            <!--文本开始-->
-            <div class="class-48">
-              微信
-            </div>
-            <!--文本结束-->
-            <!--文本开始-->
-            <div class="class-49">
-              可管理多个公众号
-            </div>
-            <!--文本结束-->
-          </div>
-          <!--大容器结束-->
-          <!--大容器开始-->
-          <div  class="class-50" >
-            <!--文本开始-->
-            <div class="class-51">
-              MApp
-            </div>
-            <!--文本结束-->
-            <!--文本开始-->
-            <div class="class-52">
-              安卓、IOS、小程序
-            </div>
-            <!--文本结束-->
-          </div>
-          <!--大容器结束-->
-          <!--大容器开始-->
-          <div  class="class-53" >
-            <!--文本开始-->
-            <div class="class-54">
-              二次开发
-            </div>
-            <!--文本结束-->
-            <!--文本开始-->
-            <div class="class-55">
-              更优质的服务体验,高效率的开发团队
-            </div>
-            <!--文本结束-->
-          </div>
-          <!--大容器结束-->
-        </div>
+        <#--        <div  class="class-43" >-->
+        <#--          <!--大容器开始&ndash;&gt;-->
+        <#--          <div  class="class-44" >-->
+        <#--            <!--文本开始&ndash;&gt;-->
+        <#--            <div class="class-45">-->
+        <#--              MMall-->
+        <#--            </div>-->
+        <#--            <!--文本结束&ndash;&gt;-->
+        <#--            <!--文本开始&ndash;&gt;-->
+        <#--            <div class="class-46">-->
+        <#--              单商户、多商户、社区商城-->
+        <#--            </div>-->
+        <#--            <!--文本结束&ndash;&gt;-->
+        <#--          </div>-->
+        <#--          <!--大容器结束&ndash;&gt;-->
+        <#--          <!--大容器开始&ndash;&gt;-->
+        <#--          <div  class="class-47" >-->
+        <#--            <!--文本开始&ndash;&gt;-->
+        <#--            <div class="class-48">-->
+        <#--              微信-->
+        <#--            </div>-->
+        <#--            <!--文本结束&ndash;&gt;-->
+        <#--            <!--文本开始&ndash;&gt;-->
+        <#--            <div class="class-49">-->
+        <#--              可管理多个公众号-->
+        <#--            </div>-->
+        <#--            <!--文本结束&ndash;&gt;-->
+        <#--          </div>-->
+        <#--          <!--大容器结束&ndash;&gt;-->
+        <#--          <!--大容器开始&ndash;&gt;-->
+        <#--          <div  class="class-50" >-->
+        <#--            <!--文本开始&ndash;&gt;-->
+        <#--            <div class="class-51">-->
+        <#--              MApp-->
+        <#--            </div>-->
+        <#--            <!--文本结束&ndash;&gt;-->
+        <#--            <!--文本开始&ndash;&gt;-->
+        <#--            <div class="class-52">-->
+        <#--              安卓、IOS、小程序-->
+        <#--            </div>-->
+        <#--            <!--文本结束&ndash;&gt;-->
+        <#--          </div>-->
+        <#--          <!--大容器结束&ndash;&gt;-->
+        <#--          <!--大容器开始&ndash;&gt;-->
+        <#--          <div  class="class-53" >-->
+        <#--            <!--文本开始&ndash;&gt;-->
+        <#--            <div class="class-54">-->
+        <#--              二次开发-->
+        <#--            </div>-->
+        <#--            <!--文本结束&ndash;&gt;-->
+        <#--            <!--文本开始&ndash;&gt;-->
+        <#--            <div class="class-55">-->
+        <#--              更优质的服务体验,高效率的开发团队-->
+        <#--            </div>-->
+        <#--            <!--文本结束&ndash;&gt;-->
+        <#--          </div>-->
+        <#--          <!--大容器结束&ndash;&gt;-->
+        <#--        </div>-->
         <!--大容器结束-->
       </div>
     </div>
     <div  class="class-56" >
-      <div  class="class-57" @click="openMCMSNews">
-        <div  class="class-58" >
-          <div  class="class-59" >
-          </div>
-          <div class="class-60">
-            {{ msNewsLast }}
-          </div>
-        </div>
-      </div>
-      <div  class="class-61" @click="jumpMCMSDocument">
-        <div  class="class-62" >
-        </div>
-        <div class="class-63">
-          铭飞MCms在线文档
-        </div>
-      </div>
+      <#--      <div  class="class-57" @click="openMCMSNews">-->
+      <#--        <div  class="class-58" >-->
+      <#--          <div  class="class-59" >-->
+      <#--          </div>-->
+      <#--          <div class="class-60">-->
+      <#--            {{ msNewsLast }}-->
+      <#--          </div>-->
+      <#--        </div>-->
+      <#--      </div>-->
+      <#--      <div  class="class-61" @click="jumpMCMSDocument">-->
+      <#--        <div  class="class-62" >-->
+      <#--        </div>-->
+      <#--        <div class="class-63">-->
+      <#--          铭飞MCms在线文档-->
+      <#--        </div>-->
+      <#--      </div>-->
       <!--小容器开始-->
-      <div  class="class-64" >
-        <div  class="class-65" @click="enterQQOneGroup">
-          <div  class="class-66" >
-            <!--图片开始-->
-            <img
-                    src="https://cdn.mingsoft.net/images/icon-qq.png"
-                    class="class-67" />
-            <!--图片结束-->
-          </div>
-          <div  class="class-68" >
-            <div class="class-69">
-              铭飞MS平台（一）
-            </div>
-            <div class="class-70">
-              231212174
-            </div>
-          </div>
-        </div>
-        <div  class="class-71" @click="enterQQTwoGroup">
-          <div  class="class-72" >
-            <!--图片开始-->
-            <img
-                    src="https://cdn.mingsoft.net/images/icon-qq.png"
-                    class="class-73" />
-            <!--图片结束-->
-          </div>
-          <div  class="class-74" >
-            <div class="class-75">
-              铭飞MS平台（二）
-            </div>
-            <div class="class-76">
-              221335098
-            </div>
-          </div>
-        </div>
-        <div  class="class-77" @click="enterQQThreeGroup">
-          <div  class="class-78" >
-            <!--图片开始-->
-            <img
-                    src="https://cdn.mingsoft.net/images/icon-qq.png"
-                    class="class-79" />
-            <!--图片结束-->
-          </div>
-          <div  class="class-80" >
-            <div class="class-81">
-              铭飞MS平台（三）
-            </div>
-            <div class="class-82">
-              242805203
-            </div>
-          </div>
-        </div>
-        <div  class="class-83" @click="enterQQFourGroup">
-          <div  class="class-84" >
-            <!--图片开始-->
-            <img
-                    src="https://cdn.mingsoft.net/images/icon-qq.png"
-                    class="class-85" />
-            <!--图片结束-->
-          </div>
-          <div  class="class-86" >
-            <div class="class-87">
-              铭飞MS平台（四）
-            </div>
-            <div class="class-88">
-              881894877
-            </div>
-          </div>
-        </div>
-      </div>
+      <#--      <div  class="class-64" >-->
+      <#--        <div  class="class-65" @click="enterQQOneGroup">-->
+      <#--          <div  class="class-66" >-->
+      <#--            <!--图片开始&ndash;&gt;-->
+      <#--            <img-->
+      <#--                    src="https://cdn.mingsoft.net/images/icon-qq.png"-->
+      <#--                    class="class-67" />-->
+      <#--            <!--图片结束&ndash;&gt;-->
+      <#--          </div>-->
+      <#--          <div  class="class-68" >-->
+      <#--            <div class="class-69">-->
+      <#--              铭飞MS平台（一）-->
+      <#--            </div>-->
+      <#--            <div class="class-70">-->
+      <#--              231212174-->
+      <#--            </div>-->
+      <#--          </div>-->
+      <#--        </div>-->
+      <#--        <div  class="class-71" @click="enterQQTwoGroup">-->
+      <#--          <div  class="class-72" >-->
+      <#--            <!--图片开始&ndash;&gt;-->
+      <#--            <img-->
+      <#--                    src="https://cdn.mingsoft.net/images/icon-qq.png"-->
+      <#--                    class="class-73" />-->
+      <#--            <!--图片结束&ndash;&gt;-->
+      <#--          </div>-->
+      <#--          <div  class="class-74" >-->
+      <#--            <div class="class-75">-->
+      <#--              铭飞MS平台（二）-->
+      <#--            </div>-->
+      <#--            <div class="class-76">-->
+      <#--              221335098-->
+      <#--            </div>-->
+      <#--          </div>-->
+      <#--        </div>-->
+      <#--        <div  class="class-77" @click="enterQQThreeGroup">-->
+      <#--          <div  class="class-78" >-->
+      <#--            <!--图片开始&ndash;&gt;-->
+      <#--            <img-->
+      <#--                    src="https://cdn.mingsoft.net/images/icon-qq.png"-->
+      <#--                    class="class-79" />-->
+      <#--            <!--图片结束&ndash;&gt;-->
+      <#--          </div>-->
+      <#--          <div  class="class-80" >-->
+      <#--            <div class="class-81">-->
+      <#--              铭飞MS平台（三）-->
+      <#--            </div>-->
+      <#--            <div class="class-82">-->
+      <#--              242805203-->
+      <#--            </div>-->
+      <#--          </div>-->
+      <#--        </div>-->
+      <#--        <div  class="class-83" @click="enterQQFourGroup">-->
+      <#--          <div  class="class-84" >-->
+      <#--            <!--图片开始&ndash;&gt;-->
+      <#--            <img-->
+      <#--                    src="https://cdn.mingsoft.net/images/icon-qq.png"-->
+      <#--                    class="class-85" />-->
+      <#--            <!--图片结束&ndash;&gt;-->
+      <#--          </div>-->
+      <#--          <div  class="class-86" >-->
+      <#--            <div class="class-87">-->
+      <#--              铭飞MS平台（四）-->
+      <#--            </div>-->
+      <#--            <div class="class-88">-->
+      <#--              881894877-->
+      <#--            </div>-->
+      <#--          </div>-->
+      <#--        </div>-->
+      <#--      </div>-->
       <!--小容器结束-->
-      <div  class="class-89" >
-        <div  class="class-90" >
-          <div class="class-91">
-            商务技术支持
-          </div>
-        </div>
-        <div  class="class-92" >
-        </div>
-        <div  class="class-93" >
-        </div>
-        <div  class="class-94" >
-          <div  class="class-95" >
-            <div  class="class-96" >
-            </div>
-            <div class="class-97">
-              功能更丰富
-            </div>
-          </div>
-          <div  class="class-98" >
-            <div  class="class-99" >
-            </div>
-            <div class="class-100">
-              审批
-            </div>
-          </div>
-          <div  class="class-101" >
-            <div  class="class-102" >
-            </div>
-            <div class="class-103">
-              在线Office
-            </div>
-          </div>
-          <div  class="class-104" >
-            <div  class="class-105" >
-            </div>
-            <div class="class-106">
-              远程协助
-            </div>
-          </div>
-          <div  class="class-107" >
-            <div  class="class-108" >
-            </div>
-            <div class="class-109">
-              语音协助
-            </div>
-          </div>
-          <div  class="class-110" >
-            <div  class="class-111" >
-            </div>
-            <div class="class-112">
-              专属VIP群
-            </div>
-          </div>
-          <div  class="class-113" >
-            <div  class="class-114" >
-            </div>
-            <div class="class-115">
-              提供发票
-            </div>
-          </div>
-          <div  class="class-116" >
-            <div  class="class-117" >
-            </div>
-            <div class="class-118">
-              终身授权
-            </div>
-          </div>
-          <div  class="class-119" >
-            <div  class="class-120" >
-            </div>
-            <div class="class-121">
-              授权证明书
-            </div>
-          </div>
-        </div>
-        <div  class="class-122" >
-          <!--横分割线开始-->
-          <div class="class-123"></div>
-          <!--横分割线结束-->
-          <!--小容器开始-->
-          <div  class="class-124" >
-            <div  class="class-125" >
-              <div  class="class-126" >
-                <!--图片开始-->
-                <img
-                        src="https://cdn.mingsoft.net/images/icon-telephone.png"
-                        class="class-127" />
-                <!--图片结束-->
-              </div>
-              <div  class="class-128" >
-                <div class="class-129">
-                  商务电话
-                </div>
-                <div class="class-130">
-                  19970180163
-                </div>
-              </div>
-            </div>
-            <div  class="class-131" @click="addBusinessQQ">
-              <div  class="class-132" >
-                <!--图片开始-->
-                <img
-                        src="https://cdn.mingsoft.net/images/icon-qq.png"
-                        class="class-133" />
-                <!--图片结束-->
-              </div>
-              <div  class="class-134" >
-                <div class="class-135">
-                  商务QQ
-                </div>
-                <div class="class-136">
-                  3336073455
-                </div>
-              </div>
-            </div>
-          </div>
-          <!--小容器结束-->
-        </div>
-      </div>
+      <#--      <div  class="class-89" >-->
+      <#--        <div  class="class-90" >-->
+      <#--          <div class="class-91">-->
+      <#--            商务技术支持-->
+      <#--          </div>-->
+      <#--        </div>-->
+      <#--        <div  class="class-92" >-->
+      <#--        </div>-->
+      <#--        <div  class="class-93" >-->
+      <#--        </div>-->
+      <#--        <div  class="class-94" >-->
+      <#--          <div  class="class-95" >-->
+      <#--            <div  class="class-96" >-->
+      <#--            </div>-->
+      <#--            <div class="class-97">-->
+      <#--              功能更丰富-->
+      <#--            </div>-->
+      <#--          </div>-->
+      <#--          <div  class="class-98" >-->
+      <#--            <div  class="class-99" >-->
+      <#--            </div>-->
+      <#--            <div class="class-100">-->
+      <#--              审批-->
+      <#--            </div>-->
+      <#--          </div>-->
+      <#--          <div  class="class-101" >-->
+      <#--            <div  class="class-102" >-->
+      <#--            </div>-->
+      <#--            <div class="class-103">-->
+      <#--              在线Office-->
+      <#--            </div>-->
+      <#--          </div>-->
+      <#--          <div  class="class-104" >-->
+      <#--            <div  class="class-105" >-->
+      <#--            </div>-->
+      <#--            <div class="class-106">-->
+      <#--              远程协助-->
+      <#--            </div>-->
+      <#--          </div>-->
+      <#--          <div  class="class-107" >-->
+      <#--            <div  class="class-108" >-->
+      <#--            </div>-->
+      <#--            <div class="class-109">-->
+      <#--              语音协助-->
+      <#--            </div>-->
+      <#--          </div>-->
+      <#--          <div  class="class-110" >-->
+      <#--            <div  class="class-111" >-->
+      <#--            </div>-->
+      <#--            <div class="class-112">-->
+      <#--              专属VIP群-->
+      <#--            </div>-->
+      <#--          </div>-->
+      <#--          <div  class="class-113" >-->
+      <#--            <div  class="class-114" >-->
+      <#--            </div>-->
+      <#--            <div class="class-115">-->
+      <#--              提供发票-->
+      <#--            </div>-->
+      <#--          </div>-->
+      <#--          <div  class="class-116" >-->
+      <#--            <div  class="class-117" >-->
+      <#--            </div>-->
+      <#--            <div class="class-118">-->
+      <#--              终身授权-->
+      <#--            </div>-->
+      <#--          </div>-->
+      <#--          <div  class="class-119" >-->
+      <#--            <div  class="class-120" >-->
+      <#--            </div>-->
+      <#--            <div class="class-121">-->
+      <#--              授权证明书-->
+      <#--            </div>-->
+      <#--          </div>-->
+      <#--        </div>-->
+      <#--        <div  class="class-122" >-->
+      <#--          <!--横分割线开始&ndash;&gt;-->
+      <#--          <div class="class-123"></div>-->
+      <#--          <!--横分割线结束&ndash;&gt;-->
+      <#--          <!--小容器开始&ndash;&gt;-->
+      <#--          <div  class="class-124" >-->
+      <#--            <div  class="class-125" >-->
+      <#--              <div  class="class-126" >-->
+      <#--                <!--图片开始&ndash;&gt;-->
+      <#--                <img-->
+      <#--                        src="https://cdn.mingsoft.net/images/icon-telephone.png"-->
+      <#--                        class="class-127" />-->
+      <#--                <!--图片结束&ndash;&gt;-->
+      <#--              </div>-->
+      <#--              <div  class="class-128" >-->
+      <#--                <div class="class-129">-->
+      <#--                  商务电话-->
+      <#--                </div>-->
+      <#--                <div class="class-130">-->
+      <#--                  19970180163-->
+      <#--                </div>-->
+      <#--              </div>-->
+      <#--            </div>-->
+      <#--            <div  class="class-131" @click="addBusinessQQ">-->
+      <#--              <div  class="class-132" >-->
+      <#--                <!--图片开始&ndash;&gt;-->
+      <#--                <img-->
+      <#--                        src="https://cdn.mingsoft.net/images/icon-qq.png"-->
+      <#--                        class="class-133" />-->
+      <#--                <!--图片结束&ndash;&gt;-->
+      <#--              </div>-->
+      <#--              <div  class="class-134" >-->
+      <#--                <div class="class-135">-->
+      <#--                  商务QQ-->
+      <#--                </div>-->
+      <#--                <div class="class-136">-->
+      <#--                  3336073455-->
+      <#--                </div>-->
+      <#--              </div>-->
+      <#--            </div>-->
+      <#--          </div>-->
+      <#--          <!--小容器结束&ndash;&gt;-->
+      <#--        </div>-->
+      <#--      </div>-->
     </div>
   </div>
 </div>
@@ -339,7 +339,7 @@
         });
       },
       //静态化
-    jumpStaticManager: function () {
+      jumpStaticManager: function () {
         window.parent.indexVue.open({"modelId":709,"modelTitle":"静态化","modelId":706,"modelUrl":"cms/generate/index.do"});
       },
       //管理员管理
