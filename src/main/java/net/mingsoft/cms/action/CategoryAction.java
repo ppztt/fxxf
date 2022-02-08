@@ -1,6 +1,6 @@
 /**
  * The MIT License (MIT)
- * Copyright (c) 2020 铭软科技(mingsoft.net)
+ * Copyright (c) 2012-2022 铭软科技(mingsoft.net)
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
  * the Software without restriction, including without limitation the rights to
@@ -18,6 +18,8 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
+
 package net.mingsoft.cms.action;
 
 import cn.hutool.core.util.StrUtil;
@@ -54,7 +56,7 @@ import java.util.List;
  * 创建日期：2019-11-28 15:12:32<br/>
  * 历史修订：<br/>
  */
-@Api(value = "分类接口")
+@Api(tags={"后端-内容模块接口"})
 @Controller("cmsCategoryAction")
 @RequestMapping("/${ms.manager.path}/cms/category")
 public class CategoryAction extends BaseAction {
