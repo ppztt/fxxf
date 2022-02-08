@@ -15,7 +15,7 @@
         <a href="#" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/bwcx.jpg"></a>
     </div>
     <div class="w mt10" style="display:">
-        <a href="/html/web/sxwdjgz/index.html" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/bwcx2.jpg"></a>
+        <a href="{ms:global.url/}/sxwdjgz/index.html" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/bwcx2.jpg"></a>
     </div>
 
     <div class="w mt5">
@@ -23,28 +23,22 @@
 <!--            消费新闻-->
             <div class="fl news">
                 <div class="ctitle">
-                    <span class="on"><a href="/html/web/xiaofeixinwen/index.html">消费新闻</a></span>
+                    <span class="on"><a href="{ms:global.url/}/xiaofeixinwen/index.html">消费新闻</a></span>
                 </div>
                 <div class="ccon">
                     <div class="hot">
-                        {ms:arclist size=1 ispaging=true typeid="6" flag="c"}
+                        {ms:arclist size=1 flag="2"}
                         <a href="{ms:global.url/}${field.link}"
                            target="_blank">${field.title}</a>
                         {/ms:arclist}
                     </div>
                     <ul>
-                        <#assign top = 7>
-                        {ms:arclist size=7 ispaging=true typeid="6" }
-                        <#if top==7 && field.flag=="c" && (field.index<7)>
-                        <#assign top = field.index>
-                        <#elseif field.index != top>
+                        {ms:arclist size=6 typeid="6" noflag="2" }
                         <li>
                             <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
                             <span class="fr">${field.date?date?string("[MM-dd]")}</span>
                         </li>
-                        <#else>
-                    </#if>
-                    {/ms:arclist}
+                        {/ms:arclist}
                     </ul>
                 </div>
             </div>
@@ -54,7 +48,7 @@
                 <div class="title">
                 </div>
                 <ul>
-                    {ms:arclist size=6 ispaging=true flag="f"}
+                    {ms:arclist size=6 flag="1"}
                     <li>
                         <div class="fl pic">
                             <a href="{ms:global.url/}${field.link}">
@@ -93,12 +87,12 @@
 <!--                案例分析-->
                 <div class="fl mod1-1 box01">
                     <div class="ctitle">
-                        <span class="on"><a href="/html/web/anlifenxi/index.html">案例分析</a></span>
+                        <span class="on"><a href="{ms:global.url/}/anlifenxi/index.html">案例分析</a></span>
                     </div>
                     <div class="cccon">
                         <div class="ccon">
                             <div class="tw">
-                                {ms:arclist size=1 ispaging=true typeid="9" flag="c"}
+                                {ms:arclist size=1 flag="16"}
                                 <div class="fl pic">
                                     <a href="{ms:global.url/}${field.link}" target="_blank">
                                         <img src="{@ms:file field.litpic/}" width="140px" height="115px"
@@ -109,17 +103,11 @@
                                 <div class="clear"></div>
                             </div>
                             <ul>
-                                <#assign top = 5>
-                                {ms:arclist size=5 ispaging=true typeid="9" }
-                                <#if top==5 && field.flag=="c" && (field.index<5)>
-                                <#assign top = field.index>
-                                <#elseif field.index != top>
+                                {ms:arclist size=4 typeid="9" noflag="16" }
                                 <li>
                                     <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
                                     <span class="fr">${field.date?date?string("[MM-dd]")}</span>
                                 </li>
-                                <#else>
-                                </#if>
                                 {/ms:arclist}
                             </ul>
                         </div>
@@ -130,52 +118,40 @@
 <!--                市消委会, 红盾信息-->
                 <div class="fr mod1-2 box02">
                     <div class="ctitle">
-                        <span class="on"><a href="/html/web/shixiaoweihui/index.html">市消委会</a></span><span><a
-                            href="/html/web/hongdunxinxi/index.html">红盾信息</a></span>
+                        <span class="on"><a href="{ms:global.url/}/shixiaoweihui/index.html">市消委会</a></span><span><a
+                            href="{ms:global.url/}/hongdunxinxi/index.html">红盾信息</a></span>
                     </div>
                     <div class="cccon">
                         <div class="ccon">
                             <div class="hot">
-                                {ms:arclist size=1 ispaging=true typeid="14" flag="c"}
+                                {ms:arclist size=1 flag="15"}
                                 <a href="{ms:global.url/}${field.link}"
                                    target="_blank">${field.title}</a>
                                 {/ms:arclist}
                             </div>
                             <ul>
-                                <#assign top = 8>
-                                {ms:arclist size=8 ispaging=true typeid="14" }
-                                <#if top==8 && field.flag=="c" && (field.index<8)>
-                                <#assign top = field.index>
-                                <#elseif field.index != top>
+                                {ms:arclist size=7 typeid="14" noflag="15" }
                                 <li>
                                     <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
                                     <span class="fr">${field.date?date?string("[MM-dd]")}</span>
                                 </li>
-                                <#else>
-                                </#if>
                                 {/ms:arclist}
                             </ul>
                         </div>
                         <!--ccon end-->
                         <div class="ccon">
                             <div class="hot">
-                                {ms:arclist size=1 ispaging=true typeid="15" flag="c"}
+                                {ms:arclist size=1 flag="14"}
                                 <a href="{ms:global.url/}${field.link}"
                                    target="_blank">${field.title}</a>
                                 {/ms:arclist}
                             </div>
                             <ul>
-                                <#assign hdtop = 8>
-                                {ms:arclist size=8 ispaging=true typeid="15" }
-                                <#if hdtop==8 && field.flag=="c" && (field.index<8)>
-                                <#assign hdtop = field.index>
-                                <#elseif field.index != hdtop>
+                                {ms:arclist size=7 typeid="15" noflag="14" }
                                 <li>
                                     <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
                                     <span class="fr">${field.date?date?string("[MM-dd]")}</span>
                                 </li>
-                                <#else>
-                                </#if>
                                 {/ms:arclist}
                             </ul>
                         </div>
@@ -190,41 +166,29 @@
 <!--                比较试验, 调查体验-->
                 <div class="fl mod1-1 box03">
                     <div class="ctitle">
-                        <span class="on"><a href="/html/web/bijiaoshiyan/index.html">比较试验</a></span><span><a
-                            href="/html/web/diaochatiyan/index.html">调查体验</a></span>
+                        <span class="on"><a href="{ms:global.url/}/bijiaoshiyan/index.html">比较试验</a></span><span><a
+                            href="{ms:global.url/}/diaochatiyan/index.html">调查体验</a></span>
                     </div>
                     <div class="cccon">
                         <div class="ccon">
                             <ul>
-                                <#assign top = 9>
-                                {ms:arclist size=9 ispaging=true typeid="12" }
-                                <#if top==9 && field.flag=="c" && (field.index<9)>
-                                <#assign top = field.index>
-                                <#elseif field.index != top>
+                                {ms:arclist size=8 typeid="12" }
                                 <li>
                                     <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
                                     <span class="fr">${field.date?date?string("[MM-dd]")}</span>
                                 </li>
-                                <#else>
-                            </#if>
-                            {/ms:arclist}
+                                {/ms:arclist}
                             </ul>
                         </div>
                         <!--ccon end-->
                         <div class="ccon">
                             <ul>
-                                <#assign top = 9>
-                                {ms:arclist size=9 ispaging=true typeid="17" }
-                                <#if top==9 && field.flag=="c" && (field.index<9)>
-                                <#assign top = field.index>
-                                <#elseif field.index != top>
+                                {ms:arclist size=8 typeid="17" }
                                 <li>
                                     <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
                                     <span class="fr">${field.date?date?string("[MM-dd]")}</span>
                                 </li>
-                                <#else>
-                            </#if>
-                            {/ms:arclist}
+                                {/ms:arclist}
                             </ul>
                         </div>
                         <!--ccon end-->
@@ -233,17 +197,17 @@
 <!--                消费知识-->
                 <div class="fr mod1-2 box04">
                     <div class="ctitle">
-                        <span class="on"><a href="/html/web/xiaofeizhishi/index.html">消费知识</a></span>
+                        <span class="on"><a href="{ms:global.url/}/xiaofeizhishi/index.html">消费知识</a></span>
                     </div>
                     <div class="cccon">
                         <div class="ccon xiaofeizhishi">
-                            <a target="_blank" href="/html/web/xiaofeizhishi/yi/index.html" target="_blank"><img
+                            <a target="_blank" href="{ms:global.url/}/xiaofeizhishi/yi/index.html" target="_blank"><img
                                     src="{ms:global.host/}{ms:global.style/}/Picture/icon-xfzx-yi.png"></a>
-                            <a target="_blank" href="/html/web/xiaofeizhishi/shiwu/index.html" target="_blank"><img
+                            <a target="_blank" href="{ms:global.url/}/xiaofeizhishi/shiwu/index.html" target="_blank"><img
                                     src="{ms:global.host/}{ms:global.style/}/Picture/icon-xfzx-shi.png"></a>
-                            <a target="_blank" href="/html/web/xiaofeizhishi/zhu/index.html" target="_blank"><img
+                            <a target="_blank" href="{ms:global.url/}/xiaofeizhishi/zhu/index.html" target="_blank"><img
                                     src="{ms:global.host/}{ms:global.style/}/Picture/icon-xfzx-zhu.png"></a>
-                            <a target="_blank" href="/html/web/xiaofeizhishi/xing/index.html" target="_blank"><img
+                            <a target="_blank" href="{ms:global.url/}/xiaofeizhishi/xing/index.html" target="_blank"><img
                                     src="{ms:global.host/}{ms:global.style/}/Picture/icon-xfzx-xing.png"></a>
                         </div>
                         <!--ccon end-->
@@ -257,53 +221,41 @@
 <!--                警示提示, 消费评议-->
                 <div class="fl mod1-1">
                     <div class="ctitle">
-                        <span class="on"><a href="/html/web/jingshitishi/index.html">警示提示</a></span><span
-                            style="display:none;"><a href="/html/web/xiaofeipingyi/index.html">消费评议</a></span>
+                        <span class="on"><a href="{ms:global.url/}/jingshitishi/index.html">警示提示</a></span><span
+                            style="display:none;"><a href="{ms:global.url/}/xiaofeipingyi/index.html">消费评议</a></span>
                     </div>
                     <div class="cccon">
                         <div class="ccon">
                             <div class="hot">
-                                {ms:arclist size=1 ispaging=true typeid="7" flag="c"}
+                                {ms:arclist size=1 flag="9"}
                                 <a href="{ms:global.url/}${field.link}"
                                    target="_blank">${field.title}</a>
                                 {/ms:arclist}
                             </div>
                             <ul>
-                                <#assign top = 5>
-                                {ms:arclist size=5 ispaging=true typeid="7" }
-                                <#if top==5 && field.flag=="c" && (field.index<5)>
-                                <#assign top = field.index>
-                                <#elseif field.index != top>
+                                {ms:arclist size=4 typeid="7" noflag="9" }
                                 <li>
                                     <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
                                     <span class="fr">${field.date?date?string("[MM-dd]")}</span>
                                 </li>
-                                <#else>
-                            </#if>
-                            {/ms:arclist}
+                                {/ms:arclist}
                             </ul>
                         </div>
 
                         <div class="ccon" style="display:none;">
                             <div class="hot">
-                                {ms:arclist size=1 ispaging=true typeid="18" flag="c"}
+                                {ms:arclist size=1 flag="12"}
                                 <a href="{ms:global.url/}${field.link}"
                                    target="_blank">${field.title}</a>
                                 {/ms:arclist}
                             </div>
                             <ul>
-                                <#assign top = 5>
-                                {ms:arclist size=5 ispaging=true typeid="18" }
-                                <#if top==5 && field.flag=="c" && (field.index<5)>
-                                <#assign top = field.index>
-                                <#elseif field.index != top>
+                                {ms:arclist size=4 typeid="18" noflag="12" }
                                 <li>
                                     <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
                                     <span class="fr">${field.date?date?string("[MM-dd]")}</span>
                                 </li>
-                                <#else>
-                            </#if>
-                            {/ms:arclist}
+                                {/ms:arclist}
                             </ul>
                         </div>
                     </div>
@@ -311,33 +263,27 @@
 <!--                消费评议-->
                 <div class="fr mod1-2">
                     <div class="ctitle">
-                        <span class="on"><a href="/html/web/xiaofeipingyi/index.html"
+                        <span class="on"><a href="{ms:global.url/}/xiaofeipingyi/index.html"
                                             target="_blank">消费评议</a></span>
-                        <a style="display:none;" href="/html/web/xiaofeipingyi/index.html" class="fr"
+                        <a style="display:none;" href="{ms:global.url/}/xiaofeipingyi/index.html" class="fr"
                            style="font-size: 12px; margin-top: 10px; margin-right: 8px;">更多>></a>
                     </div>
                     <div class="ccon">
                         <div class="hot">
-                            {ms:arclist size=1 ispaging=true typeid="18" flag="c"}
+                            {ms:arclist size=1 flag="12"}
                             <a href="{ms:global.url/}${field.link}"
                                target="_blank">${field.title}</a>
                             {/ms:arclist}
                         </div>
                         <ul>
                             {ms:channel typeid="18" type="self"}
-                            <#assign top = 5>
-                            {ms:arclist size=5 ispaging=true typeid="18" }
-                            <#if top==5 && field.flag=="c" && (field.index<5)>
-                            <#assign top = field.index>
-                            <#elseif field.index != top>
-                            <li>
-                                <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
-                                <span class="fr">${field.date?date?string("[MM-dd]")}</span>
-                            </li>
-                            <#else>
-                        </#if>
-                        {/ms:arclist}
-                        {/ms:channel}
+                                {ms:arclist size=4 typeid="18" noflag="12" }
+                                <li>
+                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <span class="fr">${field.date?date?string("[MM-dd]")}</span>
+                                </li>
+                                {/ms:arclist}
+                            {/ms:channel}
                         </ul>
                     </div>
                 </div>
@@ -355,14 +301,14 @@
                 <ul>
                     <li>快速链接</li>
                     <li><a target="_blank"
-                            href="/html/web/fang/index.html"><img
+                            href="{ms:global.url/}/fang/index.html"><img
                                 src="{ms:global.host/}{ms:global.style/}/Picture/icon-fxxf.png" />放心消费</a></li>
-                    <li><a target="_blank" href="/html/web/tousuzhinan/index.html"><img
+                    <li><a target="_blank" href="{ms:global.url/}/tousuzhinan/index.html"><img
                                 src="{ms:global.host/}{ms:global.style/}/Picture/icon-tszn.png" />投诉指南</a></li>
                 </ul>
             </div>
             <div class="mt5 mod2">
-                <div class="strong yh">视频中心 | <a href="/html/web/shipinzhongxin/index.html">更多</a></div>
+                <div class="strong yh">视频中心 | <a href="{ms:global.url/}/shipinzhongxin/index.html">更多</a></div>
                 {ms:arclist size=1 typeid="21" ispaging=true}
                 <div class="con">
 
@@ -372,7 +318,7 @@
                 {/ms:arclist}
             </div>
             <div class="mt5 mod2 mod3 zhuanti">
-                <div class="strong yh">专题报道 | <a href="/html/web/zhuantibaodao/index.html">更多</a></div>
+                <div class="strong yh">专题报道 | <a href="{ms:global.url/}/zhuantibaodao/index.html">更多</a></div>
 
                 <div class="con">
                     <div class="title"></div>
@@ -400,7 +346,7 @@
             </script>
             <div class="mod5 mod6">
                 <div class="title"><strong>法律法规</strong><span class="fr"><a
-                            href="/html/web/zhengcefagui/index.html" target="_blank">更多>></a></span></div>
+                            href="{ms:global.url/}/zhengcefagui/index.html" target="_blank">更多>></a></span></div>
                 <ul>
                     {ms:arclist size=10 typeid="10" ispaging=true}
                     <li>·<a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></li>

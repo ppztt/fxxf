@@ -1,0 +1,58 @@
+<div id="footer">
+    <div class="w txt">
+        <p>关于我们</a>|<a target="_blank" href="{ms:global.url/}/aboutus/211.html">网站帮助</a>|<a target="_blank" href="/html/web/aboutus/210.html">隐私声明</a>|<a target="_blank" href="/html/web/aboutus/53810.html">联系我们</a>|<a href="javascript:;">设为主页</a>|<a href="javascript:window.external.addFavorite('http://www.gdcc315.cn','广东消费网(广东省消委会消费维权网)');">加入收藏</a> 　技术运营单位：消费者报道杂志社有限公司</p>
+        <p>主办单位：广东省消费者委员会 <a target="_blank" href="http://beian.miit.gov.cn/">粤ICP备11026893号</a> COPYRIGHT© 1998-2010 gdcc315.cn All Rights Reserved</p>
+        <p>咨询电话：(020)85592315 邮箱：gdcc_gd315@gd.gov.cn 地址：广州市天河区体育西路57号三楼 邮编：510620 <script src="{ms:global.host/}{ms:global.style/}/Scripts/stat.js" language="JavaScript"></script></p></p>
+    </div>
+</div>
+<!--footer end-->
+<script type="text/javascript">
+    $(".nav-ul .nav-ul-li").hover(function(){
+        $(this).find(".topa").addClass("on");
+        $(this).find(".downul").show();
+    },function(){
+        $(this).find(".topa").removeClass("on");
+        $(this).find(".downul").hide();
+    })
+
+    jQuery(".mod .tab").slide({
+        mainCell:".con",
+        effect : "fade",
+        delayTime :10,
+        defaultIndex : 0,
+        vis:2,
+        scroll:1,
+        titCell:".title span",
+        titOnClassName:"on",
+        autoPlay:false
+    });
+
+    jQuery(".mod-2 .left").slide({
+        mainCell: ".c ul",
+        effect: "leftLoop",
+        defaultIndex: 0,
+        vis: 2,
+        scroll: 1,
+        titCell: ".t span",
+        titOnClassName: "on",
+        autoPlay: true
+    });
+    jQuery(".mod-5 .left .left-3").slide({
+        mainCell: ".c ul",
+        effect: "leftLoop",
+        defaultIndex: 0,
+        vis: 5,
+        scroll: 1,
+        titCell: ".t span",
+        titOnClassName: "on",
+        autoPlay: false
+    });
+    jQuery(".mod-4").slide({
+        mainCell: ".con ul",
+        effect: "leftLoop",
+        defaultIndex: 0,
+        vis: 10,
+        scroll: 1,
+        autoPlay: false
+    });
+</script>

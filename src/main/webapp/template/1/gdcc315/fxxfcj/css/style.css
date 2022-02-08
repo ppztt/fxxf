@@ -1,0 +1,155 @@
+@charset "utf-8";
+/*BY QQ:357425717  WWW.170M.COM*/
+*{padding:0;margin:0;}
+body,div,ul,li,p,span{padding:0;margin:0;}
+
+body{ font-size:14px;font-family:"宋体",Arial, Helvetica, sans-serif;background:#FFFFFF;
+}
+ul,li{ list-style-type:none;}
+img{ border:0;}
+a{text-decoration:none; color:#333;}
+a:hover{ text-decoration:none;color:#f00;}
+
+.header{
+    width: 1080px;
+    margin: 0 auto;
+    background: url("../images/banner.jpg") top center no-repeat;
+    height:315px ;
+}
+.ad{
+    width: 1080px;
+    margin: 0 auto; 
+    height: 103px;
+    overflow: hidden;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+.ad li a{
+    display: block;
+    width: 1080px;
+    margin: 0 auto;
+    height: 103px;
+}
+.ad .li-01 a{
+    background: url("../images/ad-1.jpg") top center no-repeat;
+}
+.ad .li-02 a{
+    background: url("../images/ad-2.jpg") top center no-repeat;
+}
+.ad .li-03 a{
+    background: url("../images/ad-3.jpg") top center no-repeat;
+}
+.ad .li-04 a{
+    background: url("../images/ad-4.jpg") top center no-repeat;
+}
+.ad .li-05 a{
+    background: url("../images/ad-5.jpg") top center no-repeat;
+}
+.content{
+    width: 1080px;
+    margin: 0 auto;  
+    display: flex;
+}
+.content .left{
+    width: 700px;
+    margin-right: 35px;
+}
+.content .left .title{
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 1px solid #ddd;
+}
+.content .left .title h3{
+    float: left;
+    color: #06763a;
+    font-size: 22px;
+}
+.content .left .title a{
+    float: right;
+}
+.content .left .left-02{
+    display: flex;
+}
+.content .left .con{
+    padding: 10px 0;
+}
+.content .left .con ul li{
+    height: 49px;
+    line-height: 49px;
+}
+.content .left .con ul li a{
+    display: block;
+    float: left;
+    width: 600px;
+    height: 49px;
+    line-height: 49px;
+    overflow: hidden;
+}
+.content .left .con ul li b{
+    padding-right: 10px;
+}
+.content .left .con ul li span{
+    float: right;
+    color: #666;
+}
+.content .left .left-02{
+    margin-top: 30px;
+}
+.content .left .left-02 .left-02-02{
+    margin: 0 30px;
+}
+.content .left .left-02 .left-02-03{
+    margin-top: 40px;
+}
+.content .right{
+    width: 345px;
+}
+.content .right .title{
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 1px solid #ddd;
+}
+.content .right .title h3{
+    float: left;
+    color: #06763a;
+    font-size: 22px;
+}
+.content .right .title a{
+    float: right;
+}
+.content .right .right-02{
+    display: flex;
+}
+.content .right .con{
+    padding: 10px 0;
+    margin-bottom: 5px;
+}
+.content .right .con ul li{
+    width: 340px;
+    height: 32px;
+    line-height: 32px;
+    overflow: hidden;
+}
+.content .right .con ul li b{
+    padding-right: 10px;
+}
+.content .right .con ul li span{
+    float: right;
+    color: #666;
+}
+.content .right .con ul li b{
+    padding-right: 10px;
+}
+.content .right .right-02{
+    display: flex;
+}
+.footer{
+    background: #cbe4be;
+}
+.footer .con{
+    padding: 30px 0;
+    line-height: 28px;
+    width: 1080px;
+    margin: 0 auto;
+    text-align: center;
+}

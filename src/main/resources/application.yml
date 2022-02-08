@@ -18,19 +18,19 @@ ms:
   swagger:
     enable: false #启用swagger文档，生产的时候务必关掉 访问地址：http://ip|域名/项目发布名/swagger-ui.html
   manager:
-    path: /ms #后台访问的路径，如:http://项目/ms/login.do，生产的时候建议修改
+    path: /xwh #后台访问的路径，如:http://项目/ms/login.do，生产的时候建议修改
     check-code: true #默认开启验证码验证，false验证码不验证
 
   upload:
     enable-web: true  #启用web层的上传
     template: template #模板文件夹支持重命名，不支持路径
-    path: upload #文件上传路径，可以根据实际写绝对路径
-    mapping: /upload/** #修改需要谨慎，系统第一次部署可以随意修改，如果已经有了上传数据，再次修改会导致之前上传的文件404
+    path: uploadfile #文件上传路径，可以根据实际写绝对路径
+    mapping: /uploadfile/** #修改需要谨慎，系统第一次部署可以随意修改，如果已经有了上传数据，再次修改会导致之前上传的文件404
     denied: .exe,.jsp
     back-up: /upload_back
     multipart:
       #最大上传文件大小 单位：KB
-      max-file-size: 10240
+      max-file-size: 20480
       #文件暂存临时目录
       upload-temp-dir: temp
       #临时文件大小
