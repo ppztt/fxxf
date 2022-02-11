@@ -47,7 +47,7 @@ a:hover{ text-decoration:none;color:#65c1c2;}
 #content .mod .title .on a{color: #4aad42;background: url(../Images/title-on.png) center bottom no-repeat;display: inline-block;font-weight:bold}
 
 #content .mod-1{text-align: center;padding: 20px;}
-#content .mod-1 h1 a{color: #379033; font-size: 2em; font-weight: bold}
+#content .mod-1 h1 a{color: #379033;}
 #content .mod-1 h1 a:hover{color:#65c1c2;}
 #content .mod-1 .toplist{padding-top: 10px;color: #ccc}
 #content .mod-1 .toplist a{font-size: 13px;color:#999;margin: 0 5px}

@@ -25,9 +25,6 @@
             {ms:arclist size=1 flag="2"}
                 <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
             {/ms:arclist}
-            <!--
-            <a href="http://www.gdcc315.cn/show-6-53824-1.html" target="_blank">重磅！广东省消委会就虚假宣传减肥产品行为提起公益诉讼 在全国率先探索“公益诉讼+集体诉讼”维权新模式</a>
-            -->
         </h1>
         <div class="toplist">
 <!--            <#assign top = 4>-->
@@ -40,11 +37,6 @@
                     </#if>
                 </a> |
             {/ms:arclist}
-            <!--
-            <a href="http://www.gdcc315.cn/show-21-53765-1.html" target="_blank">· 中消协观点：少一些套路，多一些真诚 视频平...</a> |
-            <a href="http://www.gdcc315.cn/show-6-53738-1.html" target="_blank">· 警惕&ldquo;心理服务&rdquo;消费陷阱！广东省消委会发布...</a> |
-            <a href="http://www.gdcc315.cn/show-8-53737-1.html" target="_blank">· 27批次食品不合格！涉及这些饮料、膨化食品、...</a> |
-            -->
             <a href="{ms:global.url/}/bhdt/index.html" target="_blank">更多>></a>
         </div>
     </div>
@@ -63,12 +55,6 @@
                         </p>
                     </li>
                     {/ms:arclist}
-<!-- 
-                    <li><a href="http://www.gdcc315.cn/show-6-53824-1.html" target="_blank">
-                        <img src="{ms:global.host/}{ms:global.style/}/Picture/20220111045810181.jpg" width="625px" height="350px"></a><p>
-                        <a href="http://www.gdcc315.cn/show-6-53824-1.html" target="_blank">重磅！广东省消委会就虚假宣传减肥产品行为提起公益诉讼 在全国率先探索“公益诉讼+集体诉讼”维权新模式</a></p>
-                    </li> -->
-
                 </ul>
             </div>
             <div class="prev"><a href="javascript:void(0)"></a></div>
@@ -78,9 +64,6 @@
             {ms:arclist size=1 flag="63"}
             <h2>
                 <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
-                <!--
-                <a href="http://www.gdcc315.cn/show-6-53823-1.html" target="_blank">广东省消委会组织网售“三无产品”问题整改效果“回头看”调查发现： 淘宝、天猫、拼多多仍有问题商品在售</a>
-                -->
             </h2>
             {/ms:arclist}
             <ul>
@@ -90,17 +73,10 @@
                     <div>${field.date?date?string("yyyy-MM-dd")}</div>
                 </li>
                 {/ms:arclist}
-            <!--<li class="flex">
-                <a href="http://www.gdcc315.cn/show-21-53820-1.html" target="_blank">《网络短视频内容审核标准细则》修订版发布 制作和发布短视频有哪些新规？</a>
-                <div>2021-12-20</div>
-            </li>-->
             </ul>
             {ms:arclist size=1 flag="64"}
             <h2>
                 <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
-                <!--
-                <a href="http://www.gdcc315.cn/show-21-53815-1.html" target="_blank">深圳消委会发布长租公寓“消费评价指数”排行榜 驿点公寓得分偏低</a>
-                -->
             </h2>
             {/ms:arclist}
             <ul>
@@ -110,10 +86,6 @@
                     <div>${field.date?date?string("yyyy-MM-dd")}</div>
                 </li>
                 {/ms:arclist}
-                <!-- <li class="flex">
-                    <a href="http://www.gdcc315.cn/show-25-53822-1.html" target="_blank">快递“送货不到家” 问题出在哪</a>
-                    <div>2021-12-20</div>
-                </li> -->
             </ul>
         </div>
     </div>
@@ -145,15 +117,13 @@
                                     <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
                                 </h2>
                                 <p>
-                                    <#if field.descrip?length gt 60>
-                                    ${field.descrip?substring(0,60)?js_string}...
+                                    <#if field.descrip?length gt 53>
+                                    ${field.descrip?substring(0,53)?js_string}...
                                     <#else>
                                     ${field.descrip?js_string}
                                     </#if>
                                 </p>
                                 {/ms:arclist}
-                                <!-- <a href="http://www.gdcc315.cn/show-21-53791-1.html" target="_blank">市场监管总局：严打儿童青少年近视防控产品虚假宣传</a></h2> -->
-                                <!-- <p>市场监管总局办公厅日前发布《关于开展儿童青少年近视防控产品违法违规商业营销宣传专项整治行动的通知》（以...</p> -->
                             </div>
                             <ul>
                                 {ms:arclist size=4 typeid="21" }
@@ -161,10 +131,6 @@
                                     <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
                                 </li>
                                 {/ms:arclist}
-                                <!-- <li>·&nbsp;<a href="http://www.gdcc315.cn/show-21-53820-1.html" target="_blank">《网络短视频内容审核标准细则》修订版发布 制作和发布短视频有哪些新规？</a></li>
-                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-21-53815-1.html" target="_blank">深圳消委会发布长租公寓“消费评价指数”排行榜 驿点公寓得分偏低</a></li>
-                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-21-53812-1.html" target="_blank">家长注意！购买儿童化妆品，请认准“小金盾”</a></li>
-                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-21-53811-1.html" target="_blank">中消协向全社会公开征集2022年消费维权年主题</a></li> -->
                             </ul>
                         </div>
                     </div>
@@ -181,16 +147,13 @@
                                     <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
                                 </h2>
                                 <p>
-                                    <#if field.descrip?length gt 60>
-                                    ${field.descrip?substring(0,60)?js_string}...
+                                    <#if field.descrip?length gt 53>
+                                    ${field.descrip?substring(0,53)?js_string}...
                                     <#else>
                                     ${field.descrip?js_string}
                                 </#if>
                                 </p>
                                 {/ms:arclist}
-                                <!-- <a href="http://www.gdcc315.cn/show-21-53791-1.html" target="_blank">市场监管总局：严打儿童青少年近视防控产品虚假宣传</a></h2> -->
-                                <!-- <h2 class="txt"><a href="http://www.gdcc315.cn/show-25-53783-1.html" target="_blank">国家药监局：儿童化妆品不得标注“食品级”、“可食用”</a></h2>
-                                <p>近日，国家药监局发布的《&ldquo;食品级&rdquo;化妆品是对消费者的误导》称，不存在&ldquo;食品级&rdquo;化妆品、化妆品的安全性跟...</p> -->
                             </div>
                             <ul>
                                 {ms:arclist size=4 typeid="25" }
@@ -198,10 +161,6 @@
                                     <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
                                 </li>
                                 {/ms:arclist}
-                                <!-- <li>·&nbsp;<a href="http://www.gdcc315.cn/show-25-53822-1.html" target="_blank">快递“送货不到家” 问题出在哪</a></li>
-                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-25-53819-1.html" target="_blank">影视剧控评现象屡禁不绝 莫让点评再“超前”</a></li>
-                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-25-53814-1.html" target="_blank">餐饮行业共享店铺也要共担风险</a></li>
-                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-25-53813-1.html" target="_blank">婚恋机构把用户当“肥肉”，让人怎敢大胆去爱</a></li> -->
                             </ul>
                         </div>
                         <div class="txt flex-1">
@@ -211,16 +170,13 @@
                                     <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
                                 </h2>
                                 <p>
-                                    <#if field.descrip?length gt 60>
-                                    ${field.descrip?substring(0,60)?js_string}...
+                                    <#if field.descrip?length gt 53>
+                                    ${field.descrip?substring(0,53)?js_string}...
                                     <#else>
                                     ${field.descrip?js_string}
                                 </#if>
                                 </p>
                                 {/ms:arclist}
-                                <!-- <a href="http://www.gdcc315.cn/show-21-53791-1.html" target="_blank">市场监管总局：严打儿童青少年近视防控产品虚假宣传</a></h2> -->
-                                <!-- <h2 class="txt"><a href="http://www.gdcc315.cn/show-9-53712-1.html" target="_blank">南方日报：广东成立家政消费纠纷调解委</a></h2>
-                                <p>近日，广东省消费者委员会发起成立了省内首个“家政服务消费纠纷调解专业委员会”。</p> -->
                             </div>
                             <ul>
                                 {ms:arclist size=4 typeid="9" }
@@ -228,10 +184,6 @@
                                     <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
                                 </li>
                                 {/ms:arclist}
-                                <!-- <li>·&nbsp;<a href="http://www.gdcc315.cn/show-9-53712-1.html" target="_blank">南方日报：广东成立家政消费纠纷调解委</a></li>
-                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-9-53703-1.html" target="_blank">央广网：粤上半年消费投诉分析报告发布</a></li>
-                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-9-52549-1.html" target="_blank">央广网：广东全面铺开“放心消费承诺”活动 线下消费也可无理由退货</a></li>
-                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-9-52548-1.html" target="_blank">羊城晚报：广东214家商家承诺——线下消费也可以无理由退货</a></li> -->
                             </ul>
                         </div>
                     </div>
@@ -363,67 +315,65 @@
             </div>
             <!--right-2-->
             <div class="right-2 flex">
-                <div>
-                    <a href="{ms:global.host/}{ms:global.style/}/onlinemsz/contribution.html" target="_blank">
-                        <img src="{ms:global.host/}{ms:global.style/}/Picture/home_22.png"/>
-                    </a>
-                </div>
-                <div class="c">
-                    <ul>
-                        <!--<li>罗卫光 广东省消委会秘书长</li>
-                        <li>廖学颜 广东省消委会副会长</li>
-                        <li>杨淑娜 广东省消委会副秘书长</li>-->
-                        <!--  <li>廖学颜 广东省消委会副会长</li>
-                         <li>龚宪平 广东省消委会党支部书记</li> -->
-                        <li>杨淑娜 广东省消委会秘书长</li>
-                        <li>黄冠英 广东省消委会副秘书长</li>
-                        <li>张开仕 广州市消委会负责人</li>
-                        <li>李廷义 深圳市消委会秘书长</li>
-                        <li>钟颖瑶 佛山市消委会秘书长</li>
-                        <li>李  志 珠海市消委会负责人</li>
-                        <li>李镇宇 汕头市消委会副秘书长</li>
-                        <li>李良勋 韶关市消委会秘书长</li>
-                        <li>黄新铃 河源市消委会秘书长</li>
-                        <li>刘文年 梅州市消委会秘书长</li>
-                        <li>王剑平 惠州市消委会秘书长</li>
-                        <li>蔡辉东 汕尾市消委会秘书长</li>
-                        <li>吴  凯 东莞市消委会秘书长</li>
-                        <li>谢 辉 中山市消委会秘书长</li>
-                        <li>何达民 江门市消保委秘书长</li>
-                        <li>许 敢 阳江市消委会负责人</li>
-                        <li>武新建 湛江市消委会秘书长</li>
-                        <li>廖 党 茂名市消委会秘书长</li>
-                        <li>陈彧军 肇庆市消委会负责人</li>
-                        <li>谭浩良 清远市消委会负责人</li>
-                        <li>刘幼彪 潮州市消委会负责人</li>
-                        <li>林玉爽 揭阳市消委会负责人</li>
-                        <li>陈 平 云浮市消委会秘书长</li>
-                        <li>黄宜妙 横琴新区消协秘书长</li>
-                    </ul>
-                </div>
+                <img src="{ms:global.host/}{ms:global.style/}/Picture/home_22.png"/>
+<!--                <div>-->
+<!--                    <a href="{ms:global.host/}{ms:global.style/}/onlinemsz/contribution.html" target="_blank">-->
+<!--                        <img src="{ms:global.host/}{ms:global.style/}/Picture/home_22.png"/>-->
+<!--                    </a>-->
+<!--                </div>-->
+<!--                <div class="c">-->
+<!--                    <ul>-->
+<!--                        &lt;!&ndash;<li>罗卫光 广东省消委会秘书长</li>-->
+<!--                        <li>廖学颜 广东省消委会副会长</li>-->
+<!--                        <li>杨淑娜 广东省消委会副秘书长</li>&ndash;&gt;-->
+<!--                        &lt;!&ndash;  <li>廖学颜 广东省消委会副会长</li>-->
+<!--                         <li>龚宪平 广东省消委会党支部书记</li> &ndash;&gt;-->
+<!--                        <li>杨淑娜 广东省消委会秘书长</li>-->
+<!--                        <li>黄冠英 广东省消委会副秘书长</li>-->
+<!--                        <li>张开仕 广州市消委会负责人</li>-->
+<!--                        <li>李廷义 深圳市消委会秘书长</li>-->
+<!--                        <li>钟颖瑶 佛山市消委会秘书长</li>-->
+<!--                        <li>李  志 珠海市消委会负责人</li>-->
+<!--                        <li>李镇宇 汕头市消委会副秘书长</li>-->
+<!--                        <li>李良勋 韶关市消委会秘书长</li>-->
+<!--                        <li>黄新铃 河源市消委会秘书长</li>-->
+<!--                        <li>刘文年 梅州市消委会秘书长</li>-->
+<!--                        <li>王剑平 惠州市消委会秘书长</li>-->
+<!--                        <li>蔡辉东 汕尾市消委会秘书长</li>-->
+<!--                        <li>吴  凯 东莞市消委会秘书长</li>-->
+<!--                        <li>谢 辉 中山市消委会秘书长</li>-->
+<!--                        <li>何达民 江门市消保委秘书长</li>-->
+<!--                        <li>许 敢 阳江市消委会负责人</li>-->
+<!--                        <li>武新建 湛江市消委会秘书长</li>-->
+<!--                        <li>廖 党 茂名市消委会秘书长</li>-->
+<!--                        <li>陈彧军 肇庆市消委会负责人</li>-->
+<!--                        <li>谭浩良 清远市消委会负责人</li>-->
+<!--                        <li>刘幼彪 潮州市消委会负责人</li>-->
+<!--                        <li>林玉爽 揭阳市消委会负责人</li>-->
+<!--                        <li>陈 平 云浮市消委会秘书长</li>-->
+<!--                        <li>黄宜妙 横琴新区消协秘书长</li>-->
+<!--                    </ul>-->
+<!--                </div>-->
             </div>
             <!--right-3-->
             <div class="right-3">
-                <div class="title">
-                    <a href="{ms:global.url/}/mishuchangzaixian/index.html" target="_blank">
-                        <img src="{ms:global.host/}{ms:global.style/}/Picture/home_25.png"/>
-                    </a>
-                </div>
-                <div class="con" style="height: 170px;">
-                    <ul>
-                        {ms:arclist size=50 typeid="17" }
-                        <li>
-                            <!-- ${field.author}是作者，需数据库内容对上 -->
-                            <em>${field.author}</em>问:<a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
-                            <!-- <span class="fr">${field.date?date?string("[MM-dd]")}</span> -->
-                        </li>
-                        {/ms:arclist}
-                        <!-- <li><em>张某某</em>问:<a href="http://www.gdcc315.cn/show-210-7046-1.html" target="_blank">台风天无法出游，申请退款无果，咋办？</a></li>
-                        <li><em>杨某某</em>问:<a href="http://www.gdcc315.cn/show-210-7044-1.html" target="_blank">运营商擅自办理业务并扣费， 如何维权？</a></li>
-                        <li><em>周某某</em>问:<a href="http://www.gdcc315.cn/show-210-7043-1.html" target="_blank">黄金饰品以旧换新，是否有统一规范？</a></li>
-                        <li><em>芥菜子</em>问:<a href="http://www.gdcc315.cn/show-210-7040-1.html" target="_blank">网购实木沙发，发现质量有问题怎么办？</a></li> -->
-                    </ul>
-                </div>
+                <img src="{ms:global.host/}{ms:global.style/}/Picture/home_25.png"/>
+<!--                <div class="title">-->
+<!--                    <a href="{ms:global.url/}/mishuchangzaixian/index.html" target="_blank">-->
+<!--                        <img src="{ms:global.host/}{ms:global.style/}/Picture/home_25.png"/>-->
+<!--                    </a>-->
+<!--                </div>-->
+<!--                <div class="con" style="height: 170px;">-->
+<!--                    <ul>-->
+<!--                        {ms:arclist size=50 typeid="17" }-->
+<!--                        <li>-->
+<!--                            &lt;!&ndash; ${field.author}是作者，需数据库内容对上 &ndash;&gt;-->
+<!--                            <em>${field.author}</em>问:<a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>-->
+<!--                            &lt;!&ndash; <span class="fr">${field.date?date?string("[MM-dd]")}</span> &ndash;&gt;-->
+<!--                        </li>-->
+<!--                        {/ms:arclist}-->
+<!--                    </ul>-->
+<!--                </div>-->
             </div>
             <!--right-4-->
             <div class="right-4">
@@ -458,17 +408,15 @@
                                 {ms:arclist size=1 flag="53"}
                                 <h2 class="txt">
                                     <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
-                                    <!-- <a href="http://www.gdcc315.cn/show-13-53714-1.html" target="_blank">2021年上半年广东消委会系统消费投诉分析报告</a> -->
                                 </h2>
                                 <p>
-                                    <#if field.descrip?length gt 60>
-                                    ${field.descrip?substring(0,60)?js_string}...
+                                    <#if field.descrip?length gt 53>
+                                    ${field.descrip?substring(0,53)?js_string}...
                                     <#else>
                                     ${field.descrip?js_string}
                                 </#if>
                                 </p>
                                 {/ms:arclist}
-                                <!-- <p>2021年上半年，广东全省各级消委会共接待消费者来访和咨询约5 3万人次，处理消费者投诉164500件，为消费者挽...</p> -->
                             </div>
                             <ul>
                                 {ms:arclist size=3 typeid="13" }
@@ -476,9 +424,6 @@
                                     <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
                                 </li>
                                 {/ms:arclist}
-                                <!-- <li>·&nbsp;<a href="http://www.gdcc315.cn/show-13-53714-1.html" target="_blank">2021年上半年广东消委会系统消费投诉分析报告</a></li>
-                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-13-53653-1.html" target="_blank">广东消委会系统2021年第一季度投诉情况分析报告</a></li>
-                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-13-53554-1.html" target="_blank">2020年度广东省消委会系统消费投诉分析报告</a></li> -->
                             </ul>
                         </div>
                     </div>
@@ -493,17 +438,15 @@
                                 {ms:arclist size=1 flag="54"}
                                 <h2 class="txt">
                                     <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
-                                    <!-- <a href="http://www.gdcc315.cn/show-14-53747-1.html" target="_blank">药害致315亩槟榔芋绝收 消委会为消费者挽回经济损失57.5万元</a> -->
                                 </h2>
                                 <p>
-                                    <#if field.descrip?length gt 60>
-                                    ${field.descrip?substring(0,60)?js_string}...
+                                    <#if field.descrip?length gt 53>
+                                    ${field.descrip?substring(0,53)?js_string}...
                                     <#else>
                                     ${field.descrip?js_string}
                                 </#if>
                                 </p>
                                 {/ms:arclist}
-                                <!-- <p>本意花8450元买26瓶农药用于预防农作物槟榔芋的病害，却造成槟榔芋枯萎，导致315亩槟榔芋减产甚至绝收。8月23...</p> -->
                             </div>
                             <ul>
                                 {ms:arclist size=3 typeid="14" }
@@ -511,9 +454,6 @@
                                     <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
                                 </li>
                                 {/ms:arclist}
-                                <!-- <li>·&nbsp;<a href="http://www.gdcc315.cn/show-14-53767-1.html" target="_blank">新买的手机被“提前激活” 手机店赔偿消费者</a></li>
-                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-14-53748-1.html" target="_blank">中介公司员工携租金“潜逃” 租户损失谁担</a></li>
-                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-14-53747-1.html" target="_blank">药害致315亩槟榔芋绝收 消委会为消费者挽回经济损失57.5万元</a></li> -->
                             </ul>
                         </div>
                         <div class="txt flex-1">
@@ -521,17 +461,15 @@
                                 {ms:arclist size=1 flag="55"}
                                 <h2 class="txt">
                                     <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
-                                    <!-- <a href="http://www.gdcc315.cn/show-15-53798-1.html" target="_blank">【11号案例】缴纳万元挽救感情却换来男友拉黑 情感咨询服务靠谱吗？</a> -->
                                 </h2>
                                 <p>
-                                    <#if field.descrip?length gt 60>
-                                    ${field.descrip?substring(0,60)?js_string}...
+                                    <#if field.descrip?length gt 53>
+                                    ${field.descrip?substring(0,53)?js_string}...
                                     <#else>
                                     ${field.descrip?js_string}
                                 </#if>
                                 </p>
                                 {/ms:arclist}
-                                <!-- <p>【案情简介】罗女士投诉称，因跟男友闹分手，一时情绪失控找到某情感咨询有限公司，要求帮其挽回与男友的感情...</p> -->
                             </div>
                             <ul>
                                 {ms:arclist size=3 typeid="15" }
@@ -539,9 +477,6 @@
                                     <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
                                 </li>
                                 {/ms:arclist}
-                                <!-- <li>·&nbsp;<a href="http://www.gdcc315.cn/show-15-53798-1.html" target="_blank">【11号案例】缴纳万元挽救感情却换来男友拉黑 情感咨询服务靠谱吗？</a></li>
-                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-15-53764-1.html" target="_blank">【10号案例】新表外圈仅两月就“不翼而飞”商家收取维修费合理吗？</a></li>
-                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-15-53717-1.html" target="_blank">【9号案例】新车落地不久就出现故障，可以要求退车吗？</a></li> -->
                             </ul>
                         </div>
                     </div>
@@ -561,18 +496,9 @@
                                     <a href="{ms:global.url/}${field.link}" target="_blank">
                                         <img src="{@ms:file field.litpic/}" alt="${field.title}" width="170px" height="100px" >
                                     </a>
-                                    <!-- <a href="http://www.gdcc315.cn/show-10-53386-1.html" target="_blank">
-                                        <img  src="{ms:global.host/}{ms:global.style/}/Picture/20210121110133941.jpg" alt="泄露40万条个人信息！圆通速递被约谈！  " width="170px" height="100px"/>
-                                    </a> -->
                                 </div>
                                 <h2><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></h2>
                                 {/ms:arclist}
-                                <!-- <div style="margin-right: 15px;margin-bottom: 10px">
-                                    <a href="http://www.gdcc315.cn/show-22-53753-1.html" target="_blank">
-                                        <img  src="{ms:global.host/}{ms:global.style/}/Picture/20210906043052458.jpg" alt="中消发布消费警示：警惕老旧、劣质充电数据线带来“安全隐患”！" width="170px" height="100px"/>
-                                    </a>
-                                </div>
-                                <h2><a href="http://www.gdcc315.cn/show-22-53753-1.html" target="_blank">中消发布消费警示：警惕老旧、劣质充电数据线带来“安全隐患”！</a></h2> -->
                             </div>
                             <ul>
                                 {ms:arclist size=3 typeid="22" }
@@ -580,9 +506,6 @@
                                     <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
                                 </li>
                                 {/ms:arclist}
-                                <!-- <li>·&nbsp;<a href="http://www.gdcc315.cn/show-22-53809-1.html" target="_blank">自燃3分钟烧光整间房！这类数据线一定要换！</a></li>
-                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-22-53795-1.html" target="_blank">新标准为橄榄油“提纯” 分装生产日期须标注</a></li>
-                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-22-53794-1.html" target="_blank">食品安全消费提示 面包起酥油到底是啥油</a></li> -->
                             </ul>
                         </div>
                     </div>
@@ -599,13 +522,9 @@
                                     <a href="{ms:global.url/}${field.link}" target="_blank">
                                         <img src="{@ms:file field.litpic/}" alt="${field.title}" width="170px" height="100px" >
                                     </a>
-                                    <!-- <a href="http://www.gdcc315.cn/show-10-53386-1.html" target="_blank">
-                                        <img  src="{ms:global.host/}{ms:global.style/}/Picture/20210121110133941.jpg" alt="泄露40万条个人信息！圆通速递被约谈！  " width="170px" height="100px"/>
-                                    </a> -->
                                 </div>
                                 <h2><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></h2>
                                 {/ms:arclist}
-                                <!-- <h2><a href="http://www.gdcc315.cn/show-16-53751-1.html" target="_blank">奶茶店为何提示“2小时内饮用完毕”</a></h2> -->
                             </div>
                             <ul>
                                 {ms:arclist size=3 typeid="16" }
@@ -613,9 +532,6 @@
                                     <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
                                 </li>
                                 {/ms:arclist}
-                                <!-- <li>·&nbsp;<a href="http://www.gdcc315.cn/show-16-53807-1.html" target="_blank">加工温度会对牛奶的营养价值造成影响吗？</a></li>
-                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-16-53752-1.html" target="_blank">路由器要不要每天重启？很多人都做错了，难怪网速慢</a></li>
-                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-16-53751-1.html" target="_blank">奶茶店为何提示“2小时内饮用完毕”</a></li> -->
                             </ul>
                         </div>
                         <div class="txt flex-1">
@@ -625,13 +541,9 @@
                                     <a href="{ms:global.url/}${field.link}" target="_blank"></a>
                                         <img src="{@ms:file field.litpic/}" alt="${field.title}" width="170px" height="100px" >
                                     </a>
-                                    <!-- <a href="http://www.gdcc315.cn/show-10-53386-1.html" target="_blank">
-                                        <img  src="{ms:global.host/}{ms:global.style/}/Picture/20210121110133941.jpg" alt="泄露40万条个人信息！圆通速递被约谈！  " width="170px" height="100px"/>
-                                    </a> -->
                                 </div>
                                 <h2><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></h2>
                                 {/ms:arclist}
-                                <!-- <h2><a href="http://www.gdcc315.cn/show-23-53782-1.html" target="_blank">《儿童化妆品监督管理规定》</a></h2> -->
                             </div>
                             <ul>
                                 {ms:arclist size=3 typeid="23" }
@@ -639,9 +551,6 @@
                                     <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
                                 </li>
                                 {/ms:arclist}
-                                <!-- <li>·&nbsp;<a href="http://www.gdcc315.cn/show-23-53782-1.html" target="_blank">《儿童化妆品监督管理规定》</a></li>
-                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-23-53763-1.html" target="_blank">《中华人民共和国个人信息保护法》</a></li>
-                                <li>·&nbsp;<a href="http://www.gdcc315.cn/show-23-53762-1.html" target="_blank">《化妆品生产经营监督管理办法》</a></li> -->
                             </ul>
                         </div>
                     </div>
@@ -662,27 +571,6 @@
                             </a>
                         </li>
                         {/ms:arclist}
-<!--                        <li><a href="http://www.gdcc315.cn/zazhi/2021yhk/" target="_blank">-->
-<!--                            <img src="{ms:global.host/}{ms:global.style/}/Picture/20210507114941685.jpg" width="200px" height="280px"></a>-->
-<!--                        </li>-->
-<!--                        <li><a href="http://www.gdcc315.cn/zazhi/2021xfzn/" target="_blank">-->
-<!--                            <img src="{ms:global.host/}{ms:global.style/}/Picture/20210507114721778.jpg" width="200px" height="280px"></a>-->
-<!--                        </li>-->
-<!--                        <li><a href="http://www.gdcc315.cn/zazhi/2021spaq/" target="_blank">-->
-<!--                            <img src="{ms:global.host/}{ms:global.style/}/Picture/20210507114859958.jpg" width="200px" height="280px"></a>-->
-<!--                        </li>-->
-<!--                        <li><a href="http://www.gdcc315.cn/zazhi/2021rsbx/" target="_blank">-->
-<!--                            <img src="{ms:global.host/}{ms:global.style/}/Picture/20210507114800384.jpg" width="200px" height="280px"></a>-->
-<!--                        </li>-->
-<!--                        <li><a href="http://www.gdcc315.cn/zazhi/2021mfd/" target="_blank">-->
-<!--                            <img src="{ms:global.host/}{ms:global.style/}/Picture/20210507114443486.jpg" width="200px" height="280px"></a>-->
-<!--                        </li>-->
-<!--                        <li><a href="http://www.gdcc315.cn/zazhi/2021jy/" target="_blank">-->
-<!--                            <img src="{ms:global.host/}{ms:global.style/}/Picture/20210507114635759.jpg" width="200px" height="280px"></a>-->
-<!--                        </li>-->
-<!--                        <li><a href="http://www.gdcc315.cn/zazhi/2021ccbx/" target="_blank">-->
-<!--                            <img src="{ms:global.host/}{ms:global.style/}/Picture/20210507114558217.jpg" width="200px" height="280px"></a>-->
-<!--                        </li>-->
                     </ul>
                 </div>
                 <div class="prev"><a href="javascript:void(0)"></a></div>
@@ -697,23 +585,13 @@
                 <div class="con">
                     <div style="padding-left: 2px;padding-top: 5px;">
                         <img src="{ms:global.host/}{ms:global.style/}/Picture/zhuti_pic.jpg"/>
-<!--                        {ms:arclist size=1 typeid="303" }-->
-<!--                        <img src="{@ms:file field.litpic/}"/>-->
-<!--                        {/ms:arclist}-->
                     </div>
                     <ul style="text-align:justify;text-align-last:justify;">
-                        <!-- 历年主题顺序不太对，数据库顺序不对 -->
                         {ms:arclist size=6 typeid="303" }
                         <li>
                             <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
                         </li>
                         {/ms:arclist}
-                        <!-- <li><a href="javascript:;">2021：守护安全 畅通消费</a></li>
-                        <li><a href="http://www.gdcc315.cn/show-303-52214-1.html">2020：凝聚你我力量</a></li>
-                        <li><a href="javascript:;">2019：信用让消费更放心</a></li>
-                        <li><a href="javascript:;">2018：品质消费 美好生活</a></li>
-                        <li><a href="javascript:;">2017：网络诚信 消费无忧</a></li>
-                        <li><a href="javascript:;">2016：新 消 费&nbsp;&nbsp;我 做 主</a></li> -->
                     </ul>
                 </div>
             </div>

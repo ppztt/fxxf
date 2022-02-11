@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <#include "head-file.htm" />
+    <title>广东消费网(广东省消委会消费维权网)</title>
+</head>
+<body>
+<!--header-->
+<div id="header">
+    <#include "header.htm" />
+</div>
+<div class="w show">
+    <div class="fl sl">
+        <div class="crumbs">您现在的位置：<a href="{ms:global.host/}">首页</a><span> &gt; </span>
+            <!-- <a href="http://www.gdcc315.cn/list-6-1.html">本会动态</a> >  正文</div> -->
+            {ms:channel type="path"}<a href="{ms:global.url/}${field.typelink}">${field.typetitle}</a>{/ms:channel} > 正文</div>
+        <div class="con">
+            <h1 class="h1">${field.P_TITLE}</h1>
+            <p class="h1p">
+<!--                作者：-->
+<!--                <#if field.source??>-->
+<!--                ${field.source}-->
+<!--                <#else>-->
+<!--                ${field.author}-->
+<!--                </#if>&nbsp;&nbsp;&nbsp;-->
+                来源：广东消委会网&nbsp;&nbsp;&nbsp;
+                更新时间：${field.date?date?string("yyyy-MM-dd")} &nbsp;&nbsp;&nbsp;
+                【<a href="#pinglun">发表评论</a>】
+                【<a href="javascript:window.print();">打印此文</a>】
+                【<a href="javascript:window.close();">关闭窗口</a>】
+            </p>
+            <div class="c" style="line-height:28px">
+                <span style="FONT-FAMILY: '宋体'; FONT-SIZE: 10.5pt; mso-spacerun: 'yes'">提问秘书长：<b>${field.P_MSZ}</b></span><br />
+                <div id="pcon">${field.P_CON}</div>
+                <script type="text/javascript">
+                    var pcon = $("#pcon").html();
+                    $("#pcon").html(pcon.replace(/\n/g, "<br/>"));
+                </script>
+                <div style="COLOR: #ff0000; FONT-SIZE: 14px; FONT-WEIGHT: bold;margin:30px 0 10px 0;">秘书长回答： </div>
+                <div
+                        style="border:5px solid #ccc;padding:10px;line-height:26px;color: #440101;FONT-FAMILY: '黑体';font-size:16px;">
+                    <div id="zytxt">${field.P_MSZDF}</div>
+                    <script type="text/javascript">
+                        var zytxt = $("#zytxt").html();
+                        $("#zytxt").html(zytxt.replace(/\n/g, "<br/>"));
+                    </script>
+                </div>
+            </div>
+
+            <div class="prenext" style="margin-top: 20px;">
+                <p>
+                    <strong>上一篇：</strong>
+                    <#if pre.title?has_content>
+                    <a href="{ms:global.url/}${pre.link}"> ${pre.title} </a>
+                    <#else>
+                    第一页
+                  </#if>
+                </p>
+
+                <p style="margin-top:10px;">
+                    <strong>下一篇：</strong>
+                    <#if next.title?has_content>
+                    <a href="{ms:global.url/}${next.link}"> ${next.title} </a>
+                    <#else>
+                    最后一页
+                  </#if>
+                </p>
+                <!-- <p><strong>上一篇：</strong><a href="http://www.gdcc315.cn/show-6-53787-1.html">广东省消委会发布“常见类型App非必要个人信息收集情况”调查结果，呼吁—— 经营者依法规范收集使用消费者个人信息</a></p>
+                <p style="margin-top:10px;"><strong>下一篇：</strong><a href="http://www.gdcc315.cn/show-6-53801-1.html">四宗个人信息保护公益诉讼全胜！ 彰显多手段治理信息侵权顽疾成效</a></p> -->
+            </div>
+            <div class="wypl" style="display:none"><b>网友评论：</b>(只显示最新10条。评论内容只代表网友观点，与本站点无关！)</div>
+            <a name="pinglun"></a>
+            <div class="talk">
+                <!--评论区域-->
+            </div>
+        </div>
+    </div>
+    <!--sl end-->
+    <div class="fr mainr sr">
+        <div class="mod mod1"><a href="javascript:;"><img src="{ms:global.host/}{ms:global.style/}/Picture/pic-10.jpg" width="240px" height="257px" /></a></div>
+        <!--mod1 end-->
+        <div class="mod mod2">
+            <div class="t"><h3 class="fl yh h3">专题文章</h3></div>
+            <div class="c">
+                <ul>
+                    {ms:arclist size=8 ispaging=true}
+                    <li><span>·</span><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></li>
+                    {/ms:arclist}
+                    <!-- <li><span>·</span> <a href="http://www.gdcc315.cn/show-6-53824-1.html">重磅！广东省消委会就虚假宣传减肥产品行为提起公益诉讼 在全国率先探索“公益诉讼+集体诉讼”维权新模式</a></li>
+                    <li><span>·</span> <a href="http://www.gdcc315.cn/show-6-53739-1.html">如何选到一款安全又舒适的头盔？广东消委会发布比较试验结果给出答案</a></li> -->
+                </ul>
+            </div>
+        </div>
+        <!--mod2 end-->
+        <div class="mod mod2">
+            <div class="t"><h3 class="fl yh h3">最新推荐</h3></div>
+            <div class="c">
+                <ul>
+                    {ms:arclist size=8 ispaging=true}
+                    <li><span>·</span><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></li>
+                    {/ms:arclist}
+                    <!-- <li><span>·</span> <a href="http://www.gdcc315.cn/show-6-53824-1.html" target="_blank">重磅！广东省消委会就虚假宣传减肥产品行为提起公益诉讼 在全国率先探索“公益诉讼+集体诉讼”维权新模式</a></li>
+                    <li><span>·</span> <a href="http://www.gdcc315.cn/show-6-53739-1.html" target="_blank">如何选到一款安全又舒适的头盔？广东消委会发布比较试验结果给出答案</a></li> -->
+                </ul>
+            </div>
+        </div>
+        <!--mod2 end-->
+    </div>
+    <!--sr end-->
+    <div class="clear"></div>
+</div>
+
+<!--<script type="text/javascript">-->
+<!--    function show_ajax(obj) {-->
+<!--        var keywords = $(obj).text();-->
+<!--        var offset = $(obj).offset();-->
+<!--        var jsonitem = '';-->
+<!--        $.getJSON("http://www.gdcc315.cn/index.php?m=content&c=index&a=json_list&type=keyword&modelid=1&id=53800&keywords="+encodeURIComponent(keywords),-->
+<!--            function(data){-->
+<!--                var j = 1;-->
+<!--                var string = "<div class='point key-float'><div style='position:relative'><div class='arro'></div>";-->
+<!--                string += "<a href='JavaScript:;' onclick='$(this).parent().parent().remove();' hidefocus='true' class='close'><span>关闭</span></a><div class='contents f12'>";-->
+<!--                if(data!=0) {-->
+<!--                    $.each(data, function(i,item){-->
+<!--                        j = i+1;-->
+<!--                        jsonitem += "<a href='"+item.url+"' target='_blank'>"+j+"、"+item.title+"</a><BR>";-->
+
+<!--                    });-->
+<!--                    string += jsonitem;-->
+<!--                } else {-->
+<!--                    string += '没有找到相关的信息！';-->
+<!--                }-->
+<!--                string += "</div><span class='o1'></span><span class='o2'></span><span class='o3'></span><span class='o4'></span></div></div>";-->
+<!--                $(obj).after(string);-->
+<!--                $('.key-float').mouseover(-->
+<!--                    function (){-->
+<!--                        $(this).siblings().css({"z-index":0})-->
+<!--                        $(this).css({"z-index":1001});-->
+<!--                    }-->
+<!--                )-->
+<!--                $(obj).next().css({ "left": +offset.left-100, "top": +offset.top+$(obj).height()+12});-->
+<!--            });-->
+<!--    }-->
+
+<!--    function add_favorite(title) {-->
+<!--        $.getJSON('http://www.gdcc315.cn/api.php?op=add_favorite&title='+encodeURIComponent(title)+'&url='+encodeURIComponent(location.href)+'&'+Math.random()+'&callback=?', function(data){-->
+<!--            if(data.status==1)	{-->
+<!--                $("#favorite").html('收藏成功');-->
+<!--            } else {-->
+<!--                alert('请登录');-->
+<!--            }-->
+<!--        });-->
+<!--    }-->
+
+<!--    $(function(){-->
+<!--        $('#Article .content img').LoadImage(true, 660, 660,'http://www.gdcc315.cn/statics/images/s_nopic.gif');-->
+<!--    })-->
+<!--    -->
+<!--</script>-->
+
+    <#include "footer.htm" />
+</body>
+</html>

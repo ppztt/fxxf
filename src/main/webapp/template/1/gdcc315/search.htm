@@ -10,7 +10,7 @@
     <#include "header.htm" />
 </div>
 <!--main-->
-<div class="w list">
+<div id="app" v-cloak class="w list">
     <div class="fl ll">
         <div class="crumbs">您现在的位置：<a href="http://www.gdcc315.cn">首页</a><span> &gt; </span>搜索结果 > 获得约 ${(page.rcount)!0} 条结果 <!--（用时0.60 秒）--></div>
         <!--crumbs end-->
@@ -39,7 +39,7 @@
 <!--            <li class=""><a href="http://www.gdcc315.cn/show-12-53821-1.html" target="_blank" class="title">短视频带货 近八成受访者最关心商品质量</a><span class="username">admin</span><span class="rt">2021-12-20</span></li>-->
         </ul>
 <!--        <div id="pages" class="text-c"><a class="a1">4198条</a> <a href="http://www.gdcc315.cn/index.php?m=search&c=index&a=init&typeid=1&siteid=1&q=%E5%A5%BD&Submit=%E6%90%9C+%E7%B4%A2&page=0" class="a1">上一页</a> <span>1</span> <a href="http://www.gdcc315.cn/index.php?m=search&c=index&a=init&typeid=1&siteid=1&q=%E5%A5%BD&Submit=%E6%90%9C+%E7%B4%A2&page=2">2</a> <a href="http://www.gdcc315.cn/index.php?m=search&c=index&a=init&typeid=1&siteid=1&q=%E5%A5%BD&Submit=%E6%90%9C+%E7%B4%A2&page=3">3</a> <a href="http://www.gdcc315.cn/index.php?m=search&c=index&a=init&typeid=1&siteid=1&q=%E5%A5%BD&Submit=%E6%90%9C+%E7%B4%A2&page=4">4</a> <a href="http://www.gdcc315.cn/index.php?m=search&c=index&a=init&typeid=1&siteid=1&q=%E5%A5%BD&Submit=%E6%90%9C+%E7%B4%A2&page=5">5</a> <a href="http://www.gdcc315.cn/index.php?m=search&c=index&a=init&typeid=1&siteid=1&q=%E5%A5%BD&Submit=%E6%90%9C+%E7%B4%A2&page=6">6</a> <a href="http://www.gdcc315.cn/index.php?m=search&c=index&a=init&typeid=1&siteid=1&q=%E5%A5%BD&Submit=%E6%90%9C+%E7%B4%A2&page=7">7</a> <a href="http://www.gdcc315.cn/index.php?m=search&c=index&a=init&typeid=1&siteid=1&q=%E5%A5%BD&Submit=%E6%90%9C+%E7%B4%A2&page=8">8</a> <a href="http://www.gdcc315.cn/index.php?m=search&c=index&a=init&typeid=1&siteid=1&q=%E5%A5%BD&Submit=%E6%90%9C+%E7%B4%A2&page=9">9</a> <a href="http://www.gdcc315.cn/index.php?m=search&c=index&a=init&typeid=1&siteid=1&q=%E5%A5%BD&Submit=%E6%90%9C+%E7%B4%A2&page=10">10</a> ..<a href="http://www.gdcc315.cn/index.php?m=search&c=index&a=init&typeid=1&siteid=1&q=%E5%A5%BD&Submit=%E6%90%9C+%E7%B4%A2&page=420">420</a> <a href="http://www.gdcc315.cn/index.php?m=search&c=index&a=init&typeid=1&siteid=1&q=%E5%A5%BD&Submit=%E6%90%9C+%E7%B4%A2&page=2" class="a1">下一页</a></div>-->
-        <div id="app" v-cloak class="text-c">
+        <div id="pages" class="text-c">
             <el-pagination
                     background
                     @current-change="handleCurrentChange"

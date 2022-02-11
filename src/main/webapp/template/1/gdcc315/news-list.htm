@@ -10,7 +10,7 @@
     <#include "header.htm" />
 </div>
 <!--main-->
-<div class="w list">
+<div id="app" v-cloak class="w list">
     <div class="fl ll">
         <div class="crumbs">您现在的位置：<a href="{ms:global.host/}">首页</a><span> &gt; </span>{ms:channel type="path"}<a href="{ms:global.url/}${field.typelink}">${field.typetitle}</a>{/ms:channel} > 列表</div>
         <!-- <div class="crumbs">您现在的位置：<a href="http://www.gdcc315.cn">首页</a><span> > </span><a href="http://www.gdcc315.cn/list-6-1.html">本会动态</a> >  列表</div> -->
@@ -37,7 +37,7 @@
             <li class=""><a href="http://www.gdcc315.cn/show-6-53561-1.html" target="_blank" class="title">再亮剑！广东省消委会就个人信息保护提起三宗公益诉讼</a><span class="username">wjm</span><span class="rt">2021-03-17</span></li> -->
         </ul>
 
-        <div id="app" v-cloak class="text-c">
+        <div id="pages" class="text-c">
             <el-pagination
                     background
                     @current-change="handleCurrentChange"

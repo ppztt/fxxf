@@ -277,3 +277,30 @@ width: 35px;
 	border:1px solid #aaa;
 	font-weight: bold;
 }
+.el-pagination button, .el-pagination span:not([class*=suffix]){
+    line-height: 22px !important;
+    height: auto !important;
+    font-weight: normal !important;
+}
+/* .el-pagination  a{
+    font-weight: normal !important;
+} */
+.el-pagination button:hover{
+    color: #65c1c2 !important;
+}
+.el-pagination>span:hover{
+    color: #65c1c2 !important;
+}
+
+.el-pagination .el-pager .active{
+    background: #dddddd !important;
+    color: black !important;
+}
+.el-pagination .el-pager>li:not(.active):hover{
+    color: #65c1c2 !important;
+}
+.el-pagination .el-pager>li{
+    border: 1px solid #cccccc !important;
+    width: 37px !important;
+    padding: 0 !important;
+}
