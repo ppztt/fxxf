@@ -13,23 +13,23 @@
     <div id="app" v-cloak>
     <div class="w mt10">
         <div class="shipin-list">
-            <div class="pson"><a href="{ms:global.host/}">首页</a><span> &gt; </span>
+            <div class="pson"><a href="/">首页</a><span> &gt; </span>
 <!--                <a href="http://www.guangzhou315.cn/list-21-1.html">视频中心</a> > 列表</div>-->
-                {ms:channel type="path"}<a href="{ms:global.url/}${field.typelink}">${field.typetitle}</a>{/ms:channel} > 列表</div>
+                {ms:channel type="path"}<a href="/html/web${field.typelink}">${field.typetitle}</a>{/ms:channel} > 列表</div>
             <ul>
                 {ms:arclist size=25 ispaging=true}
                 <li>
                     <div class="list_thumb">
-                        <a href="{ms:global.url/}${field.link}" target="_blank">
+                        <a href="/html/web${field.link}" target="_blank">
                             <img src="{@ms:file field.litpic/}" width="140" height="115px" />
                         </a>
                     </div>
                     <div class="list_article">
-                        <div class="list_article_title"><a href="{ms:global.url/}${field.link}"
+                        <div class="list_article_title"><a href="/html/web${field.link}"
                                 target="_blank">${field.title}</a></div>
                         <div class="list_article_content">
                             <label style="margin-right: 20px;">来源：${field.source}</label> <a
-                                href="{ms:global.url/}${field.link}" target="_blank">阅读更多</a>
+                                href="/html/web${field.link}" target="_blank">阅读更多</a>
                         </div>
                     </div>
                     <div class="list_time">
@@ -84,9 +84,9 @@
             },
             handleCurrentChange:function(val) {
                 if(val==1) {
-                    location.href = "{ms:global.url/}/${field.categoryPath}/index.html";
+                    location.href = "/html/web/${field.categoryPath}/index.html";
                 } else {
-                    location.href = "{ms:global.url/}/${field.categoryPath}/list-" + val + ".html";
+                    location.href = "/html/web/${field.categoryPath}/list-" + val + ".html";
                 }
             }
         },

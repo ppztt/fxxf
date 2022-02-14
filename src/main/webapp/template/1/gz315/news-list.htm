@@ -13,14 +13,14 @@
 <div id="app" v-cloak>
     <div class="w mt10">
         <div class="fl list">
-            <div class="pson"><a href="{ms:global.host/}">首页</a><span> &gt; </span>
+            <div class="pson"><a href="/">首页</a><span> &gt; </span>
                 <!--        <a href="http://www.guangzhou315.cn/list-6-1.html">消费新闻</a> > 列表</div>-->
-                {ms:channel type="path"}<a href="{ms:global.url/}${field.typelink}">${field.typetitle}</a>{/ms:channel}
+                {ms:channel type="path"}<a href="/html/web${field.typelink}">${field.typetitle}</a>{/ms:channel}
                 > 列表
             </div>
             <ul>
                 {ms:arclist size=25 ispaging=true}
-                <li><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a><span
+                <li><a href="/html/web${field.link}" target="_blank">${field.title}</a><span
                         class="fr">${field.date?date?string("yyyy-MM-dd")}</span></li>
                 {/ms:arclist}
             </ul>
@@ -73,9 +73,9 @@
             },
             handleCurrentChange: function (val) {
                 if (val == 1) {
-                    location.href = "{ms:global.url/}/${field.categoryPath}/index.html";
+                    location.href = "/html/web/${field.categoryPath}/index.html";
                 } else {
-                    location.href = "{ms:global.url/}/${field.categoryPath}/list-" + val + ".html";
+                    location.href = "/html/web/${field.categoryPath}/list-" + val + ".html";
                 }
             }
         },

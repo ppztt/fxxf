@@ -21,7 +21,7 @@
                 <#else>
             <li class="">
             </#if>
-            <a href="{ms:global.url/}${field.link}" target="_blank" class="title">
+            <a href="/html/web${field.link}" target="_blank" class="title">
                 ${field.title?replace(search.content_title,'<font color="red">'+search.content_title+'</font>')}
             </a>
             <span class="username">
@@ -55,7 +55,7 @@
     </div>
     <!--ll end-->
     <div class="fr lr">
-        <div class="mod mod1"><a href="javascript:;"><img src="{ms:global.host/}{ms:global.style/}/Picture/pic-10.jpg" width="240px" height="257px" /></a></div>
+        <div class="mod mod1"><a href="javascript:;"><img src="/{ms:global.style/}/Picture/pic-10.jpg" width="240px" height="257px" /></a></div>
         <!--mod1 end-->
         <div class="mod mod2">
             <div class="t">推荐文章</div>
@@ -64,7 +64,7 @@
                     {ms:arclist size=8 ispaging=true}
                     <li>
                         <span>${field.index}、</span>
-                        <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                        <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                     </li>
                     {/ms:arclist}
 <!--                    <li><span>1</span><a href="http://www.gdcc315.cn/show-21-53820-1.html">《网络短视频内容审核标准细则》修订版发布 制作和发布短视频有哪些新规？</a></li>-->
@@ -81,7 +81,7 @@
                     {ms:arclist size=8 ispaging=true}
                     <li>
                         <span>${field.index}、</span>
-                        <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                        <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                     </li>
                     {/ms:arclist}
 <!--                    <li><span>1</span><a href="http://www.gdcc315.cn/show-6-53824-1.html" target="_blank">重磅！广东省消委会就虚假宣传减肥产品行为提起公益诉讼 在全国率先探索“公益诉讼+集体诉讼”维权新模式</a></li>-->
@@ -95,7 +95,7 @@
     <!--lr end-->
     <div class="clear"></div>
 </div>
-<script type="text/javascript" src="{ms:global.host/}{ms:global.style/}/Scripts/search_history.js"></script>
+<script type="text/javascript" src="/{ms:global.style/}/Scripts/search_history.js"></script>
 <#include "footer.htm" />
 
 <script>

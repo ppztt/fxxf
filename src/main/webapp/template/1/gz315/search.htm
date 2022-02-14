@@ -20,7 +20,7 @@
                     {ms:arclist size=10 ispaging=true}
                     <#assign isEmpty=false>
                     <li>
-                        <a href="{ms:global.url/}${field.link}" target="_blank">${field.title?replace(search.content_title,'<font color="red">'+search.content_title+'</font>')}</a>
+                        <a href="/html/web${field.link}" target="_blank">${field.title?replace(search.content_title,'<font color="red">'+search.content_title+'</font>')}</a>
                         <span class="fr">${field.date?date?string("yyyy-MM-dd")}</span>
                     </li>
                     {/ms:arclist}

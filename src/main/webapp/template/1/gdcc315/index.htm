@@ -10,11 +10,11 @@
     <#include "header.htm" />
 </div>
 <div style="width:1100px;margin:10px auto">
-    <img width="1100px" src="{ms:global.host/}{ms:global.style/}/Picture/jyls.png"/>
+    <img width="1100px" src="/{ms:global.style/}/Picture/jyls.png"/>
 </div>
 <div style="width:1100px;margin:10px auto">
-    <a href="{ms:global.url/}/ztzqcon/guangdongfangxinxiaofeichuangj/index.html" target="_blank">
-        <img width="1100px" src="{ms:global.host/}{ms:global.style/}/Picture/2020gdxfcj.jpg"/>
+    <a href="/html/web/ztzqcon/guangdongfangxinxiaofeichuangj/index.html" target="_blank">
+        <img width="1100px" src="/{ms:global.style/}/Picture/2020gdxfcj.jpg"/>
     </a>
 </div>
 
@@ -23,13 +23,13 @@
     <div class="mod mod-1">
         <h1>
             {ms:arclist size=1 flag="2"}
-                <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                <a href="/html/web${field.link}" target="_blank">${field.title}</a>
             {/ms:arclist}
         </h1>
         <div class="toplist">
 <!--            <#assign top = 4>-->
             {ms:arclist size=3 flag="5" }
-                <a href="{ms:global.url/}${field.link}" target="_blank">·
+                <a href="/html/web${field.link}" target="_blank">·
                     <#if field.title?length gt 20>
                         ${field.title?substring(0,20)}
                     <#else>
@@ -37,7 +37,7 @@
                     </#if>
                 </a> |
             {/ms:arclist}
-            <a href="{ms:global.url/}/bhdt/index.html" target="_blank">更多>></a>
+            <a href="/html/web/bhdt/index.html" target="_blank">更多>></a>
         </div>
     </div>
     <!--mod-2-->
@@ -47,11 +47,11 @@
                 <ul>
                     {ms:arclist size=4 flag="1"}
                     <li>
-                        <a href="{ms:global.url/}${field.link}" target="_blank">
+                        <a href="/html/web${field.link}" target="_blank">
                             <img src="{@ms:file field.litpic/}" width="625px" height="350px">
                         </a>
                         <p>
-                            <a href="{ms:global.url/}${field.link}" target="_blank">"${field.title}”</a>
+                            <a href="/html/web${field.link}" target="_blank">"${field.title}”</a>
                         </p>
                     </li>
                     {/ms:arclist}
@@ -63,26 +63,26 @@
         <div class="right">
             {ms:arclist size=1 flag="63"}
             <h2>
-                <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                <a href="/html/web${field.link}" target="_blank">${field.title}</a>
             </h2>
             {/ms:arclist}
             <ul>
                 {ms:arclist size=3 flag="65" }
                 <li class="flex">
-                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                     <div>${field.date?date?string("yyyy-MM-dd")}</div>
                 </li>
                 {/ms:arclist}
             </ul>
             {ms:arclist size=1 flag="64"}
             <h2>
-                <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                <a href="/html/web${field.link}" target="_blank">${field.title}</a>
             </h2>
             {/ms:arclist}
             <ul>
                 {ms:arclist size=3 flag="66" }
                 <li class="flex">
-                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                     <div>${field.date?date?string("yyyy-MM-dd")}</div>
                 </li>
                 {/ms:arclist}
@@ -96,25 +96,25 @@
             <!--left-1-->
             <div class="left-1">
                 <ul class=" flex">
-                    <li><a href="{ms:global.url/}/aboutus/48617.html" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_09.png"/></a></li>
-                    <li><a href="http://ts.gdcc315.cn/dologin" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_10.png"/></li>
-                    <li><a href="http://ts.gdcc315.cn/dologin" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_11.png"/></a></li>
-                    <li><a href="{ms:global.url/}/aboutus/211.html" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_12.png"/></a></li>
-                    <li><a href="{ms:global.url/}/aboutus/48618.html" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_13.png"/></a></li>
+                    <li><a href="/html/web/aboutus/48617.html" target="_blank"><img src="/{ms:global.style/}/Picture/home_09.png"/></a></li>
+                    <li><a href="http://ts.gdcc315.cn/dologin" target="_blank"><img src="/{ms:global.style/}/Picture/home_10.png"/></li>
+                    <li><a href="http://ts.gdcc315.cn/dologin" target="_blank"><img src="/{ms:global.style/}/Picture/home_11.png"/></a></li>
+                    <li><a href="/html/web/aboutus/211.html" target="_blank"><img src="/{ms:global.style/}/Picture/home_12.png"/></a></li>
+                    <li><a href="/html/web/aboutus/48618.html" target="_blank"><img src="/{ms:global.style/}/Picture/home_13.png"/></a></li>
                 </ul>
             </div>
             <!--left-2-->
             <div class="left-2 flex">
                 <div class="flex-1">
                     <div class="title">
-                        <span class="on"><a href="{ms:global.url/}/wqyw/index.html">维权要闻</a></span>
+                        <span class="on"><a href="/html/web/wqyw/index.html">维权要闻</a></span>
                     </div>
                     <div class="con">
                         <div class="txt flex-1">
                             <div class="h1">
                                 {ms:arclist size=1 flag="48"}
                                 <h2 class="txt">
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                                 </h2>
                                 <p>
                                     <#if field.descrip?length gt 53>
@@ -128,7 +128,7 @@
                             <ul>
                                 {ms:arclist size=4 typeid="21" }
                                 <li>·&nbsp;
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                                 </li>
                                 {/ms:arclist}
                             </ul>
@@ -137,14 +137,14 @@
                 </div>
                 <div class="tab flex-1">
                     <div class="title">
-                        <span class="on"><a href="{ms:global.url/}/xfry/index.html">消费热议</a></span>/<span><a href="{ms:global.url/}/mtbd/index.html">媒体报道</a></span>
+                        <span class="on"><a href="/html/web/xfry/index.html">消费热议</a></span>/<span><a href="/html/web/mtbd/index.html">媒体报道</a></span>
                     </div>
                     <div class="con">
                         <div class="txt flex-1">
                             <div class="h1">
                                 {ms:arclist size=1 flag="49"}
                                 <h2 class="txt">
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                                 </h2>
                                 <p>
                                     <#if field.descrip?length gt 53>
@@ -158,7 +158,7 @@
                             <ul>
                                 {ms:arclist size=4 typeid="25" }
                                 <li>·&nbsp;
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                                 </li>
                                 {/ms:arclist}
                             </ul>
@@ -167,7 +167,7 @@
                             <div class="h1">
                                 {ms:arclist size=1 flag="50"}
                                 <h2 class="txt">
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                                 </h2>
                                 <p>
                                     <#if field.descrip?length gt 53>
@@ -181,7 +181,7 @@
                             <ul>
                                 {ms:arclist size=4 typeid="9" }
                                 <li>·&nbsp;
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                                 </li>
                                 {/ms:arclist}
                             </ul>
@@ -193,28 +193,28 @@
             <div class="left-2 flex">
                 <div class="flex-1">
                     <div class="title">
-                        <span class="on"><a href="{ms:global.url/}/qqbg/index.html">侵权曝光</a></span>
+                        <span class="on"><a href="/html/web/qqbg/index.html">侵权曝光</a></span>
                     </div>
                     <div class="con">
                         <div class="txt flex-1">
                             <div class="h1 flex">
                                 {ms:arclist size=1 flag="51"}
                                 <div style="margin-right: 15px;margin-bottom: 10px">
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">
+                                    <a href="/html/web${field.link}" target="_blank">
                                         <img src="{@ms:file field.litpic/}" alt="${field.title}" width="170px" height="100px">
                                     </a>
                                     <!-- <a href="http://www.gdcc315.cn/show-10-53386-1.html" target="_blank">
-                                        <img  src="{ms:global.host/}{ms:global.style/}/Picture/20210121110133941.jpg" alt="泄露40万条个人信息！圆通速递被约谈！  " width="170px" height="100px"/>
+                                        <img  src="/{ms:global.style/}/Picture/20210121110133941.jpg" alt="泄露40万条个人信息！圆通速递被约谈！  " width="170px" height="100px"/>
                                     </a> -->
                                 </div>
-                                <h2><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></h2>
+                                <h2><a href="/html/web${field.link}" target="_blank">${field.title}</a></h2>
                                 {/ms:arclist}
                                 <!-- <h2><a href="http://www.gdcc315.cn/show-10-53386-1.html" target="_blank">泄露40万条个人信息！圆通速递被约谈！  </a></h2> -->
                             </div>
                             <ul>
                                 {ms:arclist size=3 typeid="10" }
                                 <li>·&nbsp;
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                                 </li>
                                 {/ms:arclist}
                                 <!-- <li>·&nbsp;<a href="http://www.gdcc315.cn/show-10-53817-1.html" target="_blank">29批次食品不合格！这些蛋糕、炒货、海鲜你吃过吗？</a></li>
@@ -226,25 +226,25 @@
                 </div>
                 <div class="tab flex-1">
                     <div class="title">
-                        <span class="on"><a href="{ms:global.url/}/spjc/index.html">商品检测</a></span>/<span><a href="{ms:global.url/}/xfdc1/index.html">消费调查</a></span>
+                        <span class="on"><a href="/html/web/spjc/index.html">商品检测</a></span>/<span><a href="/html/web/xfdc1/index.html">消费调查</a></span>
                     </div>
                     <div class="con">
                         <div class="txt flex-1">
                             <div class="h1 flex">
                                 {ms:arclist size=1 flag="52"}
                                 <div style="margin-right: 15px;margin-bottom: 10px">
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">
+                                    <a href="/html/web${field.link}" target="_blank">
                                         <img src="{@ms:file field.litpic/}" alt="${field.title}" width="170px" height="100px">
                                     </a>
                                     <!-- <a href="http://www.gdcc315.cn/show-10-53386-1.html" target="_blank">
-                                        <img  src="{ms:global.host/}{ms:global.style/}/Picture/20210121110133941.jpg" alt="泄露40万条个人信息！圆通速递被约谈！  " width="170px" height="100px"/>
+                                        <img  src="/{ms:global.style/}/Picture/20210121110133941.jpg" alt="泄露40万条个人信息！圆通速递被约谈！  " width="170px" height="100px"/>
                                     </a> -->
                                 </div>
-                                <h2><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></h2>
+                                <h2><a href="/html/web${field.link}" target="_blank">${field.title}</a></h2>
                                 {/ms:arclist}
                                 <!-- <div style="margin-right: 15px;margin-bottom: 10px">
                                     <a href="http://www.gdcc315.cn/show-11-53733-1.html" target="_blank">
-                                        <img  src="{ms:global.host/}{ms:global.style/}/Picture/20210812105654136.jpg" alt="奶酪棒真的营养又补钙? 天天吃可以吗?12款奶酪棒检测结果发布" width="170px" height="100px"/>
+                                        <img  src="/{ms:global.style/}/Picture/20210812105654136.jpg" alt="奶酪棒真的营养又补钙? 天天吃可以吗?12款奶酪棒检测结果发布" width="170px" height="100px"/>
                                     </a>
                                 </div>
                                 <h2><a href="http://www.gdcc315.cn/show-11-53733-1.html" target="_blank">奶酪棒真的营养又补钙? 天天吃可以吗?12款奶酪棒检测结果发布</a></h2> -->
@@ -252,7 +252,7 @@
                             <ul>
                                 {ms:arclist size=3 typeid="11" }
                                 <li>·&nbsp;
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                                 </li>
                                 {/ms:arclist}
                                 <!-- <li>·&nbsp;<a href="http://www.gdcc315.cn/show-11-53816-1.html" target="_blank">蜂蜜比较试验结果大公开 16款蜂蜜表现较好</a></li>
@@ -264,18 +264,18 @@
                             <div class="h1 flex">
                                 {ms:arclist size=1 flag="61"}
                                 <div style="margin-right: 15px;margin-bottom: 10px">
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">
+                                    <a href="/html/web${field.link}" target="_blank">
                                         <img src="{@ms:file field.litpic/}" alt="${field.title}" width="170px" height="100px">
                                     </a>
                                     <!-- <a href="http://www.gdcc315.cn/show-10-53386-1.html" target="_blank">
-                                        <img  src="{ms:global.host/}{ms:global.style/}/Picture/20210121110133941.jpg" alt="泄露40万条个人信息！圆通速递被约谈！  " width="170px" height="100px"/>
+                                        <img  src="/{ms:global.style/}/Picture/20210121110133941.jpg" alt="泄露40万条个人信息！圆通速递被约谈！  " width="170px" height="100px"/>
                                     </a> -->
                                 </div>
-                                <h2><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></h2>
+                                <h2><a href="/html/web${field.link}" target="_blank">${field.title}</a></h2>
                                 {/ms:arclist}
                                 <!-- <div style="margin-right: 15px;margin-bottom: 10px">
                                     <a href="http://www.gdcc315.cn/show-12-53480-1.html" target="_blank">
-                                        <img  src="{ms:global.host/}{ms:global.style/}/Picture/20210209032929432.jpg" alt="网约车计时计费为何总与预估不符？“暗访”10家平台发现~" width="170px" height="100px"/>
+                                        <img  src="/{ms:global.style/}/Picture/20210209032929432.jpg" alt="网约车计时计费为何总与预估不符？“暗访”10家平台发现~" width="170px" height="100px"/>
                                     </a>
                                 </div>
                                 <h2><a href="http://www.gdcc315.cn/show-12-53480-1.html" target="_blank">网约车计时计费为何总与预估不符？“暗访”10家平台发现~</a></h2> -->
@@ -283,7 +283,7 @@
                             <ul>
                                 {ms:arclist size=3 typeid="12" }
                                 <li>·&nbsp;
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                                 </li>
                                 {/ms:arclist}
                                 <!-- <li>·&nbsp;<a href="http://www.gdcc315.cn/show-12-53821-1.html" target="_blank">短视频带货 近八成受访者最关心商品质量</a></li>
@@ -298,27 +298,27 @@
         <!--right-->
         <div class="right">
             <a href="http://gdfxxfcj.gdcc315.cn:8081" target="_blank">
-                <img src="{ms:global.host/}{ms:global.style/}/Picture/2020gdfxxfcn.jpg" width="320px" height="115px" alt=""  style="display: block;margin-bottom:10px"/>
+                <img src="/{ms:global.style/}/Picture/2020gdfxxfcn.jpg" width="320px" height="115px" alt=""  style="display: block;margin-bottom:10px"/>
             </a>
             <!--right-1-->
             <div class="right-1">
                 <div style="text-align: right;margin-bottom: 10px">
-                    <a href="{ms:global.url/}/zhuantiall/index.html" target="_blank">
-                        <img src="{ms:global.host/}{ms:global.style/}/Picture/home_15.png"/>
+                    <a href="/html/web/zhuantiall/index.html" target="_blank">
+                        <img src="/{ms:global.style/}/Picture/home_15.png"/>
                     </a>
                 </div>
                 <div>
-                    <a href="{ms:global.url/}/tsfx/53554.html" target="_blank">
-                        <img src="{ms:global.host/}{ms:global.style/}/Picture/2020xfbg.jpg" width="320px" height="120px" alt=""/>
+                    <a href="/html/web/tsfx/53554.html" target="_blank">
+                        <img src="/{ms:global.style/}/Picture/2020xfbg.jpg" width="320px" height="120px" alt=""/>
                     </a>
                 </div>
             </div>
             <!--right-2-->
-            <div class="right-2 flex">
-                <img src="{ms:global.host/}{ms:global.style/}/Picture/home_22.png"/>
+<!--            <div class="right-2 flex">-->
+<!--                <img src="/{ms:global.style/}/Picture/home_22.png"/>-->
 <!--                <div>-->
-<!--                    <a href="{ms:global.host/}{ms:global.style/}/onlinemsz/contribution.html" target="_blank">-->
-<!--                        <img src="{ms:global.host/}{ms:global.style/}/Picture/home_22.png"/>-->
+<!--                    <a href="/{ms:global.style/}/onlinemsz/contribution.html" target="_blank">-->
+<!--                        <img src="/{ms:global.style/}/Picture/home_22.png"/>-->
 <!--                    </a>-->
 <!--                </div>-->
 <!--                <div class="c">-->
@@ -354,13 +354,13 @@
 <!--                        <li>黄宜妙 横琴新区消协秘书长</li>-->
 <!--                    </ul>-->
 <!--                </div>-->
-            </div>
+<!--            </div>-->
             <!--right-3-->
-            <div class="right-3">
-                <img src="{ms:global.host/}{ms:global.style/}/Picture/home_25.png"/>
+<!--            <div class="right-3">-->
+<!--                <img src="/{ms:global.style/}/Picture/home_25.png"/>-->
 <!--                <div class="title">-->
-<!--                    <a href="{ms:global.url/}/mishuchangzaixian/index.html" target="_blank">-->
-<!--                        <img src="{ms:global.host/}{ms:global.style/}/Picture/home_25.png"/>-->
+<!--                    <a href="/html/web/mishuchangzaixian/index.html" target="_blank">-->
+<!--                        <img src="/{ms:global.style/}/Picture/home_25.png"/>-->
 <!--                    </a>-->
 <!--                </div>-->
 <!--                <div class="con" style="height: 170px;">-->
@@ -368,25 +368,28 @@
 <!--                        {ms:arclist size=50 typeid="17" }-->
 <!--                        <li>-->
 <!--                            &lt;!&ndash; ${field.author}是作者，需数据库内容对上 &ndash;&gt;-->
-<!--                            <em>${field.author}</em>问:<a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>-->
+<!--                            <em>${field.author}</em>问:<a href="/html/web${field.link}" target="_blank">${field.title}</a>-->
 <!--                            &lt;!&ndash; <span class="fr">${field.date?date?string("[MM-dd]")}</span> &ndash;&gt;-->
 <!--                        </li>-->
 <!--                        {/ms:arclist}-->
 <!--                    </ul>-->
 <!--                </div>-->
-            </div>
+<!--            </div>-->
             <!--right-4-->
             <div class="right-4">
-                <a href="{ms:global.url/}/shipinzhongxin/index.html" target="_blank">
-                    <img src="{ms:global.host/}{ms:global.style/}/Picture/home_27.png"/>
+                <a href="/html/web/shipinzhongxin/index.html" target="_blank">
+                    <img src="/{ms:global.style/}/Picture/home_27.png"/>
                 </a>
                 <div class="c">
                     {ms:arclist size=1 flag="67"}
-                    <a href="{ms:global.url/}${field.link}" target="_blank ">
+                    <a href="/html/web${field.link}" target="_blank ">
                         <img src="{@ms:file field.litpic/}" alt="${field.title}" width="230px" height="145px" />
                     </a>
                     {/ms:arclist}
                 </div>
+            </div>
+            <div class="right-3" style="margin-top: 15px;">
+                <img src="/{ms:global.style/}/Picture/home_26.jpg"/>
             </div>
         </div>
     </div>
@@ -400,14 +403,14 @@
             <div class="left-2 flex" style="margin-top: 0">
                 <div class="flex-1">
                     <div class="title">
-                        <span class="on"><a href="{ms:global.url/}/tsfx/index.html">投诉分析</a></span>
+                        <span class="on"><a href="/html/web/tsfx/index.html">投诉分析</a></span>
                     </div>
                     <div class="con">
                         <div class="txt flex-1">
                             <div class="h1">
                                 {ms:arclist size=1 flag="53"}
                                 <h2 class="txt">
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                                 </h2>
                                 <p>
                                     <#if field.descrip?length gt 53>
@@ -421,7 +424,7 @@
                             <ul>
                                 {ms:arclist size=3 typeid="13" }
                                 <li>·&nbsp;
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                                 </li>
                                 {/ms:arclist}
                             </ul>
@@ -430,14 +433,14 @@
                 </div>
                 <div class="tab flex-1">
                     <div class="title">
-                        <span class="on"><a href="{ms:global.url/}/jdal/index.html">经典案例</a></span>/<span><a href="{ms:global.url/}/yajf/index.html">以案解法</a></span>
+                        <span class="on"><a href="/html/web/jdal/index.html">经典案例</a></span>/<span><a href="/html/web/yajf/index.html">以案解法</a></span>
                     </div>
                     <div class="con">
                         <div class="txt flex-1">
                             <div class="h1">
                                 {ms:arclist size=1 flag="54"}
                                 <h2 class="txt">
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                                 </h2>
                                 <p>
                                     <#if field.descrip?length gt 53>
@@ -451,7 +454,7 @@
                             <ul>
                                 {ms:arclist size=3 typeid="14" }
                                 <li>·&nbsp;
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                                 </li>
                                 {/ms:arclist}
                             </ul>
@@ -460,7 +463,7 @@
                             <div class="h1">
                                 {ms:arclist size=1 flag="55"}
                                 <h2 class="txt">
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                                 </h2>
                                 <p>
                                     <#if field.descrip?length gt 53>
@@ -474,7 +477,7 @@
                             <ul>
                                 {ms:arclist size=3 typeid="15" }
                                 <li>·&nbsp;
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                                 </li>
                                 {/ms:arclist}
                             </ul>
@@ -486,24 +489,24 @@
             <div class="left-2 flex">
                 <div class="flex-1">
                     <div class="title">
-                        <span class="on"><a href="{ms:global.url/}/xfjs/index.html">消费警示</a></span>
+                        <span class="on"><a href="/html/web/xfjs/index.html">消费警示</a></span>
                     </div>
                     <div class="con">
                         <div class="txt flex-1">
                             <div class="h1 flex">
                                 {ms:arclist size=1 flag="56"}
                                 <div style="margin-right: 15px;margin-bottom: 10px">
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">
+                                    <a href="/html/web${field.link}" target="_blank">
                                         <img src="{@ms:file field.litpic/}" alt="${field.title}" width="170px" height="100px" >
                                     </a>
                                 </div>
-                                <h2><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></h2>
+                                <h2><a href="/html/web${field.link}" target="_blank">${field.title}</a></h2>
                                 {/ms:arclist}
                             </div>
                             <ul>
                                 {ms:arclist size=3 typeid="22" }
                                 <li>·&nbsp;
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                                 </li>
                                 {/ms:arclist}
                             </ul>
@@ -512,24 +515,24 @@
                 </div>
                 <div class="tab flex-1">
                     <div class="title">
-                        <span class="on"><a href="{ms:global.url/}/xfts/index.html">生活百科</a></span>/<span><a href="{ms:global.url/}/flfg/index.html">法律法规</a></span>
+                        <span class="on"><a href="/html/web/xfts/index.html">生活百科</a></span>/<span><a href="/html/web/flfg/index.html">法律法规</a></span>
                     </div>
                     <div class="con">
                         <div class="txt flex-1">
                             <div class="h1 flex">
                                 {ms:arclist size=1 flag="62"}
                                 <div style="margin-right: 15px;margin-bottom: 10px">
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">
+                                    <a href="/html/web${field.link}" target="_blank">
                                         <img src="{@ms:file field.litpic/}" alt="${field.title}" width="170px" height="100px" >
                                     </a>
                                 </div>
-                                <h2><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></h2>
+                                <h2><a href="/html/web${field.link}" target="_blank">${field.title}</a></h2>
                                 {/ms:arclist}
                             </div>
                             <ul>
                                 {ms:arclist size=3 typeid="16" }
                                 <li>·&nbsp;
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                                 </li>
                                 {/ms:arclist}
                             </ul>
@@ -538,17 +541,17 @@
                             <div class="h1 flex">
                                 {ms:arclist size=1 flag="57"}
                                 <div style="margin-right: 15px;margin-bottom: 10px">
-                                    <a href="{ms:global.url/}${field.link}" target="_blank"></a>
+                                    <a href="/html/web${field.link}" target="_blank"></a>
                                         <img src="{@ms:file field.litpic/}" alt="${field.title}" width="170px" height="100px" >
                                     </a>
                                 </div>
-                                <h2><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></h2>
+                                <h2><a href="/html/web${field.link}" target="_blank">${field.title}</a></h2>
                                 {/ms:arclist}
                             </div>
                             <ul>
                                 {ms:arclist size=3 typeid="23" }
                                 <li>·&nbsp;
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                                 </li>
                                 {/ms:arclist}
                             </ul>
@@ -559,14 +562,14 @@
             <!--left-3-->
             <div class="left-3">
                 <div class="title flex">
-                    <div class=""><a href="{ms:global.url/}/shouce/index.html" target="_blank" style="color: #4aad42">维权手册</a></div>
+                    <div class=""><a href="/html/web/shouce/index.html" target="_blank" style="color: #4aad42">维权手册</a></div>
                     <div class="flex-1"><span></span></div>
                 </div>
                 <div class="c">
                     <ul>
                         {ms:arclist size=7 typeid="304" }
                         <li>
-                            <a href="{ms:global.url/}${field.link}" target="_blank">
+                            <a href="/html/web${field.link}" target="_blank">
                                 <img src="{@ms:file field.litpic/}" width="200px" height="280px">
                             </a>
                         </li>
@@ -581,15 +584,15 @@
         <div class="right">
             <!--right-5-->
             <div class="right-5" style="margin-bottom: 23px;">
-                <div class="title">历年年主题<a href="{ms:global.url/}/nianzhuti/index.html" target="_blank">more>></a></div>
+                <div class="title">历年年主题<a href="/html/web/nianzhuti/index.html" target="_blank">more>></a></div>
                 <div class="con">
                     <div style="padding-left: 2px;padding-top: 5px;">
-                        <img src="{ms:global.host/}{ms:global.style/}/Picture/zhuti_pic.jpg"/>
+                        <img src="/{ms:global.style/}/Picture/zhuti_pic.jpg"/>
                     </div>
                     <ul style="text-align:justify;text-align-last:justify;">
                         {ms:arclist size=6 typeid="303" }
                         <li>
-                            <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                            <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                         </li>
                         {/ms:arclist}
                     </ul>
@@ -597,22 +600,22 @@
             </div>
             <!--right-1-->
             <div class="right-1" style="display:none">
-                <a href="{ms:global.url/}/xiaofeiweiquanxianfengweishi/index.html" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/2020042901.jpg"/></a>
+                <a href="/html/web/xiaofeiweiquanxianfengweishi/index.html" target="_blank"><img src="/{ms:global.style/}/Picture/2020042901.jpg"/></a>
             </div>
             <!--right-2-->
             <div class="right-1">
-                <a href="http://shopsmart.org.hk/shopsmart/index.php" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_51.png"/></a>
+                <a href="http://shopsmart.org.hk/shopsmart/index.php" target="_blank"><img src="/{ms:global.style/}/Picture/home_51.png"/></a>
             </div>
             <!--right-3-->
             <div class="right-1">
-                <a href="http://www.consumer.gov.mo/Shop/Intro.aspx?lang=zh" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_53.png"/></a>
+                <a href="http://www.consumer.gov.mo/Shop/Intro.aspx?lang=zh" target="_blank"><img src="/{ms:global.style/}/Picture/home_53.png"/></a>
             </div>
             <!--right-4-->
             <div class="right-1" >
-                <a href="{ms:global.host/}{ms:global.style/}/shouxin/index.html" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_58.png"/></a>
+                <a href="/{ms:global.style/}/shouxin/index.html" target="_blank"><img src="/{ms:global.style/}/Picture/home_58.png"/></a>
             </div>
             <div class="right-1" style="margin-bottom: 0">
-                <a href="http://yst.gdzwfw.gov.cn/web/pc/?adt=ZWFWW_62004_gd" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/yst.png"/></a>
+                <a href="http://yst.gdzwfw.gov.cn/web/pc/?adt=ZWFWW_62004_gd" target="_blank"><img src="/{ms:global.style/}/Picture/yst.png"/></a>
             </div>
             <!--right-4-->
         </div>
@@ -625,11 +628,11 @@
         </div>
         <div class="con">
             <ul class="flex">
-                <li><a href="http://www.samr.gov.cn/" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_66.png"/></a></li>
-                <li><a href="http://www.cca.org.cn/" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_70.png"/></a></li>
-                <li><a href="http://amr.gd.gov.cn/" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_68.png"/></a></li>
-                <li><a href="https://www.consumer.org.hk/" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_72.png"/></a></li>
-                <li><a href="https://www.consumer.gov.mo/Default.aspx?lang=zh" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/home_74.png"/></a></li>
+                <li><a href="http://www.samr.gov.cn/" target="_blank"><img src="/{ms:global.style/}/Picture/home_66.png"/></a></li>
+                <li><a href="http://www.cca.org.cn/" target="_blank"><img src="/{ms:global.style/}/Picture/home_70.png"/></a></li>
+                <li><a href="http://amr.gd.gov.cn/" target="_blank"><img src="/{ms:global.style/}/Picture/home_68.png"/></a></li>
+                <li><a href="https://www.consumer.org.hk/" target="_blank"><img src="/{ms:global.style/}/Picture/home_72.png"/></a></li>
+                <li><a href="https://www.consumer.gov.mo/Default.aspx?lang=zh" target="_blank"><img src="/{ms:global.style/}/Picture/home_74.png"/></a></li>
             </ul>
         </div>
     </div>
@@ -688,10 +691,10 @@
 </html>
 
 <div class="fad" style="display:none">
-    <a class="close" href="javascript:;">X</a><a target="_blank" href="https://www.wjx.cn/jq/62992630.aspx"><img width="150" height="200" src="{ms:global.host/}{ms:global.style/}/Picture/2020dtdfg.jpg"></a></div>
+    <a class="close" href="javascript:;">X</a><a target="_blank" href="https://www.wjx.cn/jq/62992630.aspx"><img width="150" height="200" src="/{ms:global.style/}/Picture/2020dtdfg.jpg"></a></div>
 
 <div class="rad" >
-    <a class="close" href="javascript:;">X</a><a target="_blank" href="http://ts.gdcc315.cn/dologin"><img width="150" height="200" src="{ms:global.host/}{ms:global.style/}/Picture/tsptad.jpg"></a></div>
+    <a class="close" href="javascript:;">X</a><a target="_blank" href="http://ts.gdcc315.cn/dologin"><img width="150" height="200" src="/{ms:global.style/}/Picture/tsptad.jpg"></a></div>
 
 <!--  <div style="display:none" class="rad">
  <a class="close" href="javascript:;">X</a><a target="_blank" href="http://www.gdcc315.cn/show-6-49555-1.html

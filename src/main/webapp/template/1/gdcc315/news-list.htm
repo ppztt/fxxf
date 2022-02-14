@@ -12,7 +12,7 @@
 <!--main-->
 <div id="app" v-cloak class="w list">
     <div class="fl ll">
-        <div class="crumbs">您现在的位置：<a href="{ms:global.host/}">首页</a><span> &gt; </span>{ms:channel type="path"}<a href="{ms:global.url/}${field.typelink}">${field.typetitle}</a>{/ms:channel} > 列表</div>
+        <div class="crumbs">您现在的位置：<a href="/">首页</a><span> &gt; </span>{ms:channel type="path"}<a href="/html/web${field.typelink}">${field.typetitle}</a>{/ms:channel} > 列表</div>
         <!-- <div class="crumbs">您现在的位置：<a href="http://www.gdcc315.cn">首页</a><span> > </span><a href="http://www.gdcc315.cn/list-6-1.html">本会动态</a> >  列表</div> -->
         <!--crumbs end-->
         <ul>
@@ -22,7 +22,7 @@
                 <#else>
                 <li class="">
                 </#if>
-                    <a href="{ms:global.url/}${field.link}" target="_blank" class="title">${field.title}</a>
+                    <a href="/html/web${field.link}" target="_blank" class="title">${field.title}</a>
                     <span class="username">
                         <#if field.source??>
                         ${field.source}
@@ -54,7 +54,7 @@
 
     <!--ll end-->
     <div class="fr lr">
-        <div class="mod mod1"><a href="javascript:;"><img src="{ms:global.host/}{ms:global.style/}/Picture/pic-10.jpg" width="240px" height="257px" /></a></div>
+        <div class="mod mod1"><a href="javascript:;"><img src="/{ms:global.style/}/Picture/pic-10.jpg" width="240px" height="257px" /></a></div>
         <!--mod1 end-->
         <div class="mod mod2">
             <div class="t">推荐文章</div>
@@ -63,7 +63,7 @@
                     {ms:arclist size=8 ispaging=true}
                     <li>
                         <span>${field.index}、</span>
-                        <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                        <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                     </li>
                     {/ms:arclist}
                     <!-- <li><span>1</span>、<a href="http://www.gdcc315.cn/show-6-53824-1.html">重磅！广东省消委会就虚假宣传减肥产品行为提起公益诉讼 在全国率先探索“公益诉讼+集体诉讼”维权新模式</a></li>
@@ -79,7 +79,7 @@
                     {ms:arclist size=8 ispaging=true}
                     <li>
                         <span>${field.index}、</span>
-                        <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                        <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                     </li>
                     {/ms:arclist}
                     <!-- <li><span>1</span>、<a href="http://www.gdcc315.cn/show-6-50943-1.html" target="_blank">广东省消费者委员会部门决算公示</a></li>
@@ -121,9 +121,9 @@
             },
             handleCurrentChange: function (val) {
                 if (val == 1) {
-                    location.href = "{ms:global.url/}/${field.categoryPath}/index.html";
+                    location.href = "/html/web/${field.categoryPath}/index.html";
                 } else {
-                    location.href = "{ms:global.url/}/${field.categoryPath}/list-" + val + ".html";
+                    location.href = "/html/web/${field.categoryPath}/list-" + val + ".html";
                 }
             }
         },

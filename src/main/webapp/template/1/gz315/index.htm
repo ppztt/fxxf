@@ -12,10 +12,10 @@
     <#include "nav.htm" />
 
     <div class="w mt10" style="display:">
-        <a href="#" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/bwcx.jpg"></a>
+        <a href="#" target="_blank"><img src="/{ms:global.style/}/Picture/bwcx.jpg"></a>
     </div>
     <div class="w mt10" style="display:">
-        <a href="{ms:global.url/}/sxwdjgz/index.html" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/bwcx2.jpg"></a>
+        <a href="/html/web/sxwdjgz/index.html" target="_blank"><img src="/{ms:global.style/}/Picture/bwcx2.jpg"></a>
     </div>
 
     <div class="w mt5">
@@ -23,19 +23,19 @@
 <!--            消费新闻-->
             <div class="fl news">
                 <div class="ctitle">
-                    <span class="on"><a href="{ms:global.url/}/xiaofeixinwen/index.html">消费新闻</a></span>
+                    <span class="on"><a href="/html/web/xiaofeixinwen/index.html">消费新闻</a></span>
                 </div>
                 <div class="ccon">
                     <div class="hot">
                         {ms:arclist size=1 flag="2"}
-                        <a href="{ms:global.url/}${field.link}"
+                        <a href="/html/web${field.link}"
                            target="_blank">${field.title}</a>
                         {/ms:arclist}
                     </div>
                     <ul>
                         {ms:arclist size=6 typeid="6" noflag="2" }
                         <li>
-                            <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                            <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                             <span class="fr">${field.date?date?string("[MM-dd]")}</span>
                         </li>
                         {/ms:arclist}
@@ -51,13 +51,13 @@
                     {ms:arclist size=6 flag="1"}
                     <li>
                         <div class="fl pic">
-                            <a href="{ms:global.url/}${field.link}">
+                            <a href="/html/web${field.link}">
                                 <img src="{@ms:file field.litpic/}" width="410px" height="270px"
                                      alt="${field.title}”"></a>
                         </div>
                         <div class="fr txt">
                             <p class="h1">
-                                <a href="{ms:global.url/}${field.link}">${field.title}</a>
+                                <a href="/html/web${field.link}">${field.title}</a>
                             </p>
                             <p class="desc">
                                 ${field.descrip}
@@ -87,14 +87,14 @@
 <!--                案例分析-->
                 <div class="fl mod1-1 box01">
                     <div class="ctitle">
-                        <span class="on"><a href="{ms:global.url/}/anlifenxi/index.html">案例分析</a></span>
+                        <span class="on"><a href="/html/web/anlifenxi/index.html">案例分析</a></span>
                     </div>
                     <div class="cccon">
                         <div class="ccon">
                             <div class="tw">
                                 {ms:arclist size=1 flag="16"}
                                 <div class="fl pic">
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">
+                                    <a href="/html/web${field.link}" target="_blank">
                                         <img src="{@ms:file field.litpic/}" width="140px" height="115px"
                                              alt="${field.title}" /></a>
                                 </div>
@@ -105,7 +105,7 @@
                             <ul>
                                 {ms:arclist size=4 typeid="9" noflag="16" }
                                 <li>
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                                     <span class="fr">${field.date?date?string("[MM-dd]")}</span>
                                 </li>
                                 {/ms:arclist}
@@ -118,21 +118,21 @@
 <!--                市消委会, 红盾信息-->
                 <div class="fr mod1-2 box02">
                     <div class="ctitle">
-                        <span class="on"><a href="{ms:global.url/}/shixiaoweihui/index.html">市消委会</a></span><span><a
-                            href="{ms:global.url/}/hongdunxinxi/index.html">红盾信息</a></span>
+                        <span class="on"><a href="/html/web/shixiaoweihui/index.html">市消委会</a></span><span><a
+                            href="/html/web/hongdunxinxi/index.html">红盾信息</a></span>
                     </div>
                     <div class="cccon">
                         <div class="ccon">
                             <div class="hot">
                                 {ms:arclist size=1 flag="15"}
-                                <a href="{ms:global.url/}${field.link}"
+                                <a href="/html/web${field.link}"
                                    target="_blank">${field.title}</a>
                                 {/ms:arclist}
                             </div>
                             <ul>
                                 {ms:arclist size=7 typeid="14" noflag="15" }
                                 <li>
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                                     <span class="fr">${field.date?date?string("[MM-dd]")}</span>
                                 </li>
                                 {/ms:arclist}
@@ -142,14 +142,14 @@
                         <div class="ccon">
                             <div class="hot">
                                 {ms:arclist size=1 flag="14"}
-                                <a href="{ms:global.url/}${field.link}"
+                                <a href="/html/web${field.link}"
                                    target="_blank">${field.title}</a>
                                 {/ms:arclist}
                             </div>
                             <ul>
                                 {ms:arclist size=7 typeid="15" noflag="14" }
                                 <li>
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                                     <span class="fr">${field.date?date?string("[MM-dd]")}</span>
                                 </li>
                                 {/ms:arclist}
@@ -166,15 +166,15 @@
 <!--                比较试验, 调查体验-->
                 <div class="fl mod1-1 box03">
                     <div class="ctitle">
-                        <span class="on"><a href="{ms:global.url/}/bijiaoshiyan/index.html">比较试验</a></span><span><a
-                            href="{ms:global.url/}/diaochatiyan/index.html">调查体验</a></span>
+                        <span class="on"><a href="/html/web/bijiaoshiyan/index.html">比较试验</a></span><span><a
+                            href="/html/web/diaochatiyan/index.html">调查体验</a></span>
                     </div>
                     <div class="cccon">
                         <div class="ccon">
                             <ul>
                                 {ms:arclist size=8 typeid="12" }
                                 <li>
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                                     <span class="fr">${field.date?date?string("[MM-dd]")}</span>
                                 </li>
                                 {/ms:arclist}
@@ -185,7 +185,7 @@
                             <ul>
                                 {ms:arclist size=8 typeid="17" }
                                 <li>
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                                     <span class="fr">${field.date?date?string("[MM-dd]")}</span>
                                 </li>
                                 {/ms:arclist}
@@ -197,18 +197,18 @@
 <!--                消费知识-->
                 <div class="fr mod1-2 box04">
                     <div class="ctitle">
-                        <span class="on"><a href="{ms:global.url/}/xiaofeizhishi/index.html">消费知识</a></span>
+                        <span class="on"><a href="/html/web/xiaofeizhishi/index.html">消费知识</a></span>
                     </div>
                     <div class="cccon">
                         <div class="ccon xiaofeizhishi">
-                            <a target="_blank" href="{ms:global.url/}/xiaofeizhishi/yi/index.html" target="_blank"><img
-                                    src="{ms:global.host/}{ms:global.style/}/Picture/icon-xfzx-yi.png"></a>
-                            <a target="_blank" href="{ms:global.url/}/xiaofeizhishi/shiwu/index.html" target="_blank"><img
-                                    src="{ms:global.host/}{ms:global.style/}/Picture/icon-xfzx-shi.png"></a>
-                            <a target="_blank" href="{ms:global.url/}/xiaofeizhishi/zhu/index.html" target="_blank"><img
-                                    src="{ms:global.host/}{ms:global.style/}/Picture/icon-xfzx-zhu.png"></a>
-                            <a target="_blank" href="{ms:global.url/}/xiaofeizhishi/xing/index.html" target="_blank"><img
-                                    src="{ms:global.host/}{ms:global.style/}/Picture/icon-xfzx-xing.png"></a>
+                            <a target="_blank" href="/html/web/xiaofeizhishi/yi/index.html" target="_blank"><img
+                                    src="/{ms:global.style/}/Picture/icon-xfzx-yi.png"></a>
+                            <a target="_blank" href="/html/web/xiaofeizhishi/shiwu/index.html" target="_blank"><img
+                                    src="/{ms:global.style/}/Picture/icon-xfzx-shi.png"></a>
+                            <a target="_blank" href="/html/web/xiaofeizhishi/zhu/index.html" target="_blank"><img
+                                    src="/{ms:global.style/}/Picture/icon-xfzx-zhu.png"></a>
+                            <a target="_blank" href="/html/web/xiaofeizhishi/xing/index.html" target="_blank"><img
+                                    src="/{ms:global.style/}/Picture/icon-xfzx-xing.png"></a>
                         </div>
                         <!--ccon end-->
                     </div>
@@ -221,21 +221,21 @@
 <!--                警示提示, 消费评议-->
                 <div class="fl mod1-1">
                     <div class="ctitle">
-                        <span class="on"><a href="{ms:global.url/}/jingshitishi/index.html">警示提示</a></span><span
-                            style="display:none;"><a href="{ms:global.url/}/xiaofeipingyi/index.html">消费评议</a></span>
+                        <span class="on"><a href="/html/web/jingshitishi/index.html">警示提示</a></span><span
+                            style="display:none;"><a href="/html/web/xiaofeipingyi/index.html">消费评议</a></span>
                     </div>
                     <div class="cccon">
                         <div class="ccon">
                             <div class="hot">
                                 {ms:arclist size=1 flag="9"}
-                                <a href="{ms:global.url/}${field.link}"
+                                <a href="/html/web${field.link}"
                                    target="_blank">${field.title}</a>
                                 {/ms:arclist}
                             </div>
                             <ul>
                                 {ms:arclist size=4 typeid="7" noflag="9" }
                                 <li>
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                                     <span class="fr">${field.date?date?string("[MM-dd]")}</span>
                                 </li>
                                 {/ms:arclist}
@@ -245,14 +245,14 @@
                         <div class="ccon" style="display:none;">
                             <div class="hot">
                                 {ms:arclist size=1 flag="12"}
-                                <a href="{ms:global.url/}${field.link}"
+                                <a href="/html/web${field.link}"
                                    target="_blank">${field.title}</a>
                                 {/ms:arclist}
                             </div>
                             <ul>
                                 {ms:arclist size=4 typeid="18" noflag="12" }
                                 <li>
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                                     <span class="fr">${field.date?date?string("[MM-dd]")}</span>
                                 </li>
                                 {/ms:arclist}
@@ -263,15 +263,15 @@
 <!--                消费评议-->
                 <div class="fr mod1-2">
                     <div class="ctitle">
-                        <span class="on"><a href="{ms:global.url/}/xiaofeipingyi/index.html"
+                        <span class="on"><a href="/html/web/xiaofeipingyi/index.html"
                                             target="_blank">消费评议</a></span>
-                        <a style="display:none;" href="{ms:global.url/}/xiaofeipingyi/index.html" class="fr"
+                        <a style="display:none;" href="/html/web/xiaofeipingyi/index.html" class="fr"
                            style="font-size: 12px; margin-top: 10px; margin-right: 8px;">更多>></a>
                     </div>
                     <div class="ccon">
                         <div class="hot">
                             {ms:arclist size=1 flag="12"}
-                            <a href="{ms:global.url/}${field.link}"
+                            <a href="/html/web${field.link}"
                                target="_blank">${field.title}</a>
                             {/ms:arclist}
                         </div>
@@ -279,7 +279,7 @@
                             {ms:channel typeid="18" type="self"}
                                 {ms:arclist size=4 typeid="18" noflag="12" }
                                 <li>
-                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                    <a href="/html/web${field.link}" target="_blank">${field.title}</a>
                                     <span class="fr">${field.date?date?string("[MM-dd]")}</span>
                                 </li>
                                 {/ms:arclist}
@@ -301,31 +301,31 @@
                 <ul>
                     <li>快速链接</li>
                     <li><a target="_blank"
-                            href="{ms:global.url/}/fang/index.html"><img
-                                src="{ms:global.host/}{ms:global.style/}/Picture/icon-fxxf.png" />放心消费</a></li>
-                    <li><a target="_blank" href="{ms:global.url/}/tousuzhinan/index.html"><img
-                                src="{ms:global.host/}{ms:global.style/}/Picture/icon-tszn.png" />投诉指南</a></li>
+                            href="/html/web/fang/index.html"><img
+                                src="/{ms:global.style/}/Picture/icon-fxxf.png" />放心消费</a></li>
+                    <li><a target="_blank" href="/html/web/tousuzhinan/index.html"><img
+                                src="/{ms:global.style/}/Picture/icon-tszn.png" />投诉指南</a></li>
                 </ul>
             </div>
             <div class="mt5 mod2">
-                <div class="strong yh">视频中心 | <a href="{ms:global.url/}/shipinzhongxin/index.html">更多</a></div>
+                <div class="strong yh">视频中心 | <a href="/html/web/shipinzhongxin/index.html">更多</a></div>
                 {ms:arclist size=1 typeid="21" ispaging=true}
                 <div class="con">
 
-                    <a href="{ms:global.url/}${field.link}" target="_blank">
+                    <a href="/html/web${field.link}" target="_blank">
                         <img src="{@ms:file field.litpic/}" width="200px" height="130px" style="height: 130px"></a>
                 </div>
                 {/ms:arclist}
             </div>
             <div class="mt5 mod2 mod3 zhuanti">
-                <div class="strong yh">专题报道 | <a href="{ms:global.url/}/zhuantibaodao/index.html">更多</a></div>
+                <div class="strong yh">专题报道 | <a href="/html/web/zhuantibaodao/index.html">更多</a></div>
 
                 <div class="con">
                     <div class="title"></div>
                     <ul>
                         {ms:arclist size=5 typeid="19" ispaging=true}
                         <li>
-                            <a href="{ms:global.url/}${field.link}" target="_blank">
+                            <a href="/html/web${field.link}" target="_blank">
                                 <img src="{@ms:file field.litpic/}" width="200px" height="130px">
                             </a>
                         </li>
@@ -334,7 +334,7 @@
                 </div>
                 <ul class="listt">
                     {ms:arclist size=3 typeid="19" ispaging=true}
-                    <li>·<a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></li>
+                    <li>·<a href="/html/web${field.link}" target="_blank">${field.title}</a></li>
                     {/ms:arclist}
                 </ul>
             </div>
@@ -346,10 +346,10 @@
             </script>
             <div class="mod5 mod6">
                 <div class="title"><strong>法律法规</strong><span class="fr"><a
-                            href="{ms:global.url/}/zhengcefagui/index.html" target="_blank">更多>></a></span></div>
+                            href="/html/web/zhengcefagui/index.html" target="_blank">更多>></a></span></div>
                 <ul>
                     {ms:arclist size=10 typeid="10" ispaging=true}
-                    <li>·<a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></li>
+                    <li>·<a href="/html/web${field.link}" target="_blank">${field.title}</a></li>
                     {/ms:arclist}
                 </ul>
             </div>
@@ -360,27 +360,27 @@
 <!--    友情链接-->
     <div class="w">
         <div class="link-top">
-            <img src="{ms:global.host/}{ms:global.style/}/Picture/link-top.png" />
+            <img src="/{ms:global.style/}/Picture/link-top.png" />
         </div>
         <div class="link-p">
             <p>
-                <a href="http://www.samr.gov.cn/" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/link-gjgs.png" /></a>
-                <a href="http://www.cca.org.cn/" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/link-zgxfz.png" /></a>
-                <a href="http://amr.gd.gov.cn/" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/link-gdglj.png" /></a>
-                <a href="http://scjgj.gz.gov.cn/" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/link-gzhd.png" /></a>
+                <a href="http://www.samr.gov.cn/" target="_blank"><img src="/{ms:global.style/}/Picture/link-gjgs.png" /></a>
+                <a href="http://www.cca.org.cn/" target="_blank"><img src="/{ms:global.style/}/Picture/link-zgxfz.png" /></a>
+                <a href="http://amr.gd.gov.cn/" target="_blank"><img src="/{ms:global.style/}/Picture/link-gdglj.png" /></a>
+                <a href="http://scjgj.gz.gov.cn/" target="_blank"><img src="/{ms:global.style/}/Picture/link-gzhd.png" /></a>
                 <a href="http://www.consumer.gov.mo/Shop/Intro.aspx?lang=zh" target="_blank"><img
-                        src="{ms:global.host/}{ms:global.style/}/Picture/link-cx.png" /></a>
+                        src="/{ms:global.style/}/Picture/link-cx.png" /></a>
                 <a href="http://www.consumer.gov.mo/Default.aspx?lang=zh" target="_blank"><img
-                        src="{ms:global.host/}{ms:global.style/}/Picture/link-am.png" /></a>
-                <a href="https://www.consumer.org.hk/ws_chi/" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/link-xg.png" /></a>
+                        src="/{ms:global.style/}/Picture/link-am.png" /></a>
+                <a href="https://www.consumer.org.hk/ws_chi/" target="_blank"><img src="/{ms:global.style/}/Picture/link-xg.png" /></a>
             </p>
             <p class="tow">
-                <a href="http://www.gdcc315.cn/" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/link-2-1.png" /></a>
-                <a href="http://www.sz315.org/" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/link-2-2.png" /></a>
-                <a href="http://www.zhuhai315.com/" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/link-2-3.png" /></a>
-                <a href="http://www.fs315.org/" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/link-2-4.png" /></a>
-                <a href="http://www.dongguanshi315.com/" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/link-2-6.png" /></a>
-                <a href="http://www.zhaoqing315.com" target="_blank"><img src="{ms:global.host/}{ms:global.style/}/Picture/link-2-7.png" /></a>
+                <a href="http://www.gdcc315.cn/" target="_blank"><img src="/{ms:global.style/}/Picture/link-2-1.png" /></a>
+                <a href="http://www.sz315.org/" target="_blank"><img src="/{ms:global.style/}/Picture/link-2-2.png" /></a>
+                <a href="http://www.zhuhai315.com/" target="_blank"><img src="/{ms:global.style/}/Picture/link-2-3.png" /></a>
+                <a href="http://www.fs315.org/" target="_blank"><img src="/{ms:global.style/}/Picture/link-2-4.png" /></a>
+                <a href="http://www.dongguanshi315.com/" target="_blank"><img src="/{ms:global.style/}/Picture/link-2-6.png" /></a>
+                <a href="http://www.zhaoqing315.com" target="_blank"><img src="/{ms:global.style/}/Picture/link-2-7.png" /></a>
             </p>
         </div>
     </div>
@@ -429,10 +429,10 @@
     </style>
 
     <div style="display:none" class="fad1">
-        <a class="close" href="javascript:;">X</a><a target="_blank" href="https://wj.qq.com/s2/8138748/4798"><img src="{ms:global.host/}{ms:global.style/}/Picture/gzfc.jpg"></a>
+        <a class="close" href="javascript:;">X</a><a target="_blank" href="https://wj.qq.com/s2/8138748/4798"><img src="/{ms:global.style/}/Picture/gzfc.jpg"></a>
     </div>
     <div class="rad1">
-        <a class="close" href="javascript:;">X</a><a target="_blank" href="https://wj.qq.com/s2/8138748/4798"><img width="160" height="200" src="{ms:global.host/}{ms:global.style/}/Picture/gzfc.jpg"></a>
+        <a class="close" href="javascript:;">X</a><a target="_blank" href="https://wj.qq.com/s2/8138748/4798"><img width="160" height="200" src="/{ms:global.style/}/Picture/gzfc.jpg"></a>
     </div>
     <script type="text/javascript">
         $(".fad1 .close,.rad1 .close").click(function () {

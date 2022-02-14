@@ -13,9 +13,9 @@
 
   <div class="w mt10">
     <div class="fl show">
-      <div class="pson"><a href="{ms:global.host/}">首页</a><span> &gt; </span>
+      <div class="pson"><a href="/">首页</a><span> &gt; </span>
 <!--        <a href="http://www.guangzhou315.cn/list-11-1.html">信息公开</a> > 正文</div>-->
-        {ms:channel type="path"}<a href="{ms:global.url/}${field.typelink}">${field.typetitle}</a>{/ms:channel} > 正文</div>
+        {ms:channel type="path"}<a href="/html/web${field.typelink}">${field.typetitle}</a>{/ms:channel} > 正文</div>
       <div class="con">
         <h1 class="h1">${field.title} </h1>
         <div class="laiyuan">
@@ -37,14 +37,14 @@
       <div class="prenext">
         <p><strong>上一篇：</strong>
           <#if pre.title?has_content>
-          <a href="{ms:global.url/}${pre.link}"> ${pre.title} </a>
+          <a href="/html/web${pre.link}"> ${pre.title} </a>
           <#else>
           第一页
         </#if>
         </p>
         <p style="margin-top:10px;"><strong>下一篇：</strong>
           <#if next.title?has_content>
-          <a href="{ms:global.url/}${next.link}"> ${next.title} </a>
+          <a href="/html/web${next.link}"> ${next.title} </a>
           <#else>
           最后一页
         </#if>
@@ -59,7 +59,7 @@
     <#include "news-right.htm" />
     <div class="clear"></div>
   </div>
-  <script language="JavaScript" src="{ms:global.host/}{ms:global.style/}/js/api.js"></script>
+  <script language="JavaScript" src="/{ms:global.style/}/js/api.js"></script>
 
   <#include "footer.htm" />
 </body>
