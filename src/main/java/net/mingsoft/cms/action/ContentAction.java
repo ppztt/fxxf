@@ -232,7 +232,7 @@ public class ContentAction extends BaseAction {
 			return ResultData.build().error(getResString("err.length", this.getResString("content.url"), "0", "200"));
 		}
 		contentBiz.save(content);
-		generaterArticle(content);
+		new Thread(() -> generaterArticle(content)).start();
 		return ResultData.build().success(content);
 	}
 
@@ -320,7 +320,7 @@ public class ContentAction extends BaseAction {
 			return ResultData.build().error(getResString("err.length", this.getResString("content.url"), "0", "200"));
 		}
 		contentBiz.saveOrUpdate(content);
-		generaterArticle(content);
+		new Thread(() -> generaterArticle(content)).start();
 		return ResultData.build().success(content);
 	}
 
@@ -329,6 +329,7 @@ public class ContentAction extends BaseAction {
 	@Value("${ms.html-dir:html}")
 	private String htmlDir;
 
+	// 生成文章静态页
 	private void generaterArticle(ContentEntity content) {
 		try {
 			List<CategoryBean> articleIdList = null;

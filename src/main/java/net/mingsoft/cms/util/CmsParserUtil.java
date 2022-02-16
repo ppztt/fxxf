@@ -200,7 +200,7 @@ public class CmsParserUtil {
             parserParams.put(ParserUtil.URL, BasicUtil.getWebsiteApp().getAppHostUrl());
             parserParams.put(ParserUtil.APP_ID, BasicUtil.getWebsiteApp().getAppId());
         } else {
-            parserParams.put(ParserUtil.URL, BasicUtil.getUrl());
+            parserParams.put(ParserUtil.URL, BasicUtil.getApp().getAppUrl());
             parserParams.put(ParserUtil.APP_DIR, BasicUtil.getApp().getAppDir());
         }
 
