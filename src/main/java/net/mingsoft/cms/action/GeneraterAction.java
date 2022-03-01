@@ -151,7 +151,7 @@ public class GeneraterAction extends BaseAction {
     @LogAnn(title = "生成栏目", businessType = BusinessTypeEnum.UPDATE)
     @RequiresPermissions("cms:generate:column")
     @ResponseBody
-    public ResultData genernateColumn(HttpServletRequest request, HttpServletResponse response, @PathVariable String categoryId) throws IOException {
+    public ResultData genernateColumn(HttpServletRequest request, HttpServletResponse response, @PathVariable String categoryId) throws IOException, InterruptedException {
         // 获取站点id
         AppEntity app = BasicUtil.getApp();
 
@@ -167,33 +167,15 @@ public class GeneraterAction extends BaseAction {
             columns = categoryBiz.queryChildren(categoryEntity);
         }
 
-        new Thread(() -> {
-        //文章列表
-        List<CategoryBean> articleIdList = null;
-
-        // 获取栏目列表模版
-        for (CategoryEntity column : columns) {
-            //如果是链接就跳过生成
-            if (column.getCategoryType().equals(CategoryTypeEnum.LINK.toString())) {
-                continue;
-            }
-            ContentBean contentBean = new ContentBean();
-            contentBean.setCategoryId(column.getId());
-            contentBean.setCategoryType(column.getCategoryType());
-            articleIdList = contentBiz.queryIdsByCategoryIdForParser(contentBean);
-            // 判断列表类型
-            switch (CategoryTypeEnum.get(column.getCategoryType())) {
-                //TODO 暂时先用字符串代替
-                case LIST: // 列表
-
-        List<CategoryEntity> finalColumns = columns;
+        final List<CategoryEntity> finalColumns = columns;
         new Thread(() -> {
             //文章列表
             List<CategoryBean> articleIdList = null;
+
             // 获取栏目列表模版
             for (CategoryEntity column : finalColumns) {
                 //如果是链接就跳过生成
-                if(column.getCategoryType().equals(CategoryTypeEnum.LINK.toString())) {
+                if (column.getCategoryType().equals(CategoryTypeEnum.LINK.toString())) {
                     continue;
                 }
                 ContentBean contentBean = new ContentBean();
@@ -205,34 +187,39 @@ public class GeneraterAction extends BaseAction {
                     //TODO 暂时先用字符串代替
                     case LIST: // 列表
 
-                    // 判断模板文件是否存在
-                    if (StringUtils.isEmpty(column.getCategoryListUrl()) || !FileUtil.exist(ParserUtil.buildTemplatePath(column.getCategoryListUrl()))) {
-                        LOG.error("{} 模板不存在：{}", column.getCategoryTitle(), column.getCategoryUrl());
-                        continue;
-                    }
+                        // 判断模板文件是否存在
+                        if (StringUtils.isEmpty(column.getCategoryListUrl()) || !FileUtil.exist(ParserUtil.buildTemplatePath(column.getCategoryListUrl()))) {
+                            LOG.error("{} 模板不存在：{}", column.getCategoryTitle(), column.getCategoryUrl());
+                            continue;
+                        }
 
-                    CmsParserUtil.generateList(column, articleIdList.size(), htmlDir);
-                    break;
-                case COVER:// 单页
+                        try {
+                            CmsParserUtil.generateList(column, articleIdList.size(), htmlDir);
+                        } catch (IOException e) {
+                            LOG.error("生成列表错误：{}", e.getMessage(), e);
+                        }
+                        break;
+                    case COVER:// 单页
 
-                    // 判断模板文件是否存在
-                    if (StringUtils.isEmpty(column.getCategoryUrl()) || !FileUtil.exist(ParserUtil.buildTemplatePath(column.getCategoryUrl()))) {
-                        LOG.error("{} 模板不存在：{}", column.getCategoryTitle(), column.getCategoryUrl());
-                        continue;
-                    }
+                        // 判断模板文件是否存在
+                        if (StringUtils.isEmpty(column.getCategoryUrl()) || !FileUtil.exist(ParserUtil.buildTemplatePath(column.getCategoryUrl()))) {
+                            LOG.error("{} 模板不存在：{}", column.getCategoryTitle(), column.getCategoryUrl());
+                            continue;
+                        }
 
-                    if (articleIdList.size() == 0) {
-                        CategoryBean columnArticleIdBean = new CategoryBean();
-                        CopyOptions copyOptions = CopyOptions.create();
-                        copyOptions.setIgnoreError(true);
-                        BeanUtil.copyProperties(column, columnArticleIdBean, copyOptions);
-                        articleIdList.add(columnArticleIdBean);
-                    }
-                    CmsParserUtil.generateBasic(articleIdList, htmlDir);
-                    break;
+                        if (articleIdList.size() == 0) {
+                            CategoryBean columnArticleIdBean = new CategoryBean();
+                            CopyOptions copyOptions = CopyOptions.create();
+                            copyOptions.setIgnoreError(true);
+                            BeanUtil.copyProperties(column, columnArticleIdBean, copyOptions);
+                            articleIdList.add(columnArticleIdBean);
+                        }
+                        CmsParserUtil.generateBasic(articleIdList, htmlDir);
+                        break;
+                }
             }
         }).start();
-
+        Thread.sleep(2000L);
         return ResultData.build().success();
     }
 
@@ -263,11 +250,11 @@ public class GeneraterAction extends BaseAction {
             categoryList = categoryBiz.queryChildren(categoryEntity);
         }
 
-        List<CategoryEntity> finalCategoryList = categoryList;
+        final List<CategoryEntity> finalCategoryList = categoryList;
         new Thread(() -> {
             for (CategoryEntity category : finalCategoryList) {
                 //如果是链接就跳过生成
-                if(category.getCategoryType().equals(CategoryTypeEnum.LINK.toString())) {
+                if (category.getCategoryType().equals(CategoryTypeEnum.LINK.toString())) {
                     continue;
                 }
                 contentBean.setCategoryId(category.getId());
@@ -278,24 +265,15 @@ public class GeneraterAction extends BaseAction {
                 if (category.getCategoryType().equals(CategoryTypeEnum.LIST.toString())) {
                     // 判断模板文件是否存在
                     if (!FileUtil.exist(ParserUtil.buildTemplatePath(category.getCategoryListUrl())) || StringUtils.isEmpty(category.getCategoryListUrl())) {
-                        LOG.error("{} 模板不存在：{}", category.getCategoryTitle(),category.getCategoryListUrl());
+                        LOG.error("{} 模板不存在：{}", category.getCategoryTitle(), category.getCategoryListUrl());
                         continue;
                     }
                 } else if (category.getCategoryType().equals(CategoryTypeEnum.COVER.toString())) {
-                    // 判断模板文件是否存在
-                    if (!FileUtil.exist(ParserUtil.buildTemplatePath(category.getCategoryListUrl())) || StringUtils.isEmpty(category.getCategoryListUrl())) {
-                        LOG.error("{} 模板不存在：{}", category.getCategoryTitle(),category.getCategoryListUrl());
-                        continue;
-                    }
-                    CategoryBean columnArticleIdBean = new CategoryBean();
-                    CopyOptions copyOptions = CopyOptions.create();
-                    copyOptions.setIgnoreError(true);
-                    BeanUtil.copyProperties(category, columnArticleIdBean, copyOptions);
-                    articleIdList[0].add(columnArticleIdBean);
+                    continue;
                 }
                 // 有符合条件的就更新
                 if (articleIdList[0].size() > 0) {
-                    CmsParserUtil.generateBasic(articleIdList[0],htmlDir);
+                    CmsParserUtil.generateBasic(articleIdList[0], htmlDir);
                 }
             }
         }).start();
