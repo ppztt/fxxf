@@ -119,7 +119,7 @@ public class GeneraterAction extends BaseAction {
      * @param request
      * @param response
      */
-    @RequestMapping(value="/generateIndex",method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/generateIndex", method = {RequestMethod.GET, RequestMethod.POST})
     @RequiresPermissions("cms:generate:index")
     @LogAnn(title = "生成主页", businessType = BusinessTypeEnum.UPDATE)
     @ResponseBody
@@ -134,7 +134,7 @@ public class GeneraterAction extends BaseAction {
             return ResultData.build().error(getResString("templet.file"));
         } else {
 
-            CmsParserUtil.generate(tmpFileName, generateFileName,htmlDir);
+            CmsParserUtil.generate(tmpFileName, generateFileName, htmlDir);
             return ResultData.build().success();
         }
     }
@@ -147,7 +147,7 @@ public class GeneraterAction extends BaseAction {
      * @param response
      * @param categoryId
      */
-    @RequestMapping(value="/{categoryId}/genernateColumn",method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/{categoryId}/genernateColumn", method = {RequestMethod.GET, RequestMethod.POST})
     @LogAnn(title = "生成栏目", businessType = BusinessTypeEnum.UPDATE)
     @RequiresPermissions("cms:generate:column")
     @ResponseBody
@@ -167,6 +167,24 @@ public class GeneraterAction extends BaseAction {
             columns = categoryBiz.queryChildren(categoryEntity);
         }
 
+        new Thread(() -> {
+        //文章列表
+        List<CategoryBean> articleIdList = null;
+
+        // 获取栏目列表模版
+        for (CategoryEntity column : columns) {
+            //如果是链接就跳过生成
+            if (column.getCategoryType().equals(CategoryTypeEnum.LINK.toString())) {
+                continue;
+            }
+            ContentBean contentBean = new ContentBean();
+            contentBean.setCategoryId(column.getId());
+            contentBean.setCategoryType(column.getCategoryType());
+            articleIdList = contentBiz.queryIdsByCategoryIdForParser(contentBean);
+            // 判断列表类型
+            switch (CategoryTypeEnum.get(column.getCategoryType())) {
+                //TODO 暂时先用字符串代替
+                case LIST: // 列表
 
         List<CategoryEntity> finalColumns = columns;
         new Thread(() -> {
@@ -187,36 +205,31 @@ public class GeneraterAction extends BaseAction {
                     //TODO 暂时先用字符串代替
                     case LIST: // 列表
 
-                        // 判断模板文件是否存在
-                        if (StringUtils.isEmpty(column.getCategoryListUrl()) || !FileUtil.exist(ParserUtil.buildTemplatePath(column.getCategoryListUrl()))) {
-                            LOG.error("{} 模板不存在：{}", column.getCategoryTitle(),column.getCategoryUrl());
-                            continue;
-                        }
+                    // 判断模板文件是否存在
+                    if (StringUtils.isEmpty(column.getCategoryListUrl()) || !FileUtil.exist(ParserUtil.buildTemplatePath(column.getCategoryListUrl()))) {
+                        LOG.error("{} 模板不存在：{}", column.getCategoryTitle(), column.getCategoryUrl());
+                        continue;
+                    }
 
-                        try {
-                            CmsParserUtil.generateList(column, articleIdList.size(),htmlDir);
-                        } catch (IOException e) {
-                            LOG.error("生成列表错误：{}", e.getMessage(), e);
-                        }
-                        break;
-                    case COVER:// 单页
+                    CmsParserUtil.generateList(column, articleIdList.size(), htmlDir);
+                    break;
+                case COVER:// 单页
 
-                        // 判断模板文件是否存在
-                        if (StringUtils.isEmpty(column.getCategoryUrl()) || !FileUtil.exist(ParserUtil.buildTemplatePath(column.getCategoryUrl()))) {
-                            LOG.error("{} 模板不存在：{}", column.getCategoryTitle(),column.getCategoryUrl());
-                            continue;
-                        }
+                    // 判断模板文件是否存在
+                    if (StringUtils.isEmpty(column.getCategoryUrl()) || !FileUtil.exist(ParserUtil.buildTemplatePath(column.getCategoryUrl()))) {
+                        LOG.error("{} 模板不存在：{}", column.getCategoryTitle(), column.getCategoryUrl());
+                        continue;
+                    }
 
-                        if (articleIdList.size() == 0) {
-                            CategoryBean columnArticleIdBean = new CategoryBean();
-                            CopyOptions copyOptions = CopyOptions.create();
-                            copyOptions.setIgnoreError(true);
-                            BeanUtil.copyProperties(column, columnArticleIdBean, copyOptions);
-                            articleIdList.add(columnArticleIdBean);
-                        }
-                        CmsParserUtil.generateBasic(articleIdList,htmlDir);
-                        break;
-                }
+                    if (articleIdList.size() == 0) {
+                        CategoryBean columnArticleIdBean = new CategoryBean();
+                        CopyOptions copyOptions = CopyOptions.create();
+                        copyOptions.setIgnoreError(true);
+                        BeanUtil.copyProperties(column, columnArticleIdBean, copyOptions);
+                        articleIdList.add(columnArticleIdBean);
+                    }
+                    CmsParserUtil.generateBasic(articleIdList, htmlDir);
+                    break;
             }
         }).start();
 
@@ -230,7 +243,7 @@ public class GeneraterAction extends BaseAction {
      * @param response
      * @param columnId
      */
-    @RequestMapping(value="/{columnId}/generateArticle",method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/{columnId}/generateArticle", method = {RequestMethod.GET, RequestMethod.POST})
     @RequiresPermissions("cms:generate:article")
     @LogAnn(title = "生成文章", businessType = BusinessTypeEnum.UPDATE)
     @ResponseBody
@@ -297,11 +310,11 @@ public class GeneraterAction extends BaseAction {
      * @param request
      * @return
      */
-    @RequestMapping(value="/{position}/viewIndex",method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/{position}/viewIndex", method = {RequestMethod.GET, RequestMethod.POST})
     public String viewIndex(HttpServletRequest request, @PathVariable String position, HttpServletResponse response) {
         AppEntity app = BasicUtil.getApp();
         // 组织主页预览地址
-        String indexPosition = app.getAppHostUrl() + htmlDir+ File.separator + app.getAppDir()
+        String indexPosition = app.getAppHostUrl() + htmlDir + File.separator + app.getAppDir()
                 + File.separator + position + ParserUtil.HTML_SUFFIX;
         return "redirect:" + indexPosition;
     }
