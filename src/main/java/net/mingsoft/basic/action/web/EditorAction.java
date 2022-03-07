@@ -20,18 +20,14 @@
  */
 
 
-
-
 package net.mingsoft.basic.action.web;
 
 import cn.hutool.core.io.FileUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mingsoft.ueditor.MsUeditorActionEnter;
-import net.mingsoft.basic.exception.BusinessException;
 import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.config.MSProperties;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,16 +36,15 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.util.Locale;
 import java.util.Map;
 
 /**
- * 百度编辑器上传
+ * 临时修复：百度编辑器上传，会在下一版本合并
+ *
  * @author 铭软开发团队
  * @date 2019年7月16日
  * 历史修订 2022-1-21 新增normalize(),
- *                  editor()方法过滤非法上传路径
+ * editor()方法过滤非法上传路径
  */
 @ApiIgnore
 @Controller("ueAction")
@@ -57,74 +52,32 @@ import java.util.Map;
 public class EditorAction {
 
     @ResponseBody
-    @RequestMapping(value = "editor", method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "editor", method = {RequestMethod.GET, RequestMethod.POST})
     public String editor(HttpServletRequest request, HttpServletResponse response, String jsonConfig) {
-        String uploadMapping = MSProperties.upload.mapping;
         String uploadFloderPath = MSProperties.upload.path;
-        if (StringUtils.isNotEmpty(uploadFloderPath) && !uploadFloderPath.startsWith("/")){
-            uploadFloderPath = "/"+uploadFloderPath;
-        }
-        String rootPath = BasicUtil.getRealPath("");
-        //如果是绝对路径就直接使用配置的绝对路径
-        File saveFloder=new File(uploadFloderPath);
-        if (Boolean.TRUE.equals(this.isAbsolute(saveFloder, rootPath))) {
-            rootPath = saveFloder.getPath();
-            //因为绝对路径已经映射了路径所以隐藏
-            jsonConfig = jsonConfig.replace("{ms.upload}", "");
-        } else {
-            //如果是相对路径替换成配置的路径
-            jsonConfig = jsonConfig.replace("{ms.upload}","/"+uploadFloderPath);
-        }
+        String rootPath = BasicUtil.getRealPath(uploadFloderPath);
+        jsonConfig = jsonConfig.replace("{ms.upload}", "/" + uploadFloderPath);
         //过滤非法上传路径
-        String path = "/"+uploadFloderPath;
-        Map<String,Object> map = (Map<String,Object>) JSONObject.parse(jsonConfig);
+        Map<String, Object> map = (Map<String, Object>) JSONObject.parse(jsonConfig);
         String imagePathFormat = (String) map.get("imagePathFormat");
-        imagePathFormat = normalize(imagePathFormat,uploadFloderPath);
+        imagePathFormat = FileUtil.normalize(imagePathFormat);
 
         String filePathFormat = (String) map.get("filePathFormat");
-        filePathFormat = normalize(filePathFormat,uploadFloderPath);
+        filePathFormat = FileUtil.normalize(filePathFormat);
 
         String videoPathFormat = (String) map.get("videoPathFormat");
-        videoPathFormat = normalize(videoPathFormat,uploadFloderPath);
+        videoPathFormat = FileUtil.normalize(videoPathFormat);
 
-        map.put("imagePathFormat",imagePathFormat);
-        map.put("filePathFormat",filePathFormat);
-        map.put("videoPathFormat",videoPathFormat);
+        map.put("imagePathFormat", imagePathFormat);
+        map.put("filePathFormat", filePathFormat);
+        map.put("videoPathFormat", videoPathFormat);
 
         jsonConfig = JSONObject.toJSONString(map);
-
         MsUeditorActionEnter actionEnter = new MsUeditorActionEnter(request, rootPath, jsonConfig, BasicUtil.getRealPath(""));
         String json = actionEnter.exec();
-        if (Boolean.TRUE.equals(this.isAbsolute(saveFloder, rootPath))) {
-            //如果是配置的绝对路径需要在前缀加上映射路径
-            Map data = (Map) JSON.parse(json);
-            data.put("url", uploadMapping.replace("/**", "") + data.get("url"));
-            return JSON.toJSONString(data);
-        }
-        return json;
+        Map jsonMap = JSON.parseObject(json,Map.class);
+        jsonMap.put("url","/".concat(uploadFloderPath).concat(jsonMap.get("url")+""));
+        return JSONObject.toJSONString(jsonMap);
     }
 
-    /**
-     * 修复文件的上传路径
-     * @param filePath
-     * @param uploadFloderPath
-     * @return
-     */
-    private String normalize(String filePath,String uploadFloderPath){
-        filePath = FileUtil.normalize(filePath);
-        if (!filePath.startsWith(uploadFloderPath)){
-            throw new BusinessException("非法路径!");
-        }
-        return filePath;
-    }
-
-    private Boolean isAbsolute(File file, String rootPath) {
-        String os = System.getProperty("os.name");
-        if (os.toLowerCase().startsWith("win")) {
-            return file.isAbsolute();
-        } else {
-            String path = file.getPath();
-            return path.startsWith(rootPath);
-        }
-    }
 }
