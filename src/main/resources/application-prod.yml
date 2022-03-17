@@ -5,3 +5,9 @@ spring:
     password: Ccr@1688
     filters: wall,mergeStat
     type: com.alibaba.druid.pool.DruidDataSource
+
+#配置日志
+logging:
+  level:
+    net.mingsoft: info
+  config: classpath:log4j-spring.xml

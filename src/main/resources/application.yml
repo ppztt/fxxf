@@ -5,12 +5,6 @@ server:
 #    key-store: xxx.pfx 证书文件
 #    key-store-password:  1234 证书密码
 
-#配置日志
-logging:
-  level:
-    net.mingsoft: debug
-  config: classpath:log4j-spring.xml
-
 ms:
   shiro-key: eHdoLmNjci5nZGNlci5jbg== #生产必须修改此值否则会存在安全风险，可以通过 https://base64.us/随机生产一个Base64值
   html-dir: html
@@ -47,7 +41,7 @@ spring:
       stat-view-servlet:
         enabled: false #启用druid监控
   profiles:
-    active: dev
+    active: prod
   cache:
     ehcache:
       config: classpath:ehcache.xml
