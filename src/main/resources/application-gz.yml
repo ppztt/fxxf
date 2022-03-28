@@ -1,0 +1,14 @@
+# 广州消委会生产配置
+spring:
+  datasource:
+    url: jdbc:mysql://172.16.0.2:3306/guangzhou315?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&allowMultiQueries=true&useSSL=true
+    username: gzadmin
+    password: Ccr@1688
+    filters: wall,mergeStat
+    type: com.alibaba.druid.pool.DruidDataSource
+
+#配置日志
+logging:
+  level:
+    net.mingsoft: info
+  config: classpath:log4j-spring.xml
