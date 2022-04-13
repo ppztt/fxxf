@@ -1,0 +1,145 @@
+﻿@charset "utf-8";
+/*BY QQ:357425717  WWW.170M.COM*/
+*{padding:0;margin:0;}
+body,div,ul,li,p,span{padding:0;margin:0;}
+body{ font-family:Arial,'宋体',Helvetica, sans-serif; background: url(http://www.zhuhai315.com/statics/images/zh315/bg.jpg) #fff top center no-repeat;font-size: 14px;margin-top: 255px;color: #444;}
+ul,li{ list-style-type:none}
+img{ border:0;}
+a{ text-decoration:none; color:#444;}
+a:hover{ text-decoration:underline;}
+.fl{ float:left;}
+.fr{ float:right;}
+.clear{ clear:both;}
+.w980{ margin:0 auto; width:980px;position:relative;}
+.mb10{margin-bottom: 10px;}
+
+.header .menu{background: url(../images/zh315/menubg.jpg) repeat-x;height: 38px;line-height: 38px;font-size: 16px;font-family: "微软雅黑";text-align: center;margin-bottom: 10px;}
+.header .menu ul:first-child{padding-left:200px;}
+.header .menu li,.header .menu ul span{display: block;color: #fff;float: left;}
+.header .menu li{padding:0 15px;}
+.header .menu li a{color: #fff;}
+.header .menu ul span{margin: 0 5px;}
+.content{z-index:99;}
+.mod{margin-top: 10px;}
+.mod .modL{width: 310px;float: left;margin-right: 15px;}
+.mod .modC{width: 415px;float: left;}
+.mod .modC .title{height:32px;line-height: 32px;padding-bottom: 1px;border-bottom: 2px solid #0a9bd8;font-size: 16px;font-family: "微软雅黑";}
+.mod .modC .title a{display: inline-block;padding:0 15px;text-decoration: none;}
+.mod .modC .title span.on a{background: url(../images/zh315/tbg.jpg) repeat-x;color: #fff;}
+.mod .modC .title span{cursor: pointer;}
+.mod .modC .con ul{margin-left: 20px;}
+.mod .modC .con li{line-height: 26px;height: 26px;overflow:hidden;}
+.mod .t h4{font-size: 16px;font-family: "微软雅黑";font-weight: normal;float: left;}
+.mod .modR{width: 224px;float: right;margin-left: 5px;}
+.mod .modR marquee a{ margin-right:10px;}
+marquee img{ width:80px;height:128px}
+.mt10{margin:10px 0 0 0}
+
+.mod1{height: 256px;overflow: hidden;}
+.mod1 .modL .silde{border: 1px solid #9bc9dc;padding:6px;position: relative;}
+.mod1 .modL .silde .spic{width:296px;height: 242px;overflow: hidden;}
+.mod1 .modL .silde li{width:296px;height: 242px;position: relative;overflow: hidden;}
+.mod1 .modL .silde li p{position: absolute;bottom:0;height: 32px;line-height: 32px;padding:0 10px;text-align: center;width: 276px;overflow: hidden;background: url(../images/zh315/txtbg.png) repeat;}
+.mod1 .modL .silde li p a{color: #fff;font-family: "微软雅黑";font-size: 14px;}
+.mod1 .modL .silde .tab{position: absolute;bottom: 42px;right: 10px;z-index: 100;}
+.mod1 .modL .silde .tab a{display: inline-block;width: 10px;height: 10px;background: #fff;border: 1px solid #999;border-radius: 100%;text-indent: -99999px;margin-left: 3px;}
+.mod1 .modL .silde .tab a.on{background: #0a9bd8;border-color: #fff;}
+.mod1 .modC .con h3{font-size: 16px;font-family: "微软雅黑";height: 30px;line-height: 30px;overflow:hidden;margin-top: 20px;text-align: center;}
+.mod1 .modC .con p{font-size: 12px;text-indent: 20px;line-height: 20px;margin-top: 5px;border-bottom: 1px solid #ccc;padding-bottom: 10px;margin-bottom: 10px;max-height: 40px;overflow: hidden;}
+.mod1 .modR .gonggao{background: #0a9bd8;color: #fff;padding: 4px;font-size: 12px;height: 118px;}
+.mod1 .modR .gonggao a{color: #fff;}
+.mod1 .modR .gonggao .t{height: 30px;line-height: 30px;border-bottom: 1px solid #fff;padding: 0 10px;margin-bottom: 5px;}
+.mod1 .modR .gonggao li{height: 24px;line-height: 24px;overflow: hidden;padding: 0 20px;}
+.mod2{height: 350px;}
+.mod2 .modL{background: #0a9bd8;height: 350px;}
+.mod2 .modL .allc{border: 1px solid #8acfec;margin: 3px;height: 342px;color: #fff;}
+.mod2 .modL .allc .t{height: 26px;line-height: 26px;background: url(../images/zh315/tbg2.jpg) left center no-repeat;padding-left: 40px; border-bottom: 2px solid #fff;}
+.mod2 .modL .allc .t a{color: #fff;}
+.mod2 .modL .allc .con ul{margin-top:15px;}
+.mod2 .modL .allc .con li{line-height: 32px;height: 32px;overflow: hidden;margin: 0 10px;}
+.mod2 .modL .allc .con li a{color: #fff;}
+.mod2 .modC .con{margin-top:25px;}
+.mod2 .modC .con .pic{width: 147px;float: left;}
+.mod2 .modC .con .pic img{width:135px;height: 95px;border: 1px solid rgb(10,156,215);padding:5px;}
+.mod2 .modC .con .txt{width:255px;float: right;}
+.mod2 .modC .con .txt h3{font-size: 16px;font-family: "微软雅黑";height: 30px;line-height: 30px;overflow:hidden;overflow: hidden;}
+.mod2 .modC .con .txt p{height: 65px;line-height: 22px;font-size: 12px; overflow: hidden;margin-bottom: 30px;}
+.mod2 .modC .con ul{clear: both;}
+.mod2 .modR .zixun{background: #0a9bd8;color: #fff;padding: 4px;font-size: 12px;}
+.mod2 .modR .zixun .t{height: 30px;line-height: 30px;border-bottom: 1px solid #fff;padding: 0 10px;margin-bottom: 5px;}
+.mod2 .modR .zixun .c{text-align: center;padding:10px 0 0px 0;}
+.mod2 .modR .zixun .c a{margin-bottom: 16px;display: inline-block;}
+.mod2 .modR .lvshi{background: #FFF;color: #fff;font-size: 12px;border:1px solid #0a9bd8;border-top:0;}
+.mod2 .modR .lvshi .t{height: 30px;line-height: 30px;border-bottom: 1px solid #fff;padding: 0 10px;margin-bottom: 5px;background: #0a9bd8;}
+.mod2 .modR .lvshi .c{text-align: center;padding:10px 10px 0 10px}
+.mod2 .modR .lvshi .c a{margin-bottom: 16px;display: inline-block;}
+.mod3{height: 265px;overflow: hidden;}
+.mod3 .modL .con ul{margin-left: 15px;margin-top: 20px;}
+.mod3 .modL .con li{line-height: 26px;height: 26px;overflow: hidden;}
+.mod3 .title,.mod4 .title{height:32px;line-height: 32px;padding-bottom: 1px;border-bottom: 2px solid #0a9bd8;font-size: 16px;font-family: "微软雅黑";}
+.mod3 .title a,.mod4 .title a{display: inline-block;padding:0 15px;text-decoration: none;}
+.mod3 .title span.on a,.mod4 .title span.on a{background: url(../images/zh315/tbg.jpg) repeat-x;color: #fff;}
+.mod3 .title span,.mod4 .title span{cursor: pointer;}
+.mod3 .modC .con{margin-top: 1px;background-color:#dcf1fa;height: 230px;overflow-y: auto;}
+.mod3 .modC .con .fwlist dt{font-sieze:16px;font-weight:700;text-align:center;padding:4px 0;border-bottom:1px solid #999;}
+.mod3 .modC .con .fwlist table{width:100%;}
+.mod3 .modC .con .fwlist table td{padding: 8px 8px;width:50%;border:0;font-size: 14px;}
+.mod3 .modC .con .fwlist table tr:nth-child(even){background-color:#c6e5f2;}
+.mod3 .modC .con .list{height: 110px;border:0;}
+.mod3 .modC .con .list .pic{width: 98px;float: left;}
+.mod3 .modC .con .list .pic img{width: 90px;height: 80px;border: 1px solid rgb(10,156,215);padding: 3px;}
+.mod3 .modC .con .list .txt{float: right;width: 300px;}
+.mod3 .modC .con .list .txt h3{font-size: 14px;height: 20px;line-height: 20px;overflow: hidden;}
+.mod3 .modC .con .list .txt p{font-size: 12px;line-height: 20px;margin-top: 5px;height: 58px;overflow: hidden;}
+.mod3 .modR .con{line-height: 26px;margin-top: 5px;}
+.mod3 .modR .con p{background-color:#d3f0ee;padding:1px 10px;margin-bottom:5px;font-family:"微软雅黑"}
+.mod4 .con{margin-top: 10px;}
+.mod4 .con .pic{margin-bottom: 10px;}
+.mod4 .con .pic img{padding:3px;border: 1px solid rgb(10,156,215);margin-right: 10px;}
+.mod4 .con .txt select{width: 305px;margin-right:15px;}
+
+.list .ll{width:725px;border:1px solid #ddd;margin:10px 0;}
+.list .ll .crumbs{padding:15px 20px;background: #FFE9CB;}
+.list .ll li{height:35px;line-height:35px;padding: 0 20px;background:#f1f0f0;overflow:hidden;}
+.list .ll li.on{background:#fff;}
+.list .ll li a{display:block;float:left;width: 500px;margin-right: 20px;overflow: hidden;}
+.list .ll li .username{display:block;float:left;width: 85px;overflow: hidden;}
+.list .ll li .rt{display:block;float:right;}
+
+
+.list .lr{width:240px;}
+.list .lr .mod2{margin-bottom:15px;height:auto;}
+.list .lr .mod2 h3{color: #333;border:1px solid #ddd;border-bottom:0;background:#f0f0f0;padding:8px}
+.list .lr .mod2 .c{padding:10px 10px;border: 1px solid #ddd;background: #fff;}
+.list .lr .mod2 .c li{font-size:12px;height: 28px;line-height: 28px;border-bottom: 1px dotted #ddd;overflow:hidden;}
+
+
+.show .sl{width:725px;border:1px solid #ddd;margin:10px 0;}
+.show .sl .crumbs{padding:0 10px;height:30px;line-height:30px;background: #FFE9CB;}
+.show .sl .h1{text-align:center;padding:10px;line-height:24px;font-size:22px;margin-bottom: 10px;}
+.show .sl .h1p{width:697px;background:#eee;height:28px;font-size:12px;line-height:28px;margin:0 auto;text-align:center;margin-bottom:20px}
+.show .sl .con{padding:20px;background-color: #fff;}
+.show .sl .con .c{line-height:24px;}
+.show .sl .con .c td,.show .sl .con .c tr,.show .sl .con .c table{border-style:solid;border-spacing:0px;}
+.show .sr{width:240px;}
+.show .sr .mod2{margin-bottom:15px;height:auto;}
+.show .sr .mod2 h3{color: #333;border:1px solid #ddd;border-bottom:0;background:#f0f0f0;padding:8px}
+.show .sr .mod2 .c{padding:10px 10px;border: 1px solid #ddd;background: #fff;}
+.show .sr .mod2 .c li{font-size:12px;height: 28px;line-height: 28px;border-bottom: 1px dotted #ddd;overflow:hidden;}
+
+#pages{padding:30px 0;text-align:center;}
+#pages a,#pages span{padding:4px 8px;border:1px solid #ccc;}
+#pages span,#pages a:hover{background:#ddd;font-weight:bold;}
+
+.prenext{font-size:12px;margin-bottom:15px}
+.related{border:1px solid #ddd;width:520px;margin:0 auto;margin-bottom:15px;}
+.related h5{background:#259a30;color:#fff;padding:8px;font-size:14px;font-weight:normal;}
+.related ul{padding:10px;}
+.related ul li{height:28px;line-height:28px}
+.show .wypl{background:#eee;height:28px;font-size:12px;line-height:28px;padding:0 10px;color:#f00;}
+.show .wypl b{color:#333;}
+
+.footer{background-color: #0a9bd8;padding:20px 0;width: 100%; color: #fff;margin-top: 20px; height:70px;}
+.footer a{color: #fff;margin:0 5px;}
+.footer .txt{width: 600px; float:left;font-size: 12px;line-height:24px;}
+.bz{ width:80px; height:80px; float:left; margin-left:180px;}

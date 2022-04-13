@@ -1,0 +1,112 @@
+<head>
+    <meta charset="utf-8">
+    <title>{ms:channel type="path"}${field.typetitle}{/ms:channel}</title>
+    <#include "header.htm" />
+</head>
+<div id="layout">
+<div class="mod" id="show">
+    <div class="crumbs">您现在的位置：<a href="{ms:global.url/}">首页</a><span> > </span>{ms:channel type="path"}<a href="{ms:global.url/}${field.typelink}">${field.typetitle}</a>{/ms:channel} > 正文</div>
+    <!--crumbs end-->
+    <div class="con">
+      <h1>${field.title}</h1>
+      <div class="author">时间：${field.date?date?string("yyyy-MM-dd")}&nbsp;&nbsp;&nbsp;来源：${field.source}&nbsp;&nbsp;&nbsp;作者：${field.author}  </div>
+      <div class="c">
+          ${field.content}
+
+
+<!--          {if $allow_visitor==1}-->
+<!--				{$content}-->
+<!--				{pc:get sql="select * FROM v9_news where id=$id" num="1" return="data"}-->
+<!--{loop $data $r}-->
+<!--{if $r['MY_reply']==''}{else}-->
+
+<!--	<div style="COLOR: #ff0000; FONT-SIZE: 14px; FONT-WEIGHT: bold;margin:30px 0 10px 0;">秘书长回答： </div>-->
+<!--	<div style="border:5px solid #ccc;padding:10px;line-height:26px;color: #440101;FONT-FAMILY: '黑体';font-size:16px;">-->
+<!--{$r['MY_reply']}-->
+<!--		</div>-->
+<!--{/if}-->
+<!--{/loop}-->
+<!--{/pc}-->
+<!--		-->
+<!--				&lt;!&ndash;内容关联投票&ndash;&gt;-->
+<!--				{if $voteid}<script language="javascript" src="{APP_PATH}index.php?m=vote&c=index&a=show&action=js&subjectid={$voteid}&type=2"></script>{/if}-->
+<!--                -->
+<!--			{else}-->
+<!--				<CENTER><a href="{APP_PATH}index.php?m=content&c=readpoint&allow_visitor={$allow_visitor}"><font color="red">阅读此信息需要您支付 <B><I>{$readpoint} {if $paytype}元{else}点{/if}</I></B>，点击这里支付</font></a></CENTER>-->
+<!--			{/if}-->
+<!--      </div>-->
+      <div class="next">
+        <p><b>上一篇：</b>
+            <#if pre.title?has_content>
+            <a href="{ms:global.url/}${pre.link}"> ${pre.title} </a>
+            <#else>
+            第一页
+            <a href="{ms:global.url/}${pre.link}">${pre.title}</a>
+        </#if>
+        </p>
+        <p><b>下一篇：</b>
+            <#if next.title?has_content>
+            <a href="{ms:global.url/}${next.link}"> ${next.title} </a>
+            <#else>
+            最后一页
+        </#if>
+        </p>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!--foot-->
+
+</div>
+<#include "footer.htm" />
+<script type="text/javascript">
+
+	function show_ajax(obj) {
+		var keywords = $(obj).text();
+		var offset = $(obj).offset();
+		var jsonitem = '';
+		$.getJSON("{APP_PATH}index.php?m=content&c=index&a=json_list&type=keyword&modelid={$modelid}&id={$id}&keywords="+encodeURIComponent(keywords),
+				function(data){
+				var j = 1;
+				var string = "<div class='point key-float'><div style='position:relative'><div class='arro'></div>";
+				string += "<a href='JavaScript:;' onclick='$(this).parent().parent().remove();' hidefocus='true' class='close'><span>关闭</span></a><div class='contents f12'>";
+				if(data!=0) {
+				  $.each(data, function(i,item){
+					j = i+1;
+					jsonitem += "<a href='"+item.url+"' target='_blank'>"+j+"、"+item.title+"</a><BR>";
+					
+				  });
+					string += jsonitem;
+				} else {
+					string += '没有找到相关的信息！';
+				}
+					string += "</div><span class='o1'></span><span class='o2'></span><span class='o3'></span><span class='o4'></span></div></div>";		
+					$(obj).after(string);
+					$('.key-float').mouseover(
+						function (){
+							$(this).siblings().css({"z-index":0})
+							$(this).css({"z-index":1001});
+						}
+					)
+					$(obj).next().css({ "left": +offset.left-100, "top": +offset.top+$(obj).height()+12});
+				});
+	}
+
+	function add_favorite(title) {
+		$.getJSON('{APP_PATH}api.php?op=add_favorite&title='+encodeURIComponent(title)+'&url='+encodeURIComponent(location.href)+'&'+Math.random()+'&callback=?', function(data){
+			if(data.status==1)	{
+				$("#favorite").html('收藏成功');
+			} else {
+				alert('请登录');
+			}
+		});
+	}
+
+$(function(){
+  $('#Article .content img').LoadImage(true, 660, 660,'{IMG_PATH}s_nopic.gif');    
+})
+
+</script>
+
+<script language="JavaScript" src="{APP_PATH}api.php?op=count&id={$id}&modelid={$modelid}"></script>

@@ -1,0 +1,112 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>搜索结果</title>
+    <#include "header.htm" />
+</head>
+
+<body>
+<div id="layout">
+    <div class="mod" id="list">
+
+        <div class="crumbs">您现在的位置：<a href="{ms:global.url/}">首页</a><span> > </span>搜索结果 > 获得约 ${(page.rcount)!0} 条结果</div>
+
+        <div class="left">
+            <ul>
+                {ms:arclist size=10 ispaging=true}
+                <li>
+                    <a href="{ms:global.url/}${field.link}" target="_blank" class="title">${field.title?replace(search.content_title,'<font color="red">'+search.content_title+'</font>')}</a>
+                    <p>${field.descrip}<a href="{ms:global.url/}${field.link}" target="_blank">【查看全文】</a></p>
+                </li>
+                {/ms:arclist}
+            </ul>
+
+            <div id="app" v-cloak>
+                <div class="pages">
+                    <el-pagination
+                            background
+                            @current-change="handleCurrentChange"
+                            :page-size="pageSize"
+                            :current-page.sync="pageCur"
+                            layout="total, prev, pager, next"
+                            prev-text="上一页"
+                            next-text="下一页"
+                            :total="contentCount"></el-pagination>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="title">推荐文章</div>
+            <ul>
+                {ms:arclist size=10 ispaging=true}
+                <li>
+                    <b>· </b><a href="{ms:global.url/}${field.link}">${field.title}</a>
+                </li>
+                {/ms:arclist}
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<#include "footer.htm" />
+</body>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        watch: {},
+        data: {
+            //当前页数
+            pageCur: ${(page.cur)!1},
+            //每页文章条数
+            pageSize: ${(page.size)!25},
+            //页数总数
+            pageTotal: ${(page.total)!0},
+            //内容总数
+            contentCount: ${(page.rcount)!0}
+        },
+        methods: {
+            switchShow: function (arr) {
+                var that = this
+                arr.forEach(function (x) {
+                    let e = that.$el.querySelector("#key_" + x)
+                    if (e) {
+                        e.style.display = e.style.display == 'none' ? 'flex' : 'none'
+                    }
+                })
+            },
+            handleCurrentChange: function (val) {
+                if (val == 1) {
+                    location.href = "{ms:global.url/}/${field.categoryPath}/index.html";
+                } else {
+                    location.href = "{ms:global.url/}/${field.categoryPath}/list-" + val + ".html";
+                }
+            }
+        },
+        created() {
+        }
+    })
+</script>
+<style>
+    .pages ul li {
+        margin: 0 5px !important;
+        background-color: #f4f4f5 !important;
+        color: #606266 !important;
+        padding: 0 4px !important;
+
+    }
+    .el-pagination.is-background .el-pager li:not(.disabled).active {
+        background-color: #33c47b !important;
+        color: #fff !important;
+    }
+    .pages {
+        /* div在屏幕中居中对齐的方法三：*/
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+
+</html>

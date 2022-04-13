@@ -1,0 +1,422 @@
+﻿  <head>
+      <meta charset="utf-8">
+      <title>珠海消费者权益保护委员会</title>
+      <#include "header.htm" />
+  </head>
+  <!--conent-->
+<div id="layout"> 
+  <div id="content">
+  <!--mod1-->
+  <div class="mod mod-1 flex">
+    <!--left-->
+    <div class="left">
+      <ul>
+          {ms:arclist flag=45 size=4 }
+          <swiper-slide>
+              <!--<a href="[field.source/]" target="_blank" style="width:100%;height: 100%">
+                  <div style="background-image: url('{ms:global.host/}/statics-zhuhai315/{@ms:file field.litpic/}');background-size: cover; background-position: center; width:100%;height: 100%">
+                  </div>
+              </a>-->
+              <ul><li>
+              <a href="{ms:global.url/}${field.link}" target="_blank"><img src="{@ms:file field.litpic/}" width="625px" height="325px" alt=""></a>
+              </li></ul>
+          </swiper-slide>
+          {/ms:arclist}
+            <!--
+          {pc:content action="position" posid="45" num="4" order="listorder DESC"} 
+          {loop $data $r}
+                   <li><a href="{$r[url]}" target="_blank"><img src="{$r['thumb']}" width="625px" height="325px" alt="">
+                    </a></li>
+                 {/loop}
+        {/pc}-->
+      </ul>
+      <div class="t"></div>
+    </div>
+    <!--right-->
+    <div class="right">
+      <div class="top-title flex">
+        <div class="l">消委动态</div>
+        <div class="c"></div>
+        <div class="r"><a href="{ms:global.url/}/xiaoweidongtai/index.html" target="_blank">>>更多</a></div>
+      </div>
+      <div class="con">
+          {ms:arclist typeid=1 size=1}
+          <div class="t"><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></div>
+          <div class="u">
+
+              <p><b>来源：</b>${field.source}</p>
+              <p><b>日期：</b>${field.date?date?string("yyyy-MM-dd")}</p>
+          </div>
+          <div class="c">${field.descrip}.....</div>
+          {/ms:arclist}
+        <!--
+	  {pc:content action="position" posid="51" num="1" order="listorder DESC" moreinfo="1"}
+              {loop $data $r}
+        <div class="t"><a href="{$r[url]}" target="_blank">{$r['title']}</a></div>
+        <div class="u">
+		
+            <p><b>来源：</b>{$r['copyfrom2']}</p>
+            <p><b>日期：</b>{date('Y-m-d',$r[inputtime])}</p>
+        </div>
+        <div class="c">{str_cut($r['description'],600)}.....</div>
+		 {/loop}
+            {/pc}
+-->
+      </div>
+    </div>
+  </div>
+  <!--mod ad-->
+  <div class="mod mod-ad">
+      <div class="left"><a href="{ms:global.url/}/fangxinxiaofeichuangjian/index.html" target="_blank"><img src="{ms:global.host/}/statics-zhuhai315/style2021/images/ad01.png" width="625px" height="105px"/></a></div>
+      <div class="right"><a href="http://gdfxxfcj.gdcc315.cn:8081/front_index" target="_blank"><img src="{ms:global.host/}/statics-zhuhai315/style2021/images/ad02.png"  width="400px" height="105px"/></a></div>
+  </div>
+    <!--mod2-->
+  <div class="mod mod-2">
+    <!--left-->
+    <div class="left">
+        <div class="con">
+            <div class="t"><b>维权工具</b></div>
+            <div class="c">
+                <p><a href="http://ts.gdcc315.cn" target="_blank"><img src="{ms:global.host/}/statics-zhuhai315/style2021/images/ico-ts.png" width="65px" height="85px"/></a></p>
+                <p><a href="{ms:global.url/}/weiquanrexian/index.html" target="_blank"><img src="{ms:global.host/}/statics-zhuhai315/style2021/images/ico-rx.png" width="66px" height="82px"/></a></p>
+                <p><a href="{ms:global.url/}/falvfagui/index.html" target="_blank"><img src="{ms:global.host/}/statics-zhuhai315/style2021/images/ico-fg.png" width="66px" height="85px"/></a></p>
+                <p><a href="{ms:global.url/}/weiquanfuwuzhan/index.html" target="_blank"><img src="{ms:global.host/}/statics-zhuhai315/style2021/images/ico-wq.png" width="83px" height="85px"/></a></p>
+            </div>
+        </div>
+    </div>
+    <!--right-->
+    <div class="right">
+        <div class="con">
+            <div class="t"><b>专业消费维权志愿者</b></div>
+            <div class="c" style="padding:33px 0">
+              <p><a href="#" target="_blank"><img src="{ms:global.host/}/statics-zhuhai315/style2021/images/u01.png" width="163px" height="77px"/></a></p>
+              <p><a href="#" target="_blank"><img src="{ms:global.host/}/statics-zhuhai315/style2021/images/u02.png" width="177px" height="77px"/></a></p>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!--mod3-->
+  <div class="mod mod-3 flex news">
+    <!--left-->
+    <div class="left">
+        <div class="t">
+            <div class="l">消费资讯</div>
+            <div class="r"></div>
+        </div>
+        <div class="c flex">
+            <div class="card"  style="margin-left: 10px;">
+                <div class="c-t" style="left: -18px;">消费新闻</div>
+                <div class="c-c">
+                    <div class="img">
+                        {ms:arclist typeid=10 size=1}
+                        <a href="{ms:global.url/}${field.link}" target="_blank"><img src="{@ms:file field.litpic/}" width="310px" height="150px"/></a>
+                        {/ms:arclist}
+<!--
+					{pc:content action="position" posid="44" num="1" order="listorder DESC"} 
+              {loop $data $r}
+                        <a href="{$r[url]}" target="_blank"><img src="{$r['thumb']}" width="310px" height="150px"/></a>
+						  {/loop}
+            {/pc}
+-->
+                    </div>
+                    <ul>
+                        {ms:arclist typeid=10 size=2}
+                        <li>
+                            <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                            <p>${field.descrip}</p>
+                        </li>
+                        {/ms:arclist}
+<!--
+					 {pc:content action="lists" catid="10" num="2" order="id DESC"} 
+                {loop $data $r}
+                        <li>
+                            <a href="{$r[url]}" target="_blank">{$r['title']}</a>
+                            <p>{str_cut($r['description'],145)}</p>
+                        </li>
+                         {/loop}
+            {/pc}
+-->
+
+                    </ul>
+                    <div class="f"><a href="{ms:global.url/}/xiaofeixinwen/index.html" target="_blank">>>更多</a></div>
+                </div>
+            </div>
+            <div class="card" style="margin-right: 0;">
+                <div class="c-t">市场监管信息</div>
+                <div class="c-c">
+                    <div class="img">
+                        {ms:arclist typeid=21 size=1}
+                        <a href="{ms:global.url/}${field.link}" target="_blank"><img src="{@ms:file field.litpic/}" width="310px" height="150px"/></a>
+                        {/ms:arclist}
+<!--
+                        {pc:content action="position" posid="59" num="1" order="listorder DESC"} 
+              {loop $data $r}
+                        <a href="{$r[url]}" target="_blank"><img src="{$r['thumb']}" width="310px" height="150px"/></a>
+						  {/loop}
+            {/pc}
+            -->
+                    </div>
+                    <ul>
+                        {ms:arclist typeid=21 size=2}
+                        <li>
+                            <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                            <p>${field.descrip}</p>
+                        </li>
+                        {/ms:arclist}
+<!--
+					 {pc:content action="lists" catid="21" num="2" order="id DESC"} 
+                {loop $data $r}
+                        <li>
+                            <a href="{$r[url]}" target="_blank">{$r['title']}</a>
+                            <p>{str_cut($r['description'],145)}</p>
+                        </li>
+                         {/loop}
+            {/pc}-->
+                    </ul>
+                    <div class="f"><a href="{ms:global.url/}/shichangjianguanxinxi/index.html" target="_blank">>>更多</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--right-->
+    <div class="right" style="text-align: center;margin-top: 50px;">
+        <a href="#" target="_blank"><img src="{ms:global.host/}/statics-zhuhai315/style2021/images/ad031.png" width="321px" height="432px"/></a>
+    </div>
+  </div>
+  <div class="mod ad">
+    <a href="#" target="_blank"><img src="{ms:global.host/}/statics-zhuhai315/style2021/images/ad04.png"/></a>
+</div>
+  <!--mod4-->
+  <div class="mod mod-4 news">
+    <div class="t">
+        <div class="l">消费教育</div>
+        <div class="r"></div>
+    </div>
+    <div class="flex">
+    <div class="card" style="margin-left: 10px;">
+        <div class="c-t" style="left: -18px;">警示提示</div>
+        <div class="c-c">
+            <div class="img">
+                {ms:arclist typeid=4 size=1}
+                <a href="{ms:global.url/}${field.link}" target="_blank"><img src="{@ms:file field.litpic/}" width="310px" height="150px"/></a>
+                {/ms:arclist}
+            </div>
+            <ul>
+                {ms:arclist typeid=4 size=2}
+                <li>
+                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                    <p>${field.descrip}</p>
+                </li>
+                {/ms:arclist}
+            </ul>
+<!--
+            <div class="img">
+                  {pc:content action="position" posid="52" num="1" order="listorder DESC"} 
+              {loop $data $r}
+                        <a href="{$r[url]}" target="_blank"><img src="{$r['thumb']}" width="310px" height="165px"/></a>
+						  {/loop}
+            {/pc}
+                    </div>
+                    <ul>
+					 {pc:content action="lists" catid="4" num="2" order="id DESC"} 
+                {loop $data $r}
+                        <li>
+                            <a href="{$r[url]}" target="_blank">{$r['title']}</a>
+                            <p>{str_cut($r['description'],145)}</p>
+                        </li>
+                         {/loop}
+            {/pc}
+            </ul>
+            -->
+            <div class="f"><a href="{ms:global.url/}/jingshitishi/index.html" target="_blank">>>更多</a></div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="c-t">比较试验</div>
+        <div class="c-c">
+            <div class="img">
+                {ms:arclist typeid=2 size=1}
+                <a href="{ms:global.url/}${field.link}" target="_blank"><img src="{@ms:file field.litpic/}" width="310px" height="150px"/></a>
+                {/ms:arclist}
+            </div>
+            <ul>
+                {ms:arclist typeid=2 size=2}
+                <li>
+                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                    <p>${field.descrip}</p>
+                </li>
+                {/ms:arclist}
+            </ul>
+            <!--
+            <div class="img">
+                  {pc:content action="position" posid="54" num="1" order="listorder DESC"} 
+              {loop $data $r}
+                        <a href="{$r[url]}" target="_blank"><img src="{$r['thumb']}" width="310px" height="165px"/></a>
+						  {/loop}
+            {/pc}
+                    </div>
+                    <ul>
+					 {pc:content action="lists" catid="2" num="2" order="id DESC"} 
+                {loop $data $r}
+                        <li>
+                            <a href="{$r[url]}" target="_blank">{$r['title']}</a>
+                            <p>{str_cut($r['description'],145)}</p>
+                        </li>
+                         {/loop}
+            {/pc}
+            </ul>
+            -->
+            <div class="f"><a href="{ms:global.url/}/bijiaoshiyan/index.html" target="_blank">>>更多</a></div>
+        </div>
+    </div>
+    <div class="card"  style="margin-right: 0;">
+        <div class="c-t">消费知识</div>
+        <div class="c-c">
+            <div class="img">
+                {ms:arclist typeid=9 size=1}
+                <a href="{ms:global.url/}${field.link}" target="_blank"><img src="{@ms:file field.litpic/}" width="310px" height="150px"/></a>
+                {/ms:arclist}
+            </div>
+            <ul>
+                {ms:arclist typeid=9 size=2}
+                <li>
+                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                    <p>${field.descrip}</p>
+                </li>
+                {/ms:arclist}
+            </ul>
+            <!--
+            <div class="img">
+                 {pc:content action="position" posid="53" num="1" order="listorder DESC"} 
+              {loop $data $r}
+                        <a href="{$r[url]}" target="_blank"><img src="{$r['thumb']}" width="310px" height="165px"/></a>
+						  {/loop}
+            {/pc}
+                    </div>
+                    <ul>
+					 {pc:content action="lists" catid="9" num="2" order="id DESC"} 
+                {loop $data $r}
+                        <li>
+                            <a href="{$r[url]}" target="_blank">{$r['title']}</a>
+                            <p>{str_cut($r['description'],145)}</p>
+                        </li>
+                         {/loop}
+            {/pc}
+            </ul>
+            -->
+            <div class="f"><a href="{ms:global.url/}/xiaofeizhishi/index.html" target="_blank">>>更多</a></div>
+        </div>
+    </div>
+</div>
+  </div>
+</div>
+<!--link1-->
+<div id="link">
+  <div class="title flex">3·15网盟</div>
+  <div class="con">
+    <ul class="flex">
+      <li><a href="http://www.cca.org.cn/" target="_blank">中国消费者协会</a></li>
+      <li><a href="http://www.gdcc315.cn/" target="_blank">广东省消费者委员会</a></li>
+      <li><a href="http://www.zhuhai.gov.cn/zhsscjgj/" target="_blank">珠海市市场监督管理局（市知识产权局）</a></li>
+      <li><a href="https://www.consumer.org.hk/" target="_blank">香港消费者委员会</a></li>
+      <li><a href="https://www.consumer.gov.mo/Default.aspx?lang=zh" target="_blank">澳门特别行政区政府消费者委员会</a></li>
+    </ul>
+  </div>
+</div>
+<!--link2-->
+<div id="link2">
+  <div class="con flex">
+    <div class="c-txt flex-1">
+      <select name="select4" class="box"
+              onchange="if(this.options[this.selectedIndex].value!=''){location=this.options[this.selectedIndex].value;}">
+        <option selected="">--------- 各省消费者委员会 ---------</option>
+        <option value="http://www.bj315.org">北京市消费者协会</option>
+        <option value="http://www.315.sh.cn">上海市消费者权益保护委员会</option>
+
+        <option value="http://www.hn315.net.cn">海南省消费者委员会</option>
+        
+        <option value="http://www.zj315.org">浙江省消费者权益保护委员会</option>
+        <option value="http://www.ah315.cn">安徽省消费者协会</option>
+        
+
+        <option value="http://www.315ln.cn">辽宁省消费者协会</option>
+        <option value="http://www.jl315.org">吉林省消费者协会</option>
+        
+        <option value="http://www.nm315.com.cn">内蒙古自治区消费者协会</option>
+        <option value="http://www.cq315.org/">重庆市消费者权益保护委员会</option>
+        <option value="http://www.sc315.com.cn">四川省保护消费者权益委员会</option>
+       
+
+        <option value="http://www.sxwq.org.cn">陕西省消费者协会</option>
+        <option value="http://www.gs12315.com/web/web.action">甘肃省消费者协会</option>
+
+        <option value="http://www.heb315.org.cn/ ">河北省消费者协会</option>
+        
+        <option value="http://www.hub315.org.cn/">湖北省消费者委员会</option>
+        <option value="http://www.hunan315.cn/">湖南省消费者委员会</option>
+        <option value="http://www.yn315.com/">云南省消费者协会</option>
+      </select>
+      <select name="select4" class="box"
+              onchange="if(this.options[this.selectedIndex].value!=''){location=this.options[this.selectedIndex].value;}">
+        <option selected="">---------- 市消费者委员会 ---------</option>
+        
+        
+        <option value="http://www.shantou315.com">汕头市消费者委员会</option>
+        <option value="http://www.zhaoqing315.com">肇庆市消费者委员会</option>
+        <option value="http://www.dongguanshi315.com">东莞市消费者委员会</option>
+        <option value="http://www.guangzhou315.com/">广州市消费者委员会</option>
+        <option value="http://www.sz315.org">深圳市消费者委员会</option>
+        <option value="http://www.fs315.org">佛山市消费者委员会</option>
+        
+
+      </select>
+      <select name="select4" class="box"
+              onchange="if(this.options[this.selectedIndex].value!=''){location=this.options[this.selectedIndex].value;}">
+        <option value="#" selected="">------省行业协会------</option>
+        <option value="http://www.gdeba.org.cn">广东省网商协会</option>
+      </select>
+    </div>
+  </div>
+</div>
+</div>
+  <#include "footer.htm" />
+    <SCRIPT src="/statics/js/jquery.ad.js" remote="yes"></script>
+    <div id="addiv" style="Z-INDEX: 10000; LEFT: 2px; WIDTH: 200px; POSITION: absolute; TOP: 600px; HEIGHT: 112px;">
+      <a id="close" href="javascript:;">X</a>
+        <CENTER>
+         <a target="_blank" href="http://www.zhuhai315.com/list-19-1.html"><img width="200" height="115" src="http://www.zhuhai315.com/images/xfcj.jpg"></a>
+        </CENTER>
+    </div>
+<script type="text/javascript">
+$(function() {
+        $('#addiv').imgFloat({
+            speed: 30,
+            xPos: 1000,
+            yPos: 10
+        });
+          $("#close").click(function() {
+            $("#addiv").css("display", "none");
+        })
+})
+</script>
+<style>
+   #close
+    {
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        border: 1px solid #ddd;
+        padding: 2px 5px;
+        background: #fff;
+        color: #f00;
+        font-family: arial, '\5b8b\4f53';
+    }
+    .rad
+    {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        z-index: 999;
+    }
+    
+</style>

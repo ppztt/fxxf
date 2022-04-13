@@ -1,0 +1,141 @@
+<head>
+    <meta charset="utf-8">
+    <title>{ms:channel type="path"}${field.typetitle}{/ms:channel}</title>
+    <#include "header.htm" />
+</head>
+<!--main-->
+<div id="layout">
+<div class="mod" id="list">
+
+    <div class="crumbs">您现在的位置：<a href="{ms:global.url/}">首页</a><span> > </span>
+        {ms:channel type="path"}<a href="{ms:global.url/}${field.typelink}">${field.typetitle}</a>{/ms:channel} > 列表</div>
+
+<!--
+    <div class="crumbs">您现在的位置：<a href="{siteurl($siteid)}">首页</a><span> > </span>{catpos($catid)}列表</div>
+    -->
+    <!--crumbs end-->
+    <div class="left">
+        <ul>
+        {ms:arclist size=10 ispaging=true}
+            <li>
+                <a href="{ms:global.url/}${field.link}" target="_blank" class="title">${field.title}</a>
+                <p>{@ms:len field.descrip 75/}<a href="{ms:global.url/}${field.link}" target="_blank">【查看全文】</a></p>
+            </li>
+        {/ms:arclist}
+        </ul>
+        <div id="app" v-cloak>
+            <div class="pages">
+                <el-pagination
+                        background
+                        @current-change="handleCurrentChange"
+                        :page-size="pageSize"
+                        :current-page.sync="pageCur"
+                        layout="total, prev, pager, next"
+                        prev-text="上一页"
+                        next-text="下一页"
+                        :total="contentCount"></el-pagination>
+            </div>
+        </div>
+<!--        -->
+<!--        <div id="pages" class="text-c">-->
+<!--            <ul>-->
+<!--                <a href="{ms:global.url/}{ms:page.index/}">首页</a>-->
+<!--                <a href="{ms:global.url/}{ms:page.pre/}">上一页</a>-->
+<!--                <a href="{ms:global.url/}{ms:page.next/}">下一页</a>-->
+<!--                <a href="{ms:global.url/}{ms:page.last/}">末页</a>-->
+<!--                当前页/总页数<span>{ms:page.cur/}/{ms:page.total/}</span>-->
+<!--                本页有：<span>{ms:page.rcount/}</span>篇文章</li>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--
+	 {pc:content action="lists" catid="$catid" num="20" order="id DESC" page="$page"}
+            <ul>
+			{loop $data $r}
+             <li>
+               <a href="{$r[url]}" target="_blank" class="title">{$r[title]}</a>
+               <p>{str_cut($r['description'],200)}<a href="{$r[url]}" target="_blank">【查看全文】</a></p>
+            </li>
+         {/loop}
+        </ul>
+    <div id="pages" class="text-c">{$pages}</div>
+	{/pc}
+-->
+  </div>
+  <div class="right">
+    <div class="title">推荐文章</div>
+      <ul>
+          {ms:arclist size=10 ispaging=true}
+        <li>
+          <b>· </b><a href="{ms:global.url/}${field.link}">${field.title}</a>
+        </li>
+          {/ms:arclist}
+      </ul>
+<!--
+	{pc:content action="lists" catid="$catid" num="10" order="id DESC" cache="3600"}
+    <ul>
+       {loop $data $r}
+                <li><b>·</b> <a href="{$r[url]}">{$r[title]}</a></li>
+                {/loop}
+      </ul>
+            {/pc}
+-->
+
+  </div>
+  </div>
+</div>
+<#include "footer.htm" />
+<script>
+    var app = new Vue({
+        el: '#app',
+        watch: {},
+        data: {
+            //当前页数
+            pageCur: ${(page.cur)!1},
+            //每页文章条数
+            pageSize: ${(page.size)!25},
+            //页数总数
+            pageTotal: ${(page.total)!0},
+            //内容总数
+            contentCount: ${(page.rcount)!0}
+        },
+        methods: {
+            switchShow: function (arr) {
+                var that = this
+                arr.forEach(function (x) {
+                    let e = that.$el.querySelector("#key_" + x)
+                    if (e) {
+                        e.style.display = e.style.display == 'none' ? 'flex' : 'none'
+                    }
+                })
+            },
+            handleCurrentChange: function (val) {
+                if (val == 1) {
+                    location.href = "{ms:global.url/}/${field.categoryPath}/index.html";
+                } else {
+                    location.href = "{ms:global.url/}/${field.categoryPath}/list-" + val + ".html";
+                }
+            }
+        },
+        created() {
+        }
+    })
+</script>
+<style>
+    .pages ul li {
+        margin: 0 5px !important;
+        background-color: #f4f4f5 !important;
+        color: #606266 !important;
+        padding: 0 4px !important;
+
+    }
+    .el-pagination.is-background .el-pager li:not(.disabled).active {
+        background-color: #33c47b !important;
+        color: #fff !important;
+    }
+    .pages {
+        /* div在屏幕中居中对齐的方法三：*/
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>

@@ -1,0 +1,38 @@
+<head>
+    <meta charset="utf-8">
+    <title>{ms:global.name/}</title>
+    <#include "header.htm" />
+</head>
+<!--main-->
+<div id="layout">
+<div class="mod" id="list">
+    <div class="crumbs">您现在的位置：<a href="{siteurl($siteid)}">首页</a><span> > </span>{catpos($catid)}列表</div>
+    <!--crumbs end-->
+    <div class="left">
+
+	 {pc:content action="lists" catid="$catid" num="20" order="id DESC" page="$page"}
+            <ul>
+			{loop $data $r}
+             <li>
+               <a href="{$r[url]}" target="_blank" class="title">{$r[title]}</a>
+               <p>{str_cut($r['description'],200)}<a href="{$r[url]}" target="_blank">【查看全文】</a></p>
+            </li>
+         {/loop}
+        </ul>
+    <div id="pages" class="text-c">{$pages}</div>
+	{/pc}
+
+  </div>
+  <div class="right">
+    <div class="title">推荐文章</div>
+	{pc:content action="lists" catid="$catid" num="10" order="id DESC" cache="3600"}
+    <ul>
+       {loop $data $r}
+                <li><b>·</b> <a href="{$r[url]}">{$r[title]}</a></li>
+                {/loop}
+      </ul>
+            {/pc}
+  </div>
+  </div>
+</div>
+<#include "footer.htm" />
