@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=7"/>
+<title>{ms:global.name/}</title>
+<meta name="keywords" content="{ms:global.keyword/}">
+<meta name="description" content="{ms:global.descrip/}">
+<link rel="stylesheet" type="text/css" href="{ms:global.host/}/statics-zhuhai315/statics/css/zhcommon.css" />
+<link href="{ms:global.host/}/statics-zhuhai315/style2021/style/style.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="{ms:global.host/}/statics-zhuhai315/statics/js/jquery.1.8.min.js"></script>
+<script type="text/javascript" src="{ms:global.host/}/statics-zhuhai315/statics/js/jquery.PeakSlide.js"></script>
+<script type="text/javascript" src="{ms:global.host/}/statics-zhuhai315/statics/js/search_common.js"></script>
+<script type="text/javascript" src="{ms:global.host/}/statics-zhuhai315/statics/plugin/vue/2.6.9/vue.min.js"></script>
+<script src="{ms:global.host/}/statics-zhuhai315/statics/plugin/element-ui/2.15.7/index.min.js"></script>
+<link rel="stylesheet" href="{ms:global.host/}/statics-zhuhai315/statics/plugin/element-ui/2.15.7/theme-chalk/index.min.css">
+<link rel="stylesheet" href="{ms:global.host/}/statics-zhuhai315/{ms:global.style/}/css/app.css">
+</head>
+<body>
+  <!--header-->
+<div id="header">
+  <div class="con">
+  <div class="logo">
+      <div><a href="/"><img src="{ms:global.host/}/statics-zhuhai315/style2021/images/logo.png" width="200px"/></a></div>
+
+      <div class="search">
+
+<!--          <form action="{ms:global.host/}/statics-zhuhai315/mcms/search.do" method="post">-->
+<!--              <input type="text" name="content_title" placeholder="请输入关键字">-->
+<!--              <input type="text" name="content_type" placeholder="文章属性,多个以,分隔">-->
+<!--              <input type="text" name="categoryIds" placeholder="请输入栏目id,多个以,分隔">-->
+<!--              <input type="hidden" name="tmpl" value="search.htm" />-->
+<!--              <input type="submit" value="搜索">-->
+<!--          </form>-->
+
+        <form action="{ms:global.host/}/statics-zhuhai315/mcms/search.do" method="post" id="searchDataForm" target="_blank">
+                    <input type="hidden" name="m" value="search">
+                    <input type="hidden" name="c" value="index">
+                    <input type="hidden" name="a" value="init">
+                    <input type="hidden" name="typeid" value="1" id="typeid">
+                    <input type="hidden" name="siteid" value="1" id="siteid">
+<!--                    <input name="q" id="q" value="关键字" maxlength="50" onfocus="if(this.value='关键字')this.value=''"-->
+<!--                           onblur="if(this.value=='')this.value='关键字'" class="input">-->
+<!--                    <input type="submit" name="Submit" value="  " id="Submit" class="input_1">-->
+                    <input id="content_details_or" type="hidden" name="content_details_or">
+                    <input id="content_title" type="text" name="content_title" class="input" placeholder="关键字">
+<!--                    <input type="submit" value="搜索">-->
+                    <a href="javascript:;" id="Submit" onclick="goToSearch()" class="input_1"></a>
+                </form>
+
+    </div>
+    </div>
+  <!--menu-->
+<div id="menu">
+    <div class="menu">
+      <ul class="top-ul">
+        <li class="top-li"><a href="{ms:global.url/}/gonggao/index.html">公 告</a></li>
+        <span class="line">|</span>
+        <li class="top-li"><a href="javascript:;">消费资讯</a>
+          <ul class="sub-ul" style="width: 265px;">
+            <li class="sub-li"><a href="{ms:global.url/}/xiaofeixinwen/index.html">消费新闻</a></li>
+            <li class="sub-li">|</li>
+            <li class="sub-li"><a href="{ms:global.url/}/xiaoweidongtai/index.html">消委动态</a></li>
+            <li class="sub-li">|</li>
+            <li class="sub-li"><a href="{ms:global.url/}/shichangjianguanxinxi/index.html">市场监管信息</a></li>
+          </ul>
+        </li>
+        <span class="line">|</span>
+        <li class="top-li"><a href="javascript:;">消费教育</a>
+          <ul class="sub-ul" style="width: 240px;">
+            <li class="sub-li"><a href="{ms:global.url/}/jingshitishi/index.html">警示提示</a></li>
+            <li class="sub-li">|</li>
+            <li class="sub-li"><a href="{ms:global.url/}/xiaofeizhishi/index.html">消费知识</a></li>
+            <li class="sub-li">|</li>
+            <li class="sub-li"><a href="{ms:global.url/}/bijiaoshiyan/index.html">比较试验</a></li>
+          </ul>
+        </li>
+        <span class="line">|</span>
+        <li class="top-li"><a href="javascript:;">维权工具</a>
+          <ul class="sub-ul">
+            <li class="sub-li"><a href="http://ts.gdcc315.cn/">一键投诉</a></li>
+            <li class="sub-li">|</li>
+            <li class="sub-li"><a href="{ms:global.url/}/weiquanrexian/index.html">维权热线</a></li>
+  <li class="sub-li">|</li>
+            <li class="sub-li"><a href="{ms:global.url/}/weiquanfuwuzhan/index.html">维权服务站</a></li>
+  <li class="sub-li">|</li>
+            <li class="sub-li"><a href="{ms:global.url/}/falvfagui/index.html">法律法规</a></li>
+          </ul>
+        </li>
+        <span class="line" style="margin-right:10px">|</span>
+        <li class="top-li"><a href="{ms:global.url/}/fangxinxiaofeichuangjian/index.html">放心消费创建</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="qr"><img src="{ms:global.host/}/statics-zhuhai315/style2021/images/qr.png" width="80px"/></div>
+ </div>
+</div>
+<!--header end-->
+<script type="text/javascript">
+
+  function goToSearch() {
+      var v = document.getElementById("content_title").value;
+      document.getElementById("content_details_or").value = v;
+      document.getElementById("searchDataForm").submit();
+  }
+
+</script>
