@@ -61,6 +61,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 动态生成页面，需要后台配置自定义页数据
@@ -432,9 +434,15 @@ public class MCmsAction extends net.mingsoft.cms.action.BaseAction {
         if (fieldValueList.size() > 0) {
             params.put("diyModel", fieldValueList);
         }
-
-
-        Map<String, Object> searchMap = field;
+        // 搜索key只取A-Za-z0-9_
+        Map<String, Object> searchMap = new HashMap<>();
+        Pattern r = Pattern.compile("^\\w+$");
+        for (Map.Entry<String, Object> entry : field.entrySet()) {
+            Matcher m = r.matcher(entry.getKey());
+            if (m.find()) {
+                searchMap.put(entry.getKey(), entry.getValue());
+            }
+        }
         searchMap.put("categoryIds",categoryIds);
         StringBuilder urlParams = new StringBuilder();
 
