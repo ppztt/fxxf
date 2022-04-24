@@ -25,7 +25,7 @@
           <div class="v-space"></div>
           <div class="panel-content" style="flex-direction: row;flex-wrap: wrap; flex: unset;margin-top:20px;">
             <div class="mitem"
-                 @click="window.parent.indexVue.openParentMenuInTitle(item.title)"
+                 @click="window.parent.indexVue.openParentMenuInId(item.id)"
                  v-for="item in alwaysList">
               <!--图标开始-->
               <i :class="['iconfont',item.icon]"></i>

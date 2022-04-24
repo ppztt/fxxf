@@ -44,6 +44,8 @@ import net.mingsoft.mdiy.biz.IPageBiz;
 import net.mingsoft.mdiy.entity.ModelEntity;
 import net.mingsoft.mdiy.util.ParserUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -75,6 +77,8 @@ import java.util.regex.Pattern;
 @Controller("dynamicPageAction")
 @RequestMapping("/mcms")
 public class MCmsAction extends net.mingsoft.cms.action.BaseAction {
+
+    protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
     /**
      * 自定义页面业务层
@@ -435,12 +439,15 @@ public class MCmsAction extends net.mingsoft.cms.action.BaseAction {
             params.put("diyModel", fieldValueList);
         }
         // 搜索key只取A-Za-z0-9_
+//        Map<String, Object> searchMap = field;
         Map<String, Object> searchMap = new HashMap<>();
         Pattern r = Pattern.compile("^\\w+$");
         for (Map.Entry<String, Object> entry : field.entrySet()) {
             Matcher m = r.matcher(entry.getKey());
             if (m.find()) {
                 searchMap.put(entry.getKey(), entry.getValue());
+            } else {
+                LOG.warn("过滤非法key：" + entry.getKey());
             }
         }
         searchMap.put("categoryIds",categoryIds);
