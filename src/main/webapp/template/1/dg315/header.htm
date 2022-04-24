@@ -1,0 +1,47 @@
+<header>
+    <div class="left">
+        <img src="{ms:global.host/}/statics-dg315/images/logo.png" />
+        <div class="title-wrap">
+            <div class="title">东莞市消费者委员会</div>
+            <div class="sub-title">DONGGUAN CONSUMER COUNCIL</div>
+        </div>
+    </div>
+    <div class="right">
+        <div class="search">
+            <form action="{ms:global.host/}/mcms/search.do" method="post" id="searchDataForm" target="_blank">
+                <input type="hidden" name="m" value="search">
+                <input type="hidden" name="c" value="index">
+                <input type="hidden" name="a" value="init">
+                <input type="hidden" name="typeid" value="1" id="typeid">
+                <input type="hidden" name="siteid" value="1" id="siteid">
+                <input id="content_details_or" type="hidden" name="content_details_or">
+                <input id="content_title" type="text" name="content_title" placeholder="搜索关键词">
+                <a class="btn" onclick=goToSearch()>搜索</a>
+            </form>
+        </div>
+        <div class="code">
+            <img class="qr-code" src="{ms:global.host/}/statics-dg315/images/qr.png" />
+            <div class="desc">扫码关注公众号</div>
+        </div>
+    </div>
+</header>
+<nav>
+    <a href="/" class="one-tab active home">首页</a>
+    <a href="{ms:global.url/}/xwdt/index.html" class="one-tab">消委动态</a>
+    <a href="{ms:global.url/}/zxyw/index.html" class="one-tab">维权要闻</a>
+    <a href="{ms:global.url/}/xfzs/index.html" class="one-tab">消费之声</a>
+    <a href="{ms:global.url/}/wqal/index.html" class="one-tab">案例分析</a>
+    <a href="{ms:global.url/}/gz1/index.html" class="one-tab">维权评论</a>
+    <a href="{ms:global.url/}/xwzd/index.html" class="one-tab">警示提示</a>
+    <a href="{ms:global.url/}/fxxfcj/index.html" class="one-tab">放心消费创建</a>
+</nav>
+
+<script type="text/javascript">
+
+    function goToSearch() {
+        var v = document.getElementById("content_title").value;
+        document.getElementById("content_details_or").value = v;
+        document.getElementById("searchDataForm").submit();
+    }
+
+</script>

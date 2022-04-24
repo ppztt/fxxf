@@ -1,0 +1,34 @@
+.article {
+  flex: 1;
+  background: white;
+  padding: 16px 24px;
+  margin-right: 10px;
+  font-size: 18px;
+
+  .article-title {
+    margin-top: 10px;
+    font-size: 30px;
+    line-height: 76px;
+    text-align: center;
+  }
+  .article-desc {
+      padding-bottom: 20px;
+      padding-left:26px;
+      border-bottom: 1px solid #bfbfbf;
+      >*{
+          margin-right: 26px;
+      }
+  }
+  .article-content{
+      padding: 20px;
+      line-height: 2.5;
+      border-bottom: 1px solid #bfbfbf;
+      margin-bottom: 16px;
+      font-size: 14px;
+  }
+  .prev-article,.next-article{
+      margin-left: 20px;
+      font-size: 14px;
+      line-height: 2.6;
+  }
+}

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>首页-东莞消费者权益委员会</title>
+    <#include "head-file.htm" />
+</head>
+
+<body>
+    <div class="home-top">
+        <#include "header.htm" />
+        <div class="content">
+            <div class="top">
+                <div class="loop">
+                    <div class="swiper mySwiper">
+                        <div class="swiper-wrapper">
+                            {ms:arclist typeid=18 flag="100" size=4}
+                            <div class="swiper-slide">
+                            <a href="{ms:global.url/}${field.link}" target="_blank"><img src="{@ms:file field.litpic/}" width="406px" height="278px"/></a>
+                            </div>
+                            {/ms:arclist}
+
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+
+                    <div class="desc">
+                        {ms:arclist typeid=18 flag="100" size=4}
+                            <div class="desc-item">
+                            <a href="{ms:global.url/}${field.link}" class="desc-title">${field.title}</a>
+                            <div class="desc-content">${field.descrip}</div>
+                            </div>
+                        {/ms:arclist}
+                    </div>
+                </div>
+                <div class="status">
+                    <div class="main-title">
+                        <span class="title">消委动态</span>
+                        <a href="{ms:global.url/}/zxyw1/index.html" class="more">更多</a>
+                    </div>
+                    <ul class="article-titles">
+                        {ms:arclist typeid=18 size=6}
+                        <li>
+                            <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                        </li>
+                        {/ms:arclist}
+                    </ul>
+                </div>
+            </div>
+            <div class="middle">
+                <div class="left">
+                    <div class="fangxin">
+                        <div class="main-title">
+                            <span class="title">放心消费创建</span>
+                            <a href="{ms:global.url/}/fxxfcj/index.html" class="more">更多</a>
+                        </div>
+                        <div class="fangxin-content">
+                            <div class="scroll-text-wrap">
+                                <div class="scroll-text">
+                                    <p class="p-text"><strong>2020年以来,</strong>东莞市消委会根据省消委会统一部署，积极引导社会力量发挥主体作用参与消费环境建设，组织东莞市美容美发、汽车、酒类、餐饮、连锁餐饮、旅行社、装饰材料、饮料等商协会以及移动通信、药品零售等领域集中开展了“放心消费承诺”单位创建活动，营造放心消费环境。</p><p class="p-text">截至2021年11月全市创建“放心消费承诺”及“线下无理由退货承诺”单位共3127家，其中放心消费承诺店2959家，线下无理由退货承诺店168家。</p>
+                                </div>
+                            </div>
+                            <ul class="article-titles">
+                                {ms:arclist typeid=112 size=4}
+                                <li>
+                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                </li>
+                                {/ms:arclist}
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="weiquan-comsume">
+                        <div class="title-and-articles">
+                            <div class="main-title">
+                                <span class="title">维权要闻</span>
+                                <a href="{ms:global.url/}/zxyw/index.html" class="more">更多</a>
+                            </div>
+                            {ms:arclist typeid=17 flag="100" size=1}
+                            <a href="{ms:global.url/}${field.link}" target="_blank"><img src="{@ms:file field.litpic/}" width="275px" height="170px"/></a>
+                            {/ms:arclist}
+
+                            <ul class="article-titles">
+                                {ms:arclist typeid=17 size=4}
+                                <li>
+                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                </li>
+                                {/ms:arclist}
+
+                            </ul>
+                        </div>
+                        <div class="title-and-articles">
+                            <div class="main-title">
+                                <span class="title">消费之声</span>
+                                <a href="{ms:global.url/}/xfzs/index.html" class="more">更多</a>
+                            </div>
+                            {ms:arclist typeid=30 flag="100" size=1}
+                            <a href="{ms:global.url/}${field.link}" target="_blank"><img src="{@ms:file field.litpic/}" width="275px" height="170px"/></a>
+                            {/ms:arclist}
+
+                            <ul class="article-titles">
+                                {ms:arclist typeid=30 size=4}
+                                <li>
+                                    <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                                </li>
+                                {/ms:arclist}
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="right">
+                    <div class="assistance">
+                        <div class="links">
+                            <a href="{ms:global.url/}/xfwqbs/5770.html" class="item">
+                                <div class="icon-wrap">
+                                    <img src="{ms:global.host/}/statics-dg315/images/fanwei.png" />
+                                </div>
+                                <div class="icon-desc">受理范围</div>
+                            </a>
+                            <a href="{ms:global.url/}/xfwqbs/5771.html" class="item">
+                                <div class="icon-wrap">
+                                    <img src="{ms:global.host/}/statics-dg315/images/yaoqiu.png" />
+                                </div>
+                                <div>受理要求</div>
+                            </a>
+                            <a href="{ms:global.url/}/xfwqbs/5772.html" class="item">
+                                <div class="icon-wrap">
+                                    <img src="{ms:global.host/}/statics-dg315/images/shixian.png" />
+                                </div>
+                                <div>受理时限</div>
+                            </a>
+                            <a href="{ms:global.url/}/xfwqbs/5777.html" class="item">
+                                <div class="icon-wrap">
+                                    <img src="{ms:global.host/}/statics-dg315/images/download.png" />
+                                </div>
+                                <div>表格下载</div>
+                            </a>
+                            <a href="{ms:global.url/}/xfwqbs/5773.html" class="item">
+                                <div class="icon-wrap">
+                                    <img src="{ms:global.host/}/statics-dg315/images/call.png" />
+                                </div>
+                                <div>联系方式</div>
+                            </a>
+                            <a href="{ms:global.url/}/zcfg/index.html" class="item">
+                                <div class="icon-wrap">
+                                    <img src="{ms:global.host/}/statics-dg315/images/legal.png" />
+                                </div>
+                                <div>法律法规</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="safe">
+                        <img src="{ms:global.host/}/statics-dg315/images/ad.png" />
+                        <div class="theme-title-wrap">
+                            <div class="theme-title">
+                                历年年主题
+                            </div>
+                            <a href="{ms:global.url/}/nzt/index.html" class="more">
+                                more>>
+                            </a>
+                        </div>
+                        {ms:arclist typeid=111 size=3}
+                        <div class="theme">${field.title}</div>
+                        {/ms:arclist}
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="title-and-articles">
+                    <div class="main-title">
+                        <span class="title">案例分析</span>
+                        <a href="{ms:global.url/}/wqal/index.html" class="more">更多</a>
+                    </div>
+                    
+
+                    <ul class="article-titles">
+                        {ms:arclist typeid=19 size=4}
+                        <li>
+                            <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                        </li>
+                        {/ms:arclist}
+
+                    </ul>
+                </div>
+                <div class="title-and-articles">
+                    <div class="main-title">
+                        <span class="title">维权评论</span>
+                        <a href="{ms:global.url/}/zcfg5/index.html" class="more">更多</a>
+                    </div>
+                    
+
+                    <ul class="article-titles">
+                        {ms:arclist typeid=40 size=4}
+                        <li>
+                            <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                        </li>
+                        {/ms:arclist}
+
+
+                    </ul>
+                </div>
+                <div class="title-and-articles">
+                    <div class="main-title">
+                        <span class="title">警示提示</span>
+                        <a href="{ms:global.url/}/xwzd/index.html" class="more">更多</a>
+                    </div>
+                    
+
+                    <ul class="article-titles">
+                        {ms:arclist typeid=20 size=4}
+                        <li>
+                            <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                        </li>
+                        {/ms:arclist}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="home-bottom">
+        <div class="wrap">
+            <div class="link-part">
+                <span>友情链接：</span>
+                <a href="https://www.cca.org.cn/" target="_blank" class="link">中国消费者协会</a>
+                <a href="http://www.gdcc315.cn/" target="_blank" class="link">广东省消委会消费维权网</a>
+                <a href="http://amr.gd.gov.cn/" target="_blank" class="link">广东省市场监督管理局（知识产权局）</a>
+            </div>
+            <div class="manage">技术运营单位:消费者报道杂志社有限公司</div>
+            <div class="copyright">粤ICP备19054802号-1 Copyright © 2010 东莞市消费者委员会 All Rights Reserved.</div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="{ms:global.host/}/statics-dg315/js/swipe.js"></script>
+    <script src="{ms:global.host/}/statics-dg315/js/search.js"></script>
+</body>
+
+</html>
