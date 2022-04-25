@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <title>{ms:channel type="path"}${field.typetitle}{/ms:channel}</title>
+    <#include "head-file.htm" />
+</head>
+
+<body>
+    <div class="home-top">
+        <#include "header.htm" />
+        <div class="content-page">
+            <div class="article">
+                <div class="bread">
+                    <img src="{ms:global.host/}/statics-dg315/images/location.png" />
+                    <span>所在位置</span>
+                    <span class="icon">></span>
+                    <span>首页</span>
+                    <span class="icon">></span>
+                    <span>{ms:channel type="path"}<a href="{ms:global.url/}${field.typelink}">${field.typetitle}</a>{/ms:channel}</span>
+                    <span class="icon">></span>
+                    <span>正文</span>
+                </div>
+
+                <div class="article-title">${field.title}</div>
+                <div class="article-desc">
+                    <span class="date">时间：${field.date?date?string("yyyy年MM月dd日")}</span>
+                    <span class="souce">来源：${field.source}</span>
+                    <span class="date">作者：${field.author}</span>
+
+                </div>
+                <div class="article-content">
+                    ${field.content}
+                </div>
+                <div class="prev-article">
+                    <li>上一篇：
+                        <#if pre.title?has_content>
+                        <a href="{ms:global.url/}${pre.link}"> ${pre.title} </a>
+                        <#else>
+                        第一页
+                    </#if>
+                    </li>
+                </div>
+                <div class="next-article">
+                    <li>下一篇：
+                        <#if next.title?has_content>
+                        <a href="{ms:global.url/}${next.link}"> ${next.title} </a>
+                        <#else>
+                        最后一页
+                    </#if>
+                    </li>
+                </div>
+            </div>
+            <div class="recomend">
+                <div class="title">
+                    推荐文章
+                </div>
+                <div class="recomend-items">
+                    {ms:arclist size=10 ispaging=true}
+                    <li>
+                        <a href="{ms:global.url/}${field.link}" target="_blank" class="missing_data">${field.title}</a>
+                    </li>
+                    {/ms:arclist}
+                    
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="home-bottom">
+        <div class="wrap">
+            <div class="link-part">
+                <span>友情链接：</span>
+                <a href="https://www.cca.org.cn/" target="_blank" class="link">中国消费者协会</a>
+                <a href="http://www.gdcc315.cn/" target="_blank" class="link">广东省消委会消费维权网</a>
+                <a href="http://amr.gd.gov.cn/" target="_blank" class="link">广东省市场监督管理局（知识产权局）</a>
+            </div>
+            <div class="manage">技术运营单位:消费者报道杂志社有限公司</div>
+            <div class="copyright">粤ICP备19054802号-1 Copyright © 2010 东莞市消费者委员会 All Rights Reserved.</div>
+        </div>
+    </div>
+
+    <script src="{ms:global.host/}/statics-dg315/js/search.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+.article {
+  flex: 1;
+  background: white;
+  padding: 16px 24px;
+  margin-right: 10px;
+  font-size: 18px;
+}
+.article .article-list .item {
+  padding: 0 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.article .article-list .item:nth-of-type(odd) {
+  background: #f0f0f0;
+}
+.article .article-list .item .left {
+  line-height: 2.3;
+}
+.article .article-list .item .left a {
+  font-size: 14px;
+}
+.article .article-list .item .right span {
+  font-size: 14px;
+}
+.article .article-list .item .right .author {
+  margin-right: 25px;
+}
+.article .pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.article .pagination > * {
+  font-size: 14px;
+  margin: 20px 5px;
+  line-height: 1;
+}
+.article .pagination input {
+  width: 36px;
+}
+.article .pagination .border {
+  border: 1px solid #bababa;
+  padding: 4px;
+}
+.article .pagination .current {
+  background: #b8b6b7;
+}/*# sourceMappingURL=list.css.map */

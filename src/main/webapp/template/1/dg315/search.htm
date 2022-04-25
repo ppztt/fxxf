@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>搜索结果-${search.content_title}</title>
+    <#include "head-file.htm" />
+</head>
+
+<body>
+    <div class="home-top">
+        <#include "header.htm" />
+        <div class="content-page">
+            <div class="article">
+                <div class="bread">
+                    <img src="{ms:global.host/}/statics-dg315/images/location.png" />
+                    <span>所在位置</span>
+                    <span class="icon">></span>
+                    <span>首页</span>
+                    <span class="icon">></span>
+                    <span>搜索</span>
+                    <span class="icon">></span>
+                    <span>${search.content_title}</span>
+                </div>
+                <div class="article-list">
+
+                    {ms:arclist size=10 ispaging=true}
+                    <div class="item">
+                        <div class="left">
+                            <a href="{ms:global.url/}${field.link}">${field.title}</a>
+                        </div>
+                        <div class="right">
+                            <span class="date">${field.date?date?string("yyyy-MM-dd")}</span>
+                        </div>
+                    </div>
+                    {/ms:arclist}
+                </div>
+                <div id="app" v-cloak>
+                    <div class="pages">
+                        <el-pagination
+                                background
+                                @current-change="handleCurrentChange"
+                                :page-size="pageSize"
+                                :current-page.sync="pageCur"
+                                layout="total, prev, pager, next"
+                                prev-text="上一页"
+                                next-text="下一页"
+                                :total="contentCount"></el-pagination>
+                    </div>
+                </div>
+
+            </div>
+            <div class="recomend">
+                <div class="title">
+                    推荐文章
+                </div>
+                <div class="recomend-items">
+                    {ms:arclist size=10 ispaging=true}
+                    <li>
+                        <a href="{ms:global.url/}${field.link}" target="_blank" class="missing_data">${field.title}</a>
+                    </li>
+                    {/ms:arclist}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="home-bottom">
+        <div class="wrap">
+            <div class="link-part">
+                <span>友情链接：</span>
+                <a href="https://www.cca.org.cn/" target="_blank" class="link">中国消费者协会</a>
+                <a href="http://www.gdcc315.cn/" target="_blank" class="link">广东省消委会消费维权网</a>
+                <a href="http://amr.gd.gov.cn/" target="_blank" class="link">广东省市场监督管理局（知识产权局）</a>
+            </div>
+            <div class="manage">技术运营单位:消费者报道杂志社有限公司</div>
+            <div class="copyright">粤ICP备19054802号-1 Copyright © 2010 东莞市消费者委员会 All Rights Reserved.</div>
+        </div>
+    </div>
+
+    <script src="{ms:global.host/}/statics-dg315/js/search.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+//当前页数
+                pageCur: ${(page.cur)!1},
+//每页文章条数
+                pageSize: ${(page.size)!10},
+//页数总数
+                pageTotal: ${(page.total)!0},
+//内容总数
+                contentCount: ${(page.rcount)!0},
+                keyword: "{ms:search.content_title/}",
+                categoryIds: ""
+            },
+            methods: {
+                handleCurrentChange:function(val) {
+                    var form = document.createElement("form");
+                    form.setAttribute("method", "post");
+                    var input = document.createElement('input');
+                    input.setAttribute('type', 'hidden');
+                    input.setAttribute('name', 'size');
+                    input.setAttribute('value', this.pageSize);
+                    form.append(input);
+                    input = document.createElement('input');
+                    input.setAttribute('type', 'hidden');
+                    input.setAttribute('name', 'pageNo');
+                    input.setAttribute('value', val);
+                    form.append(input);
+                    input = document.createElement('input');
+                    input.setAttribute('type', 'hidden');
+                    input.setAttribute('name', 'content_title');
+                    input.setAttribute('value', this.keyword);
+                    form.append(input);
+                    input = document.createElement('input');
+                    input.setAttribute('type', 'hidden');
+                    input.setAttribute('name', 'categoryIds');
+                    input.setAttribute('value', this.categoryIds);
+                    form.append(input);
+                    input = document.createElement('input');
+                    input.setAttribute('type', 'hidden');
+                    input.setAttribute('name', 'content_details_or');
+                    input.setAttribute('value', this.keyword);
+                    form.append(input);
+
+                    form.setAttribute("action","{ms:global.host/}/mcms/search.do");
+                    document.body.appendChild(form);
+                    form.submit();
+                    form.remove();
+                },
+            }
+        })
+    </script>
+<!--    <script>-->
+<!--        var app = new Vue({-->
+<!--            el: '#app',-->
+<!--            watch: {},-->
+<!--            data: {-->
+<!--                //当前页数-->
+<!--                pageCur: ${(page.cur)!1},-->
+<!--                //每页文章条数-->
+<!--                pageSize: ${(page.size)!25},-->
+<!--                //页数总数-->
+<!--                pageTotal: ${(page.total)!0},-->
+<!--                //内容总数-->
+<!--                contentCount: ${(page.rcount)!0}-->
+<!--            },-->
+<!--            methods: {-->
+<!--                switchShow: function (arr) {-->
+<!--                    var that = this-->
+<!--                    arr.forEach(function (x) {-->
+<!--                        let e = that.$el.querySelector("#key_" + x)-->
+<!--                        if (e) {-->
+<!--                            e.style.display = e.style.display == 'none' ? 'flex' : 'none'-->
+<!--                        }-->
+<!--                    })-->
+<!--                },-->
+<!--                handleCurrentChange: function (val) {-->
+<!--                    if (val == 1) {-->
+<!--                        location.href = "{ms:global.url/}/${field.categoryPath}/index.html";-->
+<!--                    } else {-->
+<!--                        location.href = "{ms:global.url/}/${field.categoryPath}/list-" + val + ".html";-->
+<!--                    }-->
+<!--                }-->
+<!--            },-->
+<!--            created() {-->
+<!--            }-->
+<!--        })-->
+<!--    </script>-->
+    <style>
+        .pages {
+            /* div在屏幕中居中对齐的方法三：*/
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</body>
+
+</html>
