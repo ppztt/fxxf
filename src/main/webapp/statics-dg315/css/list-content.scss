@@ -1,0 +1,47 @@
+.content-page {
+    padding: 14px 0;
+    background: #f8f6f7;
+    display: flex;
+    justify-content: center;
+
+    .recomend {
+      background: white;
+      width: 248px;
+      flex-shrink: 0;
+      border-top: 6px solid #04a14a;
+      padding: 8px;
+      padding-top: 0;
+      .title {
+        font-size: 16px;
+        line-height: 35px;
+        border-bottom: 1px solid #bfbfbf;
+        margin-left: 4px;
+      }
+      .recomend-items {
+        margin-top: 5px;
+        .recomend-item {
+          font-size: 14px;
+          margin-left: 4px;
+          display: block;
+          line-height: 2;
+        }
+      }
+    }
+  }
+  
+  .bread {
+    color: #595959;
+    height: 40px;
+    border-bottom: 1px solid #bfbfbf;
+    display: flex;
+    align-items: center;
+    span{
+      font-size: 18px;
+    }
+    img {
+      margin-right: 16px;
+    }
+    .icon {
+      margin: 0 16px;
+    }
+  }

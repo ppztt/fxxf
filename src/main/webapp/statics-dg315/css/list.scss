@@ -1,0 +1,54 @@
+.article {
+  flex: 1;
+  background: white;
+  padding: 16px 24px;
+  margin-right: 10px;
+  font-size: 18px;
+  .article-list{
+
+      .item{
+          padding: 0 10px;
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          &:nth-of-type(odd){
+              background: #f0f0f0;
+          }
+          .left{
+              line-height: 2.3;
+              a{
+                  font-size: 14px;
+              }  
+          }
+          .right{
+                span{
+                font-size: 14px;
+
+                }
+              .author{
+                  margin-right: 25px;
+              }
+          }
+      }
+  }
+  .pagination{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    >*{
+          font-size: 14px;
+          margin: 20px 5px;
+          line-height: 1;
+      }
+      input{
+          width: 36px;
+      }
+      .border{
+          border: 1px solid #bababa;
+          padding: 4px;
+      }
+      .current{
+          background: #b8b6b7;
+      }
+  }
+}

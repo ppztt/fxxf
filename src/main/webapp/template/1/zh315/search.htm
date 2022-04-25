@@ -56,36 +56,53 @@
 <script>
     var app = new Vue({
         el: '#app',
-        watch: {},
         data: {
             //当前页数
             pageCur: ${(page.cur)!1},
             //每页文章条数
-            pageSize: ${(page.size)!25},
+            pageSize: ${(page.size)!10},
             //页数总数
             pageTotal: ${(page.total)!0},
             //内容总数
-            contentCount: ${(page.rcount)!0}
+            contentCount: ${(page.rcount)!0},
+            keyword: "{ms:search.content_title/}",
+            categoryIds: ""
         },
         methods: {
-            switchShow: function (arr) {
-                var that = this
-                arr.forEach(function (x) {
-                    let e = that.$el.querySelector("#key_" + x)
-                    if (e) {
-                        e.style.display = e.style.display == 'none' ? 'flex' : 'none'
-                    }
-                })
+            handleCurrentChange:function(val) {
+                var form = document.createElement("form");
+                form.setAttribute("method", "post");
+                var input = document.createElement('input');
+                input.setAttribute('type', 'hidden');
+                input.setAttribute('name', 'size');
+                input.setAttribute('value', this.pageSize);
+                form.append(input);
+                input = document.createElement('input');
+                input.setAttribute('type', 'hidden');
+                input.setAttribute('name', 'pageNo');
+                input.setAttribute('value', val);
+                form.append(input);
+                input = document.createElement('input');
+                input.setAttribute('type', 'hidden');
+                input.setAttribute('name', 'content_title');
+                input.setAttribute('value', this.keyword);
+                form.append(input);
+                input = document.createElement('input');
+                input.setAttribute('type', 'hidden');
+                input.setAttribute('name', 'categoryIds');
+                input.setAttribute('value', this.categoryIds);
+                form.append(input);
+                input = document.createElement('input');
+                input.setAttribute('type', 'hidden');
+                input.setAttribute('name', 'content_details_or');
+                input.setAttribute('value', this.keyword);
+                form.append(input);
+
+                form.setAttribute("action","{ms:global.host/}/mcms/search.do");
+                document.body.appendChild(form);
+                form.submit();
+                form.remove();
             },
-            handleCurrentChange: function (val) {
-                if (val == 1) {
-                    location.href = "{ms:global.url/}/${field.categoryPath}/index.html";
-                } else {
-                    location.href = "{ms:global.url/}/${field.categoryPath}/list-" + val + ".html";
-                }
-            }
-        },
-        created() {
         }
     })
 </script>
