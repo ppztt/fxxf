@@ -93,7 +93,8 @@
                 input.setAttribute('value', this.categoryIds);
                 form.append(input);
 
-                form.setAttribute("action", location.pathname);
+                // form.setAttribute("action", location.pathname);
+                form.setAttribute("action", "{ms:global.host/}/mcms/search.do");
                 document.body.appendChild(form);
                 form.submit();
                 form.remove();
