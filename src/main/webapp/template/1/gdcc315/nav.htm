@@ -81,7 +81,7 @@
             </li>
         </ul>
         <div class="search">
-            <form action="/mcms/search.do" method="post" id="searchDataForm" target="_blank">
+            <form action="/mcms/search.do" method="post" id="searchDataForm">
 <!--                <input type="hidden" name="m" value="search">-->
 <!--                <input type="hidden" name="c" value="index">-->
 <!--                <input type="hidden" name="a" value="init">-->
@@ -102,6 +102,7 @@
                 var v = document.getElementById("q").value;
                 document.getElementById("content_details_or").value = v;
                 document.getElementById("searchDataForm").submit();
+
             }
         </script>
     </div>

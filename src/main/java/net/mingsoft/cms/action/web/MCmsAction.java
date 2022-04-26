@@ -34,6 +34,7 @@ import net.mingsoft.basic.exception.BusinessException;
 import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.cms.bean.CategoryBean;
 import net.mingsoft.cms.bean.ContentBean;
+import net.mingsoft.cms.bean.SearchBean;
 import net.mingsoft.cms.biz.ICategoryBiz;
 import net.mingsoft.cms.biz.IContentBiz;
 import net.mingsoft.cms.entity.CategoryEntity;
@@ -63,8 +64,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 动态生成页面，需要后台配置自定义页数据
@@ -315,7 +314,7 @@ public class MCmsAction extends net.mingsoft.cms.action.BaseAction {
      */
     @RequestMapping(value = "search",method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public String search(HttpServletRequest request, HttpServletResponse response) {
+    public String search(SearchBean searchBean, HttpServletRequest request, HttpServletResponse response) {
         String search = BasicUtil.getString("tmpl", "search.htm");
         //设置分页类
         PageBean page = new PageBean();
@@ -325,7 +324,11 @@ public class MCmsAction extends net.mingsoft.cms.action.BaseAction {
         Map<String, Object> params = new HashMap<>();
 
         // 读取请求字段
-        Map<String, Object> field = BasicUtil.assemblyRequestMap();
+//        Map<String, Object> field = BasicUtil.assemblyRequestMap();
+        Map<String, Object> field = new HashMap<>(3);
+        field.put("content_title", searchBean.getText());
+        field.put("content_details_or", searchBean.getText());
+        field.put("categoryIds", searchBean.getCategoryIds());
 
         // 自定义字段集合
         Map<String, String> diyFieldName = new HashMap<String, String>();
@@ -343,7 +346,8 @@ public class MCmsAction extends net.mingsoft.cms.action.BaseAction {
 
         //获取栏目信息
         String typeId = null;
-        String categoryIds = BasicUtil.getString("categoryIds");
+//        String categoryIds = BasicUtil.getString("categoryIds");
+        String categoryIds = searchBean.getCategoryIds();
 
         //List categoryIdList = CollectionUtil.newArrayList();
 
@@ -439,17 +443,17 @@ public class MCmsAction extends net.mingsoft.cms.action.BaseAction {
             params.put("diyModel", fieldValueList);
         }
         // 搜索key只取A-Za-z0-9_
-//        Map<String, Object> searchMap = field;
-        Map<String, Object> searchMap = new HashMap<>();
-        Pattern r = Pattern.compile("^\\w+$");
-        for (Map.Entry<String, Object> entry : field.entrySet()) {
-            Matcher m = r.matcher(entry.getKey());
-            if (m.find()) {
-                searchMap.put(entry.getKey(), entry.getValue());
-            } else {
-                LOG.warn("过滤非法key：" + entry.getKey());
-            }
-        }
+        Map<String, Object> searchMap = field;
+//        Map<String, Object> searchMap = new HashMap<>();
+//        Pattern r = Pattern.compile("^\\w+$");
+//        for (Map.Entry<String, Object> entry : field.entrySet()) {
+//            Matcher m = r.matcher(entry.getKey());
+//            if (m.find()) {
+//                searchMap.put(entry.getKey(), entry.getValue());
+//            } else {
+//                LOG.warn("过滤非法key：" + entry.getKey());
+//            }
+//        }
         searchMap.put("categoryIds",categoryIds);
         StringBuilder urlParams = new StringBuilder();
 

@@ -130,7 +130,7 @@
                 form.append(input);
                 input = document.createElement('input');
                 input.setAttribute('type', 'hidden');
-                input.setAttribute('name', 'content_title');
+                input.setAttribute('name', 'text');
                 input.setAttribute('value', this.keyword);
                 form.append(input);
                 input = document.createElement('input');
@@ -138,19 +138,12 @@
                 input.setAttribute('name', 'categoryIds');
                 input.setAttribute('value', this.categoryIds);
                 form.append(input);
-                input = document.createElement('input');
-                input.setAttribute('type', 'hidden');
-                input.setAttribute('name', 'content_details_or');
-                input.setAttribute('value', this.keyword);
-                form.append(input);
 
                 form.setAttribute("action", location.pathname);
                 document.body.appendChild(form);
                 form.submit();
                 form.remove();
 
-
-                // location.href = location.pathname + "?size=" + this.pageSize + "&pageNo=" + val + "&content_title=" + this.keyword + "&categoryIds=" + this.categoryIds;
             },
         },
         created() {
