@@ -1,48 +1,74 @@
 .article {
-  flex: 1;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
   background: white;
   padding: 16px 24px;
   margin-right: 10px;
   font-size: 18px;
 }
+
 .article .article-list .item {
   padding: 0 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
+
 .article .article-list .item:nth-of-type(odd) {
   background: #f0f0f0;
 }
+
 .article .article-list .item .left {
   line-height: 2.3;
 }
+
 .article .article-list .item .left a {
   font-size: 14px;
 }
+
 .article .article-list .item .right span {
   font-size: 14px;
 }
+
 .article .article-list .item .right .author {
   margin-right: 25px;
 }
+
 .article .pagination {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
+
 .article .pagination > * {
   font-size: 14px;
   margin: 20px 5px;
   line-height: 1;
 }
+
 .article .pagination input {
   width: 36px;
 }
+
 .article .pagination .border {
   border: 1px solid #bababa;
   padding: 4px;
 }
+
 .article .pagination .current {
   background: #b8b6b7;
-}/*# sourceMappingURL=list.css.map */
+}
+/*# sourceMappingURL=list.css.map */

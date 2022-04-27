@@ -24,7 +24,20 @@
       line-height: 2.5;
       border-bottom: 1px solid #bfbfbf;
       margin-bottom: 16px;
-      font-size: 14px;
+      font-size: 14px !important;
+      font-family: 宋体 !important;
+  }
+  .article-content span{
+    font-size: 14px !important;
+    font-family: 宋体 !important;
+  }
+  .article-content p{
+    font-size: 14px !important;
+    font-family: 宋体 !important;
+  }
+  .article-content font{
+    font-size: 14px !important;
+    font-family: 宋体 !important;
   }
   .prev-article,.next-article{
       margin-left: 20px;

@@ -1,26 +1,35 @@
 .content-page {
   padding: 14px 0;
   background: #f8f6f7;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
+
 .content-page .recomend {
   background: white;
   width: 248px;
-  flex-shrink: 0;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
   border-top: 6px solid #04a14a;
   padding: 8px;
   padding-top: 0;
 }
+
 .content-page .recomend .title {
   font-size: 16px;
   line-height: 35px;
   border-bottom: 1px solid #bfbfbf;
   margin-left: 4px;
 }
+
 .content-page .recomend .recomend-items {
   margin-top: 5px;
 }
+
 .content-page .recomend .recomend-items .recomend-item {
   font-size: 14px;
   margin-left: 4px;
@@ -32,15 +41,23 @@
   color: #595959;
   height: 40px;
   border-bottom: 1px solid #bfbfbf;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
+
 .bread span {
   font-size: 18px;
 }
+
 .bread img {
   margin-right: 16px;
 }
+
 .bread .icon {
   margin: 0 16px;
-}/*# sourceMappingURL=list-content.css.map */
+}
+/*# sourceMappingURL=list-content.css.map */

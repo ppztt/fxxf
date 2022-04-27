@@ -132,7 +132,7 @@
   display: block;
 }
 
-.home-top .content .top .loop .desc .desc-item .desc-title {
+.home-top .content .top .loop .desc .desc-item .desc-title a {
   color: #63b573;
   display: -webkit-box;
   overflow: hidden;
