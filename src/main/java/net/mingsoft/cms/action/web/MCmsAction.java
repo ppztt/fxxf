@@ -26,6 +26,7 @@ package net.mingsoft.cms.action.web;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.PageUtil;
+import com.alibaba.fastjson.JSON;
 import freemarker.core.ParseException;
 import freemarker.template.MalformedTemplateNameException;
 import freemarker.template.TemplateNotFoundException;
@@ -156,10 +157,10 @@ public class MCmsAction extends net.mingsoft.cms.action.BaseAction {
             map.put(k, v.toString().replaceAll("('|\"|\\\\)", "\\\\$1"));
         });
         //获取栏目编号
-        int typeId = BasicUtil.getInt(ParserUtil.TYPE_ID, 0);
+        String typeId = BasicUtil.getString(ParserUtil.TYPE_ID);
         int size = BasicUtil.getInt("size", 10);
         ContentBean contentBean = new ContentBean();
-        contentBean.setCategoryId(String.valueOf(typeId));
+        contentBean.setCategoryId(typeId);
         //获取文章总数
         List<CategoryBean> columnArticles = contentBiz.queryIdsByCategoryIdForParser(contentBean);
         //判断栏目下是否有文章
@@ -208,7 +209,7 @@ public class MCmsAction extends net.mingsoft.cms.action.BaseAction {
     @ResponseBody
     public String view(String orderby, String order, HttpServletRequest req, HttpServletResponse resp) {
         //参数文章编号
-        ContentEntity article = (ContentEntity) contentBiz.getEntity(BasicUtil.getInt(ParserUtil.ID));
+        ContentEntity article = contentBiz.getById(BasicUtil.getString(ParserUtil.ID));
         if (ObjectUtil.isNull(article)) {
             throw new BusinessException(this.getResString("err.empty", this.getResString("id")));
         }
@@ -224,7 +225,7 @@ public class MCmsAction extends net.mingsoft.cms.action.BaseAction {
         //用于详情上下页获取当前文章列表对应的分类，根据文章查询只能获取自身分类
         String typeId = BasicUtil.getString(ParserUtil.TYPE_ID, article.getCategoryId());
         //根据文章编号查询栏目详情模版
-        CategoryEntity column = (CategoryEntity) categoryBiz.getEntity(Integer.parseInt(typeId));
+        CategoryEntity column = categoryBiz.getById(typeId);
         //解析后的内容
         String content = "";
         Map map = BasicUtil.assemblyRequestMap();
@@ -560,12 +561,12 @@ public class MCmsAction extends net.mingsoft.cms.action.BaseAction {
     /**
      * 存储自定义模型字段和接口参数
      *
-     * @author 铭飞开源团队
+     * @author 铭软开源团队
      * @date 2019年3月5日
      */
     class DiyModelMap {
-        String key;
-        Object value;
+        private String key;
+        private Object value;
 
         public String getKey() {
             return key;
@@ -581,6 +582,11 @@ public class MCmsAction extends net.mingsoft.cms.action.BaseAction {
 
         public void setValue(Object value) {
             this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return JSON.toJSONString(this);
         }
     }
 
