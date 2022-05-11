@@ -126,6 +126,7 @@
                     <!-- 可以避免将静态资源打入jar包中，方便生产实时修改静态资源文件-->
                     <!-- 打包生产建议并手动将static、html、upload、template复制到生产 -->
                     <exclude>static*/</exclude>
+                    <exclude>periodical/</exclude>
                     <exclude>html/</exclude>
                     <exclude>upload/</exclude>
                     <exclude>template/</exclude>
