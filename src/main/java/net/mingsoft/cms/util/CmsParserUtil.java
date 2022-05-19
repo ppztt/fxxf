@@ -29,6 +29,7 @@ import freemarker.core.ParseException;
 import freemarker.template.MalformedTemplateNameException;
 import freemarker.template.TemplateNotFoundException;
 import net.mingsoft.base.constant.Const;
+import net.mingsoft.basic.entity.AppEntity;
 import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.basic.util.SpringUtil;
 import net.mingsoft.cms.bean.CategoryBean;
@@ -119,13 +120,14 @@ public class CmsParserUtil {
             parserParams.put(ParserUtil.PAGE, page);
 
             //站点编号
-            if (BasicUtil.getWebsiteApp() != null) {
-                parserParams.put(ParserUtil.APP_DIR, BasicUtil.getWebsiteApp().getAppDir());
-                parserParams.put(ParserUtil.URL, BasicUtil.getWebsiteApp().getAppHostUrl());
-                parserParams.put(ParserUtil.APP_ID, BasicUtil.getWebsiteApp().getAppId());
+            AppEntity app = BasicUtil.getApp();
+            if (app != null) {
+                parserParams.put(ParserUtil.APP_DIR, app.getAppDir());
+                parserParams.put(ParserUtil.URL, app.getAppHostUrl());
+//                parserParams.put(ParserUtil.APP_ID, app.getAppId());
             } else {
                 parserParams.put(ParserUtil.URL, BasicUtil.getUrl());
-                parserParams.put(ParserUtil.APP_DIR, BasicUtil.getApp().getAppDir());
+                parserParams.put(ParserUtil.APP_DIR, app.getAppDir());
             }
 
             parserParams.put(ParserUtil.COLUMN, column);
