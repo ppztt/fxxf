@@ -77,10 +77,11 @@ public class CmsParserUtil {
         map.put(ParserUtil.HTML, htmlDir);
 
         //站点编号
-        if (BasicUtil.getWebsiteApp() != null) {
-            map.put(ParserUtil.APP_DIR, BasicUtil.getWebsiteApp().getAppDir());
-            map.put(ParserUtil.URL, BasicUtil.getWebsiteApp().getAppHostUrl());
-            map.put(ParserUtil.APP_ID, BasicUtil.getWebsiteApp().getAppId());
+        AppEntity app = BasicUtil.getApp();
+        if (app != null) {
+            map.put(ParserUtil.APP_DIR, app.getAppDir());
+            map.put(ParserUtil.URL, app.getAppHostUrl());
+//            map.put(ParserUtil.APP_ID, app.getAppId());
         } else {
             map.put(ParserUtil.URL, BasicUtil.getUrl());
             map.put(ParserUtil.APP_DIR, BasicUtil.getApp().getAppDir());
@@ -197,10 +198,11 @@ public class CmsParserUtil {
 
         Map<String, Object> parserParams = new HashMap<String, Object>();
         parserParams.put(ParserUtil.IS_DO, false);
-        if (BasicUtil.getWebsiteApp() != null) {
-            parserParams.put(ParserUtil.APP_DIR, BasicUtil.getWebsiteApp().getAppDir());
-            parserParams.put(ParserUtil.URL, BasicUtil.getWebsiteApp().getAppHostUrl());
-            parserParams.put(ParserUtil.APP_ID, BasicUtil.getWebsiteApp().getAppId());
+        AppEntity app = BasicUtil.getApp();
+        if (app != null) {
+            parserParams.put(ParserUtil.APP_DIR, app.getAppDir());
+            parserParams.put(ParserUtil.URL, app.getAppHostUrl());
+//            parserParams.put(ParserUtil.APP_ID, app.getAppId());
         } else {
             parserParams.put(ParserUtil.URL, BasicUtil.getApp().getAppUrl());
             parserParams.put(ParserUtil.APP_DIR, BasicUtil.getApp().getAppDir());
