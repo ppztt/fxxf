@@ -76,7 +76,7 @@
         </div>
     </div>
 
-    <script src="{ms:global.host/}/statics-dg315/js/search.js"></script>
+    <script src="/statics-dg315/js/search.js"></script>
     <script>
         var app = new Vue({
             el: '#app',
@@ -118,7 +118,7 @@
                     form.append(input);
 
                     // form.setAttribute("action", location.pathname);
-                    form.setAttribute("action", "{ms:global.host/}/mcms/search.do");
+                    form.setAttribute("action", "/mcms/search.do");
                     document.body.appendChild(form);
                     form.submit();
                     form.remove();
