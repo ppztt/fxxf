@@ -28,6 +28,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.mingsoft.basic.filter.SelfXSSEscapeFilter;
 import net.mingsoft.basic.filter.XSSEscapeFilter;
 import net.mingsoft.basic.interceptor.ActionInterceptor;
 import net.mingsoft.mdiy.biz.IConfigBiz;
@@ -135,7 +136,7 @@ public class WebConfig implements WebMvcConfigurer {
     public FilterRegistrationBean xssFilterRegistration(@Value("${ms.xss.xssEnable:false}") boolean xssEnable,
                                                         @Value("${ms.xss.filterUrl}") String filterUrl,
                                                         @Value("${ms.xss.excludeUrl}") String excludeUrl) {
-        XSSEscapeFilter xssFilter = new XSSEscapeFilter();
+        SelfXSSEscapeFilter xssFilter = new SelfXSSEscapeFilter();
         Map<String, String> initParameters = new HashMap();
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setName("XSSFilter");
