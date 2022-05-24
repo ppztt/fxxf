@@ -1,0 +1,383 @@
+﻿<head>
+    <meta charset="utf-8">
+    <title>研究会官网</title>
+    <#include "header.htm" />
+</head>
+<!--slide-->
+<div id="slide">
+    <div class="w" style="overflow:hidden">
+        <div class="c">
+        <ul class="con">
+
+            {ms:arclist flag="17" size=5}
+            <li style="width:1065px">
+                <div class="pic">
+                    <a href="{ms:global.url/}${field.link}" target="_blank"> <img src="{@ms:file field.litpic/}" width="710px" height="360px"/></a>
+                </div>
+                <div class="txt">
+                    <h2><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></h2>
+                    <p>{@ms:len field.descrip 170/}</p>
+                </div>
+            </li>
+            {/ms:arclist}
+
+        </ul>
+        </div>
+        <div class="arr prev"><a href="javascript:void(0)"></a></div>
+        <div class="arr next"><a href="javascript:void(0)"></a></div>
+        <div class="title"></div>
+    </div>
+</div>
+<script>
+  var  i=$("#side .c ul li").length;
+         for(j=1;j<i+1;j++){$('#side .w .title').append("<span>"+j+"</span>")}
+    jQuery("#slide").slide({
+        mainCell: ".c ul",
+        effect: "leftLoop",
+        defaultIndex: 0,
+        vis: 2,
+        scroll: 1,
+        titCell: ".c ul li",
+        titOnClassName: "on",
+        autoPlay: true
+    });
+     </script>
+<!--mod mod-1-->
+<div class="mod mod-1 w">
+    <div class="mod-l tabs">
+        <div class="l-title tab">
+            <span class="on"><a href="{ms:global.url/}/dynamic/index.html" target="_blank" style="background:none">本会动态</a></span>
+             | 
+            <span><a href="{ms:global.url/}/News/index.html" target="_blank">消费新闻</a></span>
+        </div>
+        <div class="l-con tabcon">
+            <div class="c">
+                <div class="c-c">
+<!--                    {pc:content action="position" posid="16" num="1" order="id DESC LIMIT 0,1&#45;&#45;"}-->
+<!--                      {loop $data $r}-->
+                    {ms:arclist flag="16" size=1}
+                        <div class="img">
+                          <a href="{ms:global.url/}${field.link}" target="_blank">
+                            <img src="{@ms:file field.litpic/}" alt="${field.title}" width="170px" height="100px">
+                          </a>
+                        </div>
+                    {/ms:arclist}
+<!--                      {/loop} -->
+<!--                    {/pc}-->
+                    <div class="txt">
+<!--                    {pc:content action="position" posid="16" num="1" order="id DESC LIMIT 0,1&#45;&#45;"}-->
+<!--                       {loop $data $r}-->
+                        {ms:arclist flag="16" size=1}
+                        <div class="h1">
+                           <h2><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></h2>
+                        </div>
+                        {/ms:arclist}
+<!--                        {/loop} -->
+<!--                    {/pc}-->
+                      <ul>
+<!--                    {pc:content action="lists" catid="7" num="4" order="id DESC LIMIT 0,4&#45;&#45;"} -->
+<!--                        {loop $data $r}-->
+                          {ms:arclist typeid="7" size=4}
+                           <li>·&nbsp;<a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></li>
+                          {/ms:arclist}
+<!--                        {/loop} -->
+<!--                    {/pc}-->
+                      </ul>
+                    </div>
+                </div>
+                <div class="c-c">
+<!--                   {pc:content action="position" posid="16" num="1" order="id DESC LIMIT 1,1&#45;&#45;"}-->
+<!--                         {loop $data $r}-->
+                    {ms:arclist flag="16" size=1}
+                    <div class="img">
+                        <a href="{ms:global.url/}${field.link}">
+                            <img src="{@ms:file field.litpic/}" alt="${field.title}" width="170px" height="100px">
+                        </a>
+                    </div>
+                    {/ms:arclist}
+<!--                     {/loop} -->
+<!--                          {/pc}-->
+                    <div class="txt">
+<!--                        {pc:content action="position" posid="16" num="1" order="id DESC LIMIT 1,1&#45;&#45;"}-->
+<!--                         {loop $data $r}-->
+                        {ms:arclist flag="16" size=1}
+                        <div class="h1">
+                            <h2><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                            </h2>
+                        </div>
+                        {/ms:arclist}
+<!--                        {/loop} -->
+<!--                          {/pc}-->
+                        <ul>
+<!--                           {pc:content action="lists" catid="7" num="4" order="id DESC LIMIT 4,4&#45;&#45;"} -->
+<!--                           {loop $data $r}-->
+                            {ms:arclist typeid="7" size=4}
+                            <li>·&nbsp;<a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></li>
+                            {/ms:arclist}
+<!--                           {/loop} -->
+<!--                          {/pc}-->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="c">
+                <div class="c-c">
+<!--                    {pc:content action="position" posid="15" num="1" order="id DESC LIMIT 0,1&#45;&#45;"}-->
+<!--                         {loop $data $r}-->
+                    {ms:arclist flag="15" size=1}
+                    <div class="img">
+                        <a href="{ms:global.url/}${field.link}" target="_blank">
+                            <img src="{@ms:file field.litpic/}" alt="${field.title}" width="170px" height="100px">
+                        </a>
+                    </div>
+                    {/ms:arclist}
+<!--                     {/loop} -->
+<!--                          {/pc}-->
+                    <div class="txt">
+<!--                         {pc:content action="position" posid="15" num="1" order="id DESC LIMIT 0,1&#45;&#45;"}-->
+<!--                         {loop $data $r}-->
+                        {ms:arclist flag="15" size=1}
+                        <div class="h1">
+                            <h2><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                            </h2>
+                        </div>
+                        {/ms:arclist}
+<!--                        {/loop} -->
+<!--                          {/pc}-->
+                        <ul>
+<!--                          {pc:content action="lists" catid="8" num="4" order="id DESC LIMIT 0,4&#45;&#45;"} -->
+<!--                           {loop $data $r}-->
+                            {ms:arclist typeid="8" size=4}
+                            <li>·&nbsp;<a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</li>
+                            {/ms:arclist}
+<!--                           {/loop} -->
+<!--                          {/pc}-->
+                        </ul>
+                    </div>
+                </div>
+                <div class="c-c">
+<!--                   {pc:content action="position" posid="15" num="1" order="id DESC LIMIT 1,1&#45;&#45;"}-->
+<!--                         {loop $data $r}-->
+                    {ms:arclist flag="15" size=1}
+                    <div class="img">
+                        <a href="{ms:global.url/}${field.link}" target="_blank">
+                            <img src="{@ms:file field.litpic/}" alt="${field.title}" width="170px" height="100px">
+                        </a>
+                    </div>
+                    {/ms:arclist}
+<!--                    <div class="img">-->
+<!--                        <a href="{$r[url]}" target="_blank">-->
+<!--                            <img src="{$r['thumb']}" alt="{$r['title']}" width="170px" height="100px">-->
+<!--                        </a>-->
+<!--                    </div>-->
+
+<!--                     {/loop} -->
+<!--                          {/pc}-->
+                    <div class="txt">
+                        {ms:arclist flag="15" size=1}
+                        <div class="h1">
+                            <h2><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                            </h2>
+                        </div>
+                        {/ms:arclist}
+                        <!--                        {/loop} -->
+                        <!--                          {/pc}-->
+                        <ul>
+                            <!--                          {pc:content action="lists" catid="8" num="4" order="id DESC LIMIT 0,4&#45;&#45;"} -->
+                            <!--                           {loop $data $r}-->
+                            {ms:arclist typeid="8" size=4}
+                            <li>·&nbsp;<a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</li>
+                            {/ms:arclist}
+                            <!--                           {/loop} -->
+                            <!--                          {/pc}-->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mod-r">
+        <div class="r-title">
+            <a href="{ms:global.url/}/viewpoint/index.html" target="_blank">
+            <img src="/statics-yjh315/2019style/images/icon-zhuanjiaguandian.png"/></a>
+        </div>
+        <div class="r-con">
+            <ul>
+<!--                 {pc:content action="lists" catid="12" num="3" order="inputtime DESC"}-->
+<!--                  {loop $data $r}-->
+                {ms:arclist typeid="12" size=3}
+                <li>
+                    <div class="img">
+                        <a href="{ms:global.url/}${field.link}" target="_blank"><img src="{@ms:file field.litpic/}" width="85px" height="85px"/> </a>
+                    </div>
+                    <div class="txt">
+                        <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>{@ms:len field.descrip 40/}
+                    </div>
+                    <div style="clear: both"></div>
+                </li>
+                {/ms:arclist}
+<!--                 {/loop}-->
+<!--                {/pc}-->
+            </ul>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+</div>
+<!--mod mod-2-->
+<div class="mod mod-2 w">
+    <div class="mod-l">
+        <div class="l-title">
+            <span class="on"><a href="javascript:;">学术交流</a></span>
+        </div>
+        <div class="l-con tabs">
+            <div class="tab">
+                <span class="on"><a href="{ms:global.url/}/experiments/index.html" target="_blank">比较试验</a></span>
+                <span><a href="{ms:global.url/}/observe/index.html" target="_blank">消费体察</a></span>
+                <span><a href="{ms:global.url/}/report/index.html" target="_blank">调研报告</a></span>
+            </div>
+            <div class="silde tabcon">
+                <div class="c">
+                    <div class="img">
+<!--                        {pc:content action="position" posid="14" num="1" order="listorder DESC"}-->
+<!--                        {loop $data $r}-->
+                        {ms:arclist flag="14" size=1}
+                         <a href="{ms:global.url/}${field.link}" target="_blank">
+                            <img src="{@ms:file field.litpic/}" alt="${field.title}" width="170px" height="100px">
+                         </a>
+                        {/ms:arclist}
+<!--                        {/loop}-->
+<!--                        {/pc}-->
+                    </div>
+                    <div class="txt">
+<!--                       {pc:content action="lists" catid="10" num="3" order="inputtime DESC"}-->
+<!--                         {loop $data $r}-->
+                        {ms:arclist typeid="10" size=3}
+                        <div class="h1">
+                            <h2><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></h2>
+                            <p>{@ms:len field.descrip 50/}</p>
+                        </div>
+                        {/ms:arclist}
+<!--                         {/loop}-->
+<!--                        {/pc}-->
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+                <div class="c">
+                    <div class="img">
+<!--                        {pc:content action="position" posid="12" num="1" order="listorder DESC"}-->
+<!--                        {loop $data $r}-->
+                        {ms:arclist flag="12" size=1}
+                         <a href="{ms:global.url/}${field.link}" target="_blank">
+                            <img src="{@ms:file field.litpic/}" alt="${field.title}" width="170px" height="100px">
+                         </a>
+                        {/ms:arclist}
+<!--                        {/loop}-->
+<!--                        {/pc}-->
+                    </div>
+                    <div class="txt">
+<!--                       {pc:content action="lists" catid="11" num="3" order="inputtime DESC"}-->
+<!--                         {loop $data $r}-->
+                        {ms:arclist typeid="11" size=3}
+                        <div class="h1">
+                            <h2><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></h2>
+                            <p>{@ms:len field.descrip 50/}</p>
+                        </div>
+                        {/ms:arclist}
+<!--                         {/loop}-->
+<!--                        {/pc}-->
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+                <div class="c">
+                    <div class="img">
+<!--                        {pc:content action="position" posid="13" num="1" order="listorder DESC"}-->
+<!--                        {loop $data $r}-->
+                        {ms:arclist flag="13" size=1}
+                         <a href="{ms:global.url/}${field.link}" target="_blank">
+                            <img src="{@ms:file field.litpic/}" alt="${field.title}" width="170px" height="100px">
+                         </a>
+                        {/ms:arclist}
+<!--                        {/loop}-->
+<!--                        {/pc}-->
+                    </div>
+                    <div class="txt">
+<!--                       {pc:content action="lists" catid="9" num="3" order="inputtime DESC"}-->
+<!--                         {loop $data $r}-->
+                        {ms:arclist typeid="9" size=3}
+                        <div class="h1">
+                            <h2><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></h2>
+<!--                            <p>{str_cut($r['description'],120)}</p>-->
+                            <p>{@ms:len field.descrip 120/}</p>
+                        </div>
+                        {/ms:arclist}
+<!--                         {/loop}-->
+<!--                        {/pc}-->
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+            </div>
+        </div>
+       <div style="clear:both;"></div>
+    </div>
+    <div class="mod-r">
+        <div class="r-title">
+            <a href="{ms:global.url/}/media/index.html" target="_blank">
+            <img src="/statics-yjh315/2019style/images/icon-meitijiaodian.png"/>
+            </a>
+        </div>
+        <div class="r-con meiti">
+            <ul>
+<!--                {pc:content action="lists" catid="13" num="4" order="inputtime DESC"}-->
+<!--                 {loop $data $r}-->
+                {ms:arclist typeid="13" size=4}
+                  <li><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></li>
+                {/ms:arclist}
+<!--                 {/loop}-->
+<!--                {/pc}-->
+            </ul>
+        </div>
+        <div class="r-title">
+            <a href="{ms:global.url/}/ccreports/index.html" target="_blank">
+            <img src="/statics-yjh315/2019style/images/icon-xiaofeizhebaodao.png"/>
+            </a>
+        </div>
+        <div class="r-con">
+            <ul>
+<!--                {pc:content action="lists" catid="14" num="4" order="inputtime DESC"}-->
+<!--                 {loop $data $r}-->
+                {ms:arclist typeid="14" size=4}
+                <li>·&nbsp;<a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a>
+                </li>
+                {/ms:arclist}
+<!--                 {/loop}-->
+<!--                {/pc}-->
+            </ul>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+</div>
+<!--link-->
+<div id="link" class="w">
+    <div class="title">友情链接 /</div>
+    <ul>
+        <li><a href="http://amr.gd.gov.cn/" target="_blank">广东省市场监督管理局</a></li>
+        <li><a href="http://scjgj.gz.gov.cn/" target="_blank">广州市市场监督管理局</a></li>
+        <li><a href="http://www.gdcc315.cn" target="_blank">广东省消委会</a></li>
+		<li><a href="http://www.guangzhou315.com/﻿" target="_blank">广州市消委会</a></li>
+    </ul>
+    <div style="clear: both"></div>
+</div>
+<script type="text/javascript">
+    jQuery(".tabs").slide({
+        mainCell: ".tabcon",
+        effect: "fade",
+        delayTime: 10,
+        defaultIndex: 0,
+        vis: 2,
+        scroll: 1,
+        titCell: ".tab span",
+        titOnClassName: "on",
+        autoPlay: false
+    });
+</script>
+<#include "footer.htm" />

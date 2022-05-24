@@ -5,7 +5,8 @@
 * 东莞市消委会模板静态文件：/src/main/webapp/statics-dg315
 * 珠海市消委会模板：/src/main/webapp/template/1/zh315
 * 珠海市消委会模板静态文件：/src/main/webapp/statics-zhuhai315
-
+* 省消费研究会模板：/src/main/webapp/template/1/yjh315
+* 省消费研究会模板静态文件：/src/main/webapp/statics-yjh315
 
 
 

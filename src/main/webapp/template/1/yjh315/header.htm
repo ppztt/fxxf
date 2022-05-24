@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=7" />
+<title>{ms:global.name/}</title>
+<meta name="keywords" content="{ms:global.keyword/}">
+<meta name="description" content="{ms:global.descrip/}">
+<link rel="stylesheet" type="text/css" href="/statics-yjh315/2019style/css/style.css"/>
+<script type="text/javascript" src="/statics-yjh315/2019style/js/jquery.min.js"></script>
+<script type="text/javascript" src="/statics-yjh315/2019style/js/jquery.PeakSlide.js"></script>
+<script type="text/javascript" src="/statics-yjh315/statics/js/search_common.js"></script>
+    <script type="text/javascript" src="/static/plugins/vue/2.6.9/vue.min.js"></script>
+    <script src="/static/plugins/element-ui/2.15.8/index.min.js"></script>
+    <link rel="stylesheet" href="/static/plugins/element-ui/2.15.8/theme-chalk/index.min.css">
+</head>
+<body>
+<!--header-->
+<div id="header" class="w">
+    <div class="logo">
+        <a href="/"><img src="/statics-yjh315/2019style/images/logo.png"/></a>
+    </div>
+    <div class="menu">
+        <ul class="nav">
+            <li class="nav-li nav-li-1"><a class="nav-a" href="/">首页</a></li>
+            <li class="nav-li nav-li-2">
+                <a class="nav-a" href="javascript:;">本会简介</a>
+                 <ul class="sub-ul">
+                    <li class="sub-li"><a href="{ms:global.url/}/introduction/41.html" target="_blank">宗旨</a></li>
+                    <li class="sub-li"><a href="{ms:global.url/}/introduction/42.html" target="_blank">章程</a></li>
+                    <li class="sub-li"><a href="{ms:global.url/}/introduction/44.html" target="_blank">组织架构</a></li>
+                </ul>
+            </li>
+            <li class="nav-li nav-li-3">
+                <a class="nav-a" href="javascript:;">本会动态</a>
+                 <ul class="sub-ul">
+                    <li class="sub-li"><a href="{ms:global.url/}/dynamic/index.html" target="_blank">本会动态</a></li>
+                    <li class="sub-li"><a href="{ms:global.url/}/News/index.html" target="_blank">消费新闻</a></li>
+                </ul>
+            </li>
+            <li class="nav-li nav-li-4">
+                <a class="nav-a" href="javascript:;">学术交流</a>
+                <ul class="sub-ul">
+                    <li class="sub-li"><a href="{ms:global.url/}/report/index.html" target="_blank">调研报告</a></li>
+                    <li class="sub-li"><a href="{ms:global.url/}/experiments/index.html" target="_blank">比较试验</a></li>
+                    <li class="sub-li"><a href="{ms:global.url/}/observe/index.html" target="_blank">消费体察</a></li>
+                </ul>
+            </li>
+            <li class="nav-li nav-li-5"><a class="nav-a" href="{ms:global.url/}/viewpoint/index.html" target="_blank">专家观点</a></li>
+            <li class="nav-li nav-li-6"><a class="nav-a" href="{ms:global.url/}/ccreports/index.html" target="_blank">消费者报道</a></li>
+            <li class="nav-li nav-li-7"><a class="nav-a" href="{ms:global.url/}/media/index.html" target="_blank">媒体热点</a></li>
+        </ul>
+    </div>
+    <div class="search">
+        <div class="left">
+            <form action="/mcms/search.do" method="post" id="searchDataForm" target="_blank">
+                <input type="hidden" name="m" value="search">
+                <input type="hidden" name="c" value="index">
+                <input type="hidden" name="a" value="init">
+                <input type="hidden" name="typeid" value="1" id="typeid">
+                <input type="hidden" name="siteid" value="1" id="siteid">
+                <!--                    <input name="q" id="q" value="关键字" maxlength="50" onfocus="if(this.value='关键字')this.value=''"-->
+                <!--                           onblur="if(this.value=='')this.value='关键字'" class="input">-->
+                <!--                    <input type="submit" name="Submit" value="  " id="Submit" class="input_1">-->
+                <input id="content_details_or" type="hidden" name="content_details_or">
+                <input id="content_title" type="text" name="text" class="input" placeholder="搜索关键词">
+                <!--                    <input type="submit" value="搜索">-->
+<!--                <a href="javascript:;" id="Submit" onclick="goToSearch()" class="btn"></a>-->
+                <button type="submit" name="Submit" value=" " id="Submit" class="btn">搜索</button>
+            </form>
+
+<!--            <form action="/index.php" method="get" id="formsearch" target="_blank">-->
+<!--                <input type="hidden" name="m" value="search">-->
+<!--                <input type="hidden" name="c" value="index">-->
+<!--                <input type="hidden" name="a" value="init">-->
+<!--                <input type="hidden" name="typeid" value="1" id="typeid">-->
+<!--                <input type="hidden" name="siteid" value="1" id="siteid">-->
+<!--                <input class="input" name="q" id="q" value="搜索关键词" maxlength="50" onfocus="if(this.value='搜索关键词')this.value=''" onblur="if(this.value=='')this.value='搜索关键词'"/>-->
+<!--                <button type="submit" name="Submit" value=" " id="Submit" class="btn">搜索</button>-->
+<!--            </form>-->
+
+        </div>
+        <div class="right">
+            <img src="/statics-yjh315/2019style/images/icon-wx.png"/>
+            <div class="qr">
+              <img src="/statics-yjh315/2019style/images/qr.jpg"/>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    function goToSearch() {
+        var v = document.getElementById("content_title").value;
+        document.getElementById("content_details_or").value = v;
+        document.getElementById("searchDataForm").submit();
+    }
+
+</script>

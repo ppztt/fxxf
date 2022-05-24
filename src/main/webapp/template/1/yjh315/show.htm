@@ -1,0 +1,111 @@
+<head>
+    <meta charset="utf-8">
+    <title>{ms:channel type="path"}${field.typetitle}{/ms:channel}</title>
+    <#include "header.htm" />
+</head>
+<div id="show" class="w flex">
+    <div class="l">
+        <div class="bar">您现在的位置：<a href="{ms:global.url/}">首页</a><span> &gt; </span>{ms:channel type="path"}<a href="{ms:global.url/}${field.typelink}">${field.typetitle}</a>{/ms:channel} > 正文</div>
+        <div class="title">
+            <h1>${field.title} </h1>
+            <p class="author">${field.date?date?string("yyyy-MM-dd")}&nbsp;&nbsp;&nbsp;&nbsp;来源：${field.source}&nbsp;&nbsp;&nbsp;&nbsp;作者：<#if field.author == "admin">佚名<#else>${field.author}</#if></p>
+<!--            <p class="author">${field.date?date?string("yyyy-MM-dd")}&nbsp;&nbsp;&nbsp;&nbsp;来源：${field.source}&nbsp;&nbsp;&nbsp;&nbsp;作者：{if $author==''}佚名{else}{$author}{/if}</p>-->
+        </div>
+        <div class="content">
+            ${field.content}
+            <p class="h1p" style="background:#d6e2ea;text-align:right;margin-top:20px;font-size:12px;padding-right:10px">【<a href="#pinglun">发表评论</a>】【<a href="javascript:window.print();">打印此文</a>】【<a href="javascript:window.close();">关闭窗口</a>】</p>
+           <div class="prenext" style="margin:10px 0">
+              <p><strong>上一篇：</strong>
+<!--                  <a href="{$previous_page[url]}">{$previous_page[title]}</a>-->
+                  <#if pre.title?has_content>
+                  <a href="{ms:global.url/}${pre.link}">${pre.title}</a>
+                  <#else>
+                  第一页
+              </#if>
+              </p>
+              <p style="margin-top:10px;"><strong>下一篇：</strong>
+                  <#if next.title?has_content>
+                  <a href={ms:global.url/}${next.link}">${next.title}</a>
+                  <#else>
+                  最后一页
+              </#if>
+<!--                  <a href="{$next_page[url]}">{$next_page[title]}</a>-->
+              </p>
+           </div>
+<!--           {pc:content action="relation" relation="$relation" id="$id" catid="$catid" num="3" keywords="$rs[keywords]"}-->
+<!--              {if $data}-->
+<!--                <div class="related">-->
+<!--                    <h5 class="blue" style="background:#d6e2ea;padding-left:10px"> 相关文章：</h5>-->
+<!--                    <ul style="margin:10px 0">-->
+<!--                        {loop $data $r}-->
+<!--                            <li>· <a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></li>-->
+<!--                        {/loop}-->
+<!--                    </ul>-->
+<!--                </div>-->
+<!--              {/if}-->
+<!--          {/pc}-->
+<!--          <a name="pinglun"></a>-->
+        </div>
+    </div>
+    <div class="r">
+        <!--mod-1-->
+        <div class="mod-1 mod-2">
+            <div class="title">
+                <a href="{ms:global.url/}/benhuidongtai/index.html" target="_blank">
+                    <img src="/statics-yjh315/2019style/images/icon-benhuidongtai.png"/>
+                </a>
+            </div>
+            <div class="top">
+                <ul class="list">
+                    <!--                    {pc:content action="position" posid="2" num="1" order="listorder DESC"} -->
+                    <!--                    {loop $data $r}-->
+                    {ms:arclist flag="2" size=1}
+                    <li>
+                        <a href="{ms:global.url/}${field.link}" target="_blank"><img src="{@ms:file field.litpic/}" width="340px" height="175px"></a>
+                        <p><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></p>
+                    </li>
+                    {/ms:arclist}
+                    <!--                        {/loop} -->
+                    <!--                        {/pc}-->
+                </ul>
+            </div>
+            <ul class="list">
+                <!--               {pc:content action="lists" catid="7" num="6" order="inputtime DESC"} -->
+                <!--                  {loop $data $r}-->
+                {ms:arclist typeid="7" size=6}
+                <li>·&nbsp;<a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></li>
+                {/ms:arclist}
+                <!--                  {/loop} -->
+                <!--                {/pc}-->
+            </ul>
+        </div>
+        <!--mod-1-->
+        <div class="mod-1 mod-3">
+            <div class="title">
+                <a href="{ms:global.url/}/media/index.html" target="_blank">
+                    <img src="/statics-yjh315/2019style/images/icon-xiaofeixinwen.png"/>
+                </a>
+            </div>
+            <div class="top">
+                <ul class="list">
+                    {ms:arclist flag="1" size=1}
+                    <li>
+                        <a href="{ms:global.url/}${field.link}" target="_blank"><img src="{@ms:file field.litpic/}" width="340px" height="175px"></a>
+                        <p><a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></p>
+                    </li>
+                    {/ms:arclist}
+                </ul>
+            </div>
+            <ul class="list">
+                <!--               {pc:content action="lists" catid="8" num="6" order="inputtime DESC"} -->
+                <!--                  {loop $data $r}-->
+                {ms:arclist typeid="8" size=6}
+                <li>·&nbsp;<a href="{ms:global.url/}${field.link}" target="_blank">${field.title}</a></li>
+                {/ms:arclist}
+                <!--                  {/loop} -->
+                <!--                {/pc}-->
+            </ul>
+        </div>
+    </div>
+</div>
+<#include "footer.htm" />
