@@ -4,6 +4,8 @@
 <head>
     <title>{ms:channel type="path"}${field.typetitle}{/ms:channel}</title>
     <#include "head-file.htm" />
+    <link rel="stylesheet" href="/statics-dg315/css/list.css">
+    <link rel="stylesheet" href="/statics-dg315/css/list-content.css">
 </head>
 
 <body>
@@ -12,7 +14,7 @@
         <div class="content-page">
             <div class="article">
                 <div class="bread">
-                    <img src="{ms:global.host/}/statics-dg315/images/location.png" />
+                    <img src="/statics-dg315/images/location.png" />
                     <span>所在位置</span>
                     <span class="icon">></span>
                     <span>首页</span>
@@ -26,7 +28,7 @@
                         {ms:arclist size=20 ispaging=true}
                             <div class="item">
                                 <div class="left">
-                                    <a href="{ms:global.url/}${field.link}">[ ${field.typetitle} ] {@ms:len field.title 30/}</a>
+                                    <a href="{ms:global.url/}${field.link}">{@ms:len field.title 30/}</a>
                                 </div>
                                 <div class="right">
                                     <span class="author">${field.author}</span>
@@ -77,7 +79,7 @@
         </div>
     </div>
 
-    <script src="{ms:global.host/}/statics-dg315/js/search.js"></script>
+    <script src="/statics-dg315/js/search.js"></script>
     <script>
         var app = new Vue({
             el: '#app',

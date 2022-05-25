@@ -4,6 +4,8 @@
 <head>
     <title>首页-东莞消费者权益委员会</title>
     <#include "head-file.htm" />
+    <link rel="stylesheet" href="/statics-dg315/css/index.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 </head>
 
 <body>
@@ -27,8 +29,10 @@
                     <div class="desc">
                         {ms:arclist typeid=18 flag="100" size=4}
                             <div class="desc-item">
-                            <a href="{ms:global.url/}${field.link}" class="desc-title">${field.title}</a>
-                            <div class="desc-content">${field.descrip}</div>
+                                <div class="desc-title">
+                                    <a href="{ms:global.url/}${field.link}" class="desc-title">${field.title}</a>
+                                </div>
+                                <div class="desc-content">${field.descrip}</div>
                             </div>
                         {/ms:arclist}
                     </div>
@@ -115,44 +119,44 @@
                         <div class="links">
                             <a href="{ms:global.url/}/xfwqbs/5770.html" class="item">
                                 <div class="icon-wrap">
-                                    <img src="{ms:global.host/}/statics-dg315/images/fanwei.png" />
+                                    <img src="/statics-dg315/images/fanwei.png" />
                                 </div>
                                 <div class="icon-desc">受理范围</div>
                             </a>
                             <a href="{ms:global.url/}/xfwqbs/5771.html" class="item">
                                 <div class="icon-wrap">
-                                    <img src="{ms:global.host/}/statics-dg315/images/yaoqiu.png" />
+                                    <img src="/statics-dg315/images/yaoqiu.png" />
                                 </div>
                                 <div>受理要求</div>
                             </a>
                             <a href="{ms:global.url/}/xfwqbs/5772.html" class="item">
                                 <div class="icon-wrap">
-                                    <img src="{ms:global.host/}/statics-dg315/images/shixian.png" />
+                                    <img src="/statics-dg315/images/shixian.png" />
                                 </div>
                                 <div>受理时限</div>
                             </a>
                             <a href="{ms:global.url/}/xfwqbs/5777.html" class="item">
                                 <div class="icon-wrap">
-                                    <img src="{ms:global.host/}/statics-dg315/images/download.png" />
+                                    <img src="/statics-dg315/images/download.png" />
                                 </div>
                                 <div>表格下载</div>
                             </a>
                             <a href="{ms:global.url/}/xfwqbs/5773.html" class="item">
                                 <div class="icon-wrap">
-                                    <img src="{ms:global.host/}/statics-dg315/images/call.png" />
+                                    <img src="/statics-dg315/images/call.png" />
                                 </div>
                                 <div>联系方式</div>
                             </a>
                             <a href="{ms:global.url/}/zcfg/index.html" class="item">
                                 <div class="icon-wrap">
-                                    <img src="{ms:global.host/}/statics-dg315/images/legal.png" />
+                                    <img src="/statics-dg315/images/legal.png" />
                                 </div>
                                 <div>法律法规</div>
                             </a>
                         </div>
                     </div>
                     <div class="safe">
-                        <img src="{ms:global.host/}/statics-dg315/images/ad.png" />
+                        <img src="/statics-dg315/images/ad.png" />
                         <div class="theme-title-wrap">
                             <div class="theme-title">
                                 历年年主题
@@ -234,8 +238,8 @@
     </div>
 
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script src="{ms:global.host/}/statics-dg315/js/swipe.js"></script>
-    <script src="{ms:global.host/}/statics-dg315/js/search.js"></script>
+    <script src="/statics-dg315/js/swipe.js"></script>
+    <script src="/statics-dg315/js/search.js"></script>
 </body>
 
 </html>
