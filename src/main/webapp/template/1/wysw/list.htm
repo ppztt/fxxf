@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{ms:channel type="path"}${field.typetitle}{/ms:channel}</title>
+    <#include "header.htm" />
+</head>
+<body>
+<div class="warp">
+    <div class="content w960">
+        <div class="news-b"><img src="/statics-wysw/Picture/news-b.jpg" /></div>
+        <div class="news-c">
+    <div id="pageIn">
+        <div class="urHere">当前位置：<a href="/">首页</a><b>></b></span>{ms:channel type="path"}<a href="{ms:global.url/}${field.typelink}">${field.typetitle}</a>{/ms:channel} > 列表</div>   <div id="articleList">
+        <dl class="last">
+            {ms:arclist size=10 ispaging=true}
+            <li>
+                <dt><a href="{ms:global.url/}${field.link}">${field.title}</a> <font color=#999>(${field.date?date?string("MM-dd")})</font></dt>
+                <dd><p class="desc">{@ms:len field.descrip 80/}</p></dd>
+            </li>
+            {/ms:arclist}
+
+        </dl>
+    </div>
+        <div class="pager">
+            <a href="{ms:global.url/}{ms:page.index/}">首页</a>
+            <a href="{ms:global.url/}{ms:page.pre/}">上一页</a>
+            <a href="{ms:global.url/}{ms:page.next/}">下一页</a>
+            <a href="{ms:global.url/}{ms:page.last/}">末页</a>
+            |当前页：{ms:page.cur/}
+            总页数：{ms:page.total/}
+<!--            当前页/总页数<span>{ms:page.cur/}/{ms:page.total/}</span>-->
+            本页有：<span>{ms:page.rcount/}</span>篇文章
+        </div>
+
+<!--        <div class="pager">总计 1 个记录，共 1 页，当前第 1 页 | <a href="http://www.rayeewater.com/article_category.php?id=1">第一页</a> 上一页 下一页 <a href="http://www.rayeewater.com/article_category.php?id=1&page=1">最末页</a></div>   </div>-->
+</div>
+</div>
+</body>
+</html>

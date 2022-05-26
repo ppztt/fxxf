@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{ms:channel type="path"}${field.typetitle}{/ms:channel}</title>
+    <#include "header.htm" />
+</head>
+<body>
+<!--header end--><div class="warp">
+   <div class="content w960">
+      <div class="news-b"><img src="/statics-wysw/Picture/news-b.jpg" /></div>
+      <div class="news-c">
+     <div class="urHere">当前位置：<a href="/">首页</a><b>></b>{ms:channel type="path"}<a href="{ms:global.url/}${field.typelink}">${field.typetitle}</a>{/ms:channel}<b>></b>${field.title}</div>    <div class="news-s">
+       <h1>${field.title}</h1>
+       <div class="info">发布时间：${field.date?date?string("YYYY-MM-dd")} 点击数：${field.hit}
+              </div>
+       <div class="txt">
+           ${field.content}
+       </div>
+       <div class="lift">
+           <p><b>上一篇：</b>
+               <#if pre.title?has_content>
+               <a href="{ms:global.url/}${pre.link}"> ${pre.title} </a>
+               <#else>
+               第一页
+           </#if>
+           </p>
+           <p><b>下一篇：</b>
+               <#if next.title?has_content>
+               <a href="{ms:global.url/}${next.link}"> ${next.title} </a>
+               <#else>
+               最后一页
+           </#if>
+           </p>
+<!--        <span>上一篇：<a href="http://www.rayeewater.com/article.php?id=15">环境保护部严查环境监测数据弄虚作假</a></span>        <span>下一篇：<a href="http://www.rayeewater.com/article.php?id=11">广东跨界水污染整治 决策如何出炉</a></span>       </div>-->
+    </div>
+  </div>
+ </div>
+ <!--end-->
+    <#include "footer.htm" />
+<!--footer end-->
+  <!--company-footer end-->
+ </div>
+</body>
+</html>

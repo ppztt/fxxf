@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="/statics-wysw/Css/common.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="header">
+    <div class="w960 topbar">
+        <div class="logo l"><a href="/"><img src="/statics-wysw/Picture/logo.jpg" alt="" /></a></div>
+        <div class="sou r">
+            <form action="/mcms/search.do" method="post" id="searchDataForm" target="_blank">
+<!--                <input type="hidden" name="m" value="search">-->
+<!--                <input type="hidden" name="c" value="index">-->
+<!--                <input type="hidden" name="a" value="init">-->
+<!--                <input type="hidden" name="typeid" value="1" id="typeid">-->
+<!--                <input type="hidden" name="siteid" value="1" id="siteid">-->
+                <!--                    <input name="q" id="q" value="关键字" maxlength="50" onfocus="if(this.value='关键字')this.value=''"-->
+                <!--                           onblur="if(this.value=='')this.value='关键字'" class="input">-->
+                <!--                    <input type="submit" name="Submit" value="  " id="Submit" class="input_1">-->
+                <input id="content_details_or" type="hidden" name="content_details_or">
+                <input id="content_title" type="text" name="text" class="input" placeholder="关键字">
+                <!--                    <input type="submit" value="搜索">-->
+                <button><a href="javascript:;" id="Submit" onclick="goToSearch()" class="input_1"></a>搜 索</button>
+<!--                <a href="javascript:;" id="Submit" onclick="goToSearch()" class="input_1"></a>-->
+            </form>
+<!--            <form>-->
+<!--                <input type="text" value="" name="sou" />-->
+<!--                <button>搜 索</button>-->
+<!--            </form>-->
+        </div>
+    </div>
+    <div class="menu">
+        <div class="w960">
+            <a href="{ms:global.url/}/xingyexinwen/index.html">行业新闻 </a><span>|</span>
+            <a href="{ms:global.url/}/gongsidongtai/index.html">公司动态<span>|</span>
+            <a href="{ms:global.url/}/company/index.html">公司介绍 <span>|</span>
+            <a href="{ms:global.url/}/product/index.html">产品介绍<span>|</span>
+            <a href="{ms:global.url/}/yejishow/index.html">业绩展示<span>|</span>
+            <a href="{ms:global.url/}/contact/index.html">联系我们</a>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+
+    function goToSearch() {
+        var v = document.getElementById("content_title").value;
+        document.getElementById("content_details_or").value = v;
+        document.getElementById("searchDataForm").submit();
+    }
+
+</script>
+</html>
