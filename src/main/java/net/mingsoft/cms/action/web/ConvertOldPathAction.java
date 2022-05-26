@@ -65,7 +65,7 @@ public class ConvertOldPathAction extends net.mingsoft.cms.action.BaseAction {
     /**
      * 解析旧路径跳转新路径
      */
-    @GetMapping("/show**")
+    @GetMapping("/show-**")
     public String index(HttpServletRequest req) {
         String requestURI = req.getRequestURI();
         CategoryEntity category = new CategoryEntity();
@@ -80,10 +80,10 @@ public class ConvertOldPathAction extends net.mingsoft.cms.action.BaseAction {
                 newPath += split[2];
                 newPath += ".html";
             } else {
-                newPath = "404";
+                newPath = requestURI;
             }
         } else {
-            newPath = "404";
+            newPath = "/";
         }
         LOG.warn("路径跳转：" + requestURI + " >>> " + newPath);
         return newPath;
