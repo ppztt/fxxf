@@ -18,7 +18,7 @@
                 <span class="icon">></span>
                 <span>首页</span>
                 <span class="icon">></span>
-                <span>{ms:channel type="path"}<a href="{ms:global.url/}${field.typelink}">${field.typetitle}</a>{/ms:channel}</span>
+                <span>{ms:channel type="parent"}<a href="{ms:global.url/}${field.typelink}">${field.typetitle}</a>{/ms:channel}</span>
                 <span class="icon">></span>
                 <span>正文</span>
             </div>
@@ -57,12 +57,8 @@
             </div>
             <div class="recomend-items">
                 {ms:arclist size=10 ispaging=true}
-                <li>
-                    <a href="{ms:global.url/}${field.link}" target="_blank" class="missing_data">${field.title}</a>
-                </li>
+                    <a href="{ms:global.url/}${field.link}" target="_blank" class="recomend-item"><strong>·</strong> ${field.title}</a>
                 {/ms:arclist}
-
-
             </div>
         </div>
     </div>

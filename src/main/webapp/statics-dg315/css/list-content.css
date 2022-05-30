@@ -33,8 +33,9 @@
 .content-page .recomend .recomend-items .recomend-item {
   font-size: 14px;
   margin-left: 4px;
+  margin-bottom: 10px;
   display: block;
-  line-height: 2;
+  line-height: 1.5;
 }
 
 .bread {
