@@ -93,18 +93,130 @@ body{background: #f9f9f9;}
 #content .mod-1 .left .t span{margin:0 2px;display: inline-block;width: 12px;height: 12px;border-radius: 100%;background: #FFFFFF;border:1px solid #999999;text-indent: -9999px;cursor: pointer;}
 #content .mod-1 .left .t span.on{background: #10901e;}
 
-#content .mod-2 .left,#content .mod-2 .right{background: #efefef;}
-#content .mod-2 .left{float:left;}
-#content .mod-2 .right{width:400px;float: right;}
-#content .mod-2 .con{background: #fff;margin: 10px;border-radius: 10px;}
-#content .mod-2 .con .t{text-align: center;}
-#content .mod-2 .con .t b{color: #fff;background:#3ab685;font-size: 20px;padding: 3px 10px;border-radius: 5px;display: inline-block;margin: 10px 0;}
-#content .mod-2 .left .t{border-bottom: 1px solid #ddd;/* margin: 15px; *//* padding-bottom: 15px; */}
-#content .mod-2 .left .c{display: flex;padding: 29px 0;}
-#content .mod-2 .left .c p{flex: 1;text-align: center;}
-#content .mod-2 .right .t{/* padding: 15px; */border-bottom: 1px solid #ddd;}
-#content .mod-2 .right .c{padding: 15px 0;display: flex;}
-#content .mod-2 .right .c p{flex:1;text-align:center}
+/*#content .mod-2 .left,#content .mod-2 .right{background: #efefef;}*/
+/*#content .mod-2 .left{float:left;}*/
+/*#content .mod-2 .right{width:400px;float: right;}*/
+/*#content .mod-2 .con{background: #fff;margin: 10px;border-radius: 10px;}*/
+/*#content .mod-2 .con .t{text-align: center;}*/
+/*#content .mod-2 .con .t b{color: #fff;background:#3ab685;font-size: 20px;padding: 3px 10px;border-radius: 5px;display: inline-block;margin: 10px 0;}*/
+/*#content .mod-2 .left .t{border-bottom: 1px solid #ddd;!* margin: 15px; *!!* padding-bottom: 15px; *!}*/
+/*#content .mod-2 .left .c{display: flex;padding: 29px 0;}*/
+/*#content .mod-2 .left .c p{flex: 1;text-align: center;}*/
+/*#content .mod-2 .right .t{!* padding: 15px; *!border-bottom: 1px solid #ddd;}*/
+/*#content .mod-2 .right .c{padding: 15px 0;display: flex;}*/
+/*#content .mod-2 .right .c p{flex:1;text-align:center}*/
+
+#content .mod2 {
+    display: flex;
+    margin-left: 0;
+    height: auto;
+}
+
+#content .mod2 .left,
+#content .mod2 .right {
+    padding: 12px 22px;
+    background: #e5e5e5;
+}
+
+#content .mod2 .left .w,
+#content .mod2 .right .w {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #f2f2f2;
+    border-radius: 16px;
+}
+#content .mod2 .left {
+    flex: 1;
+    margin-right: 30px;
+}
+#content .mod2 .right {
+    width: 464px;
+    margin-left: 0;
+    box-sizing: border-box;
+}
+#content .mod2 .left .t,
+#content .mod2 .right .t {
+    margin-top: 15px;
+    background: #3ab685;
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    padding: 7px 12px;
+    border-radius: 8px;
+}
+
+#content .mod2 .left .c,
+#content .mod2 .right .c {
+    display: flex;
+    margin: 36px 0 30px 0;
+    justify-content: space-around;
+    width: 100%;
+}
+#content .mod2 .left .c a:hover {
+    cursor: pointer;
+}
+#content .mod2 .left .c a img {
+    border-radius: 50%;
+}
+#content .mod2 .left .c a img,
+#content .mod2 .right .c a img {
+    width: 86px;
+    height: 86px;
+}
+#content .mod2 .right .c a img {
+    height: 96px;
+}
+#content .mod2 .left .c a .l,
+#content .mod2 .right .c a .l {
+    font-size: 15px;
+    color: #000;
+    text-align: center;
+    margin-top: 12px;
+    font-weight: bold;
+    position: relative;
+    z-index: 999;
+}
+
+#content .mod2 .left .c a .l .tooltip {
+    display: none;
+    position: absolute;
+    left: -16px;
+    top: 49px;
+    transition: all 0.5s;
+    min-width: 300px;
+}
+
+#content .mod2 .left .c a:hover .l .tooltip {
+    display: block;
+}
+
+#content .mod2 .left .c a .l .tooltip .tooltip-content {
+    background: #ebf9f2;
+    border: 1px solid #969696;
+    padding: 20px;
+    border-radius: 20px;
+}
+#content .mod2 .left .c a .l .tooltip .tooltip-content .arrow {
+    position: absolute;
+    left: 35px;
+    top: -15px;
+    width: 30px;
+    height: 30px;
+    background: #ebf9f2;
+    border: 1px solid #969696;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    transform: rotate(45deg);
+}
+
+#content .mod2 .left .c a .l .tooltip .tooltip-content p {
+    text-align: left;
+    font-weight: normal;
+}
+#content .mod2 .left .c a .l .tooltip .tooltip-content .b {
+    font-weight: bold;
+}
 
 #content .mod-3 .right .silde{height: 170px;margin-top: 26px;overflow: hidden;}
 #content .mod-3 .right .silde ul{height: 170px;}
