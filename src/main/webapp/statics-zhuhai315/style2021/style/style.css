@@ -156,13 +156,14 @@ body{background: #f9f9f9;}
 #content .mod2 .left .c a:hover {
     cursor: pointer;
 }
-#content .mod2 .left .c a img {
+#content .mod2 .left .c a .img {
     border-radius: 50%;
 }
-#content .mod2 .left .c a img,
-#content .mod2 .right .c a img {
+#content .mod2 .left .c a .img,
+#content .mod2 .right .c a .img {
     width: 86px;
     height: 86px;
+    background-size: 86px;
 }
 #content .mod2 .right .c a img {
     height: 96px;
@@ -213,9 +214,12 @@ body{background: #f9f9f9;}
 #content .mod2 .left .c a .l .tooltip .tooltip-content p {
     text-align: left;
     font-weight: normal;
+    font-size: 14px;
+    color: #666
 }
 #content .mod2 .left .c a .l .tooltip .tooltip-content .b {
     font-weight: bold;
+    color: #000
 }
 
 #content .mod-3 .right .silde{height: 170px;margin-top: 26px;overflow: hidden;}
