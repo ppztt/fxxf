@@ -317,21 +317,41 @@ public class ContentAction extends BaseAction {
 	// 生成文章静态页
 	private void generaterArticle(ContentEntity content) {
 		try {
-			List<CategoryBean> articleIdList = null;
+			List<CategoryBean> curArticleIdList = new ArrayList<>(3);
 			ContentBean contentBean = new ContentBean();
 			contentBean.setBeginTime(sdf.format(content.getContentDatetime()));
 			contentBean.setCategoryId(content.getCategoryId());
 			contentBean.setCategoryType("1");
-			articleIdList = contentBiz.queryIdsByCategoryIdForParser(contentBean);
+			List<CategoryBean> articleIdList = contentBiz.queryIdsByCategoryIdForParser(contentBean);
 
-			for (int i = articleIdList.size() - 1; i >= 0; i--) {
-				if (!articleIdList.get(i).getArticleId().equals(content.getId())) {
-					articleIdList.remove(i);
+			int preIdx = -1;
+			int nextIdx = -1;
+			int curIdx = -1;
+			for (int i = 0; i < articleIdList.size(); i++) {
+				if (articleIdList.get(i).getArticleId().equals(content.getId())) {
+					preIdx = i - 1;
+					nextIdx = i + 1;
+					curIdx = i;
+					break;
 				}
 			}
+			if (articleIdList.get(preIdx) != null) {
+				curArticleIdList.add(articleIdList.get(preIdx));
+			}
+			if (articleIdList.get(curIdx) != null) {
+				curArticleIdList.add(articleIdList.get(curIdx));
+			}
+			if (articleIdList.get(nextIdx) != null) {
+				curArticleIdList.add(articleIdList.get(nextIdx));
+			}
+//			for (int i = articleIdList.size() - 1; i >= 0; i--) {
+//				if (!articleIdList.get(i).getArticleId().equals(content.getId())) {
+//					articleIdList.remove(i);
+//				}
+//			}
 			// 有符合条件的就更新
-			if (!articleIdList.isEmpty()) {
-				CmsParserUtil.generateBasic(articleIdList, htmlDir);
+			if (!curArticleIdList.isEmpty()) {
+				CmsParserUtil.generateBasic(curArticleIdList, htmlDir);
 			}
 		} catch (Exception e) {
 			LOG.error("生成详情页失败：" + content.getId(), e);
