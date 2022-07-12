@@ -344,11 +344,6 @@ public class ContentAction extends BaseAction {
 			if (articleIdList.get(nextIdx) != null) {
 				curArticleIdList.add(articleIdList.get(nextIdx));
 			}
-//			for (int i = articleIdList.size() - 1; i >= 0; i--) {
-//				if (!articleIdList.get(i).getArticleId().equals(content.getId())) {
-//					articleIdList.remove(i);
-//				}
-//			}
 			// 有符合条件的就更新
 			if (!curArticleIdList.isEmpty()) {
 				CmsParserUtil.generateBasic(curArticleIdList, htmlDir);
