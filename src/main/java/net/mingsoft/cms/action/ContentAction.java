@@ -22,6 +22,7 @@
 
 package net.mingsoft.cms.action;
 
+import cn.hutool.core.date.DateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -319,7 +320,8 @@ public class ContentAction extends BaseAction {
 		try {
 			List<CategoryBean> curArticleIdList = new ArrayList<>(3);
 			ContentBean contentBean = new ContentBean();
-			contentBean.setBeginTime(sdf.format(content.getContentDatetime()));
+			contentBean.setBeginTime(sdf.format(DateUtil.offsetMonth(content.getContentDatetime(), -12)));
+			contentBean.setEndTime(sdf.format(DateUtil.offsetMonth(content.getContentDatetime(), 12)));
 			contentBean.setCategoryId(content.getCategoryId());
 			contentBean.setCategoryType("1");
 			List<CategoryBean> articleIdList = contentBiz.queryIdsByCategoryIdForParser(contentBean);
@@ -335,13 +337,13 @@ public class ContentAction extends BaseAction {
 					break;
 				}
 			}
-			if (articleIdList.get(preIdx) != null) {
+			if (preIdx > -1 && articleIdList.get(preIdx) != null) {
 				curArticleIdList.add(articleIdList.get(preIdx));
 			}
-			if (articleIdList.get(curIdx) != null) {
+			if (curIdx > -1 && articleIdList.get(curIdx) != null) {
 				curArticleIdList.add(articleIdList.get(curIdx));
 			}
-			if (articleIdList.get(nextIdx) != null) {
+			if (nextIdx > -1 && nextIdx < articleIdList.size() && articleIdList.get(nextIdx) != null) {
 				curArticleIdList.add(articleIdList.get(nextIdx));
 			}
 			// 有符合条件的就更新

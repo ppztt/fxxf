@@ -271,10 +271,10 @@
 			</if>
 			<if test="endTime!=null and endTime!=''">
 				<if test="_databaseId == 'mysql'">
-					and ct.UPDATE_DATE &gt;= #{endTime}
+					and ct.UPDATE_DATE &lt;= #{endTime}
 				</if>
 				<if test="_databaseId == 'oracle'">
-					and ct.UPDATE_DATE &gt;= to_date(#{endTime}, 'yyyy-mm-dd hh24:mi:ss')
+					and ct.UPDATE_DATE &lt;= to_date(#{endTime}, 'yyyy-mm-dd hh24:mi:ss')
 				</if>
 			</if>
 			<if test="flag!=null and flag!=''">
