@@ -36,7 +36,7 @@ public class ManagerLoginStrategy implements ILoginStrategy{
     @Autowired
     private IManagerBiz managerBiz;
 
-    @Value("${ms.open-remember:true")
+    @Value("${ms.open-remember:true}")
     private boolean openRemember;
 
     @Override
