@@ -7,7 +7,7 @@ server:
 
 ms:
   shiro-key: eHdoLmNjci5nZGNlci5jbg== #生产必须修改此值否则会存在安全风险，可以通过 https://base64.us/随机生产一个Base64值
-  open-remember: true
+  open-remember: true #登录时记住我状态开关
   html-dir: html
   rand-code:
     length: 4 #验证码长度
