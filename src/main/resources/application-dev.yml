@@ -6,6 +6,20 @@ spring:
     filters: wall,mergeStat
     type: com.alibaba.druid.pool.DruidDataSource
 
+  #redis配置
+  redis:
+    host: localhost
+    password: 123456
+    port: 6379
+    timeout: 50000
+    database: 14
+    lettuce:
+      pool:
+        max-active: 12 # 大于cpu*2
+        max-idle: 12 # cpu*2
+        max-wait: 5s
+        time-between-eviction-runs: 1s
+
 #配置日志
 logging:
   level:

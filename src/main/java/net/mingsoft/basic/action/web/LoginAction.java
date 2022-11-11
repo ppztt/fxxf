@@ -23,10 +23,13 @@ import net.mingsoft.basic.constant.e.SessionConstEnum;
 import net.mingsoft.basic.entity.ManagerEntity;
 import net.mingsoft.basic.strategy.ILoginStrategy;
 import net.mingsoft.basic.util.BasicUtil;
+import net.mingsoft.basic.util.RedisUtil;
 import net.mingsoft.config.MSProperties;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -57,6 +60,9 @@ public class LoginAction extends BaseAction {
     @Autowired
     private ILoginStrategy loginStrategy;
 
+    @Value("${ms.pass-change-max-day:90}")
+    private int passChangeMaxDay;
+
     /**
      * 加载管理员登录界面
      *
@@ -76,6 +82,16 @@ public class LoginAction extends BaseAction {
         }
         request.setAttribute("app", BasicUtil.getApp());
         return "/login";
+    }
+
+    @ApiOperation(value = "超时修改密码界面")
+    @SuppressWarnings("resource")
+    @GetMapping("/changepass")
+    public String changepass(HttpServletRequest request) {
+        request.setAttribute("app", BasicUtil.getApp());
+        Subject currentSubject = SecurityUtils.getSubject();
+        currentSubject.logout();
+        return "/changepass";
     }
 
     /**
@@ -103,11 +119,29 @@ public class LoginAction extends BaseAction {
             return ResultData.build().error(getResString("err.error", this.getResString("rand.code")));
         }
         BasicUtil.removeSession(SessionConstEnum.CODE_SESSION);
-        if(loginStrategy.login(manager)){
+        if (checkManagerPassErrLock(manager)) {
+            // 密码错误超时锁定中
+            return ResultData.build().error("密码错误超时锁定中（分钟）：" + RedisUtil.ttl("PassErrLock:" + manager.getManagerName()) / 60);
+        }
+        if (loginStrategy.login(manager)) {
+            if (!checkManagerPassChangeTime(manager)) {
+                String managerPath = MSProperties.manager.path;
+                return ResultData.build().success(managerPath + "/changepass.do", passChangeMaxDay);
+            }
             return ResultData.build().success();
-        }else {
+        } else {
             return ResultData.build().error(getResString("err.error", this.getResString("manager.name.or.password")));
         }
 
+    }
+
+    public boolean checkManagerPassErrLock(ManagerEntity manager) {
+        String checkValue = (String) RedisUtil.getValue("PassErrLock:" + manager.getManagerName());
+        return StringUtils.isNotBlank(checkValue);
+    }
+
+    public boolean checkManagerPassChangeTime(ManagerEntity manager) {
+        String checkValue = (String) RedisUtil.getValue("PassChangeMaxDay:" + manager.getManagerName());
+        return StringUtils.isNotBlank(checkValue);
     }
 }

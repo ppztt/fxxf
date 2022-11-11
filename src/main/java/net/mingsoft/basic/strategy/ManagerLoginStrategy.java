@@ -10,11 +10,14 @@
 
 package net.mingsoft.basic.strategy;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.crypto.SecureUtil;
 import net.mingsoft.basic.biz.IManagerBiz;
 import net.mingsoft.basic.constant.e.SessionConstEnum;
 import net.mingsoft.basic.entity.ManagerEntity;
 import net.mingsoft.basic.util.BasicUtil;
+import net.mingsoft.basic.util.RedisUtil;
+import net.mingsoft.basic.util.SpringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -22,6 +25,8 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * 管理员登录列表
@@ -39,17 +44,28 @@ public class ManagerLoginStrategy implements ILoginStrategy{
     @Value("${ms.open-remember:true}")
     private boolean openRemember;
 
+    @Value("${ms.pass-error-max-times:5}")
+    private int passErrorMaxTimes;
+
+    @Value("${ms.pass-error-lock-time:30}")
+    private int passErrorLockTime;
+
+    @Value("${ms.pass-error-keep-time:30}")
+    private int passErrorKeepTime;
+
+    @Value("${ms.session-time:30}")
+    private int sessionTime;
+
+
     @Override
     public Boolean login(ManagerEntity manager) {
         managerBiz.updateCache();
         boolean rememberMe = BasicUtil.getBoolean("rememberMe");
-        if(manager ==null || StringUtils.isEmpty(manager.getManagerName()) || StringUtils.isEmpty(manager.getManagerPassword())){
+        if(ObjectUtil.isNull(manager) || StringUtils.isEmpty(manager.getManagerName()) || StringUtils.isEmpty(manager.getManagerPassword())){
             return false;
         }
         // 根据账号获取当前管理员信息
-        ManagerEntity newManager = new ManagerEntity();
-        newManager.setManagerName(manager.getManagerName());
-        ManagerEntity _manager = (ManagerEntity) managerBiz.getEntity(newManager);
+        ManagerEntity _manager = managerBiz.getManagerByManagerName(manager.getManagerName());
         if (_manager == null ) {
             // 系统不存在此用户
             return false;
@@ -60,6 +76,7 @@ public class ManagerLoginStrategy implements ILoginStrategy{
                 ManagerEntity managerSession = new ManagerEntity();
 //                 压入管理员seesion
                 BasicUtil.setSession(SessionConstEnum.MANAGER_SESSION, managerSession);
+                SpringUtil.getRequest().getSession().setMaxInactiveInterval(sessionTime * 60);
                 BeanUtils.copyProperties(_manager, managerSession);
                 Subject subject = SecurityUtils.getSubject();
                 UsernamePasswordToken upt = new UsernamePasswordToken(managerSession.getManagerName(), managerSession.getManagerPassword());
@@ -69,11 +86,34 @@ public class ManagerLoginStrategy implements ILoginStrategy{
                     upt.setRememberMe(openRemember);
                 }
                 subject.login(upt);
+                RedisUtil.addValue("PassErrTimes:" + manager.getManagerName(), String.valueOf(0), 1, TimeUnit.MINUTES);
                 return true;
             } else {
                 // 密码错误
+                int times = 1;
+                String passErrTimes = (String) RedisUtil.getValue("PassErrTimes:" + manager.getManagerName());
+                if (StringUtils.isNotBlank(passErrTimes)) {
+                    try {
+                        times = Integer.parseInt(passErrTimes);
+                        times++;
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (times >= passErrorMaxTimes) {
+                    if (!checkManagerPassErrLock(manager)) {
+                        RedisUtil.addValue("PassErrLock:" + manager.getManagerName(), "Locked", passErrorLockTime, TimeUnit.MINUTES);
+                        times = 0;
+                    }
+                }
+                RedisUtil.addValue("PassErrTimes:" + manager.getManagerName(), String.valueOf(times), passErrorKeepTime, TimeUnit.MINUTES);
                 return false;
             }
         }
+    }
+
+    public boolean checkManagerPassErrLock(ManagerEntity manager) {
+        String checkValue = (String) RedisUtil.getValue("PassErrLock:" + manager.getManagerName());
+        return StringUtils.isNotBlank(checkValue);
     }
 }

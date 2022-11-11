@@ -13,7 +13,12 @@ server:
 ms:
   shiro-key: eHdoLmNjci5nZGNlci5jbg== #生产必须修改此值否则会存在安全风险，可以通过 https://base64.us/随机生产一个Base64值
   cookie-name: SHIRO_SESSION_ID
-  open-remember: true #登录时记住我状态开关
+  open-remember: false #登录时记住我状态开关
+  pass-error-max-times: 5 #密码错误最多次数
+  pass-error-lock-time: 30 #密码错误超过次数锁定时间，分钟
+  pass-error-keep-time: 30 #密码错误计数保存时间，分钟
+  pass-change-max-day: 90 #密码不更改最长时间，天
+  session-time: 30 #连接超时自动退出，分钟（登录不记住我时有效）
   html-dir: html
   rand-code:
     length: 4 #验证码长度
@@ -27,7 +32,7 @@ ms:
   xss:
     xssEnable: true #xss过滤器的开关
     filterUrl: /**   #过滤的url,多个用逗号分开
-    excludeUrl: /ms**,/static**,/template**,/file/upload.do,/static/plugins/ueditor/1.4.3.3/jsp/editor.do  #排除的url,多个用逗号分开
+    excludeUrl: /ms/**,/static/**,/template/**,/file/upload.do,/static/plugins/ueditor/1.4.3.3/jsp/editor.do  #排除的url,多个用逗号分开
   upload:
     enable-web: true  #启用web层的上传
     template: template #模板文件夹支持重命名，不支持路径
@@ -86,11 +91,6 @@ spring:
       time_format: HH:mm:ss
       datetime_format: yyyy-MM-dd HH:mm:ss
       number_format: 0.##
-  http:
-    encoding:
-      force: true
-      charset: utf-8
-      enabled: true
 
 mybatis-plus:
   global-config:
