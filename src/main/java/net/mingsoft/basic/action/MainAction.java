@@ -344,8 +344,12 @@ public class MainAction extends BaseAction {
 		return StringUtils.isNotBlank(checkValue);
 	}
 
+	/**
+	 * 检查密码复杂度
+	 * @param pass
+	 * @return
+	 */
 	private boolean checkManagerPass(String pass) {
-		boolean isMatch = ReUtil.isMatch("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&,.*]).{8,30}$", pass);
-		return isMatch;
+		return ReUtil.isMatch("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&,.*]).{8,30}$", pass);
 	}
 }

@@ -31,9 +31,7 @@ public class SelfGlobalExceptionResolver extends GlobalExceptionResolver {
     public ModelAndView handleException(HttpServletRequest request, HttpServletResponse response, Exception e) {
         LOG.debug("handleException");
         response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        return render(request, response, ResultData.build().code(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .msg("请求失败")
-                , e);
+        return render(request, response, ResultData.build().code(HttpStatus.INTERNAL_SERVER_ERROR).msg("请求失败"), e);
     }
 
     private ModelAndView render(HttpServletRequest request, HttpServletResponse response, ResultData resultData, Exception e) {
