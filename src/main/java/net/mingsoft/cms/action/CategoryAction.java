@@ -298,7 +298,7 @@ public class CategoryAction extends BaseAction {
 	@GetMapping("/verifyPingYin")
 	@ResponseBody
 	public ResultData verifyPingYin(@ModelAttribute @ApiIgnore CategoryEntity category){
-	 	int count = categoryBiz.count(Wrappers.<CategoryEntity>lambdaQuery()
+		long count = categoryBiz.count(Wrappers.<CategoryEntity>lambdaQuery()
 				.ne(StrUtil.isNotBlank(category.getId()), CategoryEntity::getId, category.getId())
 				.eq(CategoryEntity::getCategoryPinyin, category.getCategoryPinyin()));
 

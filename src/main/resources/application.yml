@@ -19,7 +19,8 @@ ms:
   pass-error-keep-time: 30 #密码错误计数保存时间，分钟
   pass-change-max-day: 90 #密码不更改最长时间，天
   session-time: 30 #连接超时自动退出，分钟（登录不记住我时有效）
-  html-dir: html
+  diy:
+    html-dir: html
   rand-code:
     length: 4 #验证码长度
     circle: 10 #干扰线条数，值越大越不容易辨别

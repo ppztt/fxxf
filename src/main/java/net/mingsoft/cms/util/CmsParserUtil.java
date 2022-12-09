@@ -24,6 +24,7 @@ package net.mingsoft.cms.util;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.PageUtil;
 import freemarker.core.ParseException;
 import freemarker.template.MalformedTemplateNameException;
@@ -302,7 +303,7 @@ public class CmsParserUtil {
 
             parserParams.put(ParserUtil.PAGE, page);
             String finalWritePath = writePath;
-            HashMap<Object, Object> cloneMap = CollUtil.newHashMap();
+            HashMap<Object, Object> cloneMap = MapUtil.newHashMap();
             cloneMap.putAll(parserParams);
             HttpServletRequest request = SpringUtil.getRequest();
             String content = null;

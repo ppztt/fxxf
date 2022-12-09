@@ -108,7 +108,7 @@ public class MainAction extends BaseAction {
 	@GetMapping(value = {"/index","/"})
 	public String index(HttpServletRequest request) {
 		String managerPath = MSProperties.manager.path;
-		ManagerEntity managerSession =  getManagerBySession();
+		ManagerEntity managerSession =  BasicUtil.getManager();
 		List<ModelEntity> modelList = new ArrayList<ModelEntity>();
 		ModelEntity model = new ModelEntity();
 		modelList = modelBiz.queryModelByRoleId(managerSession.getRoleId());
@@ -170,7 +170,7 @@ public class MainAction extends BaseAction {
 		//获取新的密码
 		String newManagerPassword = managerModifyPwdBean.getNewManagerPassword();
 		//获取管理员信息
-		ManagerEntity manager = this.getManagerBySession();
+		ManagerEntity manager = BasicUtil.getManager();
 		// 判断新密码和旧密码是否为空
 		if (StringUtils.isBlank(newManagerPassword) || StringUtils.isBlank(managerModifyPwdBean.getOldManagerPassword())) {
 			return ResultData.build().error(getResString("err.empty", this.getResString("managerPassword")));

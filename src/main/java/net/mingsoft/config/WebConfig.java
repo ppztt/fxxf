@@ -101,7 +101,7 @@ public class WebConfig implements WebMvcConfigurer {
         String uploadMapping = MSProperties.upload.mapping;
         String uploadFolderPath = MSProperties.upload.path;
         String template = MSProperties.upload.template;
-        String htmlDir = MSProperties.htmlDir;
+        String htmlDir = MSProperties.diy.htmlDir;
         // 上传路径映射 这里的映射不能使用File.separator Windows会存在映射问题
         registry.addResourceHandler(uploadMapping).addResourceLocations("/" + uploadFolderPath + "/", "file:" + uploadFolderPath + "/");
         registry.addResourceHandler("/" + template + "/**").addResourceLocations("/" + template + "/", "file:" + template + "/");

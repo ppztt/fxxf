@@ -75,7 +75,7 @@ public class ManagerLoginStrategy implements ILoginStrategy{
 //                 创建管理员session对象
                 ManagerEntity managerSession = new ManagerEntity();
 //                 压入管理员seesion
-                BasicUtil.setSession(SessionConstEnum.MANAGER_SESSION, managerSession);
+                BasicUtil.setSession("manager_session", managerSession);
                 SpringUtil.getRequest().getSession().setMaxInactiveInterval(sessionTime * 60);
                 BeanUtils.copyProperties(_manager, managerSession);
                 Subject subject = SecurityUtils.getSubject();
