@@ -40,25 +40,25 @@
         </fileSet>
         <fileSet>
             <directory>src/main/webapp/statics-dg315</directory>
-            <outputDirectory>${file.separator}statics-dg315</outputDirectory>
+            <outputDirectory>${file.separator}statics-st315</outputDirectory>
             <includes>
                 <include>*/**</include>
             </includes>
         </fileSet>
-        <fileSet>
-            <directory>src/main/webapp/statics-zhuhai315</directory>
-            <outputDirectory>${file.separator}statics-zhuhai315</outputDirectory>
-            <includes>
-                <include>*/**</include>
-            </includes>
-        </fileSet>
-        <fileSet>
-            <directory>src/main/webapp/images</directory>
-            <outputDirectory>${file.separator}images</outputDirectory>
-            <includes>
-                <include>*/**</include>
-            </includes>
-        </fileSet>
+<!--        <fileSet>-->
+<!--            <directory>src/main/webapp/statics-zhuhai315</directory>-->
+<!--            <outputDirectory>${file.separator}statics-zhuhai315</outputDirectory>-->
+<!--            <includes>-->
+<!--                <include>*/**</include>-->
+<!--            </includes>-->
+<!--        </fileSet>-->
+<!--        <fileSet>-->
+<!--            <directory>src/main/webapp/images</directory>-->
+<!--            <outputDirectory>${file.separator}images</outputDirectory>-->
+<!--            <includes>-->
+<!--                <include>*/**</include>-->
+<!--            </includes>-->
+<!--        </fileSet>-->
         <fileSet>
             <directory>src/main/webapp/template</directory>
             <outputDirectory>${file.separator}template</outputDirectory>

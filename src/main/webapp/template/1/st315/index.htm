@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>汕头消费者权益保护委员会</title>
+    <#include "head-file.htm" />
+</head>
+<body>
+    <div class="page">
+        <#include "header.htm" />
+        <!-- 正文内容 -->
+        <div class="content">
+            <div class="content-row">
+                <!-- 图片轮播 -->
+                <div class="swiper" id="first-swiper">
+                    <div class="swiper-wrapper">
+                        {ms:arclist flag='lbt' size=4}
+                        <div class="swiper-slide"><a href="{ms:global.url/}${field.link}"><img src="{@ms:file field.litpic/}" alt="" /></a></div>
+                        {/ms:arclist}
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+                <!-- 右侧的栏目 -->
+                <div class="right-part">
+                    <div class="part">
+                        <!-- 栏目的标题 -->
+                        <div class="part-title">
+                            <div><span>本会动态</span></div>
+                        </div>
+                        <!-- 栏目中比较重要的第一个文章 -->
+                        <div class="part-first">
+                            {ms:arclist flag='bhdttj' size=1}
+                            <div>
+                                <div class="name"><a href="{ms:global.url/}${field.link}">${field.title}</a></div>
+                                <div class="info">{@ms:len field.descrip 55/}</div>
+                            </div>
+                            {/ms:arclist}
+                        </div>
+                        <!-- 其他文章的列表 -->
+                        <ul class="part-list">
+                            {ms:arclist typeid=1622806005488406530 size=4}
+                            <li>
+                                <a href="{ms:global.url/}${field.link}"><span class="title">${field.title}</span><span
+                                        class="time">[${field.date?date?string("MM-dd")}]</span></a>
+                            </li>
+                            {/ms:arclist}
+                        </ul>
+                        <a href="{ms:global.url/}/xwh/bhdt/index.html" class="more">更多 >>></a>
+                    </div>
+                </div>
+            </div>
+            <div class="content-row">
+                <div class="left-part">
+                    <div class="part">
+                        <!-- 栏目的标题 -->
+                        <div class="part-title">
+                            <div><span>消费新闻</span></div>
+                        </div>
+
+                        <!-- 栏目中比较重要的第一个文章 -->
+                        <div class="part-first">
+                            {ms:arclist flag='xfxwtj' size=1}
+                            <img src="{@ms:file field.litpic/}">
+                            <div>
+                                <div class="name"><a href="{ms:global.url/}${field.link}">${field.title}</a></div>
+                                <div class="time">${field.date?date?string("MM-dd")}</div>
+                                <div class="info">{@ms:len field.descrip 55/}</div>
+                            </div>
+                            {/ms:arclist}
+                        </div>
+                        <!-- 其他文章的列表 -->
+                        <ul class="part-list">
+                            {ms:arclist typeid=1622806097146531841 size=4}
+                            <li>
+                                <a href="{ms:global.url/}${field.link}"><span class="title">${field.title}</span><span
+                                        class="time">[${field.date?date?string("MM-dd")}]</span></a>
+                            </li>
+                            {/ms:arclist}
+                        </ul>
+                        <a href="{ms:global.url/}/xwh/xfxw/index.html" class="more">更多 >>></a>
+                    </div>
+                </div>
+                <div class="links">
+                    <div class="link-title">维权助手</div>
+                    <div class="link-list">
+                        <a target="_blank" href="https://ts.gdcc315.cn/dologin">
+                            <img src="/statics-st315/img/icon1.png" />
+                            <span>在线投诉平台</span>
+                        </a>
+                        <a href="{ms:global.url/}/xwh/contact/index.html">
+                            <img src="/statics-st315/img/icon2.png" />
+                            <span>各区消委会联系方式</span>
+                        </a>
+                        <a href="{ms:global.url/}/xwh/flfg/index.html">
+                            <img src="/statics-st315/img/icon3.png" />
+                            <span>法律法规</span>
+                        </a>
+                    </div>
+                    <!-- 主题入口 -->
+                    <div>
+                        {ms:arclist typeid=1623143724873797634 size=1}
+                        <a href="{ms:global.url/}${field.link}"><img src="{@ms:file field.litpic/}" style="width: 100%;"></a>
+                        {/ms:arclist}
+                    </div>
+                </div>
+            </div>
+            <div class="content-row parts-row">
+                <div class="part">
+                    <!-- 栏目的标题 -->
+                    <div class="part-title">
+                        <div><span>比较试验</span></div>
+                    </div>
+                    <!-- 其他文章的列表 -->
+                    <ul class="part-list">
+                        {ms:arclist typeid=1622806171813531649 size=4}
+                        <li>
+                            <a href="{ms:global.url/}${field.link}"><span class="title">${field.title}</span><span
+                                    class="time">[${field.date?date?string("MM-dd")}]</span></a>
+                        </li>
+                        {/ms:arclist}
+                    </ul>
+                    <a href="{ms:global.url/}/xwh/bjsy/index.html" class="more">更多 >>></a>
+                </div>
+                <div class="part">
+                    <!-- 栏目的标题 -->
+                    <div class="part-title">
+                        <div><span>消费提示</span></div>
+                    </div>
+                    <!-- 其他文章的列表 -->
+                    <ul class="part-list">
+                        {ms:arclist typeid=1622806237420834817 size=4}
+                        <li>
+                            <a href="{ms:global.url/}${field.link}"><span class="title">${field.title}</span><span
+                                    class="time">[${field.date?date?string("MM-dd")}]</span></a>
+                        </li>
+                        {/ms:arclist}
+                    </ul>
+                    <a href="{ms:global.url/}/xwh/xfts/index.html" class="more">更多 >>></a>
+                </div>
+                <div class="part">
+                    <!-- 栏目的标题 -->
+                    <div class="part-title">
+                        <div><span>消费知识</span></div>
+                    </div>
+                    <!-- 其他文章的列表 -->
+                    <ul class="part-list">
+                        {ms:arclist typeid=1622806314382118913 size=4}
+                        <li>
+                            <a href="{ms:global.url/}${field.link}"><span class="title">${field.title}</span><span
+                                    class="time">[${field.date?date?string("MM-dd")}]</span></a>
+                        </li>
+                        {/ms:arclist}
+                    </ul>
+                    <a href="{ms:global.url/}/xwh/xfzs/index.html" class="more">更多 >>></a>
+                </div>
+            </div>
+            <div class="content-row">
+                <!-- 纯图片轮播 -->
+                <div class="swiper" id="last-swiper">
+                    <div class="swiper-wrapper">
+                        {ms:arclist typeid=1622816483052736514 size=10}
+                        <div class="swiper-slide"><img src="{@ms:file field.litpic/}" alt="${field.title}" /></div>
+                        {/ms:arclist}
+                    </div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                </div>
+            </div>
+
+            <#include "footer.htm" />
+        </div>
+    </div>
+    <script src="/statics-st315/js/swiper-bundle.min.js"></script>
+    <script src="/statics-st315/js/index.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{ms:channel type="path"}${field.typetitle}{/ms:channel}</title>
+    <#include "head-file.htm" />
+</head>
+<body>
+    <div class="page">
+        <#include "header.htm" />
+        <!-- 正文内容 -->
+        <div class="content">
+            <div class="content-row">
+                <!-- 列表 -->
+                <div class="list-panel">
+                    <!-- 路径面包屑 -->
+                    <div class="path">
+                        <img src="/statics-st315/img/icon-path.png"/>
+                        <a href="/">首页</a>&nbsp;＞&nbsp;{ms:channel type="self"}<a href="{ms:global.url/}${field.typelink}">${field.typetitle}</a>&nbsp;＞&nbsp;{/ms:channel}列表
+                    </div>
+                    <!-- 列表 -->
+                    <ul class="list content-body">
+                        {ms:arclist size=17 ispaging=true}
+                        <li>
+                            <a href="{ms:global.url/}${field.link}"><span class="title">${field.title}</span><span
+                                    class="time">${field.date?date?string("yyyy-MM-dd")}</span></a>
+                        </li>
+                        {/ms:arclist}
+                    </ul>
+                    <!-- 分页 -->
+                    <#include "pages.htm" />
+                </div>
+                <!-- 推荐 -->
+                <#include "recommend.htm" />
+            </div>
+
+            <#include "footer.htm" />
+        </div>
+    </div>
+</body>
+
+</html>

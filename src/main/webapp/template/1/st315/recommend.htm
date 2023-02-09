@@ -1,0 +1,26 @@
+<!-- 推荐 -->
+<div class="recommend">
+    <!-- 推荐文章列表 -->
+    <div class="part">
+        <!-- 栏目的标题 -->
+        <div class="part-title">
+            <div><span>推荐文章</span></div>
+        </div>
+        <!-- 其他文章的列表 -->
+        <ul class="part-list">
+            {ms:channel type="parent"}
+            {ms:arclist typeid=field.id size=9 flag='c'}
+            <li>
+                <a href="{ms:global.url/}${field.link}"><span class="title">${field.title}</span></a>
+            </li>
+            {/ms:arclist}
+            {/ms:channel}
+        </ul>
+    </div>
+    <!-- 下方的图片链接 -->
+    <div style="margin-top: 20px;">
+        {ms:arclist typeid=1623157028010708993 size=1}
+        <img src="{@ms:file field.litpic/}" style="width: 100%;">
+        {/ms:arclist}
+    </div>
+</div>

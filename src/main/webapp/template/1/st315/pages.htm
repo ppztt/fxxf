@@ -1,0 +1,63 @@
+<!-- 分页 -->
+<div class="paging" id="app" v-cloak>
+    <el-pagination
+            background
+            @current-change="handleCurrentChange"
+            :page-size="pageSize"
+            :current-page.sync="pageCur"
+            layout="total, prev, pager, next"
+            prev-text="上一页"
+            next-text="下一页"
+            :total="contentCount"></el-pagination>
+</div>
+
+<script src="/statics-st315/js/search.js"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+//当前页数
+            pageCur: ${(page.cur)!1},
+//每页文章条数
+            pageSize: ${(page.size)!20},
+//页数总数
+            pageTotal: ${(page.total)!0},
+//内容总数
+            contentCount: ${(page.rcount)!0},
+            keyword: "{ms:search.content_title/}",
+            categoryIds: ""
+        },
+        methods: {
+            handleCurrentChange:function(val) {
+                var form = document.createElement("form");
+                form.setAttribute("method", "post");
+                var input = document.createElement('input');
+                input.setAttribute('type', 'hidden');
+                input.setAttribute('name', 'size');
+                input.setAttribute('value', this.pageSize);
+                form.append(input);
+                input = document.createElement('input');
+                input.setAttribute('type', 'hidden');
+                input.setAttribute('name', 'pageNo');
+                input.setAttribute('value', val);
+                form.append(input);
+                input = document.createElement('input');
+                input.setAttribute('type', 'hidden');
+                input.setAttribute('name', 'text');
+                input.setAttribute('value', this.keyword);
+                form.append(input);
+                input = document.createElement('input');
+                input.setAttribute('type', 'hidden');
+                input.setAttribute('name', 'categoryIds');
+                input.setAttribute('value', this.categoryIds);
+                form.append(input);
+
+                // form.setAttribute("action", location.pathname);
+                form.setAttribute("action", "/mcms/search.do");
+                document.body.appendChild(form);
+                form.submit();
+                form.remove();
+            },
+        }
+    })
+</script>

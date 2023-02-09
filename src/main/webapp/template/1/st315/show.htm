@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{ms:channel type="path"}${field.typetitle}{/ms:channel}</title>
+    <#include "head-file.htm" />
+</head>
+<body>
+    <div class="page">
+        <#include "header.htm" />
+        <!-- 正文内容 -->
+        <div class="content">
+            <div class="content-row">
+                <!-- 列表 -->
+                <div class="list-panel">
+                    <!-- 路径面包屑 -->
+                    <div class="path">
+                        <img src="/statics-st315/img/icon-path.png" />
+                        <a href="/">首页</a>&nbsp;＞&nbsp;{ms:channel type="self"}<a href="{ms:global.url/}${field.typelink}">${field.typetitle}</a>&nbsp;＞&nbsp;{/ms:channel}正文
+                    </div>
+                    <!-- 内容正文 -->
+                    <div class="content-body">
+                        <div style="text-align: center;color: #201f1f;">
+                            <p style="font-size: 22px;">${field.title}</p>
+                            <p style="font-size: 11px;">来源：${field.source}&nbsp;&nbsp;作者：${field.author}&nbsp;&nbsp;发布时间：${field.date?date?string("yyyy-MM-dd HH:mm:ss")}</p>
+                        </div>
+                        <div>
+                            ${field.content}
+                        </div>
+                    </div>
+                    <!-- 上下篇导航 -->
+                    <div class="navigation-links">
+                        <span>上一篇：</span>
+                        <#if pre.title?has_content>
+                        <a href="{ms:global.url/}${pre.link}">${pre.title}</a>
+                        <#else>
+                        第一篇
+                        </#if>
+                        <br>
+                        <span>下一篇：</span>
+                        <#if next.title?has_content>
+                        <a href="{ms:global.url/}${next.link}">${next.title}</a>
+                        <#else>
+                        最后一篇
+                        </#if>
+                    </div>
+                </div>
+                <!-- 推荐 -->
+                <#include "recommend.htm" />
+            </div>
+
+            <#include "footer.htm" />
+        </div>
+    </div>
+</body>
+</html>

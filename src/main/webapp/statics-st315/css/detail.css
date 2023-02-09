@@ -1,0 +1,13 @@
+.navigation-links {
+    font-size: 12px;
+    line-height: 22px;
+    margin-top: 10px;
+}
+
+.navigation-links span{
+    color: rgba(10, 94, 163, 1);;
+}
+
+.navigation-links a{
+    color: rgba(32, 31, 31, 1);
+}

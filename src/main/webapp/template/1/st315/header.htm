@@ -1,0 +1,57 @@
+
+  <!--header-->
+  <!-- 顶部 -->
+  <div class="header">
+      <div class="logo">
+          <img src="/statics-st315/img/logo.png" />
+          <div>
+              <span class="text_17">汕头市消费者委员会</span>
+              <br />
+              <span class="text_18">SHANTOU&nbsp;CONSUMERS&nbsp;COMMISSION</span>
+          </div>
+      </div>
+      <!-- 搜索 -->
+      <div class="search">
+          <div class="input-warp">
+              <form action="/mcms/search.do" method="post" id="searchDataForm">
+                  <input type="hidden" name="m" value="search">
+                  <input type="hidden" name="c" value="index">
+                  <input type="hidden" name="a" value="init">
+                  <input type="hidden" name="typeid" value="1" id="typeid">
+                  <input type="hidden" name="siteid" value="1" id="siteid">
+                  <input id="content_details_or" type="hidden" name="content_details_or">
+                  <input id="content_title" type="text" name="text" placeholder="搜索关键词">
+<!--                  <a class="btn" onclick=goToSearch()>搜索</a>-->
+              </form>
+<!--              <input type="text" placeholder="搜索">-->
+          </div>
+          <img class="label_4" src="/statics-st315/img/search.png" onclick=goToSearch()>
+      </div>
+  </div>
+  <!-- 菜单 -->
+  <div class="menu">
+      <div class="tri">
+          <div class="tri-r"></div>
+      </div>
+      <div class="menu-warp">
+          <a href="/">首页</a>
+          <a href="{ms:global.url/}/xwh/bhdt/index.html">本会动态</a>
+          <a href="{ms:global.url/}/xwh/xfxw/index.html">消费新闻</a>
+          <a href="{ms:global.url/}/xwh/bjsy/index.html">比较试验</a>
+          <a href="{ms:global.url/}/xwh/xfts/index.html">消费提示</a>
+          <a href="{ms:global.url/}/xwh/xfzs/index.html">消费知识</a>
+      </div>
+      <div class="tri">
+          <div class="tri-l"></div>
+      </div>
+  </div>
+
+  <script type="text/javascript">
+
+      function goToSearch() {
+          var v = document.getElementById("content_title").value;
+          document.getElementById("content_details_or").value = v;
+          document.getElementById("searchDataForm").submit();
+      }
+
+  </script>

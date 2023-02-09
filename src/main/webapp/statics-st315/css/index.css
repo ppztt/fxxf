@@ -1,0 +1,84 @@
+
+
+#first-swiper {
+    width: 586px;
+    height: 288px;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+#first-swiper img {
+    width: 586px;
+    height:288px;
+    /* object-fit: contain; */
+    /* object-fit:cover; */
+}
+
+#last-swiper img {
+    width: 300px;
+    height: 147px;
+    /* object-fit: contain; */
+    /* object-fit:cover; */
+}
+
+.right-part {
+    width: 350px;
+}
+
+
+.left-part {
+    width: 586px;
+}
+
+.links {
+    width: 350px;
+}
+
+.links .link-title {
+    background-color: rgba(237, 247, 253, 1);
+    height: 24px;
+    overflow-wrap: break-word;
+    color: rgba(10, 94, 163, 1);
+    font-size: 24px;
+    font-family: MicrosoftYaHei;
+    font-weight: NaN;
+    text-align: center;
+    white-space: nowrap;
+    line-height: 20px;
+    padding: 10px;
+}
+
+.link-list {
+    display: flex;
+    margin-top: 10px;
+    justify-content: space-between;
+    margin-bottom: 40px;
+}
+
+.link-list a {
+    display: flex;
+    width: 105px;
+    height: 110px;
+    background-color: rgba(237, 247, 253, 1);
+    flex-direction: column;
+    align-items: center;
+    color: rgba(60, 60, 60, 1);
+    font-size: 14px;
+}
+
+.link-list a img {
+    margin-top: 25px;
+}
+
+.link-list a span {
+    text-align: center;
+}
+
+.parts-row {
+    display: flex;
+}
+
+.parts-row>div {
+    width: 300px;
+}
+

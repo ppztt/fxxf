@@ -1,0 +1,57 @@
+.list {
+    padding: 0 10px;
+    height: 690px;
+    margin-top: 0;
+}
+
+.list li {
+    list-style-type: none;
+}
+
+.list a {
+    display: flex;
+    text-decoration: none;
+    color: #201F1F;
+    font-size: 14px;
+    line-height: 30px;
+    line-height: 40px;
+}
+
+.list a::before{
+    content: ">>";
+    color: #999;
+    font-size: 12px;
+    margin-right: 5px;
+}
+
+.list .title {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    flex-grow: 1;
+}
+
+.list .time {
+    width: 100px;
+    text-align: right;
+    color: rgba(153, 153, 153, 1);
+}
+
+.paging{
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    justify-content: center;
+}
+
+.paging a{
+    color: rgba(32, 31, 31, 1);
+    background-color: rgba(244, 244, 244, 1);
+    margin: 0 8px;
+}
+
+.paging a.activate{
+    background-color: rgb(91,145,248);
+    color: #fff;
+}
+
