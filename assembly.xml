@@ -39,7 +39,7 @@
             </includes>
         </fileSet>
         <fileSet>
-            <directory>src/main/webapp/statics-dg315</directory>
+            <directory>src/main/webapp/statics-st315</directory>
             <outputDirectory>${file.separator}statics-st315</outputDirectory>
             <includes>
                 <include>*/**</include>
