@@ -251,32 +251,62 @@ public class GeneraterAction extends BaseAction {
         }
 
         final List<CategoryEntity> finalCategoryList = categoryList;
-        new Thread(() -> {
-            for (CategoryEntity category : finalCategoryList) {
-                //如果是链接就跳过生成
-                if (category.getCategoryType().equals(CategoryTypeEnum.LINK.toString())) {
-                    continue;
-                }
-                contentBean.setCategoryId(category.getId());
-                contentBean.setCategoryType(category.getCategoryType());
-                //将文章列表标签中的中的参数
-                articleIdList[0] = contentBiz.queryIdsByCategoryIdForParser(contentBean);
-                // 分类是列表
-                if (category.getCategoryType().equals(CategoryTypeEnum.LIST.toString())) {
-                    // 判断模板文件是否存在
-                    if (!FileUtil.exist(ParserUtil.buildTemplatePath(category.getCategoryListUrl())) || StringUtils.isEmpty(category.getCategoryListUrl())) {
-                        LOG.error("{} 模板不存在：{}", category.getCategoryTitle(), category.getCategoryListUrl());
-                        continue;
+        for (CategoryEntity category : categoryList) {
+            if (category.getLeaf()) {
+                new Thread(() -> {
+                    //如果是链接就跳过生成
+                    if (category.getCategoryType().equals(CategoryTypeEnum.LINK.toString())) {
+                        return;
                     }
-                } else if (category.getCategoryType().equals(CategoryTypeEnum.COVER.toString())) {
-                    continue;
-                }
-                // 有符合条件的就更新
-                if (articleIdList[0].size() > 0) {
-                    CmsParserUtil.generateBasic(articleIdList[0], htmlDir);
-                }
+                    contentBean.setCategoryId(category.getId());
+                    contentBean.setCategoryType(category.getCategoryType());
+                    contentBean.setOrderBy("date");
+                    //将文章列表标签中的中的参数
+                    List<CategoryBean> genList = contentBiz.queryIdsByCategoryIdForParser(contentBean);
+                    // 分类是列表
+                    if (category.getCategoryType().equals(CategoryTypeEnum.LIST.toString())) {
+                        // 判断模板文件是否存在
+                        if (!FileUtil.exist(ParserUtil.buildTemplatePath(category.getCategoryListUrl())) || StringUtils.isEmpty(category.getCategoryListUrl())) {
+                            LOG.error("{} 模板不存在：{}", category.getCategoryTitle(), category.getCategoryListUrl());
+                            return;
+                        }
+                    } else if (category.getCategoryType().equals(CategoryTypeEnum.COVER.toString())) {
+                        return;
+                    }
+                    // 有符合条件的就更新
+                    if (genList.size() > 0) {
+                        CmsParserUtil.generateBasic(genList, htmlDir);
+                    }
+                }).start();
             }
-        }).start();
+        }
+//        new Thread(() -> {
+//            for (CategoryEntity category : finalCategoryList) {
+//                //如果是链接就跳过生成
+//                if (category.getCategoryType().equals(CategoryTypeEnum.LINK.toString())) {
+//                    continue;
+//                }
+//                contentBean.setCategoryId(category.getId());
+//                contentBean.setCategoryType(category.getCategoryType());
+//                contentBean.setOrderBy("date");
+//                //将文章列表标签中的中的参数
+//                articleIdList[0] = contentBiz.queryIdsByCategoryIdForParser(contentBean);
+//                // 分类是列表
+//                if (category.getCategoryType().equals(CategoryTypeEnum.LIST.toString())) {
+//                    // 判断模板文件是否存在
+//                    if (!FileUtil.exist(ParserUtil.buildTemplatePath(category.getCategoryListUrl())) || StringUtils.isEmpty(category.getCategoryListUrl())) {
+//                        LOG.error("{} 模板不存在：{}", category.getCategoryTitle(), category.getCategoryListUrl());
+//                        continue;
+//                    }
+//                } else if (category.getCategoryType().equals(CategoryTypeEnum.COVER.toString())) {
+//                    continue;
+//                }
+//                // 有符合条件的就更新
+//                if (articleIdList[0].size() > 0) {
+//                    CmsParserUtil.generateBasic(articleIdList[0], htmlDir);
+//                }
+//            }
+//        }).start();
         Thread.sleep(3000L);
         return ResultData.build().success();
     }

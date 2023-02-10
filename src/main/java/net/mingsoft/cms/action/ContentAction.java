@@ -321,6 +321,7 @@ public class ContentAction extends BaseAction {
 			contentBean.setEndTime(sdf.format(DateUtil.offsetMonth(content.getContentDatetime(), 12)));
 			contentBean.setCategoryId(content.getCategoryId());
 			contentBean.setCategoryType("1");
+			contentBean.setOrderBy("date");
 			List<CategoryBean> articleIdList = contentBiz.queryIdsByCategoryIdForParser(contentBean);
 
 			int preIdx = -1;
