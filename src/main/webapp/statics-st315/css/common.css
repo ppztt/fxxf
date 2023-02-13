@@ -133,12 +133,13 @@ a:hover{
 
 .menu-warp a {
     display: inline-block;
-    width: 100px;
-    text-align: center;
+    width: 80px;
+    /*text-align: center;*/
     font-size: 15px;
     
     color: #fff;
     position: relative;
+    padding-left: 20px;
 }
 
 .menu-warp a:hover{
