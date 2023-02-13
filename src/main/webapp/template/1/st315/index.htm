@@ -34,7 +34,7 @@
                         <!-- 栏目中比较重要的第一个文章 -->
                         <div class="part-first">
                             {ms:arclist flag='bhdttj' size=1}
-                            <div>
+                            <div style="text-overflow: ellipsis;overflow: hidden;">
                                 <div class="name"><a href="{ms:global.url/}${field.link}">${field.title}</a></div>
                                 <div class="info">{@ms:len field.descrip 55/}</div>
                             </div>
@@ -65,7 +65,7 @@
                         <div class="part-first">
                             {ms:arclist flag='xfxwtj' size=1}
                             <img src="{@ms:file field.litpic/}">
-                            <div>
+                            <div style="text-overflow: ellipsis;overflow: hidden;">
                                 <div class="name"><a href="{ms:global.url/}${field.link}">${field.title}</a></div>
                                 <div class="time">${field.date?date?string("MM-dd")}</div>
                                 <div class="info">{@ms:len field.descrip 55/}</div>

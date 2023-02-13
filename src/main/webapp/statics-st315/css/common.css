@@ -48,7 +48,7 @@ a:hover{
 }
 
 .text_17 {
-    font-size: 22px;
+    font-size: 23px;
     font-weight: 500;
 }
 
@@ -298,6 +298,8 @@ a:hover{
     text-align: left;
     white-space: nowrap;
     line-height: 22px;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .part-first .time {
@@ -337,6 +339,8 @@ a:hover{
 .part-list .time {
     width: 70px;
     text-align: right;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .part .more {
