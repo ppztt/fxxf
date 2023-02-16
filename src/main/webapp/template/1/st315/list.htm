@@ -43,4 +43,41 @@
     </div>
 </body>
 
+<script>
+    var app = new Vue({
+        el: '#app',
+        watch: {},
+        data: {
+            //当前页数
+            pageCur: ${(page.cur)!1},
+            //每页文章条数
+            pageSize: ${(page.size)!17},
+            //页数总数
+            pageTotal: ${(page.total)!0},
+            //内容总数
+            contentCount: ${(page.rcount)!0}
+        },
+        methods: {
+            switchShow: function (arr) {
+                var that = this
+                arr.forEach(function (x) {
+                    let e = that.$el.querySelector("#key_" + x)
+                    if (e) {
+                        e.style.display = e.style.display == 'none' ? 'flex' : 'none'
+                    }
+                })
+            },
+            handleCurrentChange: function (val) {
+                if (val == 1) {
+                    location.href = "/html/web/${field.categoryPath}/index.html";
+                } else {
+                    location.href = "/html/web/${field.categoryPath}/list-" + val + ".html";
+                }
+            }
+        },
+        created() {
+        }
+    })
+</script>
+
 </html>
