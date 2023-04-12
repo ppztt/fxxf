@@ -1,18 +1,18 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/mcms?useUnicode=true&serverTimezone=Asia/Shanghai&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&allowMultiQueries=true&useSSL=true
+    url: jdbc:mysql://192.168.1.230:3306/gdcc315?useUnicode=true&serverTimezone=Asia/Shanghai&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&allowMultiQueries=true&useSSL=true
     username: root
-    password: rootroot
+    password: Ccr@1688
     filters: wall,mergeStat
     type: com.alibaba.druid.pool.DruidDataSource
 
   #redis配置
   redis:
-    host: localhost
+    host: 192.168.1.202
     password: 123456
     port: 6379
     timeout: 50000
-    database: 14
+    database: 13
     lettuce:
       pool:
         max-active: 12 # 大于cpu*2
