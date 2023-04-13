@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.mingsoft.fxxf.mapper.FeedbackStatMapper">
+
+
+    <select id="statList" resultType="net.mingsoft.fxxf.entity.FeedbackStat">
+        SELECT cf.applicants_id,
+        cf.reg_name,
+        cf.type,
+        cf.reason,
+        ca.city,
+        cf.create_time,
+        CASE cf.status WHEN 0 THEN '待处理' ELSE '已处理' END as status,
+        cf.result
+        FROM cc_feedback AS cf
+        LEFT JOIN cc_applicants ca ON cf.applicants_id = ca.id
+        <where>
+            <if test="feedback.startTime != '' and feedback.startTime != null and feedback.endTime != '' and feedback.endTime != null">
+                and cf.create_time between #{feedback.startTime} and date_add(#{feedback.endTime},INTERVAL 1 DAY)
+            </if>
+            <if test="feedback.type != '' and feedback.type != null">
+                and cf.type = #{feedback.type}
+            </if>
+            <if test="feedback.reason != '' and feedback.reason != null">
+                and cf.reason = #{feedback.reason}
+            </if>
+            <if test="feedback.city != '' and feedback.city != null">
+                and ca.city like concat('%', #{feedback.city},'%')
+            </if>
+            <if test="feedback.status != '' and feedback.status != null">
+                and cf.status = #{feedback.status}
+            </if>
+            <if test="feedback.result != '' and feedback.result != null">
+                and cf.result = #{feedback.result}
+            </if>
+        </where>
+        ORDER BY
+        cf.STATUS ASC,
+        cf.create_time DESC
+    </select>
+
+    <select id="newFeedbackInterface" resultType="java.util.Map">
+        SELECT t.applicants_id, t.reg_name, sum(t.total) as total, sum(t.process) as process
+        FROM (
+                 SELECT applicants_id, reg_name, count(*) AS total, 0 AS process
+                 FROM cc_feedback
+                 GROUP BY applicants_id, reg_name
+                 UNION
+                 SELECT applicants_id, reg_name, 0 AS total, count(*) AS process
+                 FROM cc_feedback
+                 WHERE status = 1
+                 GROUP BY applicants_id, reg_name
+             ) t
+        GROUP BY t.applicants_id, t.reg_name
+    </select>
+
+    <select id="statListByAdminRole" resultType="net.mingsoft.fxxf.entity.FeedbackStat">
+        SELECT  sr.name                                 AS city,
+                ifnull(sum(companyTotal), 0)            AS companyTotal,
+                ifnull(sum(complaintCompanyNum), 0)     AS complaintCompanyNum,
+                ifnull(sum(complaintTotal), 0)          AS complaintTotal,
+                ifnull(sum(takeOff), 0)                 AS takeOff,
+                ifnull(sum(unprocessed), 0)             AS unprocessed,
+                ifnull(sum(warning), 0)                 AS warning,
+                ifnull(sum(disqualification), 0)        AS disqualification,
+                ifnull(sum(non_existent_complaints), 0) AS non_existent_complaints,
+                ifnull(sum(other), 0)                   AS other
+        FROM (
+                SELECT city,
+                    count(*) AS companyTotal,
+                    0 AS complaintCompanyNum,
+                    0 AS complaintTotal,
+                    0 AS takeOff,
+                    0 AS unprocessed,
+                    0 AS warning,
+                    0 AS disqualification,
+                    0 AS non_existent_complaints,
+                    0 AS other
+                FROM cc_applicants
+                <where>
+                    <if test="feedback.type != '' and feedback.type != null">
+                        AND type = #{feedback.type}
+                    </if>
+                </where>
+                GROUP BY city
+                UNION ALL
+                 SELECT city,
+                        0                AS companyTotal,
+                        count(DISTINCT cf.applicants_id) AS complaintCompanyNum,<!--去重，统计“被反馈单位数量”-->
+                        count(cf.id)            AS complaintTotal,
+                        0                       AS takeOff,
+                        0                       AS unprocessed,
+                        0                       AS warning,
+                        0                       AS disqualification,
+                        0                       AS non_existent_complaints,
+                        0                       AS other
+                 FROM cc_feedback AS cf
+                          LEFT JOIN cc_applicants AS ca ON ca.id = cf.applicants_id
+                  <where>
+                      <if test="feedback.type != '' and feedback.type != null">
+                          AND cf.type = #{feedback.type}
+                      </if>
+                      <if test="feedback.startTime != '' and feedback.startTime != null and feedback.endTime != '' and feedback.endTime != null">
+                          AND cf.create_time BETWEEN #{feedback.startTime} AND date_add(#{feedback.endTime}, INTERVAL 1 DAY)
+                      </if>
+                  </where>
+                 GROUP BY city
+                 UNION ALL
+                 SELECT city,
+                        0        AS companyTotal,
+                        0        AS complaintCompanyNum,
+                        0        AS complaintTotal,
+                        count(*) AS takeOff,
+                        0        AS unprocessed,
+                        0        AS warning,
+                        0        AS disqualification,
+                        0        AS non_existent_complaints,
+                        0        AS other
+
+                 FROM cc_applicants
+                 WHERE status = 0
+                    <if test="feedback.startTime != '' and feedback.startTime != null and feedback.endTime != '' and feedback.endTime != null">
+                        AND del_time BETWEEN #{feedback.startTime} AND date_add(#{feedback.endTime}, INTERVAL 1 DAY)
+                    </if>
+                    <if test="feedback.type != '' and feedback.type != null and feedback.type == 1 ">
+                        <!-- 放心消费承诺类型判断牌照有效期-->
+                        AND type = #{feedback.type}
+                        AND end_time > date_add(now(), INTERVAL -1 DAY)
+                    </if>
+                    <if test="feedback.type != '' and feedback.type != null and feedback.type == 2 ">
+                        <!-- 无理由退货承诺类型牌照无限期-->
+                        AND type = #{feedback.type}
+                    </if>
+                 GROUP BY city
+                 UNION ALL
+                 SELECT city,
+                        0                                              AS companyTotal,
+                        0                                              AS complaintCompanyNum,
+                        0                                              AS complaintTotal,
+                        0                                              AS takeOff,
+                        0                                               AS unprocessed,
+                        sum(if(result = '督促告诫', num, 0))               AS warning,
+                        sum(if(result = '摘牌', num, 0))              AS disqualification,
+                        sum(if(result = '投诉问题不存在', num, 0))            AS non_existent_complaints,
+                        sum(if(result = '其他', num, 0))                 AS other
+                 FROM (SELECT ca.city,
+                              result,
+                              count(*) AS num
+                       FROM cc_feedback cf
+                                LEFT JOIN cc_applicants AS ca ON ca.id = cf.applicants_id
+                        <where>
+                            AND cf.result IS NOT NULL
+                            <if test="feedback.type != '' and feedback.type != null">
+                                AND cf.type = #{feedback.type}
+                            </if>
+                            <if test="feedback.startTime != '' and feedback.startTime != null and feedback.endTime != '' and feedback.endTime != null">
+                                AND cf.create_time BETWEEN #{feedback.startTime} AND date_add(#{feedback.endTime}, INTERVAL 1 DAY)
+                            </if>
+                        </where>
+                       GROUP BY ca.city, result
+                      ) AS t
+                 GROUP BY city
+                 UNION ALL
+                SELECT  city,
+                        0        AS companyTotal,
+                        0        AS complaintCompanyNum,
+                        0        AS complaintTotal,
+                        0        AS takeOff,
+                        COUNT(*) AS unprocessed,
+                        0        AS warning,
+                        0        AS disqualification,
+                        0        AS non_existent_complaints,
+                        0        AS other
+                FROM cc_feedback as cf
+                LEFT JOIN cc_applicants ca ON cf.applicants_id = ca.id
+                WHERE cf.status = 0
+                <if test="feedback.startTime != '' and feedback.startTime != null and feedback.endTime != '' and feedback.endTime != null">
+                    AND cf.create_time BETWEEN #{feedback.startTime} AND date_add(#{feedback.endTime}, INTERVAL 1 DAY)
+                </if>
+                <if test="feedback.type != '' and feedback.type != null">
+                    AND cf.type = #{feedback.type}
+                </if>
+                GROUP BY ca.city
+        ) t
+        RIGHT JOIN (SELECT name, sort FROM sys_region WHERE pcode = 440000) AS sr ON FIND_IN_SET(sr. NAME,t.city)
+        GROUP BY sr.name, sr.sort
+        ORDER BY sr.sort
+    </select>
+
+    <select id="statListByCityRole" resultType="net.mingsoft.fxxf.entity.FeedbackStat">
+        SELECT  sr.name as city,
+                ifnull(sum(companyTotal), 0)            AS companyTotal,
+                ifnull(sum(complaintCompanyNum), 0)     AS complaintCompanyNum,
+                ifnull(sum(complaintTotal), 0)          AS complaintTotal,
+                ifnull(sum(takeOff), 0)                 AS takeOff,
+                ifnull(sum(unprocessed), 0)             AS unprocessed,
+                ifnull(sum(warning), 0)                 AS warning,
+                ifnull(sum(disqualification), 0)        AS disqualification,
+                ifnull(sum(non_existent_complaints), 0) AS non_existent_complaints,
+                ifnull(sum(other), 0)                   AS other
+        FROM (
+            SELECT district,
+                count(*) AS companyTotal,
+                0 AS complaintCompanyNum,
+                0 AS complaintTotal,
+                0 AS takeOff,
+                0 AS unprocessed,
+                0 AS warning,
+                0 AS disqualification,
+                0 AS non_existent_complaints,
+                0 AS other
+            FROM cc_applicants
+            <where>
+                <if test="feedback.type != '' and feedback.type != null">
+                    AND type = #{feedback.type}
+                </if>
+                <if test="feedback.city != '' and feedback.city != null">
+                    AND city like concat('%', #{feedback.city},'%')
+                </if>
+            </where>
+            GROUP BY district
+            UNION ALL
+            SELECT district,
+                0           AS companyTotal,
+                count(DISTINCT cf.applicants_id) AS complaintCompanyNum,
+                count(cf.id)            AS complaintTotal,
+                0                       AS takeOff,
+                0                       AS unprocessed,
+                0                       AS warning,
+                0                       AS disqualification,
+                0                       AS non_existent_complaints,
+                0                       AS other
+            FROM cc_feedback AS cf
+            LEFT JOIN cc_applicants AS ca  ON ca.id = cf.applicants_id
+            <where>
+                <if test="feedback.type != '' and feedback.type != null">
+                    AND cf.type = #{feedback.type}
+                </if>
+                <if test="feedback.startTime != '' and feedback.startTime != null and feedback.endTime != '' and feedback.endTime != null">
+                    AND cf.create_time BETWEEN #{feedback.startTime} AND date_add(#{feedback.endTime}, INTERVAL 1 DAY)
+                </if>
+                <if test="feedback.city != '' and feedback.city != null">
+                    AND ca.city like concat('%', #{feedback.city},'%')
+                </if>
+            </where>
+            GROUP BY district
+            UNION ALL
+            SELECT district,
+                    0        AS companyTotal,
+                    0        AS complaintCompanyNum,
+                    0        AS complaintTotal,
+                    count(*) AS takeOff,
+                    0        AS unprocessed,
+                    0        AS warning,
+                    0        AS disqualification,
+                    0        AS non_existent_complaints,
+                    0        AS other
+            FROM cc_applicants
+            WHERE status = 0
+                AND end_time > date_add(now(), INTERVAL -1 DAY)<!--失效的企业不纳入统计-->
+                <if test="feedback.startTime != '' and feedback.startTime != null and feedback.endTime != '' and feedback.endTime != null">
+                    AND del_time BETWEEN #{feedback.startTime} AND date_add(#{feedback.endTime}, INTERVAL 1 DAY)
+                </if>
+                <if test="feedback.city != '' and feedback.city != null">
+                    AND city like concat('%', #{feedback.city},'%')
+                </if>
+                <if test="feedback.type != '' and feedback.type != null">
+                    AND type = #{feedback.type}
+                </if>
+            GROUP BY district
+            UNION ALL
+            SELECT district,
+                    0                                              AS companyTotal,
+                    0                                              AS complaintCompanyNum,
+                    0                                              AS complaintTotal,
+                    0                                              AS takeOff,
+                    0                                               AS unprocessed,
+                    sum(if(result = '督促告诫', num, 0))               AS warning,
+                    sum(if(result = '摘牌', num, 0))              AS disqualification,
+                    sum(if(result = '投诉问题不存在', num, 0))            AS non_existent_complaints,
+                    sum(if(result = '其他', num, 0))                 AS other
+            FROM (SELECT ca.district,
+                        result,
+                        count(*) AS num
+                        FROM cc_feedback cf
+                        LEFT JOIN cc_applicants AS ca ON ca.id = cf.applicants_id
+                        <where>
+                            <if test="feedback.type != '' and feedback.type != null">
+                                AND cf.type = #{feedback.type}
+                            </if>
+                            <if test="feedback.startTime != '' and feedback.startTime != null and feedback.endTime != '' and feedback.endTime != null">
+                                AND cf.create_time BETWEEN #{feedback.startTime} AND date_add(#{feedback.endTime}, INTERVAL 1 DAY)
+                            </if>
+                            <if test="feedback.city != '' and feedback.city != null">
+                                AND ca.city like concat('%', #{feedback.city},'%')
+                            </if>
+                        </where>
+                        GROUP BY ca.district, result
+            ) AS t
+            GROUP BY district
+            UNION ALL
+            SELECT  ca.district,
+                    0        AS companyTotal,
+                    0        AS complaintCompanyNum,
+                    0        AS complaintTotal,
+                    0        AS takeOff,
+                    COUNT(*) AS unprocessed,
+                    0        AS warning,
+                    0        AS disqualification,
+                    0        AS non_existent_complaints,
+                    0        AS other
+            FROM cc_feedback as cf
+            LEFT JOIN cc_applicants ca ON cf.applicants_id = ca.id
+            WHERE cf.status = 0
+                <if test="feedback.startTime != '' and feedback.startTime != null and feedback.endTime != '' and feedback.endTime != null">
+                    AND cf.create_time BETWEEN #{feedback.startTime} AND date_add(#{feedback.endTime}, INTERVAL 1 DAY)
+                </if>
+                <if test="feedback.type != '' and feedback.type != null">
+                    AND cf.type = #{feedback.type}
+                </if>
+                <if test="feedback.city != '' and feedback.city != null">
+                    AND ca.city like concat('%', #{feedback.city},'%')
+                </if>
+        GROUP BY ca.district
+        ) t
+        RIGHT JOIN (
+            SELECT name, sort FROM sys_region
+                WHERE pcode = (
+                SELECT code FROM sys_region WHERE FIND_IN_SET(name,#{feedback.city})
+                )
+        ) AS sr ON FIND_IN_SET(sr.name,t.district)
+        GROUP BY sr.name, sr.sort
+        ORDER BY sr.sort
+    </select>
+</mapper>

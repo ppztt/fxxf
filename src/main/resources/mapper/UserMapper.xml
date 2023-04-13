@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.mingsoft.fxxf.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="net.mingsoft.fxxf.entity.User">
+        <id column="id" property="id"/>
+        <result column="account" property="account"/>
+        <result column="password" property="password"/>
+        <result column="realname" property="realname"/>
+        <result column="email" property="email"/>
+        <result column="province" property="province"/>
+        <result column="city" property="city"/>
+        <result column="district" property="district"/>
+        <result column="town" property="town"/>
+        <result column="address" property="address"/>
+        <result column="zipcode" property="zipcode"/>
+        <result column="phone" property="phone"/>
+        <result column="role_id" property="roleId"/>
+
+        <result column="usertype" property="usertype"/>
+        <result column="credit_code" property="creditCode"/>
+        <result column="store_name" property="storeName"/>
+        <result column="management" property="management"/>
+        <result column="principal" property="principal"/>
+        <result column="principal_tel" property="principalTel"/>
+
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+
+        <!--<result column="industry_user_name" property="industryUserName"/>-->
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, account, password, realname, email, province, city, district, town, address, zipcode, phone, role_id,
+        usertype, credit_code, store_name, busin_scope, principal, principal_tel,
+        create_time, update_time
+    </sql>
+
+    <select id="userList" resultMap="BaseResultMap">
+        SELECT u.id,u.account, r.name as roleName, u.city, u.district, u.phone
+        FROM sys_user u
+        LEFT JOIN sys_role AS r ON r.id = u.role_id
+        where usertype = 1
+        <if test="keyword != null and keyword != ''">
+            AND u.account LIKE concat('%', #{keyword},'%')
+            OR r.name LIKE concat('%', #{keyword},'%')
+            OR u.city LIKE concat('%', #{keyword},'%')
+            OR u.phone LIKE concat('%', #{keyword},'%')
+        </if>
+        ORDER BY u.create_time DESC
+    </select>
+
+    <select id="roleList" resultType="net.mingsoft.fxxf.entity.Role">
+        SELECT name,explation FROM sys_role
+    </select>
+
+    <select id="existsAccount" resultType="string">
+        SELECT account FROM sys_user where account = #{account}
+    </select>
+
+    <select id="enterpriseList" resultMap="BaseResultMap">
+        SELECT * FROM sys_user u where usertype = 2
+        <if test="keyword != null and keyword != ''">
+            AND (u.account LIKE concat('%', #{keyword},'%')
+            OR u.realname LIKE concat('%', #{keyword},'%')
+            OR u.city LIKE concat('%', #{keyword},'%') )
+        </if>
+    </select>
+
+    <!--行业协会-->
+    <select id="industryAssociationList" resultMap="BaseResultMap">
+        SELECT * FROM sys_user u where usertype = 3
+        <if test="keyword != null and keyword != ''">
+            AND (u.account LIKE concat('%', #{keyword},'%')
+            OR u.realname LIKE concat('%', #{keyword},'%')
+            OR u.city LIKE concat('%', #{keyword},'%') )
+        </if>
+    </select>
+
+</mapper>
