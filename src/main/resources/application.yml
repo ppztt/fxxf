@@ -26,10 +26,10 @@ ms:
     circle: 10 #干扰线条数，值越大越不容易辨别
   #  scheme: https #解决使用代理服务器代理应用时标签解析域名依旧为http的问题
   swagger:
-    enable: false #启用swagger文档，生产的时候务必关掉 访问地址：http://ip|域名/项目发布名/swagger-ui.html
+    enable: true #启用swagger文档，生产的时候务必关掉 访问地址：http://ip|域名/项目发布名/swagger-ui.html
   manager:
     path: /xwh #后台访问的路径，如:http://项目/ms/login.do，生产的时候建议修改
-    check-code: true #默认开启验证码验证，false验证码不验证
+    check-code: false #默认开启验证码验证，false验证码不验证
   xss:
     xssEnable: true #xss过滤器的开关
     filterUrl: /**   #过滤的url,多个用逗号分开

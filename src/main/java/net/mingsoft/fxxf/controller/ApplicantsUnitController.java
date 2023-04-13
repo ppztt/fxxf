@@ -18,6 +18,7 @@ import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import net.mingsoft.fxxf.anno.OperatorLogAnno;
 import net.mingsoft.fxxf.entity.*;
+import net.mingsoft.fxxf.entity.Record;
 import net.mingsoft.fxxf.mapper.ApplicantsMapper;
 import net.mingsoft.fxxf.mapper.AuditLogMapper;
 import net.mingsoft.fxxf.mapper.FeedbackMapper;
