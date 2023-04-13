@@ -93,6 +93,26 @@ spring:
       datetime_format: yyyy-MM-dd HH:mm:ss
       number_format: 0.##
 
+jwt:
+  token:
+    issuer: gdcc315
+    secret: f82b32c48663be73ec3976e841f35fa20963a714
+    subject: authentication_token
+    audience: web
+    expiration: 86400
+    refresh-token-countdown: 600
+
+pub:
+  vcode:
+    expire: 2
+  ecode:
+    expire: 5
+
+unitTemplateFilePath: classpath:templateFile/放心消费承诺单位导入模板（备注：请启用宏）v1.xlsm
+storeTemplateFilePath: classpath:templateFile/无理由退货承诺实体店导入模板（备注：请启用宏）v1.xlsm
+importFileTmp: importFileTmp/
+
+
 mybatis-plus:
   global-config:
     db-config:
