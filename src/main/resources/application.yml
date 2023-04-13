@@ -16,7 +16,7 @@ ms:
   open-remember: false #登录时记住我状态开关
   pass-error-max-times: 5 #密码错误最多次数
   pass-error-lock-time: 30 #密码错误超过次数锁定时间，分钟
-  pass-error-keep-time: 30 #密码错误计数保存时间，分钟
+  pass-error-keep-time: 90 #密码错误计数保存时间，分钟
   pass-change-max-day: 90 #密码不更改最长时间，天
   session-time: 30 #连接超时自动退出，分钟（登录不记住我时有效）
   diy:
