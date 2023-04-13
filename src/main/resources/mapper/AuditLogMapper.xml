@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.mingsoft.fxxf.mapper.AuditLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="net.mingsoft.fxxf.entity.AuditLog">
+        <id column="id" property="id"/>
+        <result column="app_id" property="appId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="contents" property="contents"/>
+        <result column="status" property="status"/>
+        <result column="auditor" property="auditor"/>
+        <result column="role_id" property="roleId"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+         id, app_id, create_time, contents, status, auditor, role_id
+    </sql>
+
+    <select id="getAuditLog" resultType="net.mingsoft.fxxf.vo.AuditLogVo">
+        SELECT
+        t.`name`,
+        t.`status`,
+        t.create_time,
+        t.contents
+
+        from
+
+        (
+        SELECT
+        a.id id,
+        -- max(a.id) id,
+        app_id,
+        a.create_time,
+        contents,
+        case `status` when 1 then '审核通过' else '审核不通过' end `status`,
+        auditor,
+        role_id,
+        b.`name`
+        FROM
+        cc_auditlog a INNER JOIN sys_role b
+        on a.role_id=b.id
+
+        WHERE app_id=#{id}
+        -- GROUP BY
+        -- role_id
+        ORDER BY create_time DESC
+        )t
+        <if test="userType == 2">
+            LIMIT 1
+        </if>
+    </select>
+
+
+    <!--<select id="getAuditLog" resultType="com.useease.fxxf.vo.AuditLogVo">-->
+        <!--SELECT-->
+        <!--create_time,-->
+        <!--contents,-->
+        <!--CASE `status`-->
+        <!--WHEN 1 THEN-->
+        <!--'审核通过'-->
+        <!--ELSE-->
+        <!--'审核不通过'-->
+        <!--END `status`,-->
+        <!--CASE role_id-->
+        <!--WHEN 1 THEN-->
+        <!--'省工作人员'-->
+        <!--WHEN 2 THEN-->
+        <!--'地市工作人员'-->
+        <!--WHEN 3 THEN-->
+        <!--'区县工作人员'-->
+        <!--ELSE-->
+        <!--'行业协会人员'-->
+        <!--END role_id-->
+        <!--FROM-->
+        <!--cc_auditlog-->
+        <!--WHERE-->
+        <!--app_id = 1 &#45;&#45; GROUP BY-->
+        <!--&#45;&#45; role_id-->
+        <!--ORDER BY-->
+        <!--create_time DESC;-->
+        <!--<if test="userType == 2">-->
+            <!--LIMIT 1-->
+        <!--</if>-->
+    <!--</select>-->
+</mapper>
