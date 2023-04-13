@@ -32,7 +32,7 @@
                 <div  class="class-6" >
                     <!--文本开始-->
                     <div class="class-7">
-                        登录ms-admin-logo
+                        登录
                     </div>
                     <!--文本结束-->
                     <!--小容器开始-->
