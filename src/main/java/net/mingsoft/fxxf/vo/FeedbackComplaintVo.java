@@ -1,5 +1,6 @@
 package net.mingsoft.fxxf.vo;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
@@ -15,11 +16,12 @@ import java.io.Serializable;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
+@ApiModel(value = "监督投诉")
 public class FeedbackComplaintVo implements Serializable {
     /**
      * 留言反馈对象
      */
-    @ApiModelProperty(value = "applicantsId")
+    @ApiModelProperty(value = "经营者ID")
     private Integer applicantsId;
 
     /**
