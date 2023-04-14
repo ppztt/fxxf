@@ -10,15 +10,13 @@ import cn.afterturn.easypoi.exception.excel.ExcelImportException;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.google.common.collect.Maps;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import net.mingsoft.fxxf.anno.OperatorLogAnno;
-import net.mingsoft.fxxf.entity.Record;
-import net.mingsoft.fxxf.entity.*;
+import net.mingsoft.fxxf.entity.Applicants;
+import net.mingsoft.fxxf.entity.User;
 import net.mingsoft.fxxf.mapper.ApplicantsMapper;
 import net.mingsoft.fxxf.mapper.AuditLogMapper;
 import net.mingsoft.fxxf.mapper.FeedbackMapper;
@@ -46,7 +44,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -781,209 +781,6 @@ public class ApplicantsStoreController {
             fileName = city + "_" + user.getDistrict() + " 线下无理由退货承诺店.xlsx";
         }
         ExcelUtil.exportExcel(applicantsStoreExcelVos, "", "", ApplicantsStoreExcelVo.class, fileName, request, response);
-    }
-
-    /**
-     * @param current 当前页
-     * @param size    每页条数
-     * @param search  搜索条件
-     * @return ApiResult
-     * @throws
-     * @description 监督投诉列表
-     * @author laijunbao
-     * @updateTime 2020-01-09-0009 14:07
-     */
-    @RequiresPermissions("wlythcn:jdts")
-    @GetMapping("/complaint")
-    @ApiOperation(value = "监督投诉-列表", notes = "监督投诉-列表")
-    @ApiImplicitParams(
-            {
-                    @ApiImplicitParam(name = "current", value = "当前页", dataType = "int", example = "1", defaultValue = "1"),
-                    @ApiImplicitParam(name = "size", value = "每页条数", dataType = "int", example = "10", defaultValue = "10"),
-                    @ApiImplicitParam(name = "search", value = "搜索条件", dataType = "string")
-            }
-    )
-    @OperatorLogAnno(operType = "查询", operModul = "无理由退货承诺", operDesc = "监督投诉-列表")
-    public ApiResult<PageResultLocal<FeedbackComplaintVo>> complaint(@RequestParam(name = "current", defaultValue = "1") Integer current,
-                                                                     @RequestParam(name = "size", defaultValue = "10") Integer size,
-                                                                     @RequestParam(name = "search", required = false) String search) {
-
-        try {
-            // 获取登录用户
-            User user = (User) SecurityUtils.getSubject().getPrincipal();
-            // roleId == 1 ，说明是管理员，可以查看全部，否则根据地市去查
-            Integer roleId = user.getRoleId();
-
-            Map<String, Object> map = new HashMap<>();
-            map.put("roleId", roleId);
-            map.put("city", user.getCity());
-            map.put("district", user.getDistrict());
-            map.put("type", 2);
-            map.put("search", search);
-            IPage<FeedbackComplaintVo> feedbackIPage = feedbackMapper.feedbackList(new Page<>(current, size), map);
-            return ApiResult.success(feedbackIPage);
-        } catch (Exception e) {
-            log.error("获取放心消费承诺单位表格数据失败，{}", e);
-            return ApiResult.fail();
-        }
-    }
-
-    /**
-     * @param applicantsId
-     * @return ApiResult
-     * @throws
-     * @description 监督投诉-企业详情
-     * @author laijunbao
-     * @updateTime 2020-01-09-0009 14:07
-     */
-    @RequiresPermissions("wlythcn:jdts")
-    @GetMapping("/complaint/companyDetails")
-    @ApiOperation(value = "监督投诉-企业详情", notes = "监督投诉-企业详情")
-    @ApiImplicitParams(
-            {
-                    @ApiImplicitParam(name = "applicantsId", value = "applicantsId", required = true),
-                    @ApiImplicitParam(name = "startTime", value = "开始时间"),
-                    @ApiImplicitParam(name = "endTime", value = "结束时间"),
-                    @ApiImplicitParam(name = "current", value = "当前页", dataType = "int", example = "1", defaultValue = "1"),
-                    @ApiImplicitParam(name = "size", value = "每页条数", dataType = "int", example = "10", defaultValue = "10"),
-            }
-    )
-    @OperatorLogAnno(operType = "查询", operModul = "无理由退货承诺", operDesc = "监督投诉-企业详情")
-    public ApiResult<PageResultLocal<FeedbackCompanyDetailsVo>> feedbackCompanyDetails(@RequestParam(value = "applicantsId") String applicantsId,
-                                                                                       @RequestParam(name = "startTime", required = false) String startTime,
-                                                                                       @RequestParam(name = "endTime", required = false) String endTime,
-                                                                                       @RequestParam(name = "current", defaultValue = "1") Integer current,
-                                                                                       @RequestParam(name = "size", defaultValue = "10") Integer size) {
-
-        try {
-
-            IPage<Feedback> feedbacks = feedbackService.page(
-                    new Page<>(current, size),
-                    new QueryWrapper<Feedback>()
-                            .eq("applicants_id", applicantsId)
-                            .ge(StringUtils.isNotBlank(startTime), "create_time", startTime)
-                            .le(StringUtils.isNotBlank(endTime), "create_time", endTime)
-                            .orderByDesc("is_new")
-                            .orderByDesc("create_time"));
-
-            List<FeedbackCompanyDetailsVo> feedbackCompanyDetails = new ArrayList<>();
-            feedbacks.getRecords().stream().forEach(feedback -> {
-                FeedbackCompanyDetailsVo feedbackCompanyDetailsVo = new FeedbackCompanyDetailsVo();
-                BeanUtils.copyProperties(feedback, feedbackCompanyDetailsVo);
-                feedbackCompanyDetails.add(feedbackCompanyDetailsVo);
-                feedbackCompanyDetailsVo = null;
-            });
-            IPage<FeedbackCompanyDetailsVo> iPage = new Page();
-            BeanUtils.copyProperties(feedbacks, iPage);
-            iPage.setRecords(feedbackCompanyDetails);
-
-            return ApiResult.success(iPage);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ApiResult.fail();
-    }
-
-    /**
-     * @param id
-     * @return ApiResult
-     * @throws
-     * @description 根据 id 查询监督投诉
-     * @author laijunbao
-     * @updateTime 2020-01-09-0009 14:07
-     */
-    @RequiresPermissions("wlythcn:jdts")
-    @GetMapping("/complaint/company/{id}")
-    @ApiOperation(value = "监督投诉-企业详情处理", notes = "监督投诉-企业详情处理")
-    @ApiImplicitParams(
-            {
-                    @ApiImplicitParam(name = "id", value = "id", required = true),
-            }
-    )
-    @OperatorLogAnno(operType = "查询", operModul = "无理由退货承诺", operDesc = "监督投诉-企业详情处理")
-    public ApiResult<FeedbackVo> getFeedbackById(@PathVariable(value = "id") String id) {
-
-        try {
-            // 根据 id 查询留言反馈
-            Feedback feedback = feedbackService.getById(id);
-            if (feedback == null) {
-                return ApiResult.fail("留言不存在");
-            }
-
-            if (feedback.getIsNew() == 1) {
-                feedback.setIsNew(0);
-//                feedback.setStatus("0");
-                feedbackService.updateById(feedback);
-            }
-
-            // 根据 applicants_id 查询归属地市
-            Applicants applicants = applicantsService.getById(feedback.getApplicantsId());
-
-            // 设置留言反馈归属地市
-            if (applicants != null) {
-                feedback.setCity(applicants.getCity());
-            }
-
-            // 根据 feedback_id 查询留言反馈操作记录
-            List<Record> records = recordService.list(new QueryWrapper<Record>().eq("feedback_id", id).orderByDesc("create_time"));
-
-            // 留言反馈操作记录设置操作用户
-            records.stream().forEach(record -> {
-                User user = userService.getById(record.getUserid());
-                record.setUserName(user.getAccount());
-            });
-            feedback.setType("1".equals(feedback.getType()) ? "放心消费承诺单位" : "线下无理由退货承诺店");
-            // 返回有操作记录的留言反馈对象
-            FeedbackVo feedbackVo = new FeedbackVo(feedback, records, applicants.getStatus());
-
-            return ApiResult.success(feedbackVo);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ApiResult.fail();
-    }
-
-    /**
-     * @param id 留言反馈 id
-     * @return ApiResult
-     * @throws
-     * @description 处理留言反馈并保存操作记录, 监督投诉-处理投诉
-     * @author laijunbao
-     * @updateTime 2020-01-09-0009 14:07
-     */
-    @RequiresPermissions("wlythcn:jdts:process")
-    @PostMapping("/complaint/company/{id}")
-    @ApiOperation(value = "监督投诉-处理投诉", notes = "监督投诉-处理投诉")
-    @ApiImplicitParams(
-            {
-                    @ApiImplicitParam(name = "id", value = "id", required = true)
-            }
-    )
-    @ApiOperationSupport(params = @DynamicParameters(name = "map", properties = {
-            @DynamicParameter(name = "result", value = "处理结果", required = true),
-            @DynamicParameter(name = "processingSituation", value = "调查处理情况", required = true)
-    }))
-    @OperatorLogAnno(operType = "更新", operModul = "无理由退货承诺", operDesc = "监督投诉-处理投诉")
-    public ApiResult updateFeedback(@PathVariable(value = "id") String id,
-                                    @RequestBody Map map) {
-
-        try {
-            String result = (String) map.get("result");
-            String processingSituation = (String) map.get("processingSituation");
-            if (StringUtils.isBlank(result)) {
-                return ApiResult.fail("处理结果不能为空");
-            }
-            if (StringUtils.isBlank(processingSituation)) {
-                return ApiResult.fail("调查处理情况不能为空");
-            }
-            // 根据留言反馈id处理留言反馈并保存操作记录
-            myFeedbackService.updateFeedback(Integer.parseInt(id), result, processingSituation);
-            return ApiResult.success();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ApiResult.fail();
     }
 
     @RequiresPermissions("wlythcn:jdtstj")
