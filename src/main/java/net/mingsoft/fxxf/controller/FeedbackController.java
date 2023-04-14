@@ -11,8 +11,9 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.mingsoft.basic.entity.ManagerEntity;
 import net.mingsoft.fxxf.anno.OperatorLogAnno;
-import net.mingsoft.fxxf.entity.Record;
 import net.mingsoft.fxxf.entity.*;
+import net.mingsoft.fxxf.request.BasePageResult;
+import net.mingsoft.fxxf.request.FeedBackCompanyPageRequest;
 import net.mingsoft.fxxf.service.*;
 import net.mingsoft.fxxf.service.impl.MyFeedbackService;
 import net.mingsoft.fxxf.vo.*;
@@ -67,7 +68,7 @@ public class FeedbackController {
     @GetMapping("/countByApplicantList")
     @ApiOperation(value = "监督投诉-列表", notes = "监督投诉-列表")
     @OperatorLogAnno(operType = "查询", operModul = "放心消费承诺单位/无理由退货承诺单位", operDesc = "监督投诉-列表")
-    public BaseResult<BasePageResult<FeedbackComplaintVo>> countByApplicantList(ApplicantBasePageRequest applicantBasePageRequest) {
+    public BaseResult<BasePageResult<FeedbackComplaintVo>> countByApplicantList(FeedBackCompanyPageRequest applicantBasePageRequest) {
         try {
 
             return BaseResult.success(feedbackService.countByApplicantList(applicantBasePageRequest));

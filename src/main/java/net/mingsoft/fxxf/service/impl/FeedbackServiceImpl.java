@@ -8,7 +8,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import net.mingsoft.basic.entity.ManagerEntity;
-import net.mingsoft.fxxf.entity.Applicants;
 import net.mingsoft.fxxf.entity.Feedback;
 import net.mingsoft.fxxf.entity.FeedbackStat;
 import net.mingsoft.fxxf.entity.User;
@@ -16,9 +15,9 @@ import net.mingsoft.fxxf.mapper.ApplicantsMapper;
 import net.mingsoft.fxxf.mapper.FeedbackMapper;
 import net.mingsoft.fxxf.mapper.FeedbackStatMapper;
 import net.mingsoft.fxxf.mapper.UserMapper;
+import net.mingsoft.fxxf.request.BasePageResult;
+import net.mingsoft.fxxf.request.FeedBackCompanyPageRequest;
 import net.mingsoft.fxxf.service.FeedbackService;
-import net.mingsoft.fxxf.vo.ApplicantBasePageRequest;
-import net.mingsoft.fxxf.vo.BasePageResult;
 import net.mingsoft.fxxf.vo.FeedbackComplaintVo;
 import net.mingsoft.fxxf.vo.FeedbackStatisticRequest;
 import org.apache.commons.lang3.StringUtils;
@@ -57,10 +56,9 @@ public class FeedbackServiceImpl extends ServiceImpl<FeedbackMapper, Feedback> i
 
     /**
      * 询企业投诉数量和已处理数量统计数据
-     * @return BasePageResult<FeedbackComplaintVo>
      */
     @Override
-    public BasePageResult<FeedbackComplaintVo> countByApplicantList(ApplicantBasePageRequest applicantBasePageRequest) {
+    public BasePageResult<FeedbackComplaintVo> countByApplicantList(FeedBackCompanyPageRequest feedBackCompanyPageRequest) {
         // 获取登录用户
         Subject currentSubject = SecurityUtils.getSubject();
         ManagerEntity manager = (ManagerEntity) currentSubject.getPrincipal();
@@ -72,10 +70,13 @@ public class FeedbackServiceImpl extends ServiceImpl<FeedbackMapper, Feedback> i
         map.put("roleId", roleId);
         map.put("city", user.getCity());
         map.put("district", user.getDistrict());
-        map.put("type", applicantBasePageRequest.getType());
-        map.put("search", applicantBasePageRequest.getSearch());
-        IPage<FeedbackComplaintVo> feedbackIPage = feedbackMapper.feedbackList(new Page<>(applicantBasePageRequest.getCurrent(), applicantBasePageRequest.getSize()), map);
-        return new BasePageResult<>(feedbackIPage.getCurrent(), feedbackIPage.getSize(), feedbackIPage.getPages(), feedbackIPage.getTotal(), feedbackIPage.getRecords());
+        map.put("type", feedBackCompanyPageRequest.getType());
+        map.put("search", feedBackCompanyPageRequest.getSearch());
+        IPage<FeedbackComplaintVo> feedbackIPage = feedbackMapper.feedbackList(new Page<>(
+                feedBackCompanyPageRequest.getCurrent(), feedBackCompanyPageRequest.getSize()), map);
+
+        return new BasePageResult<>(feedbackIPage.getCurrent(), feedbackIPage.getSize(), feedbackIPage.getPages(),
+                feedbackIPage.getTotal(), feedbackIPage.getRecords());
     }
 
     /**

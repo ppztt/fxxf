@@ -37,10 +37,10 @@ public class MyFeedbackService {
      * @author laijunbao
      * @updateTime 2020-01-11-0011 14:38
      */
-    public void updateFeedback(String id, String result, String processingSituation) {
+    public void updateFeedback(Integer id, String result, String processingSituation) {
         // 更新留言反馈
         Feedback feedback = feedbackService.getById(id);
-        if(!StringUtils.isNumeric(feedback.getType())){
+        if (!StringUtils.isNumeric(feedback.getType())) {
             feedback.setType("放心消费承诺单位".equals(feedback.getType()) ? "1" : "2");
         }
         feedback.setStatus("1");
@@ -53,10 +53,10 @@ public class MyFeedbackService {
         Record record = new Record();
         // 获取登录登录
         User user = (User) SecurityUtils.getSubject().getPrincipal();
-        if(user != null){
-            record.setUserid(user.getId()+"");
+        if (user != null) {
+            record.setUserid(user.getId() + "");
         }
-        record.setFeedbackId(Integer.parseInt(id));
+        record.setFeedbackId(id);
         record.setContext(result);
         record.setProcessingSituation(processingSituation);
         record.setCreateTime(LocalDateTime.now());
