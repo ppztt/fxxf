@@ -36,9 +36,9 @@ public class ApplicantsController {
     /**
      * 经营者条件分页列表查询
      */
-    @GetMapping("/listPage")
+    @PostMapping("/listPage")
     @ApiOperation(value = "经营者列表-分页列表查询")
-    @OperatorLogAnno(operType = "查询", operModul = "无理由退货承诺", operDesc = "查询经营者列表")
+//    @OperatorLogAnno(operType = "查询", operModul = "无理由退货承诺", operDesc = "查询经营者列表")
     public ApiResult<PageResultLocal<Applicants>> list(@RequestBody ApplicantsPageRequest applicantsPageRequest) {
         try {
             IPage<Applicants> page = applicantsService.listPage(applicantsPageRequest);

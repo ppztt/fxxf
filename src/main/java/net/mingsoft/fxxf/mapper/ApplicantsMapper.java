@@ -26,7 +26,7 @@ import java.util.List;
 public interface ApplicantsMapper extends BaseMapper<Applicants> {
 
 
-    IPage<Applicants> listPage(IPage<T> page, @Param("applicantsPageSearchVo") ApplicantsPageRequest applicantsPageRequest,
+    IPage<Applicants> listPage(IPage<T> page, @Param("applicantsPageRequest") ApplicantsPageRequest applicantsPageRequest,
                                @Param("roleId") Integer roleId,
                                @Param("cityAccess") String cityAccess,
                                @Param("districtAccess") String districtAccess);
