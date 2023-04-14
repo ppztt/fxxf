@@ -58,7 +58,7 @@ public class FeedbackController {
     // @RequiresPermissions("wlythcn:jdts")
     @GetMapping("/countByApplicantList")
     @ApiOperation(value = "监督投诉-列表", notes = "监督投诉-列表")
-    @OperatorLogAnno(operType = "查询", operModul = "放心消费承诺单位/无理由退货承诺单位", operDesc = "监督投诉-列表")
+    // @OperatorLogAnno(operType = "查询", operModul = "放心消费承诺单位/无理由退货承诺单位", operDesc = "监督投诉-列表")
     public BaseResult<BasePageResult<FeedbackComplaintVo>> countByApplicantList(ApplicantBasePageRequest applicantBasePageRequest) {
         try {
 
