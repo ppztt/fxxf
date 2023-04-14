@@ -8,6 +8,7 @@ import net.mingsoft.fxxf.entity.Applicants;
 import net.mingsoft.fxxf.entity.User;
 import net.mingsoft.fxxf.service.ApplicantsService;
 import net.mingsoft.fxxf.service.UserService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -22,6 +23,7 @@ import javax.annotation.Resource;
 public class EnterpriseService {
 
     @Resource
+    @Lazy
     private ApplicantsService applicantsService;
 
     @Resource

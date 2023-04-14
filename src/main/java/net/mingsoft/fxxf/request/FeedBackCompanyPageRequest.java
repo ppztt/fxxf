@@ -1,4 +1,4 @@
-package net.mingsoft.fxxf.vo;
+package net.mingsoft.fxxf.request;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class ApplicantBasePageRequest extends BasePageRequest {
+public class FeedBackCompanyPageRequest extends BasePageRequest {
 
     @ApiModelProperty(name = "search", value = "搜索条件", dataType = "string")
     private String search;
