@@ -560,10 +560,10 @@
                         <el-button class="action_btn blue_text" icon="el-icon-circle-check" @click="openNew(3,row)">
                             审核
                         </el-button>
-                        <el-button class="action_btn green_text" v-if="row.status == 1" icon="el-icon-s-promotion" @click="openNew(2,row)">
+                        <el-button class="action_btn green_text" v-if="row.status == 1" icon="el-icon-s-promotion"
+                                   @click="openNew(2,row)">
                             摘牌
                         </el-button>
-
                         <el-button class="action_btn red_text" icon="el-icon-close">
                             删除
                         </el-button>
@@ -656,8 +656,6 @@
                 principal: [{required: true, message: '负责人姓名不能为空', trigger: 'blur'}],
                 principalTel: [{required: true, message: '手机号码不能为空', trigger: 'blur'},
                     {min: 11, max: 11, message: '请输入正确的手机号码', trigger: 'blur'}],
-
-
             },
             districtDataArr: [],
             textList: {
@@ -1207,12 +1205,83 @@
 
             }
             ,
-            uploadSucAction: function () {
-            }
-            ,
-            uploadErrAction: function () {
-            }
-            ,
+            uploadConfirm() {
+                // 确认上传
+                this.$http
+                    .post(this.$urls.FXXFCLDWDR, {
+                        fileId: this.uploadId,
+                    })
+                    .then((res) => {
+                        if (res.data.code == 200) {
+                            this.$Message.success("导入成功");
+                            this.getUnitList();
+                        } else if (res.code == 200 && res.data.length > 0) {
+                            errorMes = `${errorMes}<p>行:${item.rowNum} 错误:${item.errorMsg}</p>`;
+                            let errorMes = "";
+                            res.data.forEach((item) => {
+                                errorMes = `${errorMes}<p>行:${item.rowNum} 错误:${item.errorMsg}</p>`;
+                            });
+                            console.log("错误");
+                            this.$Notice.error({
+                                title: "导入失败详细信息",
+                                desc: errorMes,
+                                duration: 0,
+                            });
+                        } else {
+                            this.$Message.error("导入失败");
+                            let errorMes = "";
+                            res.data.forEach((item) => {
+                                errorMes = `${errorMes}<p>行:${item.rowNum} 错误:${item.errorMsg}</p>`;
+                            });
+                            this.$Notice.error({
+                                title: "导入失败详细信息",
+                                desc: errorMes,
+                                duration: 0,
+                            });
+                        }
+                        this.isShowComfirm = false;
+                    });
+            },
+            uploadSucAction(even) {
+                // console.log("导入成功", even);
+                if (even.code == 200 && even.data.length > 0 && !even.data[0].errorMsg) {
+                    this.uploadId = even.data[0].fileId;
+                    this.uploadConfirm();
+                } else if (
+                    even.code == 200 &&
+                    even.data.length > 0 &&
+                    even.data[0].errorMsg
+                ) {
+                    this.uploadId = even.data[0].fileId;
+                    let errorMes = "";
+                    even.data.forEach((item) => {
+                        errorMes = `${errorMes}<p>行:${item.rowNum} 错误:${item.errorMsg}</p>`;
+                    });
+                    this.comfirmContent = errorMes;
+                    this.isShowComfirm = true;
+                } else {
+                    if (even.data.length > 0 && even.data[0].errorMsg) {
+                        this.$Message.error("导入失败");
+                        let errorMes = "";
+                        even.data.forEach((item) => {
+                            errorMes = `${errorMes}<p>行:${item.rowNum} 错误:${item.errorMsg}</p>`;
+                        });
+                        this.$Notice.error({
+                            title: "导入失败详细信息",
+                            desc: errorMes,
+                            duration: 0,
+                        });
+                    } else {
+                        this.$Message.error(`导入失败`);
+                    }
+                }
+                this.$Spin.hide();
+            },
+            uploadErrAction() {
+                console.log("导入失败");
+                this.$Message.error("导入失败");
+                this.$Spin.hide();
+            },
             downLoadData: function (statusType) {
                 // 导出数据 //状态(1:在期； 0:摘牌 ；2过期)
                 <#--window.open(this.$HOST + this.$urls.FXXFCLDWDC + `?status=${statusType}`);-->
@@ -1294,7 +1363,7 @@
             },
             addAddress() {
                 let userInfo = this.userInfo
-                if(this.formData.addrs === undefined){
+                if (this.formData.addrs === undefined) {
                     this.formData.addrs = []
                 }
                 this.formData.addrs.push({
@@ -1308,7 +1377,7 @@
             },
             resetRegion(cityName) {
                 if (cityName) {
-                    let data = this.regionData.find((value)=> value.value==cityName,).children || [];
+                    let data = this.regionData.find((value) => value.value == cityName,).children || [];
                     this.districtDataArr.push(data);
                     return data;
                     // if (this.formData.district) {
@@ -1319,9 +1388,9 @@
                     // }
                 }
             },
-            openNew(num,row){
+            openNew(num, row) {
                 this.$refs.check.style.display = "block"
-                this.action = ms.manager + "/xwh/consumer/check.do?type="+num+"&id="+row.id;
+                this.action = ms.manager + "/xwh/consumer/check.do?type=" + num + "&id=" + row.id;
                 console.log(row.id)
             }
         },
@@ -1329,6 +1398,11 @@
             // this.getUnitList();
             // this.action = ms.manager + "/xwh/consumer/check.do";
             console.log(this.$refs)
+            let that = this
+            window.returnBack = function () {
+                that.action = ""
+            }
+
         }
     })
 </script>
@@ -1453,22 +1527,6 @@
     .item {
         width: 98px;
         height: 45px;
-    }
-
-    .el-table tr:nth-child(2n+1) {
-        background: #f7fafd !important;
-    }
-
-    .el-table tr:nth-child(2n) {
-        background: #fff !important;
-    }
-
-    .el-table tr:nth-child(2n+1) td .el-table_cell {
-        background: #f7fafd !important;
-    }
-
-    .el-table tr:nth-child(2n) td .el-table_cell {
-        background: #fff !important;
     }
 
     .actions {
