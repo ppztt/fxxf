@@ -551,16 +551,16 @@
                     align="left">
                 <template slot-scope="{row}">
                     <div class="actions" :id="row.id">
-                        <el-button class="action_btn blue_text" icon="el-icon-search" @click="openNew(0,row)">
+                        <el-button class="action_btn blue_text" icon="el-icon-search" @click="openNew(1,row)">
                             查看
                         </el-button>
-                        <el-button class="action_btn orange_text" icon="el-icon-edit" @click="openNew(1,row)">
+                        <el-button class="action_btn orange_text" icon="el-icon-edit" @click="openNew(0,row)">
                             编辑
                         </el-button>
-                        <el-button class="action_btn blue_text" icon="el-icon-circle-check" @click="openNew(2,row)">
+                        <el-button class="action_btn blue_text" icon="el-icon-circle-check" @click="openNew(3,row)">
                             审核
                         </el-button>
-                        <el-button class="action_btn green_text" v-if="row.status == 1" icon="el-icon-s-promotion">
+                        <el-button class="action_btn green_text" v-if="row.status == 1" icon="el-icon-s-promotion" @click="openNew(2,row)">
                             摘牌
                         </el-button>
 
@@ -1321,7 +1321,8 @@
             },
             openNew(num,row){
                 this.$refs.check.style.display = "block"
-                this.action = ms.manager + "/xwh/consumer/check.do";
+                this.action = ms.manager + "/xwh/consumer/check.do?type="+num+"&id="+row.id;
+                console.log(row.id)
             }
         },
         mounted: function () {
