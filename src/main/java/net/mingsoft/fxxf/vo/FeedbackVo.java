@@ -1,6 +1,7 @@
 package net.mingsoft.fxxf.vo;
 
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import net.mingsoft.fxxf.entity.Feedback;
@@ -14,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
+@ApiModel(value = "留言反馈实体")
 public class FeedbackVo implements Serializable {
 
     /**
@@ -32,5 +34,5 @@ public class FeedbackVo implements Serializable {
      * 状态(1:在期； 0:摘牌；2:过期)
      */
     @ApiModelProperty(value = "状态(1:在期； 0:摘牌；2:过期)")
-    private int status;
+    private Integer status;
 }

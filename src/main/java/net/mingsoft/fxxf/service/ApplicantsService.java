@@ -22,4 +22,5 @@ public interface ApplicantsService extends IService<Applicants> {
     List<RegionVo> getGdRegion();
 
     IPage<Applicants> listPage(ApplicantsPageSearchVo applicantsPageSearchVo);
+
 }
