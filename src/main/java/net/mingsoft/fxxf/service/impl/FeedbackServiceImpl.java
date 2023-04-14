@@ -1,21 +1,27 @@
 package net.mingsoft.fxxf.service.impl;
 
 
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import net.mingsoft.basic.entity.ManagerEntity;
 import net.mingsoft.fxxf.entity.Applicants;
 import net.mingsoft.fxxf.entity.Feedback;
+import net.mingsoft.fxxf.entity.FeedbackStat;
 import net.mingsoft.fxxf.entity.User;
 import net.mingsoft.fxxf.mapper.ApplicantsMapper;
 import net.mingsoft.fxxf.mapper.FeedbackMapper;
+import net.mingsoft.fxxf.mapper.FeedbackStatMapper;
 import net.mingsoft.fxxf.mapper.UserMapper;
 import net.mingsoft.fxxf.service.FeedbackService;
 import net.mingsoft.fxxf.vo.ApplicantBasePageRequest;
 import net.mingsoft.fxxf.vo.BasePageResult;
 import net.mingsoft.fxxf.vo.FeedbackComplaintVo;
+import net.mingsoft.fxxf.vo.FeedbackStatisticRequest;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
@@ -46,12 +52,8 @@ public class FeedbackServiceImpl extends ServiceImpl<FeedbackMapper, Feedback> i
     @Resource
     FeedbackMapper feedbackMapper;
 
-    @Override
-    public List<Applicants> companyList(String keyword) {
-
-        List<Applicants> applicantsList = applicantsMapper.companyList(keyword);
-        return applicantsList;
-    }
+    @Resource
+    FeedbackStatMapper feedbackStatMapper;
 
     /**
      * 询企业投诉数量和已处理数量统计数据
@@ -74,6 +76,42 @@ public class FeedbackServiceImpl extends ServiceImpl<FeedbackMapper, Feedback> i
         map.put("search", applicantBasePageRequest.getSearch());
         IPage<FeedbackComplaintVo> feedbackIPage = feedbackMapper.feedbackList(new Page<>(applicantBasePageRequest.getCurrent(), applicantBasePageRequest.getSize()), map);
         return new BasePageResult<>(feedbackIPage.getCurrent(), feedbackIPage.getSize(), feedbackIPage.getPages(), feedbackIPage.getTotal(), feedbackIPage.getRecords());
+    }
+
+    /**
+     * 监督投诉统计
+     */
+    @Override
+    public List<FeedbackStat> statistic(FeedbackStatisticRequest feedbackStatisticRequest) {
+        List<FeedbackStat> statList;
+        //根据角色id选择统计维度
+        Subject currentSubject = SecurityUtils.getSubject();
+        ManagerEntity manager = (ManagerEntity) currentSubject.getPrincipal();
+
+        User user = userMapper.selectById(manager.getId());
+        String city = user.getCity();
+        int roleId = manager.getRoleId();
+
+        // TODO 后续优化
+        FeedbackStat feedback = new FeedbackStat();
+        feedback.setStartTime(DateUtil.format(feedbackStatisticRequest.getStartTime(), "yyyy-MM-dd"));
+        feedback.setEndTime(DateUtil.format(feedbackStatisticRequest.getEndTime(), "yyyy-MM-dd"));
+        feedback.setType(feedbackStatisticRequest.getType().toString());
+        feedback.setRoleId(roleId);
+        if (roleId == 1) {
+            //系统管理员
+            statList = feedbackStatMapper.statListByAdminRole(feedback, null);
+        } else {
+            //地市管理员
+            if (StringUtils.isEmpty(city)) {
+                log.info("当前登录用户归属地市为Null，不执行查询;返回空集合");
+                statList = Lists.newArrayList();
+            } else {
+                feedback.setCity(city);
+                statList = feedbackStatMapper.statListByCityRole(feedback, null);
+            }
+        }
+        return statList;
     }
 
 }
