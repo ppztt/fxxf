@@ -4,7 +4,7 @@ package net.mingsoft.fxxf.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import net.mingsoft.fxxf.entity.Applicants;
-import net.mingsoft.fxxf.vo.ApplicantsPageSearchVo;
+import net.mingsoft.fxxf.request.ApplicantsPageRequest;
 import net.mingsoft.fxxf.vo.OperatorStatisticsVo;
 import net.mingsoft.fxxf.vo.RegionVo;
 import net.mingsoft.fxxf.vo.StoreOperatorStatisticsVo;
@@ -26,7 +26,10 @@ import java.util.List;
 public interface ApplicantsMapper extends BaseMapper<Applicants> {
 
 
-    IPage<Applicants> listPage(IPage<T> page, @Param("applicantsPageSearchVo") ApplicantsPageSearchVo applicantsPageSearchVo);
+    IPage<Applicants> listPage(IPage<T> page, @Param("applicantsPageRequest") ApplicantsPageRequest applicantsPageRequest,
+                               @Param("roleId") Integer roleId,
+                               @Param("cityAccess") String cityAccess,
+                               @Param("districtAccess") String districtAccess);
 
     IPage<Applicants> applicantsList(
             IPage<T> page,

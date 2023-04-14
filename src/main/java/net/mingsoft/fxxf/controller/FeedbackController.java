@@ -3,29 +3,34 @@ package net.mingsoft.fxxf.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import net.mingsoft.fxxf.anno.OperatorLogAnno;
-import net.mingsoft.fxxf.entity.Applicants;
-import net.mingsoft.fxxf.entity.Feedback;
-import net.mingsoft.fxxf.entity.Record;
-import net.mingsoft.fxxf.entity.User;
-import net.mingsoft.fxxf.service.ApplicantsService;
-import net.mingsoft.fxxf.service.FeedbackService;
-import net.mingsoft.fxxf.service.RecordService;
-import net.mingsoft.fxxf.service.UserService;
+import net.mingsoft.basic.entity.ManagerEntity;
+import net.mingsoft.fxxf.entity.*;
+import net.mingsoft.fxxf.request.BasePageResult;
+import net.mingsoft.fxxf.request.FeedBackCompanyPageRequest;
+import net.mingsoft.fxxf.service.*;
 import net.mingsoft.fxxf.service.impl.MyFeedbackService;
 import net.mingsoft.fxxf.vo.*;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -52,14 +57,17 @@ public class FeedbackController {
     @Resource
     private MyFeedbackService myFeedbackService;
 
+    @Resource
+    private FeedbackStatService feedbackStatService;
+
     /**
      *  查询企业投诉数量和已处理数量统计数据
      */
     // @RequiresPermissions("wlythcn:jdts")
     @GetMapping("/countByApplicantList")
     @ApiOperation(value = "监督投诉-列表", notes = "监督投诉-列表")
-    // @OperatorLogAnno(operType = "查询", operModul = "放心消费承诺单位/无理由退货承诺单位", operDesc = "监督投诉-列表")
-    public BaseResult<BasePageResult<FeedbackComplaintVo>> countByApplicantList(ApplicantBasePageRequest applicantBasePageRequest) {
+//    @OperatorLogAnno(operType = "查询", operModul = "放心消费承诺单位/无理由退货承诺单位", operDesc = "监督投诉-列表")
+    public BaseResult<BasePageResult<FeedbackComplaintVo>> countByApplicantList(FeedBackCompanyPageRequest applicantBasePageRequest) {
         try {
 
             return BaseResult.success(feedbackService.countByApplicantList(applicantBasePageRequest));
@@ -98,7 +106,6 @@ public class FeedbackController {
             log.error("查询企业投诉反馈列表异常", e);
             return BaseResult.fail(e.getMessage());
         }
-
     }
 
     /**
@@ -157,6 +164,53 @@ public class FeedbackController {
         return BaseResult.success(feedbackHandleRequest.getId());
     }
 
+    /**
+     * 监督投诉统计
+     */
+    // @RequiresPermissions("wlythcn:jdtstj")
+    @GetMapping("/statistic")
+    @ApiOperation(value = "监督投诉统计-报表", notes = "监督投诉统计/监督投诉统计报表查询")
+    public BaseResult<BasePageResult<FeedbackStat>> statistic(FeedbackStatisticRequest feedbackStatisticRequest) {
+        BasePageResult<FeedbackStat> basePageResult = new BasePageResult<>();
+        basePageResult.setRecords(feedbackService.statistic(feedbackStatisticRequest));
+        return BaseResult.success();
+    }
 
+    // @RequiresPermissions("wlythcn:jdtstj")
+    @GetMapping(value = "/exportStatistic")
+    @ApiOperation(value = "监督投诉统计-导出Excel", notes = "监督投诉统计/监督投诉统计导出Excel")
+    public void exportStatistic(FeedbackStatisticRequest feedbackStatisticRequest, HttpServletResponse response) {
+        List<FeedbackStat> records = feedbackService.statistic(feedbackStatisticRequest);
+        //根据角色动态更换Excel表头
+        Subject currentSubject = SecurityUtils.getSubject();
+        ManagerEntity manager = (ManagerEntity) currentSubject.getPrincipal();
+        int roleId = manager.getRoleId();
+        //Excel表头
+        Map<String, String> titleMap = Maps.newLinkedHashMap();
+        if (roleId == 1) {
+            titleMap.put("city", "地市");
+        } else {
+            titleMap.put("city", "区县");
+        }
+        titleMap.put("companyTotal", "承诺单位数量");
+        titleMap.put("complaintCompanyNum", "被反馈单位数量");
+        titleMap.put("takeOff", "摘牌数量");
+        titleMap.put("complaintTotal", "监督投诉的总条数");
+        titleMap.put("unprocessed", "待处理");
+        titleMap.put("warning", "督促告诫");
+        titleMap.put("disqualification", "摘牌");
+        titleMap.put("nonExistentComplaints", "投诉问题不存在");
+        titleMap.put("other", "其他");
+
+        File f = new File("监督投诉统计.xls");
+        OutputStream out;
+        try {
+            out = Files.newOutputStream(f.toPath());
+            net.mingsoft.utils.ExcelExportUtil.exportExcel(titleMap, records, out, "yyyy-MM-dd HH:mm:ss", response);
+            out.close();
+        } catch (IOException e) {
+            log.error("导出留言反馈统计报表发生异常:", e);
+        }
+    }
 
 }

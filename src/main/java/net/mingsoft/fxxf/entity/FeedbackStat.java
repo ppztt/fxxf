@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.mingsoft.utils.ExcelCell;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -21,7 +22,7 @@ import java.util.Date;
 @ApiModel(value = "FeedbackExtend", description = "留言反馈统计实体类")
 @Getter
 @Setter
-public class FeedbackStat {
+public class FeedbackStat implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

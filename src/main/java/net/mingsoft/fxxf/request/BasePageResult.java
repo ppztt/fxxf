@@ -1,8 +1,9 @@
-package net.mingsoft.fxxf.vo;
+package net.mingsoft.fxxf.request;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
  */
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class BasePageResult<T extends Serializable> implements Serializable {
 
     @ApiModelProperty(value = "当前页码")
