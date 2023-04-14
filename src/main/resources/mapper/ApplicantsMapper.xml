@@ -1,0 +1,555 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.mingsoft.fxxf.mapper.ApplicantsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="net.mingsoft.fxxf.entity.Applicants">
+        <id column="id" property="id"/>
+        <result column="type" property="type"/>
+        <result column="status" property="status"/>
+        <result column="reg_name" property="regName"/>
+        <result column="credit_code" property="creditCode"/>
+        <result column="store_name" property="storeName"/>
+        <result column="province" property="province"/>
+        <result column="city" property="city"/>
+        <result column="district" property="district"/>
+        <result column="town" property="town"/>
+        <result column="address" property="address"/>
+        <result column="online_name" property="onlineName"/>
+        <result column="platform" property="platform"/>
+        <result column="online_link" property="onlineLink"/>
+        <result column="management" property="management"/>
+        <result column="details" property="details"/>
+        <result column="principal" property="principal"/>
+        <result column="principal_tel" property="principalTel"/>
+        <result column="contacts" property="contacts"/>
+        <result column="contacts_tel" property="contactsTel"/>
+        <result column="join_industry" property="joinIndustry"/>
+        <result column="cont_commitment" property="contCommitment"/>
+        <result column="comm_num" property="commNum"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="contents1" property="contents1"/>
+        <result column="contents2" property="contents2"/>
+        <result column="contents3" property="contents3"/>
+        <result column="contents4" property="contents4"/>
+        <result column="statement" property="statement"/>
+        <result column="application_date" property="applicationDate"/>
+        <result column="industry_content" property="industryContent"/>
+        <result column="industry_date" property="industryDate"/>
+        <result column="industry_company_name" property="industryCompanyName"/>
+        <result column="industry_auditors" property="industryAuditors"/>
+        <result column="cc_content" property="ccContent"/>
+        <result column="cc_date" property="ccDate"/>
+        <result column="cc_company_name" property="ccCompanyName"/>
+        <result column="cc_auditors" property="ccAuditors"/>
+        <result column="del_time" property="delTime"/>
+        <result column="del_reason" property="delReason"/>
+        <result column="del_other" property="delOther"/>
+        <result column="pub_time" property="pubTime"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="add_contents4_cnt" property="addContents4Cnt"/>
+        <result column="creater" property="creater"/>
+        <result column="create_type" property="createType"/>
+        <result column="audit_role_id" property="auditRoleId"/>
+        <result column="account" property="account"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.id,
+        a.type,
+        a.status,
+        a.reg_name,
+        a.credit_code,
+        a.store_name,
+        a.province,
+        a.city,
+        a.district,
+        a.town,
+        a.address,
+        a.online_name,
+        a.platform,
+        a.online_link,
+        a.management,
+        a.details,
+        a.principal,
+        a.principal_tel,
+        a.contacts,
+        a.contacts_tel,
+        a.join_industry,
+        a.cont_commitment,
+        a.comm_num,
+        a.start_time,
+        a.end_time,
+        a.contents1,
+        a.contents2,
+        a.contents3,
+        a.contents4,
+        a.statement,
+        a.application_date,
+        a.industry_content,
+        a.industry_date,
+        a.industry_company_name,
+        a.industry_auditors,
+        a.cc_content,
+        a.cc_date,
+        a.cc_company_name,
+        a.cc_auditors,
+        a.del_time,
+        a.del_reason,
+        a.del_other,
+        a.pub_time,
+        a.create_time,
+        a.update_time,
+        a.add_contents4_cnt,
+        a.creater,
+        u.account,
+        a.create_type,
+        a.audit_role_id
+    </sql>
+
+
+    <select id="getGdRegion" resultType="net.mingsoft.fxxf.vo.RegionVo">
+        SELECT `code`, `name`, pcode FROM sys_region WHERE `code` LIKE '44%' AND id != 19 ORDER BY `level`, sort
+    </select>
+
+    <select id="companyList" resultMap="BaseResultMap">
+        SELECT id,type,reg_name FROM cc_applicants
+        <where>
+            AND status = 1
+            <if test="keyword != null and keyword != ''">
+                AND reg_name LIKE concat('%',#{keyword},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="unitOperatorStatistics" resultType="net.mingsoft.fxxf.vo.OperatorStatisticsVo">
+        SELECT
+        sr.name area,
+        sum(IFNULL(applicantsCnt, 0)) applicantsCnt,
+        sum(IFNULL(commitmentCnt, 0)) commitmentCnt,
+        sum(IFNULL(addContents1Cnt, 0)) addContents1Cnt,
+        sum(IFNULL(nullCnt, 0)) nullCnt,
+        sum(IFNULL(beSupervisedCnt, 0)) beSupervisedCnt,
+        sum(IFNULL(delCnt, 0)) delCnt
+        FROM
+        (
+            SELECT
+            a.area,
+            applicantsCnt,
+            commitmentCnt,
+            addContents1Cnt,
+            IFNULL(applicantsCnt, 0) - IFNULL(beSupervisedCnt, 0) - IFNULL(delCnt, 0) - IFNULL(otherCnt, 0) nullCnt,
+            beSupervisedCnt,
+            delCnt
+            from (
+            (SELECT
+            <choose>
+                <when test="roleId != null and roleId == 1">
+                    city area,
+                </when>
+                <when test="roleId != null and roleId == 2">
+                    district area,
+                </when>
+                <when test="roleId != null and roleId == 4">
+                    district area,
+                </when>
+                <otherwise>
+                    district area,
+                </otherwise>
+            </choose>
+            count( 1 ) applicantsCnt,
+            count( CASE WHEN cont_commitment = '是' THEN '是' END ) commitmentCnt,
+            count( CASE WHEN add_contents4_cnt IS NOT NULL OR add_contents4_cnt != '' THEN '是' END ) addContents1Cnt,
+            count( CASE WHEN `status` = 0 THEN 1 END ) delCnt
+            FROM
+            cc_applicants a
+            <where>
+                type = 1 and status=1
+                <if test="roleId == 2 or roleId == 4 or roleId==3">
+                    and city like concat('%', #{city},'%')
+                </if>
+                <!--<if test="roleId == 3">-->
+                    <!--and city like concat('%', #{city},'%') and district like concat('%',#{district},'%')-->
+                <!--</if>-->
+                <if test="startTime != null and startTime != ''">
+                    and start_time &gt;= #{startTime}
+                </if>
+                <if test="endTime != null and endTime != ''">
+                    and start_time &lt;= #{endTime}
+                </if>
+            </where>
+            GROUP BY
+            <choose>
+                <when test="roleId == 1">
+                    city
+                </when>
+                <when test="roleId == 2 or roleId == 4">
+                    district
+                </when>
+                <otherwise>
+                    district
+                </otherwise>
+            </choose>
+            )a left join
+            (
+            SELECT
+            <choose>
+                <when test="roleId != null and roleId == 1">
+                    city area,
+                </when>
+                <when test="roleId != null and roleId == 2 ">
+                    district area,
+                </when>
+                <when test="roleId != null and roleId == 4">
+                    district area,
+                </when>
+                <otherwise>
+                    district area,
+                </otherwise>
+            </choose>
+            count( CASE WHEN result = '其他' THEN 1 END ) otherCnt,
+            count( CASE WHEN result = '督促告诫' THEN 1 END ) beSupervisedCnt
+            FROM
+            cc_applicants a
+            INNER JOIN cc_feedback f ON a.id = f.applicants_id
+            WHERE a.type = 1
+            GROUP BY
+            <choose>
+                <when test="roleId == 1">
+                    city
+                </when>
+                <when test="roleId == 2 or roleId == 4">
+                    district
+                </when>
+                <otherwise>
+                    district
+                </otherwise>
+            </choose>
+            )b on a.area=b.area
+            )
+        ) a RIGHT JOIN
+        (
+        SELECT name, sort
+        FROM sys_region
+        <where>
+            <choose>
+                <when test="roleId == 1">
+                    pcode = 440000
+                </when>
+                <when test="roleId == 2 or roleId == 4 or roleId == 3">
+                    pcode = (SELECT code FROM sys_region WHERE name= #{city})
+                </when>
+                <otherwise>
+                    code = (SELECT code FROM sys_region WHERE name= #{district} and pcode=(SELECT code FROM sys_region WHERE name= #{city}))
+                </otherwise>
+            </choose>
+        </where>
+        ) AS sr ON FIND_IN_SET(sr. NAME,a.area)
+        GROUP BY
+        sr. NAME, sr.sort
+        order by sr.sort
+    </select>
+
+    <select id="storeOperatorStatistics" resultType="net.mingsoft.fxxf.vo.StoreOperatorStatisticsVo">
+        SELECT
+        sr.name area,
+        sum(IFNULL(applicantsCnt,0)) applicantsCnt,
+        sum(IFNULL(contents2Cnt,0)) contents2Cnt,
+        sum(IFNULL(nullCnt,0)) nullCnt,
+        sum(IFNULL(beSupervisedCnt,0)) beSupervisedCnt,
+        sum(IFNULL(delCnt,0)) delCnt
+        FROM
+        (
+            SELECT
+            a.area,
+            applicantsCnt,
+            IFNULL(contents2Cnt,0) contents2Cnt,
+            IFNULL(applicantsCnt, 0) - IFNULL(beSupervisedCnt, 0) - IFNULL(delCnt, 0) - IFNULL(otherCnt, 0) nullCnt,
+            IFNULL(beSupervisedCnt,0) beSupervisedCnt,
+            IFNULL(delCnt,0) delCnt
+            from (
+            (SELECT
+            <choose>
+                <when test="roleId != null and roleId == 1">
+                    city area,
+                </when>
+                <when test="roleId != null and roleId == 2">
+                    district area,
+                </when>
+                <when test="roleId != null and roleId == 4">
+                    district area,
+                </when>
+                <otherwise>
+                    district area,
+                </otherwise>
+            </choose>
+            count( 1 ) applicantsCnt,
+            count( CASE WHEN contents2 &gt; 7 THEN '是' END ) contents2Cnt,
+            count( CASE WHEN `status` = 0 THEN 1 END ) delCnt
+            FROM
+            cc_applicants a
+            <where>
+                type = 2 and status=1
+                <if test="roleId == 2 or roleId == 4 or roleId == 3">
+                    and city like concat('%', #{city},'%')
+                </if>
+                <!--<if test="roleId == 3">-->
+                    <!--and city like concat('%', #{city},'%') and district like concat('%',#{district},'%')-->
+                <!--</if>-->
+                <if test="startTime != null and startTime != ''">
+                    and start_time &gt;= #{startTime}
+                </if>
+                <if test="endTime != null and endTime != ''">
+                    and start_time &lt;= #{endTime}
+                </if>
+            </where>
+            GROUP BY
+            <choose>
+                <when test="roleId == 1">
+                    city
+                </when>
+                <when test="roleId == 2">
+                    district
+                </when>
+                <when test="roleId == 4">
+                    district
+                </when>
+                <otherwise>
+                    district
+                </otherwise>
+            </choose>
+            )a left join
+            (
+            SELECT
+            <choose>
+                <when test="roleId != null and roleId == 1">
+                    city area,
+                </when>
+                <when test="roleId != null and roleId == 2">
+                    district area,
+                </when>
+                <when test="roleId != null and roleId == 4">
+                    district area,
+                </when>
+                <otherwise>
+                    district area,
+                </otherwise>
+            </choose>
+            count( CASE WHEN result = '其他' THEN 1 END ) otherCnt,
+            count( CASE WHEN result = '督促告诫' THEN 1 END ) beSupervisedCnt
+            FROM
+            cc_applicants a
+            INNER JOIN cc_feedback f ON a.id = f.applicants_id
+            WHERE a.type = 2
+            GROUP BY
+            <choose>
+                <when test="roleId == 1">
+                    city
+                </when>
+                <when test="roleId == 2 or roleId == 4">
+                    district
+                </when>
+                <otherwise>
+                    district
+                </otherwise>
+            </choose>
+            )b on a.area=b.area
+            )
+        ) a RIGHT JOIN
+        (
+            SELECT name, sort
+            FROM sys_region
+            <where>
+                <choose>
+                    <when test="roleId == 1">
+                        pcode = 440000
+                    </when>
+                    <when test="roleId == 2 or roleId == 4 or roleId == 3">
+                        pcode = (SELECT code FROM sys_region WHERE name= #{city})
+                    </when>
+                    <otherwise>
+                        code = (SELECT code FROM sys_region WHERE name= #{district} and pcode=(SELECT code FROM sys_region WHERE name= #{city}))
+                    </otherwise>
+                </choose>
+            </where>
+        ) AS sr ON FIND_IN_SET(sr. NAME,a.area)
+        GROUP BY
+        sr. NAME, sr.sort
+        order by sr.sort
+    </select>
+
+    <select id="listPage" parameterType="net.mingsoft.fxxf.vo.ApplicantsPageSearchVo" resultType="net.mingsoft.fxxf.entity.Applicants">
+        select
+        distinct
+        a.id,a.type,a.status, a.reg_name,a.credit_code,a.store_name,a.province, a.city,
+        a.district,a.town, a.address, a.online_name, a.platform, a.online_link, a.management,
+        a.details,  a.principal,a.principal_tel,a.contacts, a.contacts_tel, a.join_industry,
+        a.cont_commitment, a.comm_num,a.start_time, a.end_time, a.contents1, a.contents2,a.contents3,a.contents4,a.statement,
+        a.application_date, a.industry_content, a.industry_date, a.industry_company_name,
+        a.industry_auditors,  a.cc_content,  a.cc_date,a.cc_company_name,a.cc_auditors,a.del_time, a.del_reason, a.del_other,
+        a.pub_time, a.create_time,  a.update_time, a.add_contents4_cnt,  a.creater,  a.create_type,  a.audit_role_id, sr.sort
+        from
+        cc_applicants a
+        LEFT JOIN
+        (
+        SELECT name, sort
+        FROM sys_region
+        ) AS sr ON sr.name = a.city
+        <where>
+            a.type=#{applicantsPageSearchVo.type}
+            <if test="applicantsPageSearchVo.city != null and applicantsPageSearchVo.city != ''">
+                and a.city like concat('%', #{applicantsPageSearchVo.city},'%')
+
+            </if>
+            <if test="applicantsPageSearchVo.district != null and applicantsPageSearchVo.district != ''">
+                and a.district like concat('%', #{applicantsPageSearchVo.district},'%')
+            </if>
+            <if test="applicantsPageSearchVo.town != null and applicantsPageSearchVo.town != ''">
+                and a.town=#{applicantsPageSearchVo.town}
+            </if>
+            <if test="applicantsPageSearchVo.status != null and applicantsPageSearchVo.status != ''">
+                and a.status=#{applicantsPageSearchVo.status}
+            </if>
+            <if test="applicantsPageSearchVo.startTime != null and applicantsPageSearchVo.startTime != ''">
+                and DATE_FORMAT(a.start_time, '%Y-%m-%d') <![CDATA[ >= ]]> #{applicantsPageSearchVo.startTime}
+            </if>
+            <if test="applicantsPageSearchVo.endTime != null and applicantsPageSearchVo.endTime != ''">
+                and DATE_FORMAT(a.start_time, '%Y-%m-%d')  <![CDATA[ <= ]]> #{applicantsPageSearchVo.endTime}
+            </if>
+            <if test="applicantsPageSearchVo.search != null and applicantsPageSearchVo.search != ''">
+                and (
+                a.reg_name like concat('%',#{applicantsPageSearchVo.search},'%') or
+                a.credit_code like concat('%',#{applicantsPageSearchVo.search},'%') or
+                a.contacts like concat('%',#{applicantsPageSearchVo.search},'%') or
+                a.contacts_tel like concat('%',#{applicantsPageSearchVo.search},'%')
+                )
+            </if>
+            <if test="applicantsPageSearchVo.management != null and applicantsPageSearchVo.management != ''">
+                and a.management=#{applicantsPageSearchVo.management}
+            </if>
+            <if test="applicantsPageSearchVo.details != null and applicantsPageSearchVo.details != ''">
+                and a.details=#{applicantsPageSearchVo.details}
+            </if>
+        </where>
+
+        order by field(a.status,'4','6','5') desc,sr.sort , a.start_time desc
+    </select>
+
+
+    <select id="applicantsList" resultType="net.mingsoft.fxxf.entity.Applicants">
+        select
+        distinct
+        <include refid="Base_Column_List"></include>
+        , sr.sort
+
+        from
+        v_cc_applicants a
+        LEFT JOIN
+        (
+        SELECT name, sort
+        FROM sys_region
+        <where>
+            <choose>
+                <when test="roleId == 1">
+                    and pcode = 440000
+                </when>
+                <when test="roleId == 2 or roleId == 4">
+                    and pcode = (SELECT code FROM sys_region WHERE name= #{cityAccess})
+                </when>
+                <otherwise>
+                    and code = (SELECT code FROM sys_region WHERE name= #{districtAccess} and pcode=(SELECT code FROM sys_region WHERE name= #{cityAccess}))
+                </otherwise>
+            </choose>
+        </where>
+        ) AS sr ON sr.name = a.city
+        LEFT JOIN sys_user u on u.id=a.creater
+        <where>
+            a.type=#{type}
+            <if test="city != null and city != ''">
+                and a.city like concat('%', #{city},'%')
+
+            </if>
+            <if test="district != null and district != ''">
+                and a.district like concat('%', #{district},'%')
+            </if>
+            <if test="town != null and town != ''">
+                and a.town=#{town}
+            </if>
+            <if test="status != null and status != ''">
+                and a.status=#{status}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                and DATE_FORMAT(a.start_time, '%Y-%m-%d') <![CDATA[ >= ]]> #{startTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                and DATE_FORMAT(a.start_time, '%Y-%m-%d')  <![CDATA[ <= ]]> #{endTime}
+            </if>
+            <if test="search != null and search != ''">
+                and (
+                a.reg_name like concat('%',#{search},'%') or
+                a.credit_code like concat('%',#{search},'%') or
+                a.contacts like concat('%',#{search},'%') or
+                a.contacts_tel like concat('%',#{search},'%')
+                )
+            </if>
+            <if test="management != null and management != ''">
+                and a.management=#{management}
+            </if>
+            <if test="details != null and details != ''">
+                and a.details=#{details}
+            </if>
+            <if test="roleId == 2 or roleId == 4">
+                and a.city like concat('%', #{cityAccess},'%')
+            </if>
+            <if test="roleId == 3">
+                and a.city like concat('%', #{cityAccess},'%') and a.district like concat('%', #{districtAccess},'%')
+            </if>
+        </where>
+
+        order by field(a.status,'4','6','5') desc,sr.sort , a.start_time desc
+    </select>
+
+    <select id="applicantsExport" resultType="net.mingsoft.fxxf.entity.Applicants">
+        select
+        <include refid="Base_Column_List"></include>
+        from
+        v_cc_applicants a
+        LEFT JOIN
+        (
+        SELECT name, sort
+        FROM sys_region
+        <where>
+            <choose>
+                <when test="roleId == 1">
+                    and pcode = 440000
+                </when>
+                <when test="roleId == 2 or roleId == 4">
+                    and pcode = (SELECT code FROM sys_region WHERE name= #{cityAccess})
+                </when>
+                <otherwise>
+                    and code = (SELECT code FROM sys_region WHERE name= #{districtAccess} and pcode=(SELECT code FROM sys_region WHERE name= #{cityAccess}))
+                </otherwise>
+            </choose>
+        </where>
+        ) AS sr ON sr.name = a.city
+        LEFT JOIN sys_user u on u.id=a.creater
+        <where>
+            a.type=#{type}
+            <if test="status != null and status != ''">
+                and a.status=#{status}
+            </if>
+            <if test="roleId == 2 or roleId == 4">
+                and a.city like concat('%', #{cityAccess},'%')
+            </if>
+            <if test="roleId == 3">
+                and a.city like concat('%', #{cityAccess},'%') and a.district like concat('%', #{districtAccess},'%')
+            </if>
+        </where>
+        order by field(a.status,'4','6','5') desc,sr.sort , a.start_time desc
+    </select>
+
+
+</mapper>

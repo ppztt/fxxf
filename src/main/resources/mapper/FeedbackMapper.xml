@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.mingsoft.fxxf.mapper.FeedbackMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="net.mingsoft.fxxf.entity.Feedback">
+        <id column="id" property="id"/>
+        <result column="applicants_id" property="applicantsId"/>
+        <result column="reg_name" property="regName"/>
+        <result column="type" property="type"/>
+        <result column="reason" property="reason"/>
+        <result column="name" property="name"/>
+        <result column="phone" property="phone"/>
+        <result column="content" property="content"/>
+        <result column="status" property="status"/>
+        <result column="result" property="result"/>
+        <result column="proc_time" property="procTime"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="is_new" property="isNew"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, applicants_id, reg_name, type, reason, name, phone, content, status, result, proc_time, create_time, update_time, is_new
+    </sql>
+
+    <select id="feedbackList" resultType="net.mingsoft.fxxf.vo.FeedbackComplaintVo" parameterType="map">
+        SELECT
+        a.reg_name regName,
+        a.applicants_id applicantsId,
+        a.is_new isNew,
+        b.count,
+        b.handleCnt,
+        a.applicants_id,
+        a.is_new,
+        a.create_time
+        FROM
+        (
+        SELECT
+        reg_name,
+        applicants_id,
+        is_new,
+        create_time
+        FROM
+        cc_feedback
+        ORDER BY
+        is_new DESC
+        )a
+        INNER JOIN
+        (
+        SELECT
+        DISTINCT reg_name,
+        applicants_id,
+        count( 1 ) count,
+        count( CASE WHEN `status` = 1 THEN 1 END ) handleCnt
+        FROM
+        cc_feedback
+        <where>
+          type=#{map.type}
+        </where>
+        GROUP BY
+        reg_name, applicants_id
+        )b on a.reg_name=b.reg_name
+        INNER JOIN cc_applicants c
+        on a.applicants_id=c.id
+        <where>
+            and c.type=#{map.type}
+            <if test="map.roleId != 1">
+                and c.city like concat('%', #{map.city},'%')
+            </if>
+            <if test="map.roleId == 3">
+                and c.district like concat('%', #{map.district},'%')
+            </if>
+            <if test="map.search != null and map.search != ''">
+                and a.reg_name like "%"#{map.search}"%"
+            </if>
+        </where>
+        GROUP BY a.reg_name, a.applicants_id, a.is_new, b.count, b.handleCnt, a.create_time
+        ORDER BY a.is_new desc,a.create_time desc
+    </select>
+
+    <select id="getMsgCnt" resultType="net.mingsoft.fxxf.vo.FeedbackMsgVo">
+        SELECT
+        count( CASE WHEN a.type = 1 THEN 1 END ) type1Count,
+        count( CASE WHEN a.type = 1 AND a.`status` = 0 THEN 1 END ) type1NoHandlerCnt,
+        count( CASE WHEN a.type = 2 THEN 1 END ) type2Count,
+        count( CASE WHEN a.type = 2 AND a.`status` = 0 THEN 1 END ) type2NoHandlerCnt
+        FROM
+        cc_feedback a
+        INNER JOIN cc_applicants b ON a.applicants_id = b.id and a.type=b.type
+        <where>
+            <if test="roleId == 2">
+                and b.city like concat('%', #{city},'%')
+            </if>
+            <if test="roleId == 3">
+                and b.city like concat('%', #{city},'%')
+                <if test="district != null and district != ''">
+                    and b.district like concat('%', #{district},'%')
+                </if>
+            </if>
+        </where>
+    </select>
+
+    <select id="feedbackCompanyDetails" resultType="net.mingsoft.fxxf.vo.FeedbackCompanyDetailsVo">
+        SELECT
+            id,
+            reason,
+            `create_time`,
+            `result`,
+            case when `status` = 0 then '待处理' else '已处理' end `status`,
+            is_new
+        FROM
+            cc_feedback
+        <where>
+            applicants_id=#{applicantsId}
+            <if test="startTime != null and startTime != ''">
+                and create_time &gt;= #{startTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                and create_time &lt;= #{startTime}
+            </if>
+        </where>
+        order by is_new desc
+    </select>
+
+</mapper>
