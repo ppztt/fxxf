@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
+import net.mingsoft.basic.entity.ManagerEntity;
 import org.apache.shiro.SecurityUtils;
 
 import java.time.LocalDate;
@@ -378,7 +379,7 @@ public class Applicants extends Model<Applicants> {
     }
 
     public Integer getIsNew() {
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
 
        /* if(!Objects.equals(createType, "企业提交")){
             if(user.getRoleId() < auditRoleId && (Objects.equals(status, 4) || Objects.equals(status, 5) || Objects.equals(status, 6))){

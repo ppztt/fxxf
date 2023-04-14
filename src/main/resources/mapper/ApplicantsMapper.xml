@@ -388,7 +388,7 @@
         , sr.sort
 
         from
-        v_cc_applicants a
+        cc_applicants a
         LEFT JOIN
         (
         SELECT name, sort
