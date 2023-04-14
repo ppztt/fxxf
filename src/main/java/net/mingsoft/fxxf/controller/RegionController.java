@@ -27,7 +27,7 @@ public class RegionController {
     @Autowired
     private ApplicantsService applicantsService;
 
-    @ApiOperation(value = "地区", notes = "获取广东省地区信息")
+    @ApiOperation(value = "地区", notes = "获取广东省地区信息1")
     @GetMapping("/gd-regin")
     @OperatorLogAnno(operType = "查询", operModul = "地区信息", operDesc = "获取广东省地区信息")
     public ResponseBean gdRegin() {
