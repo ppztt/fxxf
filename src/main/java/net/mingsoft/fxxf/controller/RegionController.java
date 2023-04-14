@@ -3,7 +3,6 @@ package net.mingsoft.fxxf.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import net.mingsoft.fxxf.anno.OperatorLogAnno;
 import net.mingsoft.fxxf.service.ApplicantsService;
 import net.mingsoft.fxxf.vo.RegionVo;
 import net.mingsoft.utils.BeanUtil;
@@ -27,9 +26,9 @@ public class RegionController {
     @Autowired
     private ApplicantsService applicantsService;
 
-    @ApiOperation(value = "地区", notes = "获取广东省地区信息1")
+    @ApiOperation(value = "地区", notes = "获取广东省地区信息")
     @GetMapping("/gd-regin")
-    @OperatorLogAnno(operType = "查询", operModul = "地区信息", operDesc = "获取广东省地区信息")
+//    @OperatorLogAnno(operType = "查询", operModul = "地区信息", operDesc = "获取广东省地区信息")
     public ResponseBean gdRegin() {
         List<RegionVo> list = new ArrayList<>();
         List<RegionVo> gdRegion = applicantsService.getGdRegion();
