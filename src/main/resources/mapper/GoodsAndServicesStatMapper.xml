@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.mingsoft.fxxf.mapper.GoodsAndServicesStatMapper">
+
+    <select id="list" resultType="net.mingsoft.fxxf.vo.GoodsAndServicesStat">
+        SELECT
+            x.remarks servicetype,
+            x.NAME typename,
+            x.id,
+            T.sid,
+            IFNULL( T.fxxf, 0 ) fxxf,
+            IFNULL( T.wlyxf, 0 ) wlyxf
+        FROM
+            (
+            SELECT
+                s.remarks,
+                typename,
+                s.id sid,
+                COUNT( CASE temp.type WHEN 1 THEN 1 END ) fxxf,
+                COUNT( CASE temp.type WHEN 2 THEN 1 END ) wlyxf
+            FROM
+                (
+                SELECT
+                    a.id,
+                    a.type,
+                    a.management,
+                    SUBSTRING_INDEX( SUBSTRING_INDEX( a.details, ',', b.help_topic_id + 1 ), ',',- 1 ) typename
+                FROM
+                    cc_applicants a
+                    LEFT JOIN mysql.help_topic b ON b.help_topic_id &lt; ( LENGTH( a.details ) - LENGTH( REPLACE ( a.details, ',', '' ) ) + 1 )
+                    <where>
+                        <if test="city != '' and city != null">
+                            AND a.city like concat('%', #{city},'%')
+                        </if>
+                        <if test="district != '' and district != null">
+                            AND a.district like concat('%',  #{district},'%')
+                        </if>
+                        <if test="startTime != '' and startTime != null">
+                            AND a.start_time &gt;= #{startTime}
+                        </if>
+                        <if test="endTime != '' and endTime != null">
+                            AND a.start_time &lt; date_add(#{endTime}, INTERVAL 1 DAY)
+                        </if>
+                    </where>
+                ) temp
+                JOIN sys_type s ON s.type IN ( 5, 6 )
+                AND temp.typename = s.`name`
+            GROUP BY
+                remarks,
+                typename,
+                sid
+            ) T
+            RIGHT JOIN sys_type x ON T.sid = x.id
+        WHERE
+            x.type IN (
+            5,
+            6)
+    </select>
+
+
+    <select id="list2" resultType="Map">
+        SELECT
+        a.type,
+        a.city,
+        a.district,
+        a.management,
+        SUBSTRING_INDEX( SUBSTRING_INDEX( a.details, ',', b.help_topic_id + 1 ), ',',- 1 ) typename
+        FROM
+        cc_applicants a
+        LEFT JOIN mysql.help_topic b ON b.help_topic_id &lt; ( LENGTH( a.details ) - LENGTH( REPLACE ( a.details, ',', '' ) ) + 1 )
+        <where>
+            a.details is not null
+            <if test="city != '' and city != null">
+                AND a.city like concat('%', #{city},'%')
+            </if>
+            <if test="district != '' and district != null">
+                AND a.district like concat('%',  #{district},'%')
+            </if>
+            <if test="startTime != '' and startTime != null">
+                AND a.start_time &gt;= #{startTime}
+            </if>
+            <if test="endTime != '' and endTime != null">
+                AND a.start_time &lt; date_add(#{endTime}, INTERVAL 1 DAY)
+            </if>
+        </where>
+    </select>
+
+
+    <select id="listType" resultType="Map">
+        select
+        x.remarks servicetype,
+	    x.NAME typename,
+	    x.id
+	    from sys_type x where x.type IN (5, 6) and x.remarks is not null and x.NAME is not null
+    </select>
+
+</mapper>
