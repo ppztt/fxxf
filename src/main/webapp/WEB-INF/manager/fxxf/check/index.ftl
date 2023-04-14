@@ -690,6 +690,11 @@
             returnBack() {
                 window.parent.returnBack()
             },
+            getList(){
+              ms.http.get("/applicants/"+String(this.consumerId)+'.do').then((res)=>{
+                  console.log(res.data)
+              })
+            },
             addAddress() {
                 let userInfo = this.userInfo
                 if (this.formData.addrs === undefined) {
@@ -722,6 +727,7 @@
             this.detailType = window.location.href.split("?")[1].split("&")[0].split('=')[1]
             this.consumerId = Number(window.location.href.split("?")[1].split("&")[1].split('=')[1])
             console.log(window.parent)
+            this.getList();
         }
     });
 </script>

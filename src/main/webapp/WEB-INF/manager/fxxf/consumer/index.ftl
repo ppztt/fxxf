@@ -1147,6 +1147,8 @@
             emptyText: '',//提示文字
             // 级联选
             canImport: true,
+            type: "1",
+            details: ""
         },
         watch: {},
         methods: {
@@ -1308,9 +1310,8 @@
             },
             // 获取表格数据
             getUnitList: function () {
-                console.log(1)
                 // 获取放心消费承诺单位列表
-                ms.http.get("http://192.168.1.205:9443/applicants/unit/list", {
+                ms.http.post("/applicants/listPage.do",JSON.stringify({
                     search: this.search,
                     city: this.city,
                     district: this.district,
@@ -1319,9 +1320,13 @@
                     startTime: this.startTime,
                     current: this.current,
                     size: this.size,
-                })
+                    details: this.details,
+                    endTime: this.endTime,
+                    town: this.town,
+                    type: this.type
+                }),{headers: {'Content-type': 'application/json;charset=UTF-8'},})
                     .then((res) => {
-                        let data = res.data.data;
+                        let data = res.data;
                         this.total = data.total;
                         this.unitDataList = data.records;
                         // this.reSetTableHeight();
@@ -1395,7 +1400,7 @@
             }
         },
         mounted: function () {
-            // this.getUnitList();
+            this.getUnitList();
             // this.action = ms.manager + "/xwh/consumer/check.do";
             console.log(this.$refs)
             let that = this
