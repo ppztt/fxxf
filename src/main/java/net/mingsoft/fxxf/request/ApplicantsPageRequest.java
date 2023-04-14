@@ -1,4 +1,4 @@
-package net.mingsoft.fxxf.vo;
+package net.mingsoft.fxxf.request;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ApiModel("经营者条件分页查询请求vo")
-public class ApplicantsPageSearchVo extends BasePageVo implements Serializable {
+public class ApplicantsPageRequest  extends BasePageRequest implements Serializable {
 
     private static final long serialVersionUID = 6887611197913735614L;
 

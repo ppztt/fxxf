@@ -166,12 +166,6 @@ public class MyApplicantsStoreService {
         auditLogService.saveBatch(auditLogs);
     }
 
-    public List<Applicants> findApplicantsByRegName(String creditCode) {
-        return applicantsService.list(new QueryWrapper<Applicants>()
-                .eq("credit_code", creditCode)
-                .eq("type", 2)
-                .eq("status", 1));
-    }
 
     public List<Applicants> findApplicantsByIdRegName(Integer id, String creditCode) {
         return applicantsService.list(new QueryWrapper<Applicants>()

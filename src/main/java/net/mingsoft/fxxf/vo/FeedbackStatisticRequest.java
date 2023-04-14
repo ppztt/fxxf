@@ -3,22 +3,21 @@ package net.mingsoft.fxxf.vo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
-import net.mingsoft.fxxf.request.BasePageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.util.Date;
 
-@ApiModel("投诉举报列表分页查询请求")
+@ApiModel(value = "监督投诉请求参数实体")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class FeedbackPageRequest extends BasePageRequest {
+public class FeedbackStatisticRequest implements Serializable {
 
-
-    @ApiModelProperty(name = "applicantsId", value = "经营者ID", dataType = "int", example = "1")
-    private Integer applicantsId ;
+    @ApiModelProperty(name = "type", value = "单位类型 1、放心消费承诺单位 2、无理由退货单位", dataType = "int", example = "1")
+    private Integer type = 1;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(name = "startTime", value = "开始时间")
