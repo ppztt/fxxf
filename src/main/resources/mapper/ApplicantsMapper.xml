@@ -381,57 +381,73 @@
         order by sr.sort
     </select>
 
-    <select id="listPage" parameterType="net.mingsoft.fxxf.vo.ApplicantsPageSearchVo" resultType="net.mingsoft.fxxf.entity.Applicants">
+    <select id="listPage" resultType="net.mingsoft.fxxf.entity.Applicants">
         select
         distinct
-        a.id,a.type,a.status, a.reg_name,a.credit_code,a.store_name,a.province, a.city,
-        a.district,a.town, a.address, a.online_name, a.platform, a.online_link, a.management,
-        a.details,  a.principal,a.principal_tel,a.contacts, a.contacts_tel, a.join_industry,
-        a.cont_commitment, a.comm_num,a.start_time, a.end_time, a.contents1, a.contents2,a.contents3,a.contents4,a.statement,
-        a.application_date, a.industry_content, a.industry_date, a.industry_company_name,
-        a.industry_auditors,  a.cc_content,  a.cc_date,a.cc_company_name,a.cc_auditors,a.del_time, a.del_reason, a.del_other,
-        a.pub_time, a.create_time,  a.update_time, a.add_contents4_cnt,  a.creater,  a.create_type,  a.audit_role_id, sr.sort
+        <include refid="Base_Column_List"></include>
+        , sr.sort
+
         from
-        cc_applicants a
+        v_cc_applicants a
         LEFT JOIN
         (
         SELECT name, sort
         FROM sys_region
-        ) AS sr ON sr.name = a.city
         <where>
-            a.type=#{applicantsPageSearchVo.type}
-            <if test="applicantsPageSearchVo.city != null and applicantsPageSearchVo.city != ''">
-                and a.city like concat('%', #{applicantsPageSearchVo.city},'%')
+            <choose>
+                <when test="roleId == 1">
+                    and pcode = 440000
+                </when>
+                <when test="roleId == 2 or roleId == 4">
+                    and pcode = (SELECT code FROM sys_region WHERE name= #{cityAccess})
+                </when>
+                <otherwise>
+                    and code = (SELECT code FROM sys_region WHERE name= #{districtAccess} and pcode=(SELECT code FROM sys_region WHERE name= #{cityAccess}))
+                </otherwise>
+            </choose>
+        </where>
+        ) AS sr ON sr.name = a.city
+        LEFT JOIN sys_user u on u.id=a.creater
+        <where>
+            a.type=#{applicantsPageRequest.type}
+            <if test="applicantsPageRequest.city != null and applicantsPageRequest.city != ''">
+                and a.city like concat('%', #{applicantsPageRequest.city},'%')
 
             </if>
-            <if test="applicantsPageSearchVo.district != null and applicantsPageSearchVo.district != ''">
-                and a.district like concat('%', #{applicantsPageSearchVo.district},'%')
+            <if test="applicantsPageRequest.district != null and applicantsPageRequest.district != ''">
+                and a.district like concat('%', #{applicantsPageRequest.district},'%')
             </if>
-            <if test="applicantsPageSearchVo.town != null and applicantsPageSearchVo.town != ''">
-                and a.town=#{applicantsPageSearchVo.town}
+            <if test="applicantsPageRequest.town != null and applicantsPageRequest.town != ''">
+                and a.town=#{applicantsPageRequest.town}
             </if>
-            <if test="applicantsPageSearchVo.status != null and applicantsPageSearchVo.status != ''">
-                and a.status=#{applicantsPageSearchVo.status}
+            <if test="applicantsPageRequest.status != null and applicantsPageRequest.status != ''">
+                and a.status=#{applicantsPageRequest.status}
             </if>
-            <if test="applicantsPageSearchVo.startTime != null and applicantsPageSearchVo.startTime != ''">
-                and DATE_FORMAT(a.start_time, '%Y-%m-%d') <![CDATA[ >= ]]> #{applicantsPageSearchVo.startTime}
+            <if test="applicantsPageRequest.startTime != null and applicantsPageRequest.startTime != ''">
+                and DATE_FORMAT(a.start_time, '%Y-%m-%d') <![CDATA[ >= ]]> #{applicantsPageRequest.startTime}
             </if>
-            <if test="applicantsPageSearchVo.endTime != null and applicantsPageSearchVo.endTime != ''">
-                and DATE_FORMAT(a.start_time, '%Y-%m-%d')  <![CDATA[ <= ]]> #{applicantsPageSearchVo.endTime}
+            <if test="applicantsPageRequest.endTime != null and applicantsPageRequest.endTime != ''">
+                and DATE_FORMAT(a.start_time, '%Y-%m-%d')  <![CDATA[ <= ]]> #{applicantsPageRequest.endTime}
             </if>
-            <if test="applicantsPageSearchVo.search != null and applicantsPageSearchVo.search != ''">
+            <if test="applicantsPageRequest.search != null and applicantsPageRequest.search != ''">
                 and (
-                a.reg_name like concat('%',#{applicantsPageSearchVo.search},'%') or
-                a.credit_code like concat('%',#{applicantsPageSearchVo.search},'%') or
-                a.contacts like concat('%',#{applicantsPageSearchVo.search},'%') or
-                a.contacts_tel like concat('%',#{applicantsPageSearchVo.search},'%')
+                a.reg_name like concat('%',#{applicantsPageRequest.search},'%') or
+                a.credit_code like concat('%',#{applicantsPageRequest.search},'%') or
+                a.contacts like concat('%',#{applicantsPageRequest.search},'%') or
+                a.contacts_tel like concat('%',#{applicantsPageRequest.search},'%')
                 )
             </if>
-            <if test="applicantsPageSearchVo.management != null and applicantsPageSearchVo.management != ''">
-                and a.management=#{applicantsPageSearchVo.management}
+            <if test="applicantsPageRequest.management != null and applicantsPageRequest.management != ''">
+                and a.management=#{applicantsPageRequest.management}
             </if>
-            <if test="applicantsPageSearchVo.details != null and applicantsPageSearchVo.details != ''">
-                and a.details=#{applicantsPageSearchVo.details}
+            <if test="applicantsPageRequest.details != null and applicantsPageRequest.details != ''">
+                and a.details=#{applicantsPageRequest.details}
+            </if>
+            <if test="roleId == 2 or roleId == 4">
+                and a.city like concat('%', #{cityAccess},'%')
+            </if>
+            <if test="roleId == 3">
+                and a.city like concat('%', #{cityAccess},'%') and a.district like concat('%', #{districtAccess},'%')
             </if>
         </where>
 
@@ -444,7 +460,6 @@
         distinct
         <include refid="Base_Column_List"></include>
         , sr.sort
-
         from
         v_cc_applicants a
         LEFT JOIN

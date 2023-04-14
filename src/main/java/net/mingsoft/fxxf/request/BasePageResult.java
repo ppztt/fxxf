@@ -1,4 +1,4 @@
-package net.mingsoft.fxxf.vo;
+package net.mingsoft.fxxf.request;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
