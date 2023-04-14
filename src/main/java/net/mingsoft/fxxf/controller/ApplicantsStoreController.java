@@ -17,8 +17,8 @@ import com.google.common.collect.Maps;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import net.mingsoft.fxxf.anno.OperatorLogAnno;
-import net.mingsoft.fxxf.entity.*;
 import net.mingsoft.fxxf.entity.Record;
+import net.mingsoft.fxxf.entity.*;
 import net.mingsoft.fxxf.mapper.ApplicantsMapper;
 import net.mingsoft.fxxf.mapper.AuditLogMapper;
 import net.mingsoft.fxxf.mapper.FeedbackMapper;
@@ -978,7 +978,7 @@ public class ApplicantsStoreController {
                 return ApiResult.fail("调查处理情况不能为空");
             }
             // 根据留言反馈id处理留言反馈并保存操作记录
-            myFeedbackService.updateFeedback(id, result, processingSituation);
+            myFeedbackService.updateFeedback(Integer.parseInt(id), result, processingSituation);
             return ApiResult.success();
         } catch (Exception e) {
             e.printStackTrace();
