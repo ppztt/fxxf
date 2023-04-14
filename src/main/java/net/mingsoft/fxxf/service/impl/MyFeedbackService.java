@@ -35,7 +35,7 @@ public class MyFeedbackService {
      * @author laijunbao
      * @updateTime 2020-01-11-0011 14:38
      */
-    public void updateFeedback(String id, String result, String processingSituation) {
+    public void updateFeedback(Integer id, String result, String processingSituation) {
         // 更新留言反馈
         Feedback feedback = feedbackService.getById(id);
         if (!StringUtils.isNumeric(feedback.getType())) {
@@ -54,7 +54,7 @@ public class MyFeedbackService {
         if (user != null) {
             record.setUserid(user.getId() + "");
         }
-        record.setFeedbackId(Integer.parseInt(id));
+        record.setFeedbackId(id);
         record.setContext(result);
         record.setProcessingSituation(processingSituation);
         record.setCreateTime(LocalDateTime.now());
