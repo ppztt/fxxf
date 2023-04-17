@@ -28,7 +28,7 @@ public interface ApplicantsService extends IService<Applicants> {
     IPage<Applicants> listPage(ApplicantsPageRequest applicantsPageRequest);
 
 
-    ApplicantsFindVo findApplicantsByRegName(Integer id, String creditCode);
+    ApplicantsFindVo findApplicantsByRegName(Integer id, String creditCode,String type);
 
 
     /**

@@ -20,7 +20,7 @@
 
     <select id="getAuditLog" resultType="net.mingsoft.fxxf.vo.AuditLogVo">
         SELECT
-        t.`name`,
+        t.`role_name`,
         t.`status`,
         t.create_time,
         t.contents
@@ -37,9 +37,9 @@
         case `status` when 1 then '审核通过' else '审核不通过' end `status`,
         auditor,
         role_id,
-        b.`name`
+        b.`role_name`
         FROM
-        cc_auditlog a INNER JOIN sys_role b
+        cc_auditlog a INNER JOIN role b
         on a.role_id=b.id
 
         WHERE app_id=#{id}
