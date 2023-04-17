@@ -544,6 +544,8 @@
     var indexVue = new Vue({
         el: "#index",
         data: {
+            // 放心消费 1  无理由 2
+            type: '1',
             // 详情后的名字，根据query参数来切换
             textList: [
                 "编辑",
@@ -698,16 +700,27 @@
             // 编辑保存按钮
             perEditUnitTnfo() {
                 let adds = JSON.stringify(this.formData.addrs)
-                // let params = JSON.stringify(this.formData)
-                ms.http.post('/applicants/update/' + this.consumerId + '.do', {...this.formData, addrs: adds},
-                    {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
-                    if (res.code == 200) {
-                        this.$message({
-                            message: '编辑成功！',
-                            type: 'success'
-                        });
+                ms.http.get('/applicants/find.do',
+                    {
+                        creditCode: this.formData.creditCode,
+                        id: this.formData.id,
+                        type: this.type
+                    }).then((res) => {
+                    let isReapt = res.data.isRepeatRegName
+                    console.log(isReapt)
+                    if (!isReapt) {
+                        ms.http.post('/applicants/update/' + this.consumerId + '.do', {...this.formData, addrs: adds},
+                            {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
+                            if (res.code == 200) {
+                                this.$message({
+                                    message: '编辑成功！',
+                                    type: 'success'
+                                });
+                            }
+                        })
                     }
                 })
+                // let params = JSON.stringify(this.formData)
             },
             // 审核按钮
             auditUnitTnfo(type) {

@@ -75,7 +75,7 @@
         <div class="list-header-btns">
             <div class="item">
                 <el-button size="medium" class="blue_btn2" @click="isShowEnteringModal = true" icon="el-icon-edit"
-                           >
+                >
                     <!-- <img class="left" src="@/assets/images/1_17.png" alt /> -->
                     录入
                 </el-button>
@@ -179,7 +179,8 @@
                                                     v-for="item in districtData"
                                                     :value="item.name"
                                                     :key="item.code"
-                                                    :label="item.name">{{ item.name }}</el-option>
+                                                    :label="item.name">{{ item.name }}
+                                            </el-option>
                                         </el-select>
                                     </el-col>
                                     <el-col span="8">
@@ -390,7 +391,8 @@
             </div>
 
             <div class="item" style="margin-left: 30px;">
-                <el-button size="medium" :class="{ red_btn : ids.ids.length!=0 }"  icon="el-icon-close" :disabled="ids.ids.length == 0"
+                <el-button size="medium" :class="{ red_btn : ids.ids.length!=0 }" icon="el-icon-close"
+                           :disabled="ids.ids.length == 0"
                            @click="deleteMoreConsumer">
                     删除
                 </el-button>
@@ -528,7 +530,8 @@
                                    @click="openNew(2,row)">
                             摘牌
                         </el-button>
-                        <el-button type="text" class="action_btn red_text" icon="el-icon-close" @click="deleteConsumer(row.id)">
+                        <el-button type="text" class="action_btn red_text" icon="el-icon-close"
+                                   @click="deleteConsumer(row.id)">
                             删除
                         </el-button>
                     </div>
@@ -876,10 +879,11 @@
             emptyText: '',//提示文字
             // 级联选
             canImport: true,
+            // 消费者 1 无承诺 2
             type: "1",
             details: "",
             // 被删除的id
-            ids: {ids:[]}
+            ids: {ids: []}
         },
         watch: {},
         methods: {
@@ -895,24 +899,24 @@
             ,
             currentChange: function (v) {
                 this.current = v;
-                this.debounce(this.getUnitList(),1000)
+                this.debounce(this.getUnitList(), 1000)
             },
             // 防抖
-            debounce(fun,wait=1500){
+            debounce(fun, wait = 1500) {
                 let timeout = null
-                return function(){
-                    if(timeout){//如果存在定时器就清空
+                return function () {
+                    if (timeout) {//如果存在定时器就清空
                         clearTimeout(timeout)
                     }
-                    timeout=setTimeout(function(){
+                    timeout = setTimeout(function () {
                         fun()
-                    },wait)
+                    }, wait)
                 }
 
             },
             sizeChange: function (v) {
                 this.size = v;
-                this.debounce(this.getUnitList(),1000)
+                this.debounce(this.getUnitList(), 1000)
             }
             ,
             handleSelectionChange: function () {
@@ -1038,11 +1042,13 @@
             },
             downLoadTemplate: function () {
                 // 导出数据 //状态(1:在期； 0:摘牌 ；2过期)
-                // window.open(this.$HOST + this.$urls.FXXFCLDWXZ);
-                ms.http.get('/applicants/downTemplateFile.do').then((res)=>{
+                window.open('http://192.168.2.78:8080/applicants/downTemplateFile/'+this.type+'.do');
+            },
+            exportData(type) {
+                // 导出数据
+                ms.http.get('/applicants/export.do',type).then((res)=>{
                     console.log(res)
                 })
-
             },
             regionReset() {
                 // 地区重设
@@ -1168,54 +1174,54 @@
                 console.log(row.id)
             },
             // 删除单个单位
-            deleteConsumer(id){
-                    this.$confirm('确认删除该项数据?', '删除提示', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'error',
-                        center: true
-                    }).then(() => {
-                        ms.http.post('/applicants/remove/'+id+'.do')
-                        this.$message({
-                            type: 'success',
-                            message: '删除成功!'
-                        });
-                        this.getUnitList()
-                    }).catch(() => {
-                        this.$message({
-                            type: 'info',
-                            message: '已取消删除'
-                        });
+            deleteConsumer(id) {
+                this.$confirm('确认删除该项数据?', '删除提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'error',
+                    center: true
+                }).then(() => {
+                    ms.http.post('/applicants/remove/' + id + '.do')
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
                     });
+                    this.getUnitList()
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             },
             // 为删除添加id
-            addIDs(selection){
+            addIDs(selection) {
                 this.ids.ids = []
-                selection.forEach((item)=>{
+                selection.forEach((item) => {
                     this.ids.ids.push(item.id)
                 })
             },
             // 删除多个单位
-            deleteMoreConsumer(){
+            deleteMoreConsumer() {
                 let ids = JSON.stringify(this.ids)
-                    this.$confirm('确认删除该项数据?', '删除提示', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'error',
-                        center: true
-                    }).then(() => {
-                        ms.http.post('/applicants/remove.do',ids)
-                        this.$message({
-                            type: 'success',
-                            message: '删除成功!'
-                        });
-                        this.getUnitList()
-                    }).catch(() => {
-                        this.$message({
-                            type: 'info',
-                            message: '已取消删除'
-                        });
+                this.$confirm('确认删除该项数据?', '删除提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'error',
+                    center: true
+                }).then(() => {
+                    ms.http.post('/applicants/remove.do', ids)
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
                     });
+                    this.getUnitList()
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             }
         },
         mounted: function () {
