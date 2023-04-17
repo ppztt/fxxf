@@ -375,10 +375,10 @@
                         <!-- <img class="right" src="@/assets/images/1_15.png" alt /> -->
                     </el-button>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item :command="''">导出全部</el-dropdown-item>
-                        <el-dropdown-item :command="1" divided>导出在期</el-dropdown-item>
-                        <el-dropdown-item :command="0" divided>导出摘牌</el-dropdown-item>
-                        <el-dropdown-item :command="2" divided>导出过期</el-dropdown-item>
+                        <el-dropdown-item :command="''" @click="exportData">导出全部</el-dropdown-item>
+                        <el-dropdown-item :command="1" @click="exportData('1')" divided>导出在期</el-dropdown-item>
+                        <el-dropdown-item :command="0" @click="exportData('0')" divided>导出摘牌</el-dropdown-item>
+                        <el-dropdown-item :command="2" @click="exportData('2')" divided>导出过期</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
             </div>
@@ -390,12 +390,8 @@
             </div>
 
             <div class="item" style="margin-left: 30px;">
-                <el-button size="medium" type="error" icon="el-icon-close" :disabled="selectDataList.length == 0"
-                           @click="
-          isShowRemove = true;
-        removeType = 'all';
-                                                                                                    ">
-                    <!-- <img class="left" src="@/assets/images/delete.png" alt /> -->
+                <el-button size="medium" :class="{ red_btn : ids.ids.length!=0 }"  icon="el-icon-close" :disabled="ids.ids.length == 0"
+                           @click="deleteMoreConsumer">
                     删除
                 </el-button>
             </div>
@@ -408,7 +404,8 @@
                 border
                 height="250"
                 style="width:100%"
-                @select="">
+                @select="addIDs"
+                @select-all="addIDs">
 
             <el-table-column
                     fixed="left"
@@ -867,78 +864,8 @@
             selectDataList: [], //删除列表
             isShowEnteringModal: false,
             allowFiles: [".xlsx", ".xls", ".xlsm"],
-            conditionList: [
-                //单行文本
-                {
-                    'action': 'and',
-                    'field': 'input_1681200154000_90355',
-                    'el': 'eq',
-                    'model': 'input168120015400090355',
-                    'name': '单行文本',
-                    'type': 'input'
-                },
-                // 级联选择器
-                {
-                    'action': 'and',
-                    'field': 'cascader_1681200158000_96968',
-                    'el': 'eq',
-                    'model': 'cascader168120015800096968',
-                    'name': '级联选择器',
-                    'type': 'cascader',
-                    'multiple': false
-                },
-                // 级联选择器
-                {
-                    'action': 'and',
-                    'field': 'cascader_1681200160000_18829',
-                    'el': 'eq',
-                    'model': 'cascader168120016000018829',
-                    'name': '级联选择器',
-                    'type': 'cascader',
-                    'multiple': false
-                },
-                // 级联选择器
-                {
-                    'action': 'and',
-                    'field': 'cascader_1681200162000_39121',
-                    'el': 'eq',
-                    'model': 'cascader168120016200039121',
-                    'name': '级联选择器',
-                    'type': 'cascader',
-                    'multiple': false
-                },
-                // 级联选择器
-                {
-                    'action': 'and',
-                    'field': 'cascader_1681200164000_48970',
-                    'el': 'eq',
-                    'model': 'cascader168120016400048970',
-                    'name': '级联选择器',
-                    'type': 'cascader',
-                    'multiple': false
-                },
-                // 级联选择器
-                {
-                    'action': 'and',
-                    'field': 'cascader_1681200166000_38553',
-                    'el': 'eq',
-                    'model': 'cascader168120016600038553',
-                    'name': '级联选择器',
-                    'type': 'cascader',
-                    'multiple': false
-                },
-                // 级联选择器
-                {
-                    'action': 'and',
-                    'field': 'cascader_1681200168000_47961',
-                    'el': 'eq',
-                    'model': 'cascader168120016800047961',
-                    'name': '级联选择器',
-                    'type': 'cascader',
-                    'multiple': false
-                },
-            ],
             conditions: [],
+            conditionList: [],
             dataList: [], //消费者列表
             selectionList: [],//消费者列表选中
             total: 0, //总记录数量
@@ -1112,6 +1039,10 @@
             downLoadTemplate: function () {
                 // 导出数据 //状态(1:在期； 0:摘牌 ；2过期)
                 // window.open(this.$HOST + this.$urls.FXXFCLDWXZ);
+                ms.http.get('/applicants/downTemplateFile.do').then((res)=>{
+                    console.log(res)
+                })
+
             },
             regionReset() {
                 // 地区重设
@@ -1236,6 +1167,7 @@
                 this.action = ms.manager + "/xwh/consumer/check.do?type=" + num + "&id=" + row.id;
                 console.log(row.id)
             },
+            // 删除单个单位
             deleteConsumer(id){
                     this.$confirm('确认删除该项数据?', '删除提示', {
                         confirmButtonText: '确定',
@@ -1244,6 +1176,35 @@
                         center: true
                     }).then(() => {
                         ms.http.post('/applicants/remove/'+id+'.do')
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                        this.getUnitList()
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '已取消删除'
+                        });
+                    });
+            },
+            // 为删除添加id
+            addIDs(selection){
+                this.ids.ids = []
+                selection.forEach((item)=>{
+                    this.ids.ids.push(item.id)
+                })
+            },
+            // 删除多个单位
+            deleteMoreConsumer(){
+                let ids = JSON.stringify(this.ids)
+                    this.$confirm('确认删除该项数据?', '删除提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'error',
+                        center: true
+                    }).then(() => {
+                        ms.http.post('/applicants/remove.do',ids)
                         this.$message({
                             type: 'success',
                             message: '删除成功!'

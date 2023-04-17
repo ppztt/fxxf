@@ -304,6 +304,7 @@
                                 <el-date-picker
                                         v-model="formData.applicationDate"
                                         type="date"
+                                        value-format="yyyy-MM-dd"
                                         placeholder="请选择时间">
                                 </el-date-picker>
                             </el-form-item>
@@ -696,15 +697,15 @@
             },
             // 编辑保存按钮
             perEditUnitTnfo() {
-                let params = JSON.stringify(this.formData)
-                ms.http.post('/applicants/update/' + this.consumerId + '.do', params,
+                let adds = JSON.stringify(this.formData.addrs)
+                // let params = JSON.stringify(this.formData)
+                ms.http.post('/applicants/update/' + this.consumerId + '.do', {...this.formData, addrs: adds},
                     {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
                     if (res.code == 200) {
                         this.$message({
                             message: '编辑成功！',
                             type: 'success'
                         });
-                        this.returnBack()
                     }
                 })
             },
