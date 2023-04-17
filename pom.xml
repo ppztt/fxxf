@@ -45,7 +45,18 @@
         <dependency>
             <groupId>net.mingsoft</groupId>
             <artifactId>ms-base</artifactId>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.poi</groupId>
+                        <artifactId>poi</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.poi</groupId>
+                        <artifactId>poi-ooxml</artifactId>
+                    </exclusion>
+                </exclusions>
             <version>2.1.15</version>
+
         </dependency>
         <dependency>
             <groupId>net.mingsoft</groupId>
@@ -179,7 +190,7 @@
             <version>3.8.3</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/cn.afterturn/easypoi-base -->
+<!--         https://mvnrepository.com/artifact/cn.afterturn/easypoi-base-->
         <dependency>
             <groupId>cn.afterturn</groupId>
             <artifactId>easypoi-base</artifactId>
@@ -192,10 +203,6 @@
                 <exclusion>
                     <artifactId>commons-lang3</artifactId>
                     <groupId>org.apache.commons</groupId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
