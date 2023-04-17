@@ -129,20 +129,20 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
      * 经营者列表-根据id查询单位
      */
     @Override
-    public ApplicantsStoreParamsVo findApplicants(Applicants applicants) {
-        ApplicantsStoreParamsVo applicantsStoreParamsVo = new ApplicantsStoreParamsVo();
+    public ApplicantsParamsVo findApplicants(Applicants applicants) {
+        ApplicantsParamsVo applicantsParamsVo = new ApplicantsParamsVo();
 
-        BeanUtils.copyProperties(applicants, applicantsStoreParamsVo);
-        applicantsStoreParamsVo.setManagement(applicants.getManagement());
+        BeanUtils.copyProperties(applicants, applicantsParamsVo);
+        applicantsParamsVo.setManagement(applicants.getManagement());
         if (applicants.getDetails() != null && StringUtils.isNotBlank(applicants.getDetails())) {
-            applicantsStoreParamsVo.setDetails(Arrays.asList(applicants.getDetails().split(",")));
+            applicantsParamsVo.setDetails(Arrays.asList(applicants.getDetails().split(",")));
         }
 
         List<AuditLogVo> auditLogs = auditLogMapper.getAuditLog(applicants.getId(), null);
 
-        applicantsStoreParamsVo.setAuditLogs(auditLogs);
+        applicantsParamsVo.setAuditLogs(auditLogs);
 
-        return applicantsStoreParamsVo;
+        return applicantsParamsVo;
     }
 
     /**

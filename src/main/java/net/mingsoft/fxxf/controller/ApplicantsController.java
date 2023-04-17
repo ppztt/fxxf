@@ -58,7 +58,7 @@ public class ApplicantsController {
     @ApiOperation(value = "经营者列表-根据id查询单位")
     @ApiImplicitParams({@ApiImplicitParam(name = "id", value = "单位id", required = true)})
 //    @OperatorLogAnno(operType = "查询", operModul = "", operDesc = "经营者列表-根据id和经营者注册名称查询是否重复")
-    public ApiResult<ApplicantsStoreParamsVo> findApplicantsById(@PathVariable(value = "id") Integer id) {
+    public ApiResult<ApplicantsParamsVo> findApplicantsById(@PathVariable(value = "id") Integer id) {
         try {
             Applicants applicants = applicantsService.getById(id);
             if (applicants != null) {
