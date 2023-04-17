@@ -21,6 +21,7 @@ import net.mingsoft.fxxf.bean.entity.User;
 import net.mingsoft.fxxf.bean.enums.ApplicantsTypeEnum;
 import net.mingsoft.fxxf.bean.enums.CreateTypeEnum;
 import net.mingsoft.fxxf.bean.request.ApplicantsPageRequest;
+import net.mingsoft.fxxf.bean.request.ApplicantsStatisticsRequest;
 import net.mingsoft.fxxf.bean.request.EnterpriseNewApplyRequest;
 import net.mingsoft.fxxf.bean.vo.*;
 import net.mingsoft.fxxf.mapper.ApplicantsMapper;
@@ -69,8 +70,12 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
     private final String[] title = new String[]{"经营者注册名称", "统一社会信用代码", "门店名称", "经营场所-所在市", "经营场所-所在区县", "经营场所-详细地址", "经营类别", "类别明细", "负责人姓名", "负责人电话", "适用商品-承诺事项及内容", "退货期限（天）", "退货约定-承诺事项及内容", "企业申请日期"};
 
     /**
-     * 无理由退货承诺实体店导入模板
+     * 导入模板
      */
+    @Value("${unitTemplateFilePath}")
+    private String unitTemplateFilePath;
+
+
     @Value("${storeTemplateFilePath}")
     private String storeTemplateFilePath;
 
@@ -202,12 +207,6 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                 applicantsById.setStatus(4);
                 applicantsById.setAuditRoleId(user.getRoleId() + 1);
             }
-                /*
-                // 后台用户导入的、不通过的数据，更改为待审核作态
-                if (Objects.equals(user.getUsertype(), 1) && Objects.equals(applicantsById.getStatus(), 7)) {
-                    applicantsById.setStatus(4);
-                    applicantsById.setAuditRoleId(user.getRoleId() + 1);
-                }*/
 
             //多个地址解析
             if (StringUtils.isNotBlank(applicants.getAddrs())) {
@@ -255,9 +254,10 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
      * 经营者列表-模板下载
      */
     @Override
-    public void downTemplateFile(HttpServletRequest request, HttpServletResponse response) {
+    public void downTemplateFile(Integer type, HttpServletRequest request, HttpServletResponse response) {
+        String bizTemplateFile = ApplicantsTypeEnum.UNIT.getCode().equals(type) ? unitTemplateFilePath : storeTemplateFilePath;
         try {
-            TemplateExportParams params = new TemplateExportParams(ResourceUtils.getFile(storeTemplateFilePath).getPath());
+            TemplateExportParams params = new TemplateExportParams(ResourceUtils.getFile(bizTemplateFile).getPath());
             // 输出全部的sheet
             params.setScanAllsheet(true);
             Workbook workbook = ExcelExportUtil.exportExcel(params, new HashMap<>());
@@ -299,12 +299,14 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
             if (!applicantsStoreExcelImportVos.isEmpty()) {
 
                 //检测数据是否跨区县
-                User user = (User) SecurityUtils.getSubject().getPrincipal();
+                ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
+                User userExtensionInfo = userMapper.selectById(user.getId());
+
                 int roleId = user.getRoleId();
 
                 if (roleId == 3) {
 
-                    String district = user.getDistrict();
+                    String district = userExtensionInfo.getDistrict();
                     for (int i = 0; i < applicantsStoreExcelImportVos.size(); i++) {
                         String vo = applicantsStoreExcelImportVos.get(i).getDistrict();
                         if (!vo.contains(district)) {
@@ -313,7 +315,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                         }
                     }
                 } else if (roleId == 2) {
-                    String city = user.getCity();
+                    String city = userExtensionInfo.getCity();
                     for (int i = 0; i < applicantsStoreExcelImportVos.size(); i++) {
                         String vo = applicantsStoreExcelImportVos.get(i).getCity();
                         if (!vo.contains(city)) {
@@ -322,7 +324,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                         }
                     }
                 } else if (roleId == 4) {
-                    String city = user.getCity();
+                    String city = userExtensionInfo.getCity();
                     for (int i = 0; i < applicantsStoreExcelImportVos.size(); i++) {
                         String vo = applicantsStoreExcelImportVos.get(i).getCity();
                         if (!vo.contains(city)) {
@@ -458,7 +460,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
     public ApiResult audit(Integer id, Integer type, String notes) {
 
         if (StringUtils.isBlank(notes)) {
-            return ApiResult.fail("不通过原因不能为空");
+            return ApiResult.fail("原因不能为空");
         }
 
         String flagStr = updateApplicantsStatusByAudit(type, id, notes);
@@ -561,14 +563,13 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
     }
 
     @Override
-    public List<StoreOperatorStatisticsVo> operatorStatistics(Map map) {
+    public List<StoreOperatorStatisticsVo> operatorStatistics(ApplicantsStatisticsRequest applicantsStatisticsRequest) {
         // 获取登录用户
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
+        User extensionInfo = userMapper.selectById(user.getId());
         // roleId == 1 ，说明是管理员，可以查看全部，否则根据地市去查
-        Integer roleId = user.getRoleId();
-        String city = user.getCity();
-
-        return applicantsMapper.storeOperatorStatistics(map.get("startTime").toString(), map.get("endTime").toString(), roleId, city, user.getDistrict());
+        return applicantsMapper.storeOperatorStatistics(applicantsStatisticsRequest.getStartTime().toString(),
+                applicantsStatisticsRequest.getEndTime().toString(),  user.getRoleId(),  extensionInfo.getCity(), extensionInfo.getDistrict());
     }
 
     @Override
