@@ -218,7 +218,7 @@ public class ApplicantsController {
     @GetMapping(value = "/export")
     @ApiOperation(value = "经营者列表-导出", notes = "经营者列表-导出")
     @ApiImplicitParam(name = "status", value = "状态(1:在期； 0:摘牌)，为空则导出全部", example = "1")
-    @OperatorLogAnno(operType = "导出", operModul = "无理由退货承诺", operDesc = "经营者列表-导出")
+    // @OperatorLogAnno(operType = "导出", operModul = "无理由退货承诺", operDesc = "经营者列表-导出")
     public void export(@RequestParam(value = "status", required = false) String status, HttpServletRequest request, HttpServletResponse response) {
 
         applicantsService.export(status, request, response);

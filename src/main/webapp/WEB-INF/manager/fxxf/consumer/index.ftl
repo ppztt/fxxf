@@ -1286,7 +1286,10 @@
             },
             downLoadData: function (statusType) {
                 // 导出数据 //状态(1:在期； 0:摘牌 ；2过期)
-                <#--window.open(this.$HOST + this.$urls.FXXFCLDWDC + `?status=${statusType}`);-->
+                ms.http.get('/applicants/export.do?status='+String(statusType)).then((res)=>{
+                    console.log(res)
+                })
+                <#--window.open(window.location.href +  + `?status=${statusType}`);-->
                 console.log(statusType)
             },
             downLoadTemplate: function () {

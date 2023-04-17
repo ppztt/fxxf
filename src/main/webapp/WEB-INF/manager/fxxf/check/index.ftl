@@ -691,7 +691,7 @@
                 window.parent.returnBack()
             },
             getList(){
-              ms.http.get("/applicants/"+String(this.consumerId)+'.do').then((res)=>{
+              ms.http.get("/applicants/"+this.consumerId+'.do').then((res)=>{
                   console.log(res.data)
               })
             },
