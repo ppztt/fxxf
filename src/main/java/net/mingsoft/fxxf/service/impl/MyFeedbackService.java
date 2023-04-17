@@ -1,9 +1,9 @@
 package net.mingsoft.fxxf.service.impl;
 
 
-import net.mingsoft.fxxf.entity.Feedback;
-import net.mingsoft.fxxf.entity.Record;
-import net.mingsoft.fxxf.entity.User;
+import net.mingsoft.basic.entity.ManagerEntity;
+import net.mingsoft.fxxf.bean.entity.Feedback;
+import net.mingsoft.fxxf.bean.entity.Record;
 import net.mingsoft.fxxf.service.FeedbackService;
 import net.mingsoft.fxxf.service.RecordService;
 import org.apache.commons.lang3.StringUtils;
@@ -52,7 +52,7 @@ public class MyFeedbackService {
         // 保存操作记录
         Record record = new Record();
         // 获取登录登录
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
         if (user != null) {
             record.setUserid(user.getId() + "");
         }

@@ -2,17 +2,24 @@ package net.mingsoft.utils;
 
 import cn.afterturn.easypoi.excel.entity.result.ExcelVerifyHandlerResult;
 import cn.afterturn.easypoi.handler.inter.IExcelVerifyHandler;
-import net.mingsoft.fxxf.entity.User;
+import net.mingsoft.basic.entity.ManagerEntity;
+import net.mingsoft.fxxf.bean.entity.User;
+import net.mingsoft.fxxf.bean.vo.ApplicantsUnitExcelImportVo;
+import net.mingsoft.fxxf.mapper.UserMapper;
 import net.mingsoft.fxxf.service.impl.CommonDataService;
-import net.mingsoft.fxxf.vo.ApplicantsUnitExcelImportVo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author laijunbao
  */
-
+@Component
 public class ApplicantsUnitExcelVerifyHandlerImpl implements IExcelVerifyHandler<ApplicantsUnitExcelImportVo> {
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public ExcelVerifyHandlerResult verifyHandler(ApplicantsUnitExcelImportVo applicantsUnitExcelImportVo) {
@@ -46,13 +53,18 @@ public class ApplicantsUnitExcelVerifyHandlerImpl implements IExcelVerifyHandler
             }
         }
 
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
-        if (user.getRoleId() != 1) {
-            if (StringUtils.isNotBlank(applicantsUnitExcelImportVo.getCity()) && !applicantsUnitExcelImportVo.getCity().equals(user.getCity())) {
-                builder.append("导入数据中有其他地市单位，请核实数据后重新上传");
-                return new ExcelVerifyHandlerResult(false, builder.toString());
+        ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
+        if (user != null) {
+            User userExtensionInfo = userMapper.selectById(user.getId());
+            if (user.getRoleId() != 1) {
+                if (StringUtils.isNotBlank(applicantsUnitExcelImportVo.getCity()) &&
+                        !applicantsUnitExcelImportVo.getCity().equals(userExtensionInfo.getCity())) {
+                    builder.append("导入数据中有其他地市单位，请核实数据后重新上传");
+                    return new ExcelVerifyHandlerResult(false, builder.toString());
+                }
             }
         }
+
 
         // if(applicantsUnitExcelImportVo.getCcDate() == null){
         //     builder.append("消委会意见日期不能为空");

@@ -2,12 +2,12 @@ package net.mingsoft.fxxf.service.impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import net.mingsoft.fxxf.entity.Applicants;
-import net.mingsoft.fxxf.entity.AuditLog;
-import net.mingsoft.fxxf.entity.User;
+import net.mingsoft.basic.entity.ManagerEntity;
+import net.mingsoft.fxxf.bean.entity.Applicants;
+import net.mingsoft.fxxf.bean.entity.AuditLog;
+import net.mingsoft.fxxf.bean.vo.ApplicantsStoreExcelImportVo;
 import net.mingsoft.fxxf.service.ApplicantsService;
 import net.mingsoft.fxxf.service.AuditLogService;
-import net.mingsoft.fxxf.vo.ApplicantsStoreExcelImportVo;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +46,7 @@ public class MyApplicantsStoreService {
     @Transactional(rollbackFor = Exception.class)
     public List<Applicants> templateImport(List<ApplicantsStoreExcelImportVo> applicantsStoreExcelVos) {
 
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
 
         List<String> creditCodes = new ArrayList<>();
         for (int i = 0; i < applicantsStoreExcelVos.size(); i++) {
@@ -107,11 +107,10 @@ public class MyApplicantsStoreService {
                     }
 
 //                    // 获取登录用户
-//                    User user = (User) SecurityUtils.getSubject().getPrincipal();
                     // roleId == 1 ，说明是管理员，可以查看全部，否则根据地市去查
                     Integer roleId = user.getRoleId();
                     applicants.setAuditRoleId(roleId);
-                    applicants.setCreater(user.getId());
+                    applicants.setCreater(Integer.parseInt(user.getId()));
                     if (Objects.equals(roleId, 1)) {
                         applicants.setCreateType("省级导入");
                     } else if (Objects.equals(roleId, 2)) {
@@ -144,7 +143,7 @@ public class MyApplicantsStoreService {
 
     public void saveAuditLogByCityImport(List<Applicants> applicants) {
         // 获取登录用户
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
 
         Integer roleId = user.getRoleId();
 
@@ -154,7 +153,7 @@ public class MyApplicantsStoreService {
             // 审核记录
             AuditLog auditLog = new AuditLog();
             auditLog.setAppId(app.getId());
-            auditLog.setAuditor(user.getId());
+            auditLog.setAuditor(Integer.parseInt(user.getId()));
             auditLog.setContents("市一级导入");
             auditLog.setCreateTime(LocalDateTime.now());
             auditLog.setRoleId(roleId);

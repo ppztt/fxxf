@@ -2,7 +2,7 @@ package net.mingsoft.fxxf.service;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import net.mingsoft.fxxf.entity.FeedbackStat;
+import net.mingsoft.fxxf.bean.entity.FeedbackStat;
 
 import java.util.List;
 

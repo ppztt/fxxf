@@ -3,7 +3,7 @@
 <mapper namespace="net.mingsoft.fxxf.mapper.FeedbackStatMapper">
 
 
-    <select id="statList" resultType="net.mingsoft.fxxf.entity.FeedbackStat">
+    <select id="statList" resultType="net.mingsoft.fxxf.bean.entity.FeedbackStat">
         SELECT cf.applicants_id,
         cf.reg_name,
         cf.type,
@@ -54,7 +54,7 @@
         GROUP BY t.applicants_id, t.reg_name
     </select>
 
-    <select id="statListByAdminRole" resultType="net.mingsoft.fxxf.entity.FeedbackStat">
+    <select id="statListByAdminRole" resultType="net.mingsoft.fxxf.bean.entity.FeedbackStat">
         SELECT  sr.name                                 AS city,
                 ifnull(sum(companyTotal), 0)            AS companyTotal,
                 ifnull(sum(complaintCompanyNum), 0)     AS complaintCompanyNum,
@@ -187,7 +187,7 @@
         ORDER BY sr.sort
     </select>
 
-    <select id="statListByCityRole" resultType="net.mingsoft.fxxf.entity.FeedbackStat">
+    <select id="statListByCityRole" resultType="net.mingsoft.fxxf.bean.entity.FeedbackStat">
         SELECT  sr.name as city,
                 ifnull(sum(companyTotal), 0)            AS companyTotal,
                 ifnull(sum(complaintCompanyNum), 0)     AS complaintCompanyNum,

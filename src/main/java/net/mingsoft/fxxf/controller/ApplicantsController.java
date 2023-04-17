@@ -4,10 +4,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import net.mingsoft.fxxf.anno.OperatorLogAnno;
-import net.mingsoft.fxxf.entity.Applicants;
-import net.mingsoft.fxxf.request.ApplicantsPageRequest;
+import net.mingsoft.fxxf.bean.entity.Applicants;
+import net.mingsoft.fxxf.bean.request.ApplicantsPageRequest;
+import net.mingsoft.fxxf.bean.request.EnterpriseNewApplyRequest;
+import net.mingsoft.fxxf.bean.vo.*;
 import net.mingsoft.fxxf.service.ApplicantsService;
-import net.mingsoft.fxxf.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -57,7 +58,7 @@ public class ApplicantsController {
     @ApiOperation(value = "经营者列表-根据id查询单位")
     @ApiImplicitParams({@ApiImplicitParam(name = "id", value = "单位id", required = true)})
 //    @OperatorLogAnno(operType = "查询", operModul = "", operDesc = "经营者列表-根据id和经营者注册名称查询是否重复")
-    public ApiResult<ApplicantsStoreParamsVo> findApplicantsById(@PathVariable(value = "id") Integer id) {
+    public ApiResult<ApplicantsParamsVo> findApplicantsById(@PathVariable(value = "id") Integer id) {
         try {
             Applicants applicants = applicantsService.getById(id);
             if (applicants != null) {
@@ -79,9 +80,10 @@ public class ApplicantsController {
     })
 //    @OperatorLogAnno(operType = "查询", operModul = "无理由退货承诺", operDesc = "经营者列表-根据 id 查询承诺单位")
     public ApiResult findApplicantsByRegName(@RequestParam(value = "id") Integer id,
-                                             @RequestParam(value = "creditCode") String creditCode) {
+                                             @RequestParam(value = "creditCode") String creditCode,
+                                             @RequestParam(value = "type") String type) {
         try {
-            return ApiResult.success(applicantsService.findApplicantsByRegName(id, creditCode));
+            return ApiResult.success(applicantsService.findApplicantsByRegName(id, creditCode, type));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -91,7 +93,7 @@ public class ApplicantsController {
     /**
      * 根据 id 更新实体店
      */
-    @PostMapping("/{id}")
+    @PostMapping("/update/{id}")
     @ApiOperation(value = "经营者列表-编辑保存", notes = "经营者列表-根据 id 更新单位")
     @ApiImplicitParams({@ApiImplicitParam(name = "id", value = "实体店id", required = true)})
     @DynamicParameters(name = "applicants", properties = {@DynamicParameter(name = "applicants", value = "applicants",
@@ -269,19 +271,17 @@ public class ApplicantsController {
 
 
     @PostMapping("/apply/input")
-    @ApiOperation(value = "无理由退货承诺新录入", notes = "无理由退货承诺新录入")
+    @ApiOperation(value = "经营者企业数据记录录入")
     @DynamicParameters(
-            name = "enterpriseStoreNewApplyVo",
+            name = "enterpriseNewApplyRequest",
             properties = {
-                    @DynamicParameter(name = "enterpriseStoreNewApplyVo", value = "enterpriseStoreNewApplyVo", dataTypeClass = EnterpriseStoreNewApplyVo.class, required = true)
+                    @DynamicParameter(name = "enterpriseNewApplyRequest", value = "enterpriseNewApplyRequest", dataTypeClass = EnterpriseNewApplyRequest.class, required = true)
             }
     )
-//    @OperatorLogAnno(operType = "新增", operModul = "无理由退货承诺", operDesc = "放心消费承诺新录入")
-    public ApiResult<EnterpriseStoreNewApplyVo> saveEnterpriseApplyInfo(@RequestBody EnterpriseStoreNewApplyVo enterpriseStoreNewApplyVo) {
+//    @OperatorLogAnno(operType = "新增", operModul = "", operDesc = "放心消费承诺新录入")
+    public ApiResult saveEnterpriseApplyInfo(@RequestBody EnterpriseNewApplyRequest enterpriseNewApplyRequest) {
         try {
-            applicantsService.saveEnterpriseApplyInfo(enterpriseStoreNewApplyVo);
-
-            return ApiResult.success();
+            return applicantsService.saveEnterpriseApplyInfo(enterpriseNewApplyRequest);
         } catch (Exception e) {
             e.printStackTrace();
             return ApiResult.fail(e.getMessage());

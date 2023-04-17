@@ -3,7 +3,7 @@
 <mapper namespace="net.mingsoft.fxxf.mapper.AuditLogMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="net.mingsoft.fxxf.entity.AuditLog">
+    <resultMap id="BaseResultMap" type="net.mingsoft.fxxf.bean.entity.AuditLog">
         <id column="id" property="id"/>
         <result column="app_id" property="appId"/>
         <result column="create_time" property="createTime"/>
@@ -18,9 +18,9 @@
          id, app_id, create_time, contents, status, auditor, role_id
     </sql>
 
-    <select id="getAuditLog" resultType="net.mingsoft.fxxf.vo.AuditLogVo">
+    <select id="getAuditLog" resultType="net.mingsoft.fxxf.bean.vo.AuditLogVo">
         SELECT
-        t.`name`,
+        t.`role_name`,
         t.`status`,
         t.create_time,
         t.contents
@@ -37,9 +37,9 @@
         case `status` when 1 then '审核通过' else '审核不通过' end `status`,
         auditor,
         role_id,
-        b.`name`
+        b.`role_name`
         FROM
-        cc_auditlog a INNER JOIN sys_role b
+        cc_auditlog a INNER JOIN role b
         on a.role_id=b.id
 
         WHERE app_id=#{id}
