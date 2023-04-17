@@ -24,7 +24,7 @@
             <el-col span="20">
                 <el-select ref="city" v-model="city" placeholder="市" :clearable="true" filterable
                            @change="cityChange(city)">
-                    <el-option v-for="item in regionData" :value="item.value" :key="item.label" :label="item.label">
+                    <el-option v-for="item in regionData" :value="item.name" :key="item.code" :label="item.name">
                     </el-option>
                 </el-select>
             </el-col>
@@ -32,8 +32,8 @@
                 <el-select ref="district" v-model="district" placeholder="市/县/区/镇" :clearable="true" filterable
                            @change="districtChange(district)"
                            :disabled="!city ||districtData.length == 0">
-                    <el-option v-for="item in districtData" :value="item.value" :key="item.value"
-                               :label="item.label">
+                    <el-option v-for="item in districtData" :value="item.code" :key="item.code"
+                               :label="item.name">
                     </el-option>
                 </el-select>
             </el-col>
@@ -47,7 +47,7 @@
             </el-col>
             <el-col span="20">
                 <el-select v-model="status" :data="statusData" :clearable="true" placeholder="状态">
-                    <el-option v-for="item in statusInfo" :key="item.id" :value="item.value">{{item.value}}
+                    <el-option v-for="item in statusInfo" :label="item.value" :key="item.id" :value="item.id">{{item.value}}
                     </el-option>
                 </el-select>
             </el-col>
@@ -441,6 +441,7 @@
         <el-table
                 :data="unitDataList"
                 border
+                height="250"
                 style="width:100%">
 
             <el-table-column
@@ -573,14 +574,13 @@
         </el-table>
         <el-pagination
                 background
-                :page-sizes="[10,20,30,40,50,100]"
+                @size-change="sizeChange"
+                @current-change="currentChange"
+                :current-page="current"
+                :page-sizes="[10, 20, 30, 40]"
+                :page-size="size"
                 layout="total, sizes, prev, pager, next, jumper"
-                :current-page="currentPage"
-                :page-size="pageSize"
-                :total="total"
-                class="ms-pagination"
-                @current-change='currentChange'
-                @size-change="sizeChange">
+                :total="total">
         </el-pagination>
     </el-main>
     <iframe :src="action" class="ms-iframe-style" v-show="action" id="check" ref="check"></iframe>
@@ -632,7 +632,7 @@
                 city: "",
                 district: "",
                 address: "",
-                addrs: [{},],
+                addrs: [],
                 creditCode: "",
                 management: "",
                 details: "",
@@ -1139,7 +1139,7 @@
             conditions: [],
             dataList: [], //消费者列表
             selectionList: [],//消费者列表选中
-            total: 0, //总记录数量
+            total: 500, //总记录数量
             pageSize: 10, //页面数量
             currentPage: 1, //初始页
             manager: ms.manager,
@@ -1162,12 +1162,14 @@
 
             }
             ,
-            currentChange: function () {
-
+            currentChange: function (v) {
+                this.current = v;
+                this.getUnitList();
             }
             ,
-            sizeChange: function () {
-
+            sizeChange: function (v) {
+                this.size = v;
+                this.getUnitList()
             }
             ,
             handleSelectionChange: function () {
@@ -1181,8 +1183,7 @@
             cityChange: function (name) {
                 // 一级市发生改变
                 if (name) {
-                    let cityData_active = this.regionData.find((value) => value.value == name);
-                    console.log("市数据", cityData_active);
+                    let cityData_active = this.regionData.find((value) => value.name == name);
                     this.districtData = cityData_active.children;
                     this.district = "";
                     // this.town = "";
@@ -1191,7 +1192,7 @@
             districtChange: function (name) {
                 // 二级地 县等发生改变
                 if (name) {
-                    let districtData_active = this.districtData.find((value => value.value == name));
+                    let districtData_active = this.districtData.find((value => value.name == name));
                     // this.townData = districtData_active.children;
                     // this.town = "";
                 }
@@ -1330,7 +1331,7 @@
                 }),{headers: {'Content-type': 'application/json;charset=UTF-8'},})
                     .then((res) => {
                         let data = res.data;
-                        this.total = data.total;
+                        this.total = Number(data.total);
                         this.unitDataList = data.records;
                         // this.reSetTableHeight();
                         console.log("放心消费承诺单位列表", data);
@@ -1341,6 +1342,12 @@
                 // console.log("有效期",date)
                 this.formData.startTime = date[0];
                 this.formData.endTime = date[1];
+            },
+            // 获取地区信息
+            getRegionData(){
+                ms.http.get('/gd-regin.do').then((res)=>{
+                    this.regionData = res.data
+                })
             },
             managementChange(data) {
                 // 主经营类别改变
@@ -1403,6 +1410,7 @@
             }
         },
         mounted: function () {
+            this.getRegionData()
             this.getUnitList();
             // this.action = ms.manager + "/xwh/consumer/check.do";
             console.log(this.$refs)
@@ -1410,7 +1418,7 @@
             window.returnBack = function () {
                 that.action = ""
             }
-
+            console.log(this.total)
         }
     })
 </script>
