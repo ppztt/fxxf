@@ -47,7 +47,8 @@
             </el-col>
             <el-col span="20">
                 <el-select v-model="status" :data="statusData" :clearable="true" placeholder="状态">
-                    <el-option v-for="item in statusInfo" :label="item.value" :key="item.id" :value="item.id">{{item.value}}
+                    <el-option v-for="item in statusInfo" :label="item.value" :key="item.id" :value="item.id">
+                        {{item.value}}
                     </el-option>
                 </el-select>
             </el-col>
@@ -149,74 +150,35 @@
                             </el-row>
 
                             <el-form-item label="经营场所" prop="addrs">
-                                <el-row class="addr-row" :key="index" v-for="(addr, index) in formData.addrs">
+                                <el-row :key="index" v-for="(addr, index) in formData.addrs">
                                     <el-col span="5">
                                         <el-select
-                                                :ref="`city${index}`"
+                                                :ref="'city'+index"
                                                 v-model="addr.city"
                                                 placeholder="市"
                                                 :clearable="true"
                                                 filterable
-                                                @on-change="
-            () => {
-              let data = cityChange(addr.city);
-              districtDataArr[index] = data;
-              $forceUpdate();
-            }
-          "
-                                                @on-open-change="
-            () => {
-              let data = cityChange(addr.city);
-              districtDataArr[index] = data;
-              $forceUpdate();
-            }
-          "
-                                                @on-clear="
-            () => {
-              $refs[`district${index}`].clearSingleSelect();
-              $refs.town.clearSingleSelect();
-            }
-          "
-                                        >
+                                                @change="cityChange(addr.city)">
                                             <el-option
                                                     v-for="item in regionData"
                                                     :value="item.name"
-                                                    :key="item.name"
+                                                    :key="item.code"
+                                                    :label="item.name"
                                             >{{ item.name }}
-                                            </el-option
-                                            >
+                                            </el-option>
                                         </el-select>
                                     </el-col>
                                     <el-col span="5">
                                         <el-select
                                                 :ref="`district${index}`"
                                                 v-model="addr.district"
-                                                :disabled="
-            !addr.city ||
-            !(
-              $store.state.login_module.userInfo.roleId === 1 ||
-              $store.state.login_module.userInfo.roleId === 2 ||
-              $store.state.login_module.userInfo.roleId === 4
-            )
-          "
-                                                placeholder="市/县/区/镇"
-                                                :clearable="true"
-                                                filterable
-                                                @on-change="districtChange(addr.district)"
-                                                @on-open-change="districtChange(addr.district)"
-                                                @on-clear="
-            () => {
-              $refs.town.clearSingleSelect();
-            }
-          "
-                                        >
+                                                @change="districtChange(district)"
+                                                :disabled="!addr.city ||districtData.length == 0">
                                             <el-option
-                                                    v-for="item in districtDataArr[index]"
+                                                    v-for="item in districtData"
                                                     :value="item.name"
-                                                    :key="item.name"
-                                            >{{ item.name }}
-                                            </el-option
-                                            >
+                                                    :key="item.code"
+                                                    :label="item.name">{{ item.name }}</el-option>
                                         </el-select>
                                     </el-col>
                                     <el-col span="8">
@@ -439,6 +401,7 @@
     </el-header>
     <el-main class="ms-container">
         <el-table
+                v-loading="loading"
                 :data="unitDataList"
                 border
                 height="250"
@@ -592,6 +555,7 @@
     var indexVue = new Vue({
         el: '#index',
         data: {
+            loading: true,
             // 用户信息临时
             userInfo: {
                 // 页面跳转
@@ -632,7 +596,13 @@
                 city: "",
                 district: "",
                 address: "",
-                addrs: [],
+                addrs: [
+                    {
+                        city: "",
+                        district: "",
+                        address: "",
+                    },
+                ],
                 creditCode: "",
                 management: "",
                 details: "",
@@ -714,57 +684,7 @@
             district: "", //县
             town: "", //镇
             regionSelect: [], //地区选中
-            regionData: [
-                //地区数据
-                {
-                    value: "beijing",
-                    label: "北京",
-                    children: [
-                        {
-                            value: "gugong",
-                            label: "故宫"
-                        },
-                        {
-                            value: "tiantan",
-                            label: "天坛"
-                        },
-                        {
-                            value: "wangfujing",
-                            label: "王府井"
-                        }
-                    ]
-                },
-                {
-                    value: "jiangsu",
-                    label: "江苏",
-                    children: [
-                        {
-                            value: "nanjing",
-                            label: "南京",
-                            children: [
-                                {
-                                    value: "fuzimiao",
-                                    label: "夫子庙"
-                                }
-                            ]
-                        },
-                        {
-                            value: "suzhou",
-                            label: "苏州",
-                            children: [
-                                {
-                                    value: "zhuozhengyuan",
-                                    label: "拙政园"
-                                },
-                                {
-                                    value: "shizilin",
-                                    label: "狮子林"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ], //地区数据 一级市数据
+            regionData: [], //地区数据 一级市数据
             // cityData: [], //市数据
             districtData: [], //某市县数据
             townData: [], //某县镇数据
@@ -936,128 +856,7 @@
                     align: "left",
                 },
             ],
-            unitDataList: [
-                {
-                    account: "gdfxxfcjAdmin",
-                    addContents4Cnt: null,
-                    address: "ertse",
-                    addrs: null,
-                    auditRoleId: 0,
-                    city: "广州市",
-                    commNum: 0,
-                    contCommitment: "否",
-                    contacts: null,
-                    contactsTel: null,
-                    contents1: "不提供假冒伪劣商品，不提供“三无”产品，不提供不合格商品，不提供来源不明商品，不提供过期商品，不提供缺陷商品，不提供侵犯知识产权商品。",
-                    contents2: "不作虚假宣传，不搞低价诱导；恪守服务承诺，履行合同约定；明码实价，明白消费；守法经营，诚信待客。",
-                    contents3: "履行保护消费者权益第一责任，提供便捷售后服务，高效处理消费纠纷，承担先行赔付和首问责任。",
-                    contents4: null,
-                    createTime: "2023-04-06 11:53:52",
-                    createType: "省级录入",
-                    creater: 1,
-                    creditCode: "123456789123456789",
-                    details: "家用电子电器类",
-                    district: "白云区",
-                    endTime: "2023-06",
-                    id: 87257,
-                    isNew: 1,
-                    joinIndustry: null,
-                    management: "商品类",
-                    onlineLink: null,
-                    onlineName: "test",
-                    platform: "test",
-                    principal: "test",
-                    principalTel: "13800138000",
-                    province: null,
-                    regName: "test-shop",
-                    startTime: "2023-01",
-                    status: 4,
-                    storeName: "test",
-                    town: null,
-                    type: 1,
-                    updateTime: "2023-04-06 11:53:52"
-                },
-                {
-                    account: "gdfxxfcjAdmin",
-                    addContents4Cnt: null,
-                    address: "ertse",
-                    addrs: null,
-                    auditRoleId: 0,
-                    city: "广州市",
-                    commNum: 0,
-                    contCommitment: "否",
-                    contacts: null,
-                    contactsTel: null,
-                    contents1: "不提供假冒伪劣商品，不提供“三无”产品，不提供不合格商品，不提供来源不明商品，不提供过期商品，不提供缺陷商品，不提供侵犯知识产权商品。",
-                    contents2: "不作虚假宣传，不搞低价诱导；恪守服务承诺，履行合同约定；明码实价，明白消费；守法经营，诚信待客。",
-                    contents3: "履行保护消费者权益第一责任，提供便捷售后服务，高效处理消费纠纷，承担先行赔付和首问责任。",
-                    contents4: null,
-                    createTime: "2023-04-06 11:53:52",
-                    createType: "省级录入",
-                    creater: 1,
-                    creditCode: "123456789123456789",
-                    details: "家用电子电器类",
-                    district: "白云区",
-                    endTime: "2023-06",
-                    id: 87257,
-                    isNew: 1,
-                    joinIndustry: null,
-                    management: "商品类",
-                    onlineLink: null,
-                    onlineName: "test",
-                    platform: "test",
-                    principal: "test",
-                    principalTel: "13800138000",
-                    province: null,
-                    regName: "test-shop",
-                    startTime: "2023-01",
-                    status: 4,
-                    storeName: "test",
-                    town: null,
-                    type: 1,
-                    updateTime: "2023-04-06 11:53:52"
-                },
-                {
-                    account: "gdfxxfcjAdmin",
-                    addContents4Cnt: null,
-                    address: "ertse",
-                    addrs: null,
-                    auditRoleId: 0,
-                    city: "广州市",
-                    commNum: 0,
-                    contCommitment: "否",
-                    contacts: null,
-                    contactsTel: null,
-                    contents1: "不提供假冒伪劣商品，不提供“三无”产品，不提供不合格商品，不提供来源不明商品，不提供过期商品，不提供缺陷商品，不提供侵犯知识产权商品。",
-                    contents2: "不作虚假宣传，不搞低价诱导；恪守服务承诺，履行合同约定；明码实价，明白消费；守法经营，诚信待客。",
-                    contents3: "履行保护消费者权益第一责任，提供便捷售后服务，高效处理消费纠纷，承担先行赔付和首问责任。",
-                    contents4: null,
-                    createTime: "2023-04-06 11:53:52",
-                    createType: "省级录入",
-                    creater: 1,
-                    creditCode: "123456789123456789",
-                    details: "家用电子电器类",
-                    district: "白云区",
-                    endTime: "2023-06",
-                    id: 87257,
-                    isNew: 1,
-                    joinIndustry: null,
-                    management: "商品类",
-                    onlineLink: null,
-                    onlineName: "test",
-                    platform: "test",
-                    principal: "test",
-                    principalTel: "13800138000",
-                    province: null,
-                    regName: "test-shop",
-                    startTime: "2023-01",
-                    status: 4,
-                    storeName: "test",
-                    town: null,
-                    type: 1,
-                    updateTime: "2023-04-06 11:53:52"
-                }
-            ],
+            unitDataList: [],
             // --------
             isShowRemove: false,
             removeType: "one", //删除方式 all one
@@ -1139,7 +938,7 @@
             conditions: [],
             dataList: [], //消费者列表
             selectionList: [],//消费者列表选中
-            total: 500, //总记录数量
+            total: 0, //总记录数量
             pageSize: 10, //页面数量
             currentPage: 1, //初始页
             manager: ms.manager,
@@ -1164,12 +963,23 @@
             ,
             currentChange: function (v) {
                 this.current = v;
-                this.getUnitList();
-            }
-            ,
+                this.debounce(this.getUnitList(),1000)
+            },
+            debounce(fun,wait=1500){
+                let timeout = null
+                return function(){
+                    if(timeout){//如果存在定时器就清空
+                        clearTimeout(timeout)
+                    }
+                    timeout=setTimeout(function(){
+                        fun()
+                    },wait)
+                }
+
+            },
             sizeChange: function (v) {
                 this.size = v;
-                this.getUnitList()
+                this.debounce(this.getUnitList(),1000)
             }
             ,
             handleSelectionChange: function () {
@@ -1287,7 +1097,7 @@
             },
             downLoadData: function (statusType) {
                 // 导出数据 //状态(1:在期； 0:摘牌 ；2过期)
-                ms.http.get('/applicants/export.do?status='+String(statusType)).then((res)=>{
+                ms.http.get('/applicants/export.do?status=' + String(statusType)).then((res) => {
                     console.log(res)
                 })
                 <#--window.open(window.location.href +  + `?status=${statusType}`);-->
@@ -1315,7 +1125,8 @@
             // 获取表格数据
             getUnitList: function () {
                 // 获取放心消费承诺单位列表
-                ms.http.post("/applicants/listPage.do",JSON.stringify({
+                this.loading = true;
+                ms.http.post("/applicants/listPage.do", JSON.stringify({
                     search: this.search,
                     city: this.city,
                     district: this.district,
@@ -1328,13 +1139,13 @@
                     endTime: this.endTime,
                     town: this.town,
                     type: this.type
-                }),{headers: {'Content-type': 'application/json;charset=UTF-8'},})
+                }), {headers: {'Content-type': 'application/json;charset=UTF-8'},})
                     .then((res) => {
                         let data = res.data;
                         this.total = Number(data.total);
                         this.unitDataList = data.records;
                         // this.reSetTableHeight();
-                        console.log("放心消费承诺单位列表", data);
+                        this.loading = false;
                     });
             },
             validityChange(date) {
@@ -1344,8 +1155,8 @@
                 this.formData.endTime = date[1];
             },
             // 获取地区信息
-            getRegionData(){
-                ms.http.get('/gd-regin.do').then((res)=>{
+            getRegionData() {
+                ms.http.get('/gd-regin.do').then((res) => {
                     this.regionData = res.data
                 })
             },
@@ -1370,11 +1181,19 @@
                     if (valid) {
                         this.setApply(type);
                     } else {
-                        this.$Message.error("录入提交失败，验证不通过");
+                        this.$message.error("录入提交失败，验证不通过");
                     }
                 });
                 // this.isShow = true;
                 // this.$emit("update:isShow", true);
+            },
+            setApply(type) {
+                let params = JSON.stringify(fromData)
+                ms.http.post('/applicants/apply/input.do', params,
+                    {headers: {'Content-type': 'application/json;charset=UTF-8'}}).then((res) => {
+
+                })
+
             },
             addAddress() {
                 let userInfo = this.userInfo
@@ -1392,7 +1211,7 @@
             },
             resetRegion(cityName) {
                 if (cityName) {
-                    let data = this.regionData.find((value) => value.value == cityName,).children || [];
+                    let data = this.regionData.find((value) => value.name == cityName,).children || [];
                     this.districtDataArr.push(data);
                     return data;
                     // if (this.formData.district) {

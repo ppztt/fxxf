@@ -19,30 +19,33 @@
                     label-position="right"
             >
                 <div class="check-item">详情信息- {{ textList[detailType] }}</div>
-                <div class="check-form-item" v-if="detailType == '1' || detailType == '3' || detailType == '2'" >
+                <div class="check-form-item" v-if="detailType == '1' || detailType == '3' || detailType == '2'">
                     <el-row>
                         <el-col span="9">
                             <el-form-item label="经营者注册名称：" prop="regName">
-                                <p></p>
+                                <p>{{ formData.regName }}</p>
                             </el-form-item>
                         </el-col>
                         <el-col span="9">
                             <el-form-item label="门店名称：" prop="storeName">
-                                <p></p>
+                                <p v-if="formData.storeName">{{ formData.storeName }}</p>
+                                <p v-else>无</p>
                             </el-form-item>
                         </el-col>
                     </el-row>
                     <el-row>
                         <el-col span="20">
                             <el-form-item label="经营场所地区：" prop="addrs">
-                                <p></p>
+                                <p style="display: inline-block">{{ formData.city }}</p>-
+                                <p style="display: inline-block">{{ formData.district }}</p>-
+                                <p style="display: inline-block">{{ formData.address }}</p>
                             </el-form-item>
                         </el-col>
                     </el-row>
                     <el-row>
                         <el-col span="9">
                             <el-form-item label="统一社会信用代码：" prop="creditCode">
-                                <p></p>
+                                <p>{{ formData.creditCode }}</p>
                             </el-form-item>
                         </el-col>
                         <el-col span="12">
@@ -64,19 +67,22 @@
                         </el-col>
                         <el-col span="9">
                             <el-form-item label="所属平台：" prop="platform">
-                                <p>{{ formData.platform }}</p>
+                                <p v-if="formData.platform">{{ formData.platform }}</p>
+                                <p v-else>无</p>
                             </el-form-item>
                         </el-col>
                     </el-row>
                     <el-row>
                         <el-col span="9">
                             <el-form-item label="网店名称：" prop="onlineName">
-                                <p></p>
+                                <p v-if="formData.onlineName">{{ formData.onlineName }}</p>
+                                <p v-else>无</p>
                             </el-form-item>
                         </el-col>
                         <el-col span="9">
                             <el-form-item label="连续承诺次数：" prop="commNum">
-                                <p></p>
+                                <p v-if="formData.commNum">{{ formData.commNum }}</p>
+                                <p v-else>0</p>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -87,7 +93,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col span="3">
-                            <el-form-item prop="principalTel">
+                            <el-form-item prop="principalTel" style="margin-left: -160px">
                                 <p>{{ formData.principalTel }}</p>
                             </el-form-item>
                         </el-col>
@@ -101,7 +107,8 @@
                     <el-row>
                         <el-col span="24">
                             <el-form-item label="企业申请日期：" prop="applicationDate">
-                                <p></p>
+                                <p v-if="formData.applicationDate">{{ formData.applicationDate }}</p>
+                                <p v-else>无</p>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -129,60 +136,23 @@
                                                 v-model="addr.city"
                                                 placeholder="市"
                                                 :clearable="true"
-                                                filterable
-                                                @on-change="
-            () => {
-              let data = cityChange(addr.city);
-              districtDataArr[index] = data;
-              $forceUpdate();
-            }
-          "
-                                                @on-open-change="
-            () => {
-              let data = cityChange(addr.city);
-              districtDataArr[index] = data;
-              $forceUpdate();
-            }
-          "
-                                                @on-clear="
-            () => {
-              $refs[`district${index}`].clearSingleSelect();
-              $refs.town.clearSingleSelect();
-            }
-          "
-                                        >
+                                                filterable>
                                             <el-option
                                                     v-for="item in regionData"
                                                     :value="item.name"
-                                                    :key="item.name"
+                                                    :key="item.code"
+                                                    :label="item.name"
                                             >{{ item.name }}
-                                            </el-option
-                                            >
+                                            </el-option>
                                         </el-select>
                                     </el-col>
                                     <el-col span="5">
                                         <el-select
                                                 :ref="`district${index}`"
                                                 v-model="addr.district"
-                                                :disabled="
-            !addr.city ||
-            !(
-              $store.state.login_module.userInfo.roleId === 1 ||
-              $store.state.login_module.userInfo.roleId === 2 ||
-              $store.state.login_module.userInfo.roleId === 4
-            )
-          "
                                                 placeholder="市/县/区/镇"
                                                 :clearable="true"
-                                                filterable
-                                                @on-change="districtChange(addr.district)"
-                                                @on-open-change="districtChange(addr.district)"
-                                                @on-clear="
-            () => {
-              $refs.town.clearSingleSelect();
-            }
-          "
-                                        >
+                                                filterable>
                                             <el-option
                                                     v-for="item in districtDataArr[index]"
                                                     :value="item.name"
@@ -247,43 +217,43 @@
                         <el-col span="9">
                             <el-form-item label="经营类别：">
                                 <el-col :span="8">
-                                <el-form-item>
-                                    <el-select
-                                            ref="management"
-                                            placeholder="类别"
-                                            :clearable="true"
-                                            v-model="formData.management">
-                                        <el-option :value="'商品类'" :key="'商品类'">商品类
-                                        </el-option>
-                                        <el-option :value="'服务类'" :key="'服务类'">服务类
-                                        </el-option>
-                                        <el-option :value="'商品及服务类'" :key="'商品及服务类'">
-                                            商品及服务类
-                                        </el-option>
-                                    </el-select>
-                                    <!-- <p v-if="detailType == 'check' || detailType == 'delist'">
-                                      {{ formData.management }}
-                                    </p>-->
-                                </el-form-item>
+                                    <el-form-item>
+                                        <el-select
+                                                ref="management"
+                                                placeholder="类别"
+                                                :clearable="true"
+                                                v-model="formData.management">
+                                            <el-option :value="'商品类'" :key="'商品类'">商品类
+                                            </el-option>
+                                            <el-option :value="'服务类'" :key="'服务类'">服务类
+                                            </el-option>
+                                            <el-option :value="'商品及服务类'" :key="'商品及服务类'">
+                                                商品及服务类
+                                            </el-option>
+                                        </el-select>
+                                        <!-- <p v-if="detailType == 'check' || detailType == 'delist'">
+                                          {{ formData.management }}
+                                        </p>-->
+                                    </el-form-item>
                                 </el-col>
                                 <el-col :offset="1" :span="15">
-                                <el-form-item>
-                                    <el-select
-                                            ref="details"
-                                            class="multiSelect"
-                                            :clearable="true"
-                                            placeholder="详细类别"
-                                            v-model="formData.details"
-                                            multiple>
-                                        <el-option
-                                                v-for="item in activeManageType"
-                                                :value="item"
-                                                :key="item"
-                                        >{{ item }}
-                                        </el-option
-                                        >
-                                    </el-select>
-                                </el-form-item>
+                                    <el-form-item>
+                                        <el-select
+                                                ref="details"
+                                                class="multiSelect"
+                                                :clearable="true"
+                                                placeholder="详细类别"
+                                                v-model="formData.details"
+                                                multiple>
+                                            <el-option
+                                                    v-for="item in activeManageType"
+                                                    :value="item"
+                                                    :key="item"
+                                            >{{ item }}
+                                            </el-option
+                                            >
+                                        </el-select>
+                                    </el-form-item>
                                 </el-col>
                             </el-form-item>
                         </el-col>
@@ -340,7 +310,7 @@
                     </el-row>
                 </div>
                 <div class="check-item">承诺事项及具体内容</div>
-                <div class="check-form-item"  v-if="detailType == '1' || detailType == '3'" >
+                <div class="check-form-item" v-if="detailType == '1' || detailType == '3'">
                     <el-row>
                         <el-col span="8">
                             <el-form-item label="品质保证：" prop="contents1">
@@ -418,12 +388,15 @@
                         </el-col>
                     </el-row>
                 </div>
-                <div class="check-item" v-if="detailType == '1' || detailType == '3' || detailType == '0'">其他承诺事项及具体内容</div>
+                <div class="check-item" v-if="detailType == '1' || detailType == '3' || detailType == '0'">
+                    其他承诺事项及具体内容
+                </div>
                 <div class="check-form-item" v-if="detailType == '1' || detailType == '3'">
                     <el-row>
                         <el-col span="24">
                             <el-form-item label="" prop="contents4">
-                                <p>{{ formData.contents4 }}</p>
+                                <p v-if="formData.contents4">{{ formData.contents4 }}</p>
+                                <p v-else>无</p>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -466,7 +439,7 @@
                         </el-col>
                     </el-row>
                 </div>
-                <div class="check-item"v-if="detailType == '1' || detailType == '3'" >消委会意见</div>
+                <div class="check-item" v-if="detailType == '1' || detailType == '3'">消委会意见</div>
                 <div class="check-form-item" v-if="detailType == '1' || detailType == '3'">
                     <el-row>
                         <el-col span="24">
@@ -523,7 +496,7 @@
                         </el-col>
                     </el-row>
                 </div>
-                <div class="check-item"v-if="detailType == '2'" >摘牌信息</div>
+                <div class="check-item" v-if="detailType == '2'">摘牌信息</div>
                 <div class="check-form-item" v-if="detailType == '2'">
                     <el-row>
                         <el-col span="11">
@@ -605,57 +578,7 @@
             // 对应的信息id
             consumerId: -1,
             // 表单数据
-            regionData: [
-                //地区数据
-                {
-                    value: "beijing",
-                    label: "北京",
-                    children: [
-                        {
-                            value: "gugong",
-                            label: "故宫"
-                        },
-                        {
-                            value: "tiantan",
-                            label: "天坛"
-                        },
-                        {
-                            value: "wangfujing",
-                            label: "王府井"
-                        }
-                    ]
-                },
-                {
-                    value: "jiangsu",
-                    label: "江苏",
-                    children: [
-                        {
-                            value: "nanjing",
-                            label: "南京",
-                            children: [
-                                {
-                                    value: "fuzimiao",
-                                    label: "夫子庙"
-                                }
-                            ]
-                        },
-                        {
-                            value: "suzhou",
-                            label: "苏州",
-                            children: [
-                                {
-                                    value: "zhuozhengyuan",
-                                    label: "拙政园"
-                                },
-                                {
-                                    value: "shizilin",
-                                    label: "狮子林"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ], //地区数据 一级市数据
+            regionData: [], //地区数据 一级市数据
             districtDataArr: [],
             formData: {
                 regName: "",
@@ -665,7 +588,13 @@
                 city: "",
                 district: "",
                 address: "",
-                addrs: [{},],
+                addrs: [
+                    {
+                        city: "",
+                        district: "",
+                        address: "",
+                    }
+                ],
                 creditCode: "",
                 management: "",
                 details: "",
@@ -679,6 +608,7 @@
             activeManageType: [
                 // 当前经营类别数据
             ],
+            addrs: {},
             // 经营类别
             manageType: {
                 commodities: [],
@@ -690,10 +620,35 @@
             returnBack() {
                 window.parent.returnBack()
             },
-            getList(){
-              ms.http.get("/applicants/"+this.consumerId+'.do').then((res)=>{
-                  console.log(res.data)
-              })
+            // 获取该商家数据
+            getList() {
+                ms.http.get("/applicants/" + this.consumerId + '.do').then((res) => {
+                    this.formData = res.data
+                    console.log(res.data)
+                })
+            },
+            // 获取地区信息
+            getRegionData() {
+                ms.http.get('/gd-regin.do').then((res) => {
+                    this.regionData = res.data
+                })
+            },
+            cityChange: function (name) {
+                // 一级市发生改变
+                if (name) {
+                    let cityData_active = this.regionData.find((value) => value.name == name);
+                    this.districtData = cityData_active.children;
+                    this.district = "";
+                    // this.town = "";
+                }
+            },
+            districtChange: function (name) {
+                // 二级地 县等发生改变
+                if (name) {
+                    let districtData_active = this.districtData.find((value => value.name == name));
+                    // this.townData = districtData_active.children;
+                    // this.town = "";
+                }
             },
             addAddress() {
                 let userInfo = this.userInfo
@@ -711,6 +666,7 @@
             },
             resetRegion(cityName) {
                 if (cityName) {
+                    console.log(cityName)
                     let data = this.regionData.find((value) => value.value == cityName,).children || [];
                     this.districtDataArr.push(data);
                     return data;
@@ -778,5 +734,10 @@
 
     .btn .el-button {
         margin-left: 10px;
+    }
+
+    p {
+        margin: 0;
+        padding: 0;
     }
 </style>
