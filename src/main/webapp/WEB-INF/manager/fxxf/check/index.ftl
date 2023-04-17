@@ -129,14 +129,15 @@
                     <el-row>
                         <el-col span="20">
                             <el-form-item label="经营场所地区：" prop="formData.addrs">
-                                <el-row class="addr-row" :key="index" v-for="(addr, index) in formData.addrs">
+                                <el-row :key="index" v-for="(addr, index) in formData.addrs">
                                     <el-col span="5">
                                         <el-select
-                                                :ref="`city${index}`"
+                                                :ref="'city'+index"
                                                 v-model="addr.city"
                                                 placeholder="市"
                                                 :clearable="true"
-                                                filterable>
+                                                filterable
+                                                @change="cityChange(addr.city)">
                                             <el-option
                                                     v-for="item in regionData"
                                                     :value="item.name"
@@ -154,7 +155,7 @@
                                                 :clearable="true"
                                                 filterable>
                                             <el-option
-                                                    v-for="item in districtDataArr[index]"
+                                                    v-for="item in districtData"
                                                     :value="item.name"
                                                     :key="item.name"
                                             >{{ item.name }}
@@ -521,9 +522,13 @@
                 </div>
             </el-form>
             <div class="btn">
-                <el-button size="small" v-if="detailType=='0'" class="blue_btn ">保存</el-button>
-                <el-button size="small" v-if="detailType=='3'" class="blue_btn ">审核通过</el-button>
-                <el-button size="small" v-if="detailType=='3'" class="blue_btn ">审核不通过</el-button>
+                <el-button size="small" v-if="detailType=='0'" class="blue_btn " @click="perEditUnitTnfo">保存
+                </el-button>
+                <el-button size="small" v-if="detailType=='3'" class="blue_btn " @click="auditUnitTnfo('1')">审核通过
+                </el-button>
+                <el-button size="small" v-if="detailType=='3'" class="blue_btn " @click="auditUnitTnfo('2')">
+                    审核不通过
+                </el-button>
                 <el-button size="small" v-if="detailType=='2'" class="blue_btn ">提交</el-button>
                 <el-button type="primary" icon="iconfont icon-fanhui" size="mini" @click="returnBack">返回</el-button>
             </div>
@@ -614,6 +619,7 @@
                 commodities: [],
                 services: [],
             },
+            districtData: [], //某市县数据
         },
         methods: {
             // 返回上一级页面
@@ -624,7 +630,17 @@
             getList() {
                 ms.http.get("/applicants/" + this.consumerId + '.do').then((res) => {
                     this.formData = res.data
-                    console.log(res.data)
+                    let cityArr = this.formData.city.split(",");
+                    let districtArr = this.formData.district.split(",");
+                    let addressArr = this.formData.address.split(",");
+                    this.formData.addrs = [];
+                    cityArr.forEach((item, index) => {
+                        this.formData.addrs.push({
+                            city: cityArr[index],
+                            district: districtArr[index],
+                            address: addressArr[index],
+                        });
+                    });
                 })
             },
             // 获取地区信息
@@ -678,6 +694,33 @@
                     // }
                 }
             },
+            // 编辑保存按钮
+            perEditUnitTnfo() {
+                let params = JSON.stringify(this.formData)
+                ms.http.post('/applicants/update/' + this.consumerId + '.do', params,
+                    {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
+                    if (res.code == 200) {
+                        this.$message({
+                            message: '编辑成功！',
+                            type: 'success'
+                        });
+                        this.returnBack()
+                    }
+                })
+            },
+            // 审核按钮
+            auditUnitTnfo(type) {
+                let query = {
+                    id: this.consumerId,
+                    notes: this.formData.ccContent,
+                    type: type
+                }
+                ms.http.get('/applicants/audit.do', query).then((res) => {
+                    if (res.code == 500) {
+                        this.$message.error(res.msg)
+                    }
+                })
+            }
         },
         mounted: function () {
             this.detailType = window.location.href.split("?")[1].split("&")[0].split('=')[1]

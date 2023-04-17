@@ -74,7 +74,8 @@
         </el-row>
         <div class="list-header-btns">
             <div class="item">
-                <el-button size="medium" class="blue_btn2" @click="isShowEnteringModal = true" icon="el-icon-edit">
+                <el-button size="medium" class="blue_btn2" @click="isShowEnteringModal = true" icon="el-icon-edit"
+                           >
                     <!-- <img class="left" src="@/assets/images/1_17.png" alt /> -->
                     录入
                 </el-button>
@@ -356,7 +357,8 @@
             <div class="item">
                 <el-upload class="upload" :show-upload-list="false" :before-upload="beforeUploadAction"
                            :on-success="uploadSucAction"
-                           :on-error="uploadErrAction">
+                           :on-error="uploadErrAction"
+                           action="/applicants/import.do">
                     <el-button size="medium" class="green_btn" type="primary" :disabled="!canImport"
                                icon="el-icon-bottom"
                                :title="!canImport ? '没有权限导入' : ''">
@@ -405,7 +407,8 @@
                 :data="unitDataList"
                 border
                 height="250"
-                style="width:100%">
+                style="width:100%"
+                @select="">
 
             <el-table-column
                     fixed="left"
@@ -528,7 +531,7 @@
                                    @click="openNew(2,row)">
                             摘牌
                         </el-button>
-                        <el-button class="action_btn red_text" icon="el-icon-close">
+                        <el-button type="text" class="action_btn red_text" icon="el-icon-close" @click="deleteConsumer(row.id)">
                             删除
                         </el-button>
                     </div>
@@ -947,7 +950,9 @@
             // 级联选
             canImport: true,
             type: "1",
-            details: ""
+            details: "",
+            // 被删除的id
+            ids: {ids:[]}
         },
         watch: {},
         methods: {
@@ -965,6 +970,7 @@
                 this.current = v;
                 this.debounce(this.getUnitList(),1000)
             },
+            // 防抖
             debounce(fun,wait=1500){
                 let timeout = null
                 return function(){
@@ -1187,6 +1193,7 @@
                 // this.isShow = true;
                 // this.$emit("update:isShow", true);
             },
+            // 录入功能
             setApply(type) {
                 let params = JSON.stringify(fromData)
                 ms.http.post('/applicants/apply/input.do', params,
@@ -1195,6 +1202,7 @@
                 })
 
             },
+            // 经营地址添加按钮
             addAddress() {
                 let userInfo = this.userInfo
                 if (this.formData.addrs === undefined) {
@@ -1222,10 +1230,31 @@
                     // }
                 }
             },
+            // 打开编辑等页面
             openNew(num, row) {
                 this.$refs.check.style.display = "block"
                 this.action = ms.manager + "/xwh/consumer/check.do?type=" + num + "&id=" + row.id;
                 console.log(row.id)
+            },
+            deleteConsumer(id){
+                    this.$confirm('确认删除该项数据?', '删除提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'error',
+                        center: true
+                    }).then(() => {
+                        ms.http.post('/applicants/remove/'+id+'.do')
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                        this.getUnitList()
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '已取消删除'
+                        });
+                    });
             }
         },
         mounted: function () {
