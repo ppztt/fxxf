@@ -2,7 +2,7 @@ package net.mingsoft.fxxf.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import net.mingsoft.fxxf.entity.Record;
+import net.mingsoft.fxxf.bean.entity.Record;
 
 /**
  * <p>

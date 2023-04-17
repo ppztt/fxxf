@@ -3,7 +3,7 @@ package net.mingsoft.fxxf.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import net.mingsoft.fxxf.entity.User;
+import net.mingsoft.fxxf.bean.entity.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

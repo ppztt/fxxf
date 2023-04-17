@@ -2,7 +2,7 @@ package net.mingsoft.fxxf.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import net.mingsoft.fxxf.entity.Region;
+import net.mingsoft.fxxf.bean.entity.Region;
 import org.springframework.stereotype.Repository;
 
 @Repository

@@ -1,7 +1,7 @@
 package net.mingsoft.fxxf.mapper;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import net.mingsoft.fxxf.entity.FeedbackStat;
+import net.mingsoft.fxxf.bean.entity.FeedbackStat;
 
 import java.util.List;
 

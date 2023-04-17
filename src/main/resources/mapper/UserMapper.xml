@@ -3,7 +3,7 @@
 <mapper namespace="net.mingsoft.fxxf.mapper.UserMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="net.mingsoft.fxxf.entity.User">
+    <resultMap id="BaseResultMap" type="net.mingsoft.fxxf.bean.entity.User">
         <id column="id" property="id"/>
         <result column="account" property="account"/>
         <result column="password" property="password"/>
@@ -52,7 +52,7 @@
         ORDER BY u.create_time DESC
     </select>
 
-    <select id="roleList" resultType="net.mingsoft.fxxf.entity.Role">
+    <select id="roleList" resultType="net.mingsoft.fxxf.bean.entity.Role">
         SELECT name,explation FROM sys_role
     </select>
 
