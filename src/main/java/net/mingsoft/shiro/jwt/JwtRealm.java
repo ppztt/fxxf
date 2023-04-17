@@ -1,9 +1,9 @@
 package net.mingsoft.shiro.jwt;
 
 import com.github.benmanes.caffeine.cache.Cache;
-import net.mingsoft.fxxf.entity.Permission;
-import net.mingsoft.fxxf.entity.Role;
-import net.mingsoft.fxxf.entity.User;
+import net.mingsoft.fxxf.bean.entity.Permission;
+import net.mingsoft.fxxf.bean.entity.Role;
+import net.mingsoft.fxxf.bean.entity.User;
 import net.mingsoft.utils.BeanUtil;
 import net.mingsoft.utils.TokenUtil;
 import org.apache.commons.lang3.StringUtils;

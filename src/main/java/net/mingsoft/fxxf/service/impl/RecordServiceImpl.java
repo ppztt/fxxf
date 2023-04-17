@@ -3,7 +3,7 @@ package net.mingsoft.fxxf.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.mingsoft.fxxf.mapper.RecordMapper;
-import net.mingsoft.fxxf.entity.Record;
+import net.mingsoft.fxxf.bean.entity.Record;
 import net.mingsoft.fxxf.service.RecordService;
 import org.springframework.stereotype.Service;
 

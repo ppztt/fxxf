@@ -3,7 +3,7 @@ package net.mingsoft.shiro.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benmanes.caffeine.cache.Cache;
 import lombok.extern.slf4j.Slf4j;
-import net.mingsoft.fxxf.entity.User;
+import net.mingsoft.fxxf.bean.entity.User;
 import net.mingsoft.utils.JwtTokenUtil;
 import net.mingsoft.utils.ResponseBean;
 import net.mingsoft.utils.TokenUtil;

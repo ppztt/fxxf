@@ -2,7 +2,7 @@ package net.mingsoft.fxxf.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import net.mingsoft.fxxf.entity.Record;
+import net.mingsoft.fxxf.bean.entity.Record;
 
 /**
  * <p>

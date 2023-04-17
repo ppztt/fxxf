@@ -2,12 +2,12 @@ package net.mingsoft.fxxf.service.impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import net.mingsoft.fxxf.entity.Applicants;
-import net.mingsoft.fxxf.entity.AuditLog;
-import net.mingsoft.fxxf.entity.User;
+import net.mingsoft.basic.entity.ManagerEntity;
+import net.mingsoft.fxxf.bean.entity.Applicants;
+import net.mingsoft.fxxf.bean.entity.AuditLog;
+import net.mingsoft.fxxf.bean.vo.ApplicantsUnitExcelImportVo;
 import net.mingsoft.fxxf.service.ApplicantsService;
 import net.mingsoft.fxxf.service.AuditLogService;
-import net.mingsoft.fxxf.vo.ApplicantsUnitExcelImportVo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
@@ -51,7 +51,7 @@ public class MyApplicantsUnitService {
     @Transactional(rollbackFor = Exception.class)
     public List<Applicants> templateImport(List<ApplicantsUnitExcelImportVo> applicantsUnitExcelVos) {
 
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
 
         List<String> creditCodes = new ArrayList<>();
         for (int i = 0; i < applicantsUnitExcelVos.size(); i++) {
@@ -104,7 +104,7 @@ public class MyApplicantsUnitService {
                                 BeanUtils.copyProperties(a, applicantsByDb);
                                 applicantsByDb.setStatus(4);
                                 applicantsByDb.setAuditRoleId(user.getRoleId());
-                                applicantsByDb.setCreater(user.getId());
+                                applicantsByDb.setCreater(Integer.parseInt(user.getId()));
                                 applicantsByDb.setUpdateTime(LocalDateTime.now());
                             } else if (applicantsByDb.getStatus() == 0) {
                                 if (applicantsByDb.getDelTime() != null) {
@@ -166,7 +166,7 @@ public class MyApplicantsUnitService {
 
     public void saveAuditLogByCityImport(List<Applicants> applicants) {
         // 获取登录用户
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
 
         Integer roleId = user.getRoleId();
 
@@ -176,7 +176,7 @@ public class MyApplicantsUnitService {
             // 审核记录
             AuditLog auditLog = new AuditLog();
             auditLog.setAppId(app.getId());
-            auditLog.setAuditor(user.getId());
+            auditLog.setAuditor(Integer.parseInt(user.getId()));
             auditLog.setContents("市一级导入");
             auditLog.setCreateTime(LocalDateTime.now());
             auditLog.setRoleId(roleId);
@@ -215,7 +215,7 @@ public class MyApplicantsUnitService {
         }
 
         // 获取登录用户
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
         // roleId == 1 ，说明是管理员，可以查看全部，否则根据地市去查
         Integer roleId = user.getRoleId();
 
@@ -225,7 +225,7 @@ public class MyApplicantsUnitService {
             applicants.setAuditRoleId(roleId);
         }
 
-        applicants.setCreater(user.getId());
+        applicants.setCreater(Integer.parseInt(user.getId()));
         if (Objects.equals(roleId, 1)) {
             applicants.setCreateType("省级导入");
         } else if (Objects.equals(roleId, 2)) {
@@ -307,7 +307,7 @@ public class MyApplicantsUnitService {
      * */
     public String updateApplicantsStatusByAudit(Integer type, Integer id, String notes) {
         // 获取登录用户
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
 
 
         Integer roleId = user.getRoleId();
@@ -522,7 +522,7 @@ public class MyApplicantsUnitService {
                 // 审核记录
                 AuditLog auditLog = new AuditLog();
                 auditLog.setAppId(applicants.getId());
-                auditLog.setAuditor(user.getId());
+                auditLog.setAuditor(Integer.parseInt(user.getId()));
                 auditLog.setContents(notes);
                 auditLog.setCreateTime(LocalDateTime.now());
                 auditLog.setRoleId(roleId);

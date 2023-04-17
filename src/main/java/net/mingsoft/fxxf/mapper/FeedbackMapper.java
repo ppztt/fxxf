@@ -3,10 +3,10 @@ package net.mingsoft.fxxf.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import net.mingsoft.fxxf.entity.Feedback;
-import net.mingsoft.fxxf.vo.FeedbackCompanyDetailsVo;
-import net.mingsoft.fxxf.vo.FeedbackComplaintVo;
-import net.mingsoft.fxxf.vo.FeedbackMsgVo;
+import net.mingsoft.fxxf.bean.entity.Feedback;
+import net.mingsoft.fxxf.bean.vo.FeedbackCompanyDetailsVo;
+import net.mingsoft.fxxf.bean.vo.FeedbackComplaintVo;
+import net.mingsoft.fxxf.bean.vo.FeedbackMsgVo;
 import org.apache.ibatis.annotations.Param;
 import org.apache.poi.ss.formula.functions.T;
 

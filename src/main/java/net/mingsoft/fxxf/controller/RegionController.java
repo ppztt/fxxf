@@ -4,7 +4,7 @@ package net.mingsoft.fxxf.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import net.mingsoft.fxxf.service.ApplicantsService;
-import net.mingsoft.fxxf.vo.RegionVo;
+import net.mingsoft.fxxf.bean.vo.RegionVo;
 import net.mingsoft.utils.BeanUtil;
 import net.mingsoft.utils.ResponseBean;
 import org.springframework.beans.factory.annotation.Autowired;

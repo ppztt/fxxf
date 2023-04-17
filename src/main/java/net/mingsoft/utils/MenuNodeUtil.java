@@ -1,7 +1,7 @@
 package net.mingsoft.utils;
 
 
-import net.mingsoft.fxxf.vo.MenuNode;
+import net.mingsoft.fxxf.bean.vo.MenuNode;
 
 import java.util.ArrayList;
 import java.util.List;

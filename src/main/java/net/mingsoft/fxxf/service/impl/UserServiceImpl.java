@@ -4,7 +4,7 @@ package net.mingsoft.fxxf.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.mingsoft.fxxf.mapper.UserMapper;
-import net.mingsoft.fxxf.entity.User;
+import net.mingsoft.fxxf.bean.entity.User;
 import net.mingsoft.fxxf.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

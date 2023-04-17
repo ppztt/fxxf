@@ -2,7 +2,7 @@ package net.mingsoft.fxxf.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import net.mingsoft.fxxf.entity.User;
+import net.mingsoft.fxxf.bean.entity.User;
 
 import java.util.List;
 

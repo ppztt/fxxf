@@ -3,9 +3,10 @@ package net.mingsoft.fxxf.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import net.mingsoft.fxxf.entity.Applicants;
-import net.mingsoft.fxxf.request.ApplicantsPageRequest;
-import net.mingsoft.fxxf.vo.*;
+import net.mingsoft.fxxf.bean.entity.Applicants;
+import net.mingsoft.fxxf.bean.request.ApplicantsPageRequest;
+import net.mingsoft.fxxf.bean.request.EnterpriseNewApplyRequest;
+import net.mingsoft.fxxf.bean.vo.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +29,7 @@ public interface ApplicantsService extends IService<Applicants> {
     IPage<Applicants> listPage(ApplicantsPageRequest applicantsPageRequest);
 
 
-    ApplicantsFindVo findApplicantsByRegName(Integer id, String creditCode,String type);
+    ApplicantsFindVo findApplicantsByRegName(Integer id, String creditCode, String type);
 
 
     /**
@@ -64,5 +65,5 @@ public interface ApplicantsService extends IService<Applicants> {
 
     void operatorStatisticsExport(String startTime, String endTime, HttpServletRequest request, HttpServletResponse response);
 
-    ApiResult<EnterpriseUnitNewApplyVo> saveEnterpriseApplyInfo(EnterpriseStoreNewApplyVo enterpriseStoreNewApplyVo);
+    ApiResult<EnterpriseUnitNewApplyVo> saveEnterpriseApplyInfo(EnterpriseNewApplyRequest enterpriseNewApplyRequest);
 }
