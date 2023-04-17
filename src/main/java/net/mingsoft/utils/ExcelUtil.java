@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -66,9 +67,9 @@ public class ExcelUtil {
     public static void downLoadExcel(String fileName, HttpServletRequest request, HttpServletResponse response, Workbook workbook) {
         try {
             if (request.getHeader("USER-AGENT").toLowerCase().contains("firefox")) {
-                fileName = "=?UTF-8?B?" + (new String(Base64.getEncoder().encode(fileName.getBytes("UTF-8")))) + "?=";
+                fileName = "=?UTF-8?B?" + (new String(Base64.getEncoder().encode(fileName.getBytes(StandardCharsets.UTF_8)))) + "?=";
             } else {
-                fileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
+                fileName = new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
             }
 
             response.setCharacterEncoding("UTF-8");
