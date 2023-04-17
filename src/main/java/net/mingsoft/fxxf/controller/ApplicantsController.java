@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.mingsoft.fxxf.anno.OperatorLogAnno;
 import net.mingsoft.fxxf.bean.entity.Applicants;
 import net.mingsoft.fxxf.bean.request.ApplicantsPageRequest;
+import net.mingsoft.fxxf.bean.request.ApplicantsStatisticsRequest;
 import net.mingsoft.fxxf.bean.request.EnterpriseNewApplyRequest;
 import net.mingsoft.fxxf.bean.vo.*;
 import net.mingsoft.fxxf.service.ApplicantsService;
@@ -163,11 +164,11 @@ public class ApplicantsController {
         return ApiResult.fail();
     }
 
-    @GetMapping(value = "/downTemplateFile")
+    @GetMapping(value = "/downTemplateFile/{type}")
     @ApiOperation(value = "经营者列表-模板下载", notes = "模板下载")
 //    @OperatorLogAnno(operType = "下载", operModul = "无理由退货承诺", operDesc = "经营者列表-模板下载")
-    public void downTemplateFile(HttpServletRequest request, HttpServletResponse response) {
-        applicantsService.downTemplateFile(request, response);
+    public void downTemplateFile(@PathVariable(value = "type") Integer type,HttpServletRequest request, HttpServletResponse response) {
+        applicantsService.downTemplateFile(type,request, response);
     }
 
     @PostMapping(value = "/preImport")
@@ -237,10 +238,10 @@ public class ApplicantsController {
             @DynamicParameter(name = "endTime", value = "结束时间", required = false),
     }))
 //    @OperatorLogAnno(operType = "查询", operModul = "无理由退货承诺", operDesc = "经营者统计-列表")
-    public ApiResult<PageResultLocal<StoreOperatorStatisticsVo>> operatorStatistics(@RequestBody Map map) {
+    public ApiResult<PageResultLocal<StoreOperatorStatisticsVo>> operatorStatistics(@RequestBody ApplicantsStatisticsRequest applicantsStatisticsRequest) {
 
         try {
-            return ApiResult.success(applicantsService.operatorStatistics(map));
+            return ApiResult.success(applicantsService.operatorStatistics(applicantsStatisticsRequest));
         } catch (Exception e) {
             e.printStackTrace();
         }

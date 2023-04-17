@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import net.mingsoft.fxxf.bean.entity.Applicants;
 import net.mingsoft.fxxf.bean.request.ApplicantsPageRequest;
+import net.mingsoft.fxxf.bean.request.ApplicantsStatisticsRequest;
 import net.mingsoft.fxxf.bean.request.EnterpriseNewApplyRequest;
 import net.mingsoft.fxxf.bean.vo.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,7 +52,7 @@ public interface ApplicantsService extends IService<Applicants> {
     /**
      * 经营者列表-模板下载
      */
-    void downTemplateFile(HttpServletRequest request, HttpServletResponse response);
+    void downTemplateFile(Integer type,HttpServletRequest request, HttpServletResponse response);
 
     ApiResult templatePreImport(MultipartFile file);
 
@@ -61,7 +62,7 @@ public interface ApplicantsService extends IService<Applicants> {
 
     void export(String status, HttpServletRequest request, HttpServletResponse response);
 
-    List<StoreOperatorStatisticsVo> operatorStatistics(Map map);
+    List<StoreOperatorStatisticsVo> operatorStatistics(ApplicantsStatisticsRequest applicantsStatisticsRequest);
 
     void operatorStatisticsExport(String startTime, String endTime, HttpServletRequest request, HttpServletResponse response);
 

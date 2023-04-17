@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.mingsoft.fxxf.mapper.AttachmentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="net.mingsoft.fxxf.bean.entity.Attachment">
+        <id column="id" property="id"/>
+        <result column="filename" property="filename"/>
+        <result column="storage" property="storage"/>
+        <result column="uploader" property="uploader"/>
+        <result column="downloads" property="downloads"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, filename, storage, uploader, downloads, create_time, update_time
+    </sql>
+
+    <select id="attachmentInfo" resultMap="BaseResultMap" parameterType="net.mingsoft.fxxf.bean.entity.Attachment">
+        SELECT id, filename, date_format(create_time,'%Y-%m-%d %H:%i:%s'), uploader, downloads
+        FROM cc_attachment
+        <where>
+            <if test="filename != '' and filename != null">
+                AND filename like concat('%', #{filename,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="uploader != '' and uploader != null">
+                AND uploader like concat('%', #{uploader,jdbcType=VARCHAR},'%')
+            </if>
+        </where>
+    </select>
+
+    <delete id="attachmentDel" parameterType="java.util.List">
+        DELETE FROM cc_attachment WHERE id IN
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="saveUploadInfo">
+        INSERT INTO cc_attachment(filename, storage, uploader, downloads, create_time, update_time)
+        VALUES (#{filename}, #{storage}, #{uploader}, #{downloads}, #{createTime}, #{updateTime})
+    </insert>
+
+    <select id="attachmentList" resultMap="BaseResultMap">
+        SELECT id,filename, create_time FROM cc_attachment
+        <where>
+            <if test="keyword != '' and keyword != null">
+                AND filename LIKE concat('%', #{keyword},'%')
+                OR create_time LIKE BINARY concat('%', #{keyword},'%')
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
+</mapper>
