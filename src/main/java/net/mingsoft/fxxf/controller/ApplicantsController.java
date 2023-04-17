@@ -79,9 +79,10 @@ public class ApplicantsController {
     })
 //    @OperatorLogAnno(operType = "查询", operModul = "无理由退货承诺", operDesc = "经营者列表-根据 id 查询承诺单位")
     public ApiResult findApplicantsByRegName(@RequestParam(value = "id") Integer id,
-                                             @RequestParam(value = "creditCode") String creditCode) {
+                                             @RequestParam(value = "creditCode") String creditCode,
+                                             @RequestParam(value = "type") String type) {
         try {
-            return ApiResult.success(applicantsService.findApplicantsByRegName(id, creditCode));
+            return ApiResult.success(applicantsService.findApplicantsByRegName(id, creditCode, type));
         } catch (Exception e) {
             e.printStackTrace();
         }
