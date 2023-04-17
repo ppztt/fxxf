@@ -2,17 +2,24 @@ package net.mingsoft.utils;
 
 import cn.afterturn.easypoi.excel.entity.result.ExcelVerifyHandlerResult;
 import cn.afterturn.easypoi.handler.inter.IExcelVerifyHandler;
-import net.mingsoft.fxxf.entity.User;
+import net.mingsoft.basic.entity.ManagerEntity;
+import net.mingsoft.fxxf.bean.entity.User;
+import net.mingsoft.fxxf.bean.vo.ApplicantsStoreExcelImportVo;
+import net.mingsoft.fxxf.mapper.UserMapper;
 import net.mingsoft.fxxf.service.impl.CommonDataService;
-import net.mingsoft.fxxf.vo.ApplicantsStoreExcelImportVo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author laijunbao
  */
-
+@Component
 public class ApplicantsStoreExcelVerifyHandlerImpl implements IExcelVerifyHandler<ApplicantsStoreExcelImportVo> {
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public ExcelVerifyHandlerResult verifyHandler(ApplicantsStoreExcelImportVo applicantsStoreExcelImportVo) {
@@ -47,13 +54,19 @@ public class ApplicantsStoreExcelVerifyHandlerImpl implements IExcelVerifyHandle
             }
         }
 
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
-        if (user.getRoleId() != 1) {
-            if (StringUtils.isNotBlank(applicantsStoreExcelImportVo.getCity()) && !applicantsStoreExcelImportVo.getCity().equals(user.getCity())) {
-                builder.append("导入数据中有其他地市单位，请核实数据后重新上传");
-                return new ExcelVerifyHandlerResult(false, builder.toString());
+        ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
+        if (user!=null) {
+            User userExtensionInfo = userMapper.selectById(user.getId());
+            if (user.getRoleId() != 1) {
+                if (StringUtils.isNotBlank(applicantsStoreExcelImportVo.getCity())
+                        && !applicantsStoreExcelImportVo.getCity().equals(userExtensionInfo.getCity())) {
+                    builder.append("导入数据中有其他地市单位，请核实数据后重新上传");
+                    return new ExcelVerifyHandlerResult(false, builder.toString());
+                }
             }
         }
+
+
         if (StringUtils.isNotBlank(applicantsStoreExcelImportVo.getContents2()) &&
                 !StringUtils.isNumeric(applicantsStoreExcelImportVo.getContents2())) {
             builder.append("退货期限（天）只允许输入数字");

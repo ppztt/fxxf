@@ -10,13 +10,14 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import net.mingsoft.basic.entity.ManagerEntity;
 import net.mingsoft.fxxf.anno.OperatorLogAnno;
 import net.mingsoft.fxxf.mapper.AuditLogMapper;
-import net.mingsoft.fxxf.entity.Applicants;
-import net.mingsoft.fxxf.entity.User;
+import net.mingsoft.fxxf.bean.entity.Applicants;
+import net.mingsoft.fxxf.bean.entity.User;
 import net.mingsoft.fxxf.service.impl.EnterpriseService;
 import net.mingsoft.fxxf.service.impl.MyApplicantsUnitService;
-import net.mingsoft.fxxf.vo.*;
+import net.mingsoft.fxxf.bean.vo.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
@@ -125,7 +126,7 @@ public class EnterpriseController {
 //    @OperatorLogAnno(operType="查询", operModul="企业端", operDesc="根据id获取申请信息")
     public ApiResult<ApplicantsUnitParamsVo> getEnterpriseApplyInfoById(@PathVariable(value = "id") Integer id) {
         try {
-            User user = (User) SecurityUtils.getSubject().getPrincipal();
+            ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
 
             Applicants applicants = enterpriseService.getEnterpriseApplyInfoById(id);
 

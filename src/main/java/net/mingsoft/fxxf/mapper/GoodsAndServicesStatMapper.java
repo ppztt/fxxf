@@ -1,7 +1,7 @@
 package net.mingsoft.fxxf.mapper;
 
 
-import net.mingsoft.fxxf.vo.GoodsAndServicesStat;
+import net.mingsoft.fxxf.bean.vo.GoodsAndServicesStat;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

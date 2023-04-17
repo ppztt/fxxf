@@ -3,11 +3,11 @@ package net.mingsoft.fxxf.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import net.mingsoft.fxxf.entity.Applicants;
-import net.mingsoft.fxxf.request.ApplicantsPageRequest;
-import net.mingsoft.fxxf.vo.OperatorStatisticsVo;
-import net.mingsoft.fxxf.vo.RegionVo;
-import net.mingsoft.fxxf.vo.StoreOperatorStatisticsVo;
+import net.mingsoft.fxxf.bean.entity.Applicants;
+import net.mingsoft.fxxf.bean.request.ApplicantsPageRequest;
+import net.mingsoft.fxxf.bean.vo.OperatorStatisticsVo;
+import net.mingsoft.fxxf.bean.vo.RegionVo;
+import net.mingsoft.fxxf.bean.vo.StoreOperatorStatisticsVo;
 import org.apache.ibatis.annotations.Param;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Repository;

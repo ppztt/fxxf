@@ -2,8 +2,8 @@ package net.mingsoft.fxxf.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import net.mingsoft.fxxf.entity.AuditLog;
-import net.mingsoft.fxxf.vo.AuditLogVo;
+import net.mingsoft.fxxf.bean.entity.AuditLog;
+import net.mingsoft.fxxf.bean.vo.AuditLogVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

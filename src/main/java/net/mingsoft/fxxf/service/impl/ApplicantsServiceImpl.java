@@ -15,16 +15,19 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.mingsoft.basic.entity.ManagerEntity;
-import net.mingsoft.fxxf.entity.Applicants;
-import net.mingsoft.fxxf.entity.AuditLog;
-import net.mingsoft.fxxf.entity.User;
+import net.mingsoft.fxxf.bean.entity.Applicants;
+import net.mingsoft.fxxf.bean.entity.AuditLog;
+import net.mingsoft.fxxf.bean.entity.User;
+import net.mingsoft.fxxf.bean.enums.ApplicantsTypeEnum;
+import net.mingsoft.fxxf.bean.enums.CreateTypeEnum;
+import net.mingsoft.fxxf.bean.request.ApplicantsPageRequest;
+import net.mingsoft.fxxf.bean.request.EnterpriseNewApplyRequest;
+import net.mingsoft.fxxf.bean.vo.*;
 import net.mingsoft.fxxf.mapper.ApplicantsMapper;
 import net.mingsoft.fxxf.mapper.AuditLogMapper;
 import net.mingsoft.fxxf.mapper.UserMapper;
-import net.mingsoft.fxxf.request.ApplicantsPageRequest;
 import net.mingsoft.fxxf.service.ApplicantsService;
 import net.mingsoft.fxxf.service.AuditLogService;
-import net.mingsoft.fxxf.vo.*;
 import net.mingsoft.utils.ApplicantsImportUtil;
 import net.mingsoft.utils.ApplicantsStoreExcelVerifyHandlerImpl;
 import net.mingsoft.utils.ExcelUtil;
@@ -57,18 +60,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-import static net.mingsoft.fxxf.controller.EnterpriseController.newStoreApplicants;
-
 /**
  * 申报单位 服务实现类
  */
 @Service
 public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applicants> implements ApplicantsService {
 
-    private final String[] title = new String[]{"经营者注册名称", "统一社会信用代码", "门店名称", "经营场所-所在市",
-            "经营场所-所在区县", "经营场所-详细地址", "经营类别", "类别明细", "负责人姓名", "负责人电话",
-            "适用商品-承诺事项及内容", "退货期限（天）",
-            "退货约定-承诺事项及内容", "企业申请日期"};
+    private final String[] title = new String[]{"经营者注册名称", "统一社会信用代码", "门店名称", "经营场所-所在市", "经营场所-所在区县", "经营场所-详细地址", "经营类别", "类别明细", "负责人姓名", "负责人电话", "适用商品-承诺事项及内容", "退货期限（天）", "退货约定-承诺事项及内容", "企业申请日期"};
 
     /**
      * 无理由退货承诺实体店导入模板
@@ -112,8 +110,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
         ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
         User extendUserInfo = userMapper.selectById(user.getId());
 
-        return applicantsMapper.listPage(new Page<>(applicantsPageRequest.getCurrent(),
-                applicantsPageRequest.getSize()), applicantsPageRequest, user.getRoleId(), extendUserInfo.getCity(), extendUserInfo.getDistrict());
+        return applicantsMapper.listPage(new Page<>(applicantsPageRequest.getCurrent(), applicantsPageRequest.getSize()), applicantsPageRequest, user.getRoleId(), extendUserInfo.getCity(), extendUserInfo.getDistrict());
     }
 
     @Override
@@ -199,7 +196,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                 applicantsById.setDetails(String.join(",", applicants.getDetails()));
             }
 
-            User user = (User) SecurityUtils.getSubject().getPrincipal();
+            ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
             // 不通过的数据，更改为待审核作态
             if (Objects.equals(applicantsById.getStatus(), 7)) {
                 applicantsById.setStatus(4);
@@ -284,8 +281,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
             importParams.setVerifyHandler(new ApplicantsStoreExcelVerifyHandlerImpl());
             importParams.setImportFields(title);
 
-            ExcelImportResult<ApplicantsStoreExcelImportVo> result = ExcelImportUtil.importExcelMore(
-                    in, ApplicantsStoreExcelImportVo.class, importParams);
+            ExcelImportResult<ApplicantsStoreExcelImportVo> result = ExcelImportUtil.importExcelMore(in, ApplicantsStoreExcelImportVo.class, importParams);
 
             // 是否存在校验失败
             boolean verfiyFail = result.isVerifyFail();
@@ -355,8 +351,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                 boolean isAduit = applicantsStoreExcelImportVos.stream().sequential().anyMatch(app -> {
                     for (int i = 0; i < applicantsStatus5_6.size(); i++) {
                         if (Objects.equals(app.getCreditCode(), applicantsStatus5_6.get(i).getCreditCode())) {
-                            errorMsgVoList.add(new ExcelImportErrorMsgVo(rowNum0.get(),
-                                    "导入的统一社会信用代码中存在与现有在审核名单相同项"));
+                            errorMsgVoList.add(new ExcelImportErrorMsgVo(rowNum0.get(), "导入的统一社会信用代码中存在与现有在审核名单相同项"));
                             flag0.set(true);
                             break;
                         }
@@ -378,8 +373,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                 boolean isRepact1 = applicantsStoreExcelImportVos.stream().sequential().anyMatch(app -> {
                     for (int i = 0; i < applicantsStatus1.size(); i++) {
                         if (Objects.equals(app.getCreditCode(), applicantsStatus1.get(i).getCreditCode())) {
-                            errorMsgVoList.add(new ExcelImportErrorMsgVo(rowNum1.get(),
-                                    "导入的统一社会信用代码中存在与现有在期名单相同项"));
+                            errorMsgVoList.add(new ExcelImportErrorMsgVo(rowNum1.get(), "导入的统一社会信用代码中存在与现有在期名单相同项"));
                             flag1.set(true);
                             break;
                         }
@@ -404,8 +398,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                     isRepact = applicantsStoreExcelImportVos.stream().sequential().anyMatch(app -> {
                         for (int i = 0; i < applicantsStatus4.size(); i++) {
                             if (Objects.equals(app.getCreditCode(), applicantsStatus4.get(i).getCreditCode())) {
-                                errorMsgVoList.add(new ExcelImportErrorMsgVo(rowNum.get(),
-                                        "导入的统一社会信用代码中存在与现有待审核名单相同项，点击确定按钮将覆盖系统中现有数据，点击取消将不上传文件内容！"));
+                                errorMsgVoList.add(new ExcelImportErrorMsgVo(rowNum.get(), "导入的统一社会信用代码中存在与现有待审核名单相同项，点击确定按钮将覆盖系统中现有数据，点击取消将不上传文件内容！"));
                                 flag.set(true);
                                 break;
                             }
@@ -486,8 +479,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
             ImportParams importParams = new ImportParams();
             importParams.setStartRows(1);
 
-            ExcelImportResult<ApplicantsExcelImportVo> result = ExcelImportUtil.importExcelMore(
-                    file, ApplicantsExcelImportVo.class, importParams);
+            ExcelImportResult<ApplicantsExcelImportVo> result = ExcelImportUtil.importExcelMore(file, ApplicantsExcelImportVo.class, importParams);
 
             // 是否存在校验失败
             boolean verfiyFail = result.isVerifyFail();
@@ -576,9 +568,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
         Integer roleId = user.getRoleId();
         String city = user.getCity();
 
-        return applicantsMapper.storeOperatorStatistics(
-                map.get("startTime").toString(),
-                map.get("endTime").toString(), roleId, city, user.getDistrict());
+        return applicantsMapper.storeOperatorStatistics(map.get("startTime").toString(), map.get("endTime").toString(), roleId, city, user.getDistrict());
     }
 
     @Override
@@ -602,18 +592,31 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
     }
 
     @Override
-    public ApiResult<EnterpriseUnitNewApplyVo> saveEnterpriseApplyInfo(EnterpriseStoreNewApplyVo enterpriseStoreNewApplyVo) {
-        List<Applicants> applicantsByCreditCode = findApplicantsByCreditCode(2, enterpriseStoreNewApplyVo.getCreditCode());
+    public ApiResult saveEnterpriseApplyInfo(EnterpriseNewApplyRequest enterpriseNewApplyRequest) {
+        List<Applicants> applicantsByCreditCode = findApplicantsByCreditCode(enterpriseNewApplyRequest.getType(), enterpriseNewApplyRequest.getCreditCode());
 
-        if (applicantsByCreditCode != null && applicantsByCreditCode.size() > 0) {
+        if (!CollectionUtils.isEmpty(applicantsByCreditCode)) {
             return ApiResult.fail("存在相同统一社会信用代码");
         }
 
-        Applicants applicants = newStoreApplicants(enterpriseStoreNewApplyVo);
+        Applicants applicants = new Applicants();
+        BeanUtils.copyProperties(enterpriseNewApplyRequest, applicants);
+
+        applicants.setType(enterpriseNewApplyRequest.getType()).setStatus(4).setContCommitment("否").setCreateTime(LocalDateTime.now()).setUpdateTime(LocalDateTime.now()).setCreateType("企业提交");
+
+        if (ApplicantsTypeEnum.UNIT.getCode().equals(enterpriseNewApplyRequest.getType())) {
+            applicants.setContents1("不提供假冒伪劣商品，不提供“三无”产品，不提供不合格商品，不提供来源不明商品，不提供过期商品，不提供缺陷商品，不提供侵犯知识产权商品。");
+            applicants.setContents2("不作虚假宣传，不搞低价诱导；恪守服务承诺，履行合同约定；明码实价，明白消费；守法经营，诚信待客。");
+            applicants.setContents3("履行保护消费者权益第一责任，提供便捷售后服务，高效处理消费纠纷，承担先行赔付和首问责任。");
+        }
+
+        if (StringUtils.isNotBlank(enterpriseNewApplyRequest.getContents4())) {
+            applicants.setAddContents4Cnt(1);
+        }
+
         // 获取登录用户
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
-        Integer rode = user.getRoleId();
-        applicants.setCreater(user.getId());
+        ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
+        applicants.setCreater(Integer.parseInt(user.getId()));
 
         if (StringUtils.isNotBlank(applicants.getCity()) && StringUtils.isNotBlank(applicants.getDistrict())) {
             applicants.setAuditRoleId(4);
@@ -621,24 +624,19 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
             applicants.setAuditRoleId(3);
         }
 
-        if (enterpriseStoreNewApplyVo.getDetails() != null && enterpriseStoreNewApplyVo.getDetails().size() > 0) {
-            applicants.setDetails(String.join(",", enterpriseStoreNewApplyVo.getDetails()));
+        if (!CollectionUtils.isEmpty(enterpriseNewApplyRequest.getDetails())) {
+            applicants.setDetails(String.join(",", enterpriseNewApplyRequest.getDetails()));
         }
 
         //判断录入类型
-        if (rode == 1) {
-            applicants.setCreateType("省级录入");
-        } else if (rode == 2) {
-            applicants.setCreateType("市级录入");
-        } else if (rode == 3) {
-            applicants.setCreateType("区县录入");
-        } else if (rode == 4) {
-            applicants.setCreateType("行业协会录入");
+        CreateTypeEnum matchCreateTypeEnum = CreateTypeEnum.matchByCode(user.getRoleId());
+        if (matchCreateTypeEnum != null) {
+            applicants.setCreateType(matchCreateTypeEnum.getName());
         }
 
         //多个地址解析
-        if (StringUtils.isNotBlank(enterpriseStoreNewApplyVo.getAddrs())) {
-            JSONArray jsonArray = JSON.parseArray(enterpriseStoreNewApplyVo.getAddrs());
+        if (StringUtils.isNotBlank(enterpriseNewApplyRequest.getAddrs())) {
+            JSONArray jsonArray = JSON.parseArray(enterpriseNewApplyRequest.getAddrs());
 
             int size = jsonArray.size();
             String citys = "";
@@ -681,12 +679,10 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
     @Transactional(rollbackFor = Exception.class)
     public List<Applicants> templateSyncDbWrite(List<ApplicantsExcelImportVo> applicantsExcelVos) {
 
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
 
         List<String> creditCodes = applicantsExcelVos.stream().map(ApplicantsExcelImportVo::getCreditCode).collect(Collectors.toList());
-        List<Applicants> applicantsByDbs = list(new QueryWrapper<Applicants>()
-                .eq("type", 1)
-                .in("credit_code", creditCodes));
+        List<Applicants> applicantsByDbs = list(new QueryWrapper<Applicants>().eq("type", 1).in("credit_code", creditCodes));
 
         List<Applicants> applicantsList = new ArrayList<>();
         List<Applicants> applicantsListNeedUpdate = new ArrayList<>();
@@ -700,8 +696,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                 // 当第二次导入时，之前的承诺申请被主动摘牌，或者是过期时间超过了一年，那连续承诺记为“否”
 
                 if (applicantsByDbs != null && applicantsByDbs.size() > 0) {
-                    List<Applicants> collect = applicantsByDbs.parallelStream()
-                            .filter(app -> Objects.equals(app.getCreditCode().trim(), a.getCreditCode().trim())).collect(Collectors.toList());
+                    List<Applicants> collect = applicantsByDbs.parallelStream().filter(app -> Objects.equals(app.getCreditCode().trim(), a.getCreditCode().trim())).collect(Collectors.toList());
                     if (collect != null && collect.size() > 0) {
                         Applicants applicantsByDb = collect.get(0);
                         if (StringUtils.isNotBlank(a.getContents4())) {
@@ -731,7 +726,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                                 BeanUtils.copyProperties(a, applicantsByDb);
                                 applicantsByDb.setStatus(4);
                                 applicantsByDb.setAuditRoleId(user.getRoleId());
-                                applicantsByDb.setCreater(user.getId());
+                                applicantsByDb.setCreater(Integer.parseInt(user.getId()));
                                 applicantsByDb.setUpdateTime(LocalDateTime.now());
                             } else if (applicantsByDb.getStatus() == 0) {
                                 if (applicantsByDb.getDelTime() != null) {
@@ -794,7 +789,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
 
     public void saveAuditLogByCityImport(List<Applicants> applicants) {
         // 获取登录用户
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
 
         Integer roleId = user.getRoleId();
 
@@ -804,7 +799,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
             // 审核记录
             AuditLog auditLog = new AuditLog();
             auditLog.setAppId(app.getId());
-            auditLog.setAuditor(user.getId());
+            auditLog.setAuditor(Integer.parseInt(user.getId()));
             auditLog.setContents("市一级导入");
             auditLog.setCreateTime(LocalDateTime.now());
             auditLog.setRoleId(roleId);
@@ -827,23 +822,20 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
         applicants.setCreateTime(LocalDateTime.now());
         applicants.setUpdateTime(LocalDateTime.now());
         if (a.getApplicationDate() != null) {
-            applicants.setApplicationDate(LocalDateTime.ofInstant(a.getApplicationDate().toInstant(),
-                    ZoneId.systemDefault()));
+            applicants.setApplicationDate(LocalDateTime.ofInstant(a.getApplicationDate().toInstant(), ZoneId.systemDefault()));
         }
         if (a.getIndustryDate() != null) {
-            applicants.setIndustryDate(LocalDateTime.ofInstant(a.getIndustryDate().toInstant(),
-                    ZoneId.systemDefault()));
+            applicants.setIndustryDate(LocalDateTime.ofInstant(a.getIndustryDate().toInstant(), ZoneId.systemDefault()));
         }
         if (a.getCcDate() != null) {
-            applicants.setCcDate(LocalDateTime.ofInstant(a.getCcDate().toInstant(),
-                    ZoneId.systemDefault()));
+            applicants.setCcDate(LocalDateTime.ofInstant(a.getCcDate().toInstant(), ZoneId.systemDefault()));
         }
         if (StringUtils.isNotBlank(a.getContents4())) {
             applicants.setAddContents4Cnt(1);
         }
 
         // 获取登录用户
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
         // roleId == 1 ，说明是管理员，可以查看全部，否则根据地市去查
         Integer roleId = user.getRoleId();
 
@@ -853,7 +845,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
             applicants.setAuditRoleId(roleId);
         }
 
-        applicants.setCreater(user.getId());
+        applicants.setCreater(Integer.parseInt(user.getId()));
         if (Objects.equals(roleId, 1)) {
             applicants.setCreateType("省级导入");
         } else if (Objects.equals(roleId, 2)) {
@@ -877,7 +869,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
      * */
     private String updateApplicantsStatusByAudit(Integer type, Integer id, String notes) {
         // 获取登录用户
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
 
 
         Integer roleId = user.getRoleId();
@@ -1092,7 +1084,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                 // 审核记录
                 AuditLog auditLog = new AuditLog();
                 auditLog.setAppId(applicants.getId());
-                auditLog.setAuditor(user.getId());
+                auditLog.setAuditor(Integer.parseInt(user.getId()));
                 auditLog.setContents(notes);
                 auditLog.setCreateTime(LocalDateTime.now());
                 auditLog.setRoleId(roleId);
@@ -1126,54 +1118,31 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
     }
 
     public List<Applicants> findApplicantsByCreditCode(Integer type, String creditCode) {
-        return list(new QueryWrapper<Applicants>()
-                .eq("credit_code", creditCode)
-                .eq("type", type)
-                .notIn("status", 0, 2, 7));
+        return list(new QueryWrapper<Applicants>().eq("credit_code", creditCode).eq("type", type).notIn("status", 0, 2, 7));
     }
 
     public List<Applicants> findApplicantsByCreditCodes(Integer type, List<String> creditCode) {
-        return list(new QueryWrapper<Applicants>()
-                .in("credit_code", creditCode)
-                .eq("type", type)
-                .notIn("status", 0, 2, 7));
+        return list(new QueryWrapper<Applicants>().in("credit_code", creditCode).eq("type", type).notIn("status", 0, 2, 7));
     }
 
     public List<Applicants> findApplicantsByCreditCode(Integer id, Integer type, String creditCode) {
-        return list(new QueryWrapper<Applicants>()
-                .eq("credit_code", creditCode)
-                .eq("type", type)
-                .notIn("status", 0, 2, 7)
-                .notIn("id", id));
+        return list(new QueryWrapper<Applicants>().eq("credit_code", creditCode).eq("type", type).notIn("status", 0, 2, 7).notIn("id", id));
     }
 
     public List<Applicants> findApplicantsByRegName(Integer type, Object[] creditCodes) {
-        return list(new QueryWrapper<Applicants>()
-                .in("credit_code", creditCodes)
-                .eq("type", type)
-                .eq("status", 1));
+        return list(new QueryWrapper<Applicants>().in("credit_code", creditCodes).eq("type", type).eq("status", 1));
     }
 
     public List<Applicants> findApplicantsByRegNameAndStatus4(Integer type, Object[] creditCodes) {
-        return list(new QueryWrapper<Applicants>()
-                .in("credit_code", creditCodes)
-                .eq("type", type)
-                .eq("status", 4));
+        return list(new QueryWrapper<Applicants>().in("credit_code", creditCodes).eq("type", type).eq("status", 4));
     }
 
     public List<Applicants> findApplicantsByCreditCodeAndStatus5_6(Object[] creditCodes, Integer type) {
-        return list(new QueryWrapper<Applicants>()
-                .in("credit_code", creditCodes)
-                .eq("type", type)
-                .in("status", 5, 6));
+        return list(new QueryWrapper<Applicants>().in("credit_code", creditCodes).eq("type", type).in("status", 5, 6));
     }
 
     public List<Applicants> findApplicantsByIdRegName(Integer id, String creditCode, String type) {
-        return list(new QueryWrapper<Applicants>()
-                .eq("credit_code", creditCode)
-                .eq("type", type)
-                .eq("status", 1)
-                .notIn("id", id));
+        return list(new QueryWrapper<Applicants>().eq("credit_code", creditCode).eq("type", type).eq("status", 1).notIn("id", id));
     }
 
 }

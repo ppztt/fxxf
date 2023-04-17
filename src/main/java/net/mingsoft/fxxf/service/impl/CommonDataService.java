@@ -3,7 +3,7 @@ package net.mingsoft.fxxf.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
-import net.mingsoft.fxxf.entity.Region;
+import net.mingsoft.fxxf.bean.entity.Region;
 import net.mingsoft.fxxf.service.RegionService;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

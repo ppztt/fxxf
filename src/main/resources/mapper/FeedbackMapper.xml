@@ -3,7 +3,7 @@
 <mapper namespace="net.mingsoft.fxxf.mapper.FeedbackMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="net.mingsoft.fxxf.entity.Feedback">
+    <resultMap id="BaseResultMap" type="net.mingsoft.fxxf.bean.entity.Feedback">
         <id column="id" property="id"/>
         <result column="applicants_id" property="applicantsId"/>
         <result column="reg_name" property="regName"/>
@@ -25,7 +25,7 @@
         id, applicants_id, reg_name, type, reason, name, phone, content, status, result, proc_time, create_time, update_time, is_new
     </sql>
 
-    <select id="feedbackList" resultType="net.mingsoft.fxxf.vo.FeedbackComplaintVo" parameterType="map">
+    <select id="feedbackList" resultType="net.mingsoft.fxxf.bean.vo.FeedbackComplaintVo" parameterType="map">
         SELECT
         a.reg_name regName,
         a.applicants_id applicantsId,
@@ -80,7 +80,7 @@
         ORDER BY a.is_new desc,a.create_time desc
     </select>
 
-    <select id="getMsgCnt" resultType="net.mingsoft.fxxf.vo.FeedbackMsgVo">
+    <select id="getMsgCnt" resultType="net.mingsoft.fxxf.bean.vo.FeedbackMsgVo">
         SELECT
         count( CASE WHEN a.type = 1 THEN 1 END ) type1Count,
         count( CASE WHEN a.type = 1 AND a.`status` = 0 THEN 1 END ) type1NoHandlerCnt,
@@ -102,7 +102,7 @@
         </where>
     </select>
 
-    <select id="feedbackCompanyDetails" resultType="net.mingsoft.fxxf.vo.FeedbackCompanyDetailsVo">
+    <select id="feedbackCompanyDetails" resultType="net.mingsoft.fxxf.bean.vo.FeedbackCompanyDetailsVo">
         SELECT
             id,
             reason,

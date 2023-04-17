@@ -3,7 +3,7 @@
 <mapper namespace="net.mingsoft.fxxf.mapper.ApplicantsMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="net.mingsoft.fxxf.entity.Applicants">
+    <resultMap id="BaseResultMap" type="net.mingsoft.fxxf.bean.entity.Applicants">
         <id column="id" property="id"/>
         <result column="type" property="type"/>
         <result column="status" property="status"/>
@@ -111,7 +111,7 @@
     </sql>
 
 
-    <select id="getGdRegion" resultType="net.mingsoft.fxxf.vo.RegionVo">
+    <select id="getGdRegion" resultType="net.mingsoft.fxxf.bean.vo.RegionVo">
         SELECT `code`, `name`, pcode FROM sys_region WHERE `code` LIKE '44%' AND id != 19 ORDER BY `level`, sort
     </select>
 
@@ -125,7 +125,7 @@
         </where>
     </select>
 
-    <select id="unitOperatorStatistics" resultType="net.mingsoft.fxxf.vo.OperatorStatisticsVo">
+    <select id="unitOperatorStatistics" resultType="net.mingsoft.fxxf.bean.vo.OperatorStatisticsVo">
         SELECT
         sr.name area,
         sum(IFNULL(applicantsCnt, 0)) applicantsCnt,
@@ -253,7 +253,7 @@
         order by sr.sort
     </select>
 
-    <select id="storeOperatorStatistics" resultType="net.mingsoft.fxxf.vo.StoreOperatorStatisticsVo">
+    <select id="storeOperatorStatistics" resultType="net.mingsoft.fxxf.bean.vo.StoreOperatorStatisticsVo">
         SELECT
         sr.name area,
         sum(IFNULL(applicantsCnt,0)) applicantsCnt,
@@ -381,7 +381,7 @@
         order by sr.sort
     </select>
 
-    <select id="listPage" resultType="net.mingsoft.fxxf.entity.Applicants">
+    <select id="listPage" resultType="net.mingsoft.fxxf.bean.entity.Applicants">
         select
         distinct
         <include refid="Base_Column_List"></include>
@@ -455,7 +455,7 @@
     </select>
 
 
-    <select id="applicantsList" resultType="net.mingsoft.fxxf.entity.Applicants">
+    <select id="applicantsList" resultType="net.mingsoft.fxxf.bean.entity.Applicants">
         select
         distinct
         <include refid="Base_Column_List"></include>
@@ -527,7 +527,7 @@
         order by field(a.status,'4','6','5') desc,sr.sort , a.start_time desc
     </select>
 
-    <select id="applicantsExport" resultType="net.mingsoft.fxxf.entity.Applicants">
+    <select id="applicantsExport" resultType="net.mingsoft.fxxf.bean.entity.Applicants">
         select
         <include refid="Base_Column_List"></include>
         from
