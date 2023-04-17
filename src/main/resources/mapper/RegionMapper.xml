@@ -3,7 +3,7 @@
 <mapper namespace="net.mingsoft.fxxf.mapper.RegionMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="net.mingsoft.fxxf.entity.Region">
+    <resultMap id="BaseResultMap" type="net.mingsoft.fxxf.bean.entity.Region">
         <id column="id" property="id" />
         <result column="code" property="code" />
         <result column="name" property="name" />

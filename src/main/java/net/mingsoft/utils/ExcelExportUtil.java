@@ -1,7 +1,7 @@
 package net.mingsoft.utils;
 
 import lombok.extern.slf4j.Slf4j;
-import net.mingsoft.fxxf.vo.FieldForSortting;
+import net.mingsoft.fxxf.bean.vo.FieldForSortting;
 import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ComparatorUtils;
