@@ -101,10 +101,19 @@
                     </el-row>
 
                     <el-row>
-                        <el-col :span="7">
+                        <el-col :span="24">
                             <div style="display: flex" class="form-item">
                                 <div style="white-space: nowrap" class="form-name">附件下载：&nbsp&nbsp</div>
-                                <div>无</div>
+                                <div class="files-lis" v-if="data.filesInfo && data.filesInfo.length > 0">
+                                    <div class="file-item" v-for="(item, index) in data.filesInfo" :key="index">
+                                        <p class="files-p">
+                                            <a class="files-a"><i class="el-icon-link">{{item.fileName}}</i></a>
+                                            <span class="files-span" v-if="allowImage.indexOf(item.fileName.substring(item.fileName.lastIndexOf('.'))) !== -1" @click="showImage(item.path)">预览</span>
+                                            <span class="files-span" @click="downloadData(item.path)">下载</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div v-else>无</div>
                             </div>
                         </el-col>
                     </el-row>
@@ -116,7 +125,7 @@
                 <div class="content">
                     <el-row>
                         <el-col :span="14" style="margin-bottom: 5px">
-                            <el-form-item label="处理结果" prop="result" class="form-survey">
+                            <el-form-item label-width="130px" label="处理结果：" prop="result" class="form-survey">
                                 <el-select v-model="formValidate.result" placeholder="请选择" style="width:80%">
                                     <el-option value="督促告诫">督促告诫</el-option>
                                     <el-option value="摘牌">摘牌</el-option>
@@ -129,7 +138,7 @@
 
                     <el-row type="flex" align="bottom">
                         <el-col :span="14" style="margin-bottom: 5px">
-                            <el-form-item label="调查处理情况：" prop="processingSituation" class="form-survey">
+                            <el-form-item label-width="130px" label="调查处理情况：" prop="processingSituation" class="form-survey">
                                 <el-input
                                         v-model="formValidate.processingSituation"
                                         type="textarea"
@@ -142,7 +151,7 @@
                         </el-col>
                         <el-col :offset="1" :span="7">
                             <el-formItem>
-                                <el-button class="blue_btn">提交
+                                <el-button class="blue_btn" @click="handleSubmit('formValidate')">提交
                                 </el-button>
                             </el-formItem>
                         </el-col>
@@ -155,9 +164,9 @@
                 <div class="title">操作记录</div>
                 <div class="content">
                     <el-table
+                            border
                             class="table"
                             :data="history"
-                            stripe
                             style="width: 100%">
                         <el-table-column
                                 prop="context"
@@ -165,10 +174,19 @@
                                 align=left">
                         </el-table-column>
                         <el-table-column
-                                prop="processingSituation"
                                 label="调查情况"
                                 align=left">
-
+                            <template #default="{ row }">
+                                <el-popover
+                                        placement="top"
+                                        width="300"
+                                        trigger="click"
+                                        :content="row.processingSituation">
+                                    <span slot="reference" class="situation">
+                                    {{row.processingSituation}}
+                                </span>
+                                </el-popover>
+                            </template>
                         </el-table-column>
                         <el-table-column
                                 prop="userName"
@@ -180,8 +198,6 @@
                                 label="处理时间"
                                 align=left">
                         </el-table-column>
-
-
                     </el-table>
                 </div>
             </div>
@@ -199,7 +215,12 @@
         data: {
             //数据
             data: {},
-            history:[],
+            history: [],
+            allowImage: [".png", ".jpg", ".jpeg"],
+            imagesPath: [
+                "https://raw.githubusercontent.com/FxPixels/SavePicGoImg/master/20200303234329.jpg",
+            ],
+            $viewer: null,
             formValidate: {
                 result: "", //处理结果
                 processingSituation: "", //调查处理情况
@@ -237,13 +258,44 @@
                 const regex = /id=(\d+)/;
                 const match = url.match(regex);
                 const id = match ? match[1] : null;
-                ///feedback/getFeedbackById/130.do
                 ms.http.get(ms.manager + '/feedback/getFeedbackById/' + id + '.do').then((res) => {
                     this.data = res.data.feedback
+                    this.data.filesInfo = JSON.parse(this.data.filesInfo);
                     this.history = res.data.history
+                    console.log(this.data)
+                })
+            },
+            resultMesInfo(){
+                //切分上个页面传过来的id
+                const url = window.location.href;
+                const regex = /id=(\d+)/;
+                const match = url.match(regex);
+                const id = match ? match[1] : null;
+                const {processingSituation,result} = this.formValidate
+                ms.http.post(ms.manager + '/feedback/handleFeedback/' + id + '.do?id='+id+'&processingSituation='+processingSituation+'&result='+result).then((res) => {
                     console.log(res)
                 })
-                console.log(id)
+            },
+            showImage(path) {
+                // if()
+                // this.$viewer.destroy();
+                // this.imagesPath = [this.$HOST + path];
+                // this.$viewer.show();
+            },
+            //下载
+            downloadData(path) {
+                window.open(window.location.origin.slice(0,window.location.origin.length) + path);
+            },
+            //提交
+            handleSubmit(name){
+                this.$refs[name].validate(async (valid) => {
+                    if (valid) {
+                        this.resultMesInfo()
+                        this.$message.success('反馈成功');
+                    } else {
+                        this.$message.error('填写有误');
+                    }
+                });
             }
         },
         created: function () {
@@ -297,11 +349,47 @@
     }
 
     .form-survey {
-        margin-left: 80px !important;
+        margin-left: 40px !important;
     }
 
     .blue_btn {
         margin-bottom: 26px;
+    }
+
+    .situation {
+        display: inline-block;
+        white-space: nowrap;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: pointer;
+    }
+    .files-lis{
+
+    }
+        .files-p {
+            display: flex;
+            align-items: center;
+        }
+        .files-a {
+            margin-right: 12px;
+            /*display: inline-block;*/
+            /*overflow: hidden;*/
+            /*text-overflow: ellipsis;*/
+            /*white-space: nowrap;*/
+            /*max-width: 640px;*/
+            color: #2e8cf1;
+        }
+        .files-span {
+            display: inline-block;
+            width: 40px;
+            color: #2e8cf1;
+            margin-left: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+    .el-form-item__content{
+        display: flex;
     }
 
     /*返回按钮*/

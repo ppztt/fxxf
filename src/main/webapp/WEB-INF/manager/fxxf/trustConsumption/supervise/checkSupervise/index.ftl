@@ -17,14 +17,14 @@
                 <el-col :span="9">
                     <div class="date-range">
                         <el-date-picker
-                                v-model="value1"
+                                v-model="startTime"
                                 type="date"
                                 placeholder="开始日期"
                                 style="width: 220px"
                         ></el-date-picker>
                         <span class="date-separator">-</span>
                         <el-date-picker
-                                v-model="value2"
+                                v-model="endTime"
                                 type="date"
                                 placeholder="结束日期"
                                 style="width: 220px"
@@ -37,7 +37,7 @@
         <el-col :span="2">
             <el-row class="button_groud" type="flex">
                 <el-col span="24">
-                    <el-button type="primary" icon="el-icon-search">查询</el-button>
+                    <el-button type="primary" icon="el-icon-search" @click="inquire">查询</el-button>
                 </el-col>
             </el-row>
         </el-col>
@@ -46,7 +46,7 @@
     <el-table
             class="table"
             :data="dataList"
-            stripe
+            border
             style="width: 100%"
             :max-height="tableHeight">
         <el-table-column
@@ -92,9 +92,11 @@
     <div class="pagination-box">
         <span>共{{total}}条信息 共{{Totalpage}}页</span>
         <el-pagination
-                :current-page.sync="pages"
+                @current-change="handleCurrentChange"
+                :current-page.sync="current"
                 background="false"
                 :page-size="size"
+                :pager-count="pages"
                 layout="prev, pager, next, jumper"
                 :total="total">
         </el-pagination>
@@ -111,16 +113,15 @@
     var indexVue = new Vue({
         el: "#app",
         data: {
+            dataList: [],//数据
             action: '',//跳转页面
-            value1: '',//开始日期
-            value2: '',//结束日期
+            startTime: '',//开始日期
+            endTime: '',//结束日期
             tableHeight: 530, //表格高度,
-            currentPage1: '',//
             total:0,
             size:10,
-            current:1,
-            pages:0,
-            dataList: [],//数据
+            current:0,
+            pages:4,
             id:0,
         },
         computed: {
@@ -141,22 +142,44 @@
                 this.id = row.id
                 this.action = ms.manager + "/xwh/supervise/complaint.do?id="+this.id
             },
-            getList(){
+            getList(startTime,endTime){
                 //切分上个页面传过来的id
                 const url = window.location.href;
                 const regex = /applicantsId=(\d+)/;
                 const match = url.match(regex);
                 const applicantsId = match ? match[1] : null;
                 //请求数据
-                ms.http.get(ms.manager + '/feedback/companyDetails.do?applicantsId='+applicantsId).then((res) => {
-                    const {records,size,total,current,pages} = res.data
-                    this.dataList = records
-                    this.size = size
-                    this.total = Number(total)
-                    this.current = current
-                    this.pages = pages
-                    console.log(res)
-                })
+                if(startTime&&endTime){
+                    ms.http.get(ms.manager + '/feedback/companyDetails.do?applicantsId='+applicantsId+'&current='+this.current+'&size=10&startTime='+startTime+'&endTime='+endTime).then((res) => {
+                        const {records,total} = res.data
+                        this.dataList = records
+                        this.total = Number(total)
+                        console.log(res)
+                    })
+                }else{
+                    ms.http.get(ms.manager + '/feedback/companyDetails.do?applicantsId='+applicantsId+'&current='+this.current+'&size=10').then((res) => {
+                        const {records,total} = res.data
+                        this.dataList = records
+                        this.total = Number(total)
+                        console.log(res)
+                    })
+                }
+            },
+            //下一页
+            handleCurrentChange(val) {
+                this.current = val
+                this.getList()
+            },
+            //查询
+            inquire(){
+                if(this.startTime&&this.endTime){
+                    //处理日期格式
+                    const startTime = this.startTime.getFullYear() + '-' + ('0' + (this.startTime.getMonth() + 1)).slice(-2) + '-' + ('0' + this.startTime.getDate()).slice(-2);
+                    const endTime = this.endTime.getFullYear() + '-' + ('0' + (this.endTime.getMonth() + 1)).slice(-2) + '-' + ('0' + this.endTime.getDate()).slice(-2);
+                    this.getList(startTime,endTime)
+                }else{
+                    this.getList()
+                }
             }
         },
         created: function () {

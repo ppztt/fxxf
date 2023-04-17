@@ -21,7 +21,7 @@
                 ></el-input>
             </el-col>
             <el-col offset="1" span="3">
-                <el-button type="primary" class="blue_btn" size="medium" icon="el-icon-search">
+                <el-button @click="inquire" type="primary" class="blue_btn" size="medium" icon="el-icon-search">
                     查询
                 </el-button>
             </el-col>
@@ -31,16 +31,14 @@
                 border
                 class="table"
                 :data="mesNumDataList"
-                stripe
+                border
                 style="width: 100%"
                 :max-height="tableHeight">
             <el-table-column
                     prop="regName"
                     label="经营者注册名称"
                     align=left">
-                <template slot="hh">
-                    查看处理
-                </template>
+
             </el-table-column>
             <el-table-column
                     prop="count"
@@ -68,9 +66,8 @@
         </el-table>
 
         <div class="paginationbox">
-            <span>共{{mesNumDataList.length}}条信息 共{{Totalpage}}页</span>
+            <span>共{{total}}条信息 共{{Totalpage}}页</span>
             <el-pagination
-                    @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page.sync="current"
                     background="false"
@@ -96,8 +93,8 @@
             tableHeight: 530, //表格高度,
             mesNumDataList: [],//表格数据
             total: 0,//总数据
-            current: "",//当前页数
-            pages: "",//页码按钮的数量，当总页数超过该值时会折叠
+            current: 0,//当前页数
+            pages: 4,//页码按钮的数量，当总页数超过该值时会折叠
             size: 10,//一页展示多少条数据
         },
         computed: {
@@ -108,21 +105,23 @@
         },
         watch: {},
         methods: {
-            handleSizeChange(val) {
-                console.log(val,6)
-            },
+
             handleCurrentChange(val) {
-                console.log(val,9)
+                this.current = val
+                this.getMesNumList()
             },
             getMesNumList() {
                 ///feedback/countByApplicantList.do?current=2&size=10&type=1
-                ms.http.get(ms.manager + `/feedback/countByApplicantList.do`).then((res) => {
+                ms.http.get(ms.manager + '/feedback/countByApplicantList.do?current='+this.current+'&search='+this.search).then((res) => {
                     this.mesNumDataList = res.data.records
                     this.total = Number(res.data.total)
-                    this.current = res.data.current
-                    this.pages = res.data.pages
                     console.log(res)
                 })
+            },
+            //搜索查询
+            inquire(){
+                this.current = 1
+                this.getMesNumList()
             },
             //跳转页面
             goCheck(row) {

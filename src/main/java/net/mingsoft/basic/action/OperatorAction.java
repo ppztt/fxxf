@@ -21,6 +21,7 @@
 
 package net.mingsoft.basic.action;
 
+import net.mingsoft.basic.action.BaseAction;
 import net.mingsoft.basic.biz.IModelBiz;
 import net.mingsoft.cms.biz.ICategoryBiz;
 import net.mingsoft.cms.biz.IContentBiz;
@@ -41,10 +42,10 @@ import javax.servlet.http.HttpServletRequest;
  * @ClassName: GeneraterAction
  */
 @ApiIgnore
-@Controller("cmsConsumer")
-@RequestMapping("/${ms.manager.path}/xwh/supervise")
+@Controller("operator")
+@RequestMapping("/${ms.manager.path}/xwh/operator")
 @Scope("request")
-public class SuperviseAction extends BaseAction {
+public class OperatorAction extends BaseAction {
 
     /*
      * log4j日志记录
@@ -83,11 +84,8 @@ public class SuperviseAction extends BaseAction {
      */
     @GetMapping("/index")
     public String index(HttpServletRequest request, ModelMap model) {
-        return "/fxxf/trustConsumption/supervise/supervise/index";
-    }
-    @GetMapping("/checkSupervise")
-    public String checkSupervise(){return "/fxxf/trustConsumption/supervise/checkSupervise/index"; }
 
-    @GetMapping("/complaint")
-    public String complaint(){return "/fxxf/trustConsumption/supervise/complaint/index"; }
+        return "/fxxf/trustConsumption/operator/index";
+    }
+
 }

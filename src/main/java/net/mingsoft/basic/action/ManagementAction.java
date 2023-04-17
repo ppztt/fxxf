@@ -41,10 +41,10 @@ import javax.servlet.http.HttpServletRequest;
  * @ClassName: GeneraterAction
  */
 @ApiIgnore
-@Controller("cmsConsumer")
-@RequestMapping("/${ms.manager.path}/xwh/supervise")
+@Controller("management")
+@RequestMapping("/${ms.manager.path}/xwh/management")
 @Scope("request")
-public class SuperviseAction extends BaseAction {
+public class ManagementAction extends BaseAction {
 
     /*
      * log4j日志记录
@@ -82,12 +82,8 @@ public class SuperviseAction extends BaseAction {
      * @return
      */
     @GetMapping("/index")
-    public String index(HttpServletRequest request, ModelMap model) {
-        return "/fxxf/trustConsumption/supervise/supervise/index";
-    }
-    @GetMapping("/checkSupervise")
-    public String checkSupervise(){return "/fxxf/trustConsumption/supervise/checkSupervise/index"; }
+    public String backstage(HttpServletRequest request, ModelMap model) {
 
-    @GetMapping("/complaint")
-    public String complaint(){return "/fxxf/trustConsumption/supervise/complaint/index"; }
+        return "/fxxf/management/index";
+    }
 }

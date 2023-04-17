@@ -84,7 +84,7 @@ public class StatisticsAction extends BaseAction {
     @GetMapping("/index")
     public String index(HttpServletRequest request, ModelMap model) {
 
-        return "/fxxf/statistics/index";
+        return "/fxxf/trustConsumption/statistics/index";
     }
 
 }
