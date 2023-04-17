@@ -117,10 +117,10 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
     }
 
     @Override
-    public ApplicantsFindVo findApplicantsByRegName(Integer id, String creditCode) {
-        List<Applicants> applicants = findApplicantsByIdRegName(id, creditCode);
+    public ApplicantsFindVo findApplicantsByRegName(Integer id, String creditCode, String type) {
+        List<Applicants> applicants = findApplicantsByIdRegName(id, creditCode, type);
 
-        if (applicants.size() > 0) {
+        if (!CollectionUtils.isEmpty(applicants)) {
             return new ApplicantsFindVo(true);
         }
 
@@ -1168,10 +1168,10 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                 .in("status", 5, 6));
     }
 
-    public List<Applicants> findApplicantsByIdRegName(Integer id, String creditCode) {
+    public List<Applicants> findApplicantsByIdRegName(Integer id, String creditCode, String type) {
         return list(new QueryWrapper<Applicants>()
                 .eq("credit_code", creditCode)
-                .eq("type", 2)
+                .eq("type", type)
                 .eq("status", 1)
                 .notIn("id", id));
     }
