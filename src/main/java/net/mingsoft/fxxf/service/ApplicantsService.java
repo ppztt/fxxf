@@ -35,7 +35,7 @@ public interface ApplicantsService extends IService<Applicants> {
     /**
      * 经营者列表-根据id查询单位
      */
-    ApplicantsStoreParamsVo findApplicants(Applicants applicants);
+    ApplicantsParamsVo findApplicants(Applicants applicants);
 
 
     /**
