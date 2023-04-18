@@ -7,6 +7,7 @@ import cn.afterturn.easypoi.excel.entity.ImportParams;
 import cn.afterturn.easypoi.excel.entity.TemplateExportParams;
 import cn.afterturn.easypoi.excel.entity.result.ExcelImportResult;
 import cn.afterturn.easypoi.exception.excel.ExcelImportException;
+import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -517,79 +518,105 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
     }
 
     @Override
-    public void export(String status, HttpServletRequest request, HttpServletResponse response) {
+    public void export(Integer type, String status, HttpServletRequest request, HttpServletResponse response) {
         // 获取登录用户 roleId == 1 ，说明是管理员，可以查看全部，否则根据地市去查
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
-        Integer roleId = user.getRoleId();
-        String city = user.getCity();
+        ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
+        User extensionInfo = userMapper.selectById(user.getId());
 
-        List<Applicants> applicantsList = applicantsMapper.applicantsExport(2, status, roleId, user.getCity(), user.getDistrict());
+        int roleId = user.getRoleId();
+        String city = extensionInfo.getCity();
+        List<Applicants> applicantsList = applicantsMapper.applicantsExport(type, status, roleId,
+                city, extensionInfo.getDistrict());
 
-
-        List<ApplicantsStoreExcelVo> applicantsStoreExcelVos = new ArrayList<>();
+        List<ApplicantsExcelVo> applicantsExcelVos = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM");
         applicantsList.forEach(app -> {
-            ApplicantsStoreExcelVo applicantsStoreExcelVo = new ApplicantsStoreExcelVo();
-            BeanUtils.copyProperties(app, applicantsStoreExcelVo);
+            ApplicantsExcelVo applicantsExcelVo = new ApplicantsExcelVo();
+            BeanUtils.copyProperties(app, applicantsExcelVo);
             if (app.getApplicationDate() != null) {
-                applicantsStoreExcelVo.setApplicationDate(formatter.format(app.getApplicationDate()));
+                applicantsExcelVo.setApplicationDate(formatter.format(app.getApplicationDate()));
             }
             if (app.getIndustryDate() != null) {
-                applicantsStoreExcelVo.setIndustryDate(formatter.format(app.getIndustryDate()));
+                applicantsExcelVo.setIndustryDate(formatter.format(app.getIndustryDate()));
             }
             if (app.getCcDate() != null) {
-                applicantsStoreExcelVo.setCcDate(formatter.format(app.getCcDate()));
+                applicantsExcelVo.setCcDate(formatter.format(app.getCcDate()));
             }
             if (app.getDelTime() != null) {
-                applicantsStoreExcelVo.setDelTime(formatter.format(app.getDelTime()));
+                applicantsExcelVo.setDelTime(formatter.format(app.getDelTime()));
             }
             if (app.getStartTime() != null) {
-                applicantsStoreExcelVo.setStartTime(formatterDate.format(app.getStartTime()));
+                applicantsExcelVo.setStartTime(formatterDate.format(app.getStartTime()));
             }
-            applicantsStoreExcelVo.setDelReason(app.getDelReason());
-            applicantsStoreExcelVo.setDelOther(app.getDelOther());
-            applicantsStoreExcelVos.add(applicantsStoreExcelVo);
+
+            applicantsExcelVo.setDelReason(app.getDelReason());
+            applicantsExcelVo.setDelOther(app.getDelOther());
+            applicantsExcelVos.add(applicantsExcelVo);
         });
 
-        String fileName = "线下无理由退货承诺店.xlsx";
+        String fileName = ApplicantsTypeEnum.UNIT.getCode().equals(type) ? "放心消费承诺单位.xlsx" : "线下无理由退货承诺店.xlsx";
+        String concatName = ApplicantsTypeEnum.UNIT.getCode().equals(type) ? " 放心消费承诺-经营者统计.xlsx" : " 线下无理由退货承诺店.xlsx";
         if (roleId == 2 && !Objects.isNull(city)) {
-            fileName = city + " 线下无理由退货承诺店.xlsx";
-        } else if (roleId == 3 && !Objects.isNull(city) && !Objects.isNull(user.getDistrict())) {
-            fileName = city + "_" + user.getDistrict() + " 线下无理由退货承诺店.xlsx";
+            fileName = city + concatName;
+        } else if (roleId == 3 && !Objects.isNull(city) && !Objects.isNull(extensionInfo.getDistrict())) {
+            fileName = city + "_" + extensionInfo.getDistrict() + concatName;
         }
 
-        ExcelUtil.exportExcel(applicantsStoreExcelVos, "", "", ApplicantsStoreExcelVo.class, fileName, request, response);
+        ExcelUtil.exportExcel(applicantsExcelVos, "", "", ApplicantsExcelVo.class, fileName, request, response);
     }
 
     @Override
-    public List<StoreOperatorStatisticsVo> operatorStatistics(ApplicantsStatisticsRequest applicantsStatisticsRequest) {
+    public List<OperatorStatisticsVo> operatorStatistics(ApplicantsStatisticsRequest applicantsStatisticsRequest) {
         // 获取登录用户
         ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
         User extensionInfo = userMapper.selectById(user.getId());
         // roleId == 1 ，说明是管理员，可以查看全部，否则根据地市去查
-        return applicantsMapper.storeOperatorStatistics(applicantsStatisticsRequest.getStartTime().toString(),
-                applicantsStatisticsRequest.getEndTime().toString(),  user.getRoleId(),  extensionInfo.getCity(), extensionInfo.getDistrict());
+        if (ApplicantsTypeEnum.UNIT.getCode().equals(applicantsStatisticsRequest.getType())) {
+            List<OperatorStatisticsVo> operatorStatisticsVos = applicantsMapper.unitOperatorStatistics(
+                    applicantsStatisticsRequest.getStartTime(), applicantsStatisticsRequest.getEndTime(),
+                    user.getRoleId(), extensionInfo.getCity(), extensionInfo.getDistrict());
+
+            return BeanUtil.copyToList(operatorStatisticsVos, OperatorStatisticsVo.class);
+        } else if (ApplicantsTypeEnum.STORE.getCode().equals(applicantsStatisticsRequest.getType())) {
+            List<StoreOperatorStatisticsVo> storeOperatorStatisticsVos = applicantsMapper.storeOperatorStatistics(
+                    applicantsStatisticsRequest.getStartTime(), applicantsStatisticsRequest.getEndTime()
+                    , user.getRoleId(), extensionInfo.getCity(), extensionInfo.getDistrict());
+
+            return BeanUtil.copyToList(storeOperatorStatisticsVos, OperatorStatisticsVo.class);
+        }
+
+        return new ArrayList<>();
     }
 
     @Override
-    public void operatorStatisticsExport(String startTime, String endTime, HttpServletRequest request, HttpServletResponse response) {
+    public void operatorStatisticsExport(Integer type, String startTime, String endTime, HttpServletRequest request, HttpServletResponse response) {
         // 获取登录用户
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
+        User extensionInfo = userMapper.selectById(user.getId());
         // roleId == 1 ，说明是管理员，可以查看全部，否则根据地市去查
-        Integer roleId = user.getRoleId();
-        String city = user.getCity();
+        int roleId = user.getRoleId();
+        String city = extensionInfo.getCity();
 
-        List<StoreOperatorStatisticsVo> operatorStatistics = applicantsMapper.storeOperatorStatistics(startTime, endTime, roleId, city, user.getDistrict());
-
-        String fileName = "无理由退货实体店-经营者统计.xlsx";
+        String fileName = ApplicantsTypeEnum.UNIT.getCode().equals(type) ? " 放心消费承诺-经营者统计.xlsx" : " 无理由退货实体店-经营者统计.xlsx";
         if (roleId == 2 && !Objects.isNull(city)) {
-            fileName = city + " 无理由退货实体店-经营者统计.xlsx";
-        } else if (roleId == 3 && !Objects.isNull(city) && !Objects.isNull(user.getDistrict())) {
-            fileName = city + "_" + user.getDistrict() + " 无理由退货实体店-经营者统计.xlsx";
+            fileName = city + fileName;
+        } else if (roleId == 3 && !Objects.isNull(city) && !Objects.isNull(extensionInfo.getDistrict())) {
+            fileName = city + "_" + extensionInfo.getDistrict() + fileName;
         }
 
-        ExcelUtil.exportExcel(operatorStatistics, "", "", StoreOperatorStatisticsVo.class, fileName, request, response);
+        // roleId == 1 ，说明是管理员，可以查看全部，否则根据地市去查
+        if (ApplicantsTypeEnum.UNIT.getCode().equals(type)) {
+            List<OperatorStatisticsVo> operatorStatisticsVos = applicantsMapper.unitOperatorStatistics(
+                    startTime, endTime, roleId, city, extensionInfo.getDistrict());
+            ExcelUtil.exportExcel(operatorStatisticsVos, "", "", OperatorStatisticsVo.class, fileName, request, response);
+        }
+
+        if (ApplicantsTypeEnum.STORE.getCode().equals(type)) {
+            List<StoreOperatorStatisticsVo> storeOperatorStatisticsVos = applicantsMapper.storeOperatorStatistics(
+                    startTime, endTime, roleId, city, extensionInfo.getDistrict());
+            ExcelUtil.exportExcel(storeOperatorStatisticsVos, "", "", StoreOperatorStatisticsVo.class, fileName, request, response);
+        }
     }
 
     @Override

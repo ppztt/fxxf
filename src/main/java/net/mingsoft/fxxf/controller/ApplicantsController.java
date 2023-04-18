@@ -222,23 +222,19 @@ public class ApplicantsController {
     @ApiOperation(value = "经营者列表-导出", notes = "经营者列表-导出")
     @ApiImplicitParam(name = "status", value = "状态(1:在期； 0:摘牌)，为空则导出全部", example = "1")
     @OperatorLogAnno(operType = "导出", operModul = "无理由退货承诺", operDesc = "经营者列表-导出")
-    public void export(@RequestParam(value = "status", required = false) String status, HttpServletRequest request, HttpServletResponse response) {
+    public void export(@RequestParam(value = "type", required = true) Integer type,
+            @RequestParam(value = "status", required = false) String status,
+                       HttpServletRequest request, HttpServletResponse response) {
 
-        applicantsService.export(status, request, response);
+        applicantsService.export(type,status, request, response);
     }
 
 
     //    @RequiresPermissions("wlythcn:jdtstj")
     @PostMapping("/operatorStatistics/list")
     @ApiOperation(value = "经营者统计-列表", notes = "经营者统计-列表")
-    @ApiOperationSupport(params = @DynamicParameters(name = "map", properties = {
-            @DynamicParameter(name = "current", value = "当前页", example = "1"),
-            @DynamicParameter(name = "size", value = "每页条数", example = "10"),
-            @DynamicParameter(name = "startTime", value = "开始时间", required = false),
-            @DynamicParameter(name = "endTime", value = "结束时间", required = false),
-    }))
 //    @OperatorLogAnno(operType = "查询", operModul = "无理由退货承诺", operDesc = "经营者统计-列表")
-    public ApiResult<PageResultLocal<StoreOperatorStatisticsVo>> operatorStatistics(@RequestBody ApplicantsStatisticsRequest applicantsStatisticsRequest) {
+    public ApiResult<PageResultLocal<OperatorStatisticsVo>> operatorStatistics(@RequestBody ApplicantsStatisticsRequest applicantsStatisticsRequest) {
 
         try {
             return ApiResult.success(applicantsService.operatorStatistics(applicantsStatisticsRequest));
@@ -247,7 +243,6 @@ public class ApplicantsController {
         }
         return ApiResult.fail();
     }
-
 
     //    @RequiresPermissions("wlythcn:jdtstj")
     @GetMapping("/operatorStatistics/export")
@@ -259,12 +254,13 @@ public class ApplicantsController {
             }
     )
 //    @OperatorLogAnno(operType = "导出", operModul = "无理由退货承诺", operDesc = "经营者统计-列表导出")
-    public void operatorStatisticsExport(@RequestParam(value = "startTime", required = false) String startTime,
+    public void operatorStatisticsExport(@RequestParam(value = "type", required = true) Integer type,
+            @RequestParam(value = "startTime", required = false) String startTime,
                                          @RequestParam(value = "endTime", required = false) String endTime,
                                          HttpServletRequest request, HttpServletResponse response) {
 
         try {
-            applicantsService.operatorStatisticsExport(startTime, endTime, request, response);
+            applicantsService.operatorStatisticsExport(type,startTime, endTime, request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }

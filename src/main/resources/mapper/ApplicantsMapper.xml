@@ -253,7 +253,7 @@
         order by sr.sort
     </select>
 
-    <select id="storeOperatorStatistics" resultType="net.mingsoft.fxxf.bean.vo.StoreOperatorStatisticsVo">
+    <select id="storeOperatorStatistics" resultType="net.mingsoft.fxxf.bean.vo.OperatorStatisticsVo">
         SELECT
         sr.name area,
         sum(IFNULL(applicantsCnt,0)) applicantsCnt,
@@ -461,7 +461,7 @@
         <include refid="Base_Column_List"></include>
         , sr.sort
         from
-        v_cc_applicants a
+        cc_applicants a
         LEFT JOIN
         (
         SELECT name, sort
@@ -531,7 +531,7 @@
         select
         <include refid="Base_Column_List"></include>
         from
-        v_cc_applicants a
+        cc_applicants a
         LEFT JOIN
         (
         SELECT name, sort
@@ -565,6 +565,5 @@
         </where>
         order by field(a.status,'4','6','5') desc,sr.sort , a.start_time desc
     </select>
-
 
 </mapper>

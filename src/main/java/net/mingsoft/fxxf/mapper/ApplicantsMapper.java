@@ -86,4 +86,5 @@ public interface ApplicantsMapper extends BaseMapper<Applicants> {
             @Param("roleId") Integer roleId,
             @Param("city") String city,
             @Param("district") String district);
+
 }
