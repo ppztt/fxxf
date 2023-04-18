@@ -21,6 +21,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -435,6 +436,58 @@ public class EnterpriseController {
         applicants.setUpdateTime(LocalDateTime.now());
 
         applicants.setCreateType("企业提交");
+
+        return applicants;
+    }
+
+
+    public static Applicants newUnitApplicants(TransportUnitNewApplyVo a) {
+        Applicants applicants = new Applicants();
+
+        BeanUtils.copyProperties(a, applicants);
+
+        applicants.setType(1);
+        applicants.setContCommitment("否");
+        applicants.setCreateTime(LocalDateTime.now());
+        applicants.setUpdateTime(LocalDateTime.now());
+        if (StringUtils.isNotBlank(a.getContents4())) {
+            applicants.setAddContents4Cnt(1);
+        }
+
+        //市级用户和省级用户导入，直接在期
+        applicants.setStatus(1);
+        applicants.setStartTime(LocalDate.now());
+        LocalDate localDate3After = applicants.getStartTime().plusYears(3).minusMonths(1);
+        applicants.setEndTime(LocalDate.of(localDate3After.getYear(), localDate3After.getMonthValue(), 01));
+        applicants.setCcDate(LocalDateTime.now());
+
+        applicants.setContents1("不提供假冒伪劣商品，不提供“三无”产品，不提供不合格商品，不提供来源不明商品，不提供过期商品，不提供缺陷商品，不提供侵犯知识产权商品。");
+        applicants.setContents2("不作虚假宣传，不搞低价诱导；恪守服务承诺，履行合同约定；明码实价，明白消费；守法经营，诚信待客。");
+        applicants.setContents3("履行保护消费者权益第一责任，提供便捷售后服务，高效处理消费纠纷，承担先行赔付和首问责任。");
+
+
+        applicants.setCreateType("市级录入");
+
+        return applicants;
+    }
+
+    public static Applicants newStoreApplicants(TransportStoreNewApplyVo a) {
+        Applicants applicants = new Applicants();
+
+        BeanUtils.copyProperties(a, applicants);
+
+        applicants.setType(2);
+        applicants.setCreateTime(LocalDateTime.now());
+        applicants.setPubTime(LocalDateTime.now());
+        applicants.setUpdateTime(LocalDateTime.now());
+
+        applicants.setStatus(1);
+        applicants.setStartTime(LocalDate.now());
+        LocalDate localDate3After = applicants.getStartTime().plusYears(3).minusMonths(1);
+        applicants.setEndTime(LocalDate.of(localDate3After.getYear(), localDate3After.getMonthValue(), 01));
+        applicants.setCcDate(LocalDateTime.now());
+
+        applicants.setCreateType("市级录入");
 
         return applicants;
     }
