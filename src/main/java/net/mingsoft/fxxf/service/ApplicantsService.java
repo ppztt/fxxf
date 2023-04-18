@@ -60,11 +60,11 @@ public interface ApplicantsService extends IService<Applicants> {
 
     ApiResult<List<Applicants>> templateImport(Map map);
 
-    void export(String status, HttpServletRequest request, HttpServletResponse response);
+    void export(Integer type,String status, HttpServletRequest request, HttpServletResponse response);
 
-    List<StoreOperatorStatisticsVo> operatorStatistics(ApplicantsStatisticsRequest applicantsStatisticsRequest);
+    List<OperatorStatisticsVo> operatorStatistics(ApplicantsStatisticsRequest applicantsStatisticsRequest);
 
-    void operatorStatisticsExport(String startTime, String endTime, HttpServletRequest request, HttpServletResponse response);
+    void operatorStatisticsExport(Integer type,String startTime, String endTime, HttpServletRequest request, HttpServletResponse response);
 
     ApiResult<EnterpriseUnitNewApplyVo> saveEnterpriseApplyInfo(EnterpriseNewApplyRequest enterpriseNewApplyRequest);
 }
