@@ -57,13 +57,6 @@ public interface ApplicantsMapper extends BaseMapper<Applicants> {
 
     List<Applicants> companyList(String keyword);
 
-    IPage<OperatorStatisticsVo> unitOperatorStatistics(
-            IPage<T> page,
-            @Param("startTime") String startTime,
-            @Param("endTime") String endTime,
-            @Param("roleId") Integer roleId,
-            @Param("city") String city,
-            @Param("district") String district);
 
     List<OperatorStatisticsVo> unitOperatorStatistics(
             @Param("startTime") String startTime,
@@ -72,13 +65,6 @@ public interface ApplicantsMapper extends BaseMapper<Applicants> {
             @Param("city") String city,
             @Param("district") String district);
 
-    IPage<StoreOperatorStatisticsVo> storeOperatorStatistics(
-            IPage<T> page,
-            @Param("startTime") String startTime,
-            @Param("endTime") String endTime,
-            @Param("roleId") Integer roleId,
-            @Param("city") String city,
-            @Param("district") String district);
 
     List<StoreOperatorStatisticsVo> storeOperatorStatistics(
             @Param("startTime") String startTime,
