@@ -18,6 +18,7 @@
             <!-- 工具栏 -->
             <el-col span="6">
                 <el-input
+                        style="margin-left: 5px"
                         size="medium"
                         v-model="keyword"
                         placeholder="请输入关键字"
@@ -27,22 +28,19 @@
 
             <el-col span="4">
                 <el-row class="el-button_groud" type="flex">
-                    <el-col span="11" offset="1">
+                    <el-col>
                         <el-button
                                 size="medium"
                                 class="blue_btn" icon="el-icon-search" @click="getUserList">
-                            <!-- <img class="left" src="@/assets/images/query.png" alt /> -->
                             查询
                         </el-button>
                     </el-col>
-                    <el-col span="11" offset="1">
+                    <el-col>
                         <el-button
                                 size="medium"
                                 class="green_btn"
                                 icon="el-icon-plus"
-                                @click="showEditUser('none')"
-                        >
-                            <!-- <img class="left" src="@/assets/images/add.png" alt /> -->
+                                @click="showEditUser()">
                             新增
                         </el-button>
                     </el-col>
@@ -122,7 +120,8 @@
                                 v-for="(item, index) in regionData"
                                 :key="index"
                                 :value="item.name"
-                        >{{ item.name }}</el-option
+                        >{{ item.name }}
+                        </el-option
                         >
                     </el-select>
                 </el-form-item>
@@ -147,8 +146,76 @@
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button size="small" type="primary" @click="modify = false">提交</el-button>
-                <el-button size="small" @click="modify = false">重置</el-button>
+                <el-button size="small" type="primary" @click="sub('modify')">提交</el-button>
+                <el-button size="small" @click="reset()">重置</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog title="新增行业协会用户"
+                   center
+                   :visible.sync="newAdd"
+                   width="30%">
+            <el-form
+                    ref="formData"
+                    :model="formData"
+                    :rules="ruleValidate"
+                    label-width="90px">
+                <el-form-item label="用户名" prop="account">
+                    <el-input
+                            v-model="formData.account"
+                            placeholder="请输入用户名"
+                            :disabled="userId != 'none'"
+                    ></el-input>
+                </el-form-item>
+                <el-form-item
+                        label="行业协会"
+                        prop="industryName">
+                    <el-input
+                            v-model="formData.industryName"
+                            placeholder="请输入行业协会名称"
+                    ></el-input>
+                </el-form-item>
+                <el-form-item
+                        label="所属市"
+                        prop="city">
+                    <el-select
+                            v-model="formData.city"
+                            placeholder="请选择所属市"
+                            :disabled="formData.roleId == 1 || roleId == 2 || roleId == 3"
+                            :clearable="true"
+                            filterable
+                            @change="cityChange(formData.city)">
+                        <el-option
+                                v-for="(item, index) in regionData"
+                                :key="index"
+                                :value="item.name"
+                        >{{ item.name }}
+                        </el-option
+                        >
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="联系电话" prop="phone">
+                    <el-input v-model="formData.phone" placeholder="请输入联系电话"></el-input>
+                </el-form-item>
+                <el-form-item label="登录密码" prop="password">
+                    <el-input
+                            type="password"
+                            :password="true"
+                            v-model="formData.password"
+                            placeholder="请输入登录密码，留空则不修改密码"
+                    ></el-input>
+                </el-form-item>
+                <el-form-item label="确认密码" prop="repassword">
+                    <el-input
+                            type="password"
+                            :password="true"
+                            v-model="formData.repassword"
+                            placeholder="请输入确认密码，留空则不修改密码"
+                    ></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button size="small" type="primary" @click="sub('newAdd')">提交</el-button>
+                <el-button size="small" @click="reset()">重置</el-button>
             </span>
         </el-dialog>
     </el-main>
@@ -171,29 +238,39 @@
                 total: 0,
                 // 修改页面的路径
                 modify: false,
+                // 新增的弹出框
+                newAdd: false,
                 userDataList: [
                     {
-                        account: "test",
+                        account: "hqfj",
                         address: null,
-                        city: "广州市",
-                        createTime: "2020-01-12 18:43:52",
-                        district: null,
-                        email: "test@qq.com",
-                        id: 1,
-                        phone: null,
-                        province: "广东省",
-                        realname: "test",
+                        city: "汕尾市",
+                        createTime: null,
+                        creditCode: null,
+                        district: "华侨管理区",
+                        email: null,
+                        id: 178,
+                        management: null,
+                        newPassword: null,
+                        password: null,
+                        phone: "15880383933",
+                        principal: null,
+                        principalTel: null,
+                        province: null,
+                        realname: null,
                         roleId: null,
+                        roleName: "区县工作人员",
+                        storeName: null,
                         town: null,
-                        updateTime: "2020-01-12 18:43:54",
-                        zipcode: null,
-                        rolename: "fefe",
+                        updateTime: null,
+                        usertype: 0,
+                        zipcode: null
                     }
                 ],
                 roleId: '',
                 roleList: [],
                 // 地区信息
-                regionData:[],
+                regionData: [],
                 districtData: [],
                 // 添加用户信息表单
                 formData: {
@@ -326,7 +403,7 @@
 
             },
             showEditUser() {
-
+                this.newAdd = true
             },
             sizeChange() {
             },
@@ -354,9 +431,42 @@
                     // this.town = "";
                 }
             },
-
+            // 修改用户信息
+            modifyUser(id) {
+                this.modify = true;
+                ms.http.get()
+            },
+            // 重置修改的用户信息
+            reset() {
+                this.formData = {
+                    account: "", //用户名
+                    realname: "", //真实姓名
+                    industryName: "", // 行业协会名称
+                    // industryUserName: "", // 行业协会用户名
+                    email: "", //邮箱
+                    city: "", //市
+                    district: "", // 区县
+                    zipcode: "", //邮政编码
+                    phone: "", //手机
+                    password: "", //密码
+                    repassword: "", //确认密码
+                    roleId: '', //所属组
+                }
+            },
+            // 提交修改
+            sub(msg) {
+                let params = JSON.stringify(this.formData)
+                if (msg == "newAdd") {
+                    ms.http.post('', params).then((res) => {
+                    })
+                }
+                if (msg == 'modify') {
+                    ms.http.post('', params).then((res) => {
+                    })
+                }
+            }
         },
-        mounted(){
+        mounted() {
             this.getRegionData()
         }
     });
@@ -470,5 +580,9 @@
         cursor: pointer;
         background: transparent !important;
         border: none;
+    }
+    .el-button{
+        width: 90%;
+        margin-left: 10% !important;
     }
 </style>

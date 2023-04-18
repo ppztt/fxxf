@@ -18,6 +18,7 @@
             <!-- 工具栏 -->
             <el-col span="6">
                 <el-input
+                        style="margin-left: 5px"
                         size="medium"
                         v-model="keyword"
                         placeholder="请输入关键字"
