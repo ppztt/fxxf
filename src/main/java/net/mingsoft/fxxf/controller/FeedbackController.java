@@ -1,38 +1,37 @@
 package net.mingsoft.fxxf.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Maps;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import net.mingsoft.basic.entity.ManagerEntity;
 import net.mingsoft.fxxf.bean.entity.Record;
 import net.mingsoft.fxxf.bean.entity.*;
 import net.mingsoft.fxxf.bean.request.BasePageResult;
 import net.mingsoft.fxxf.bean.request.FeedBackCompanyPageRequest;
+import net.mingsoft.fxxf.bean.vo.*;
+import net.mingsoft.fxxf.mapper.FeedbackMapper;
+import net.mingsoft.fxxf.mapper.FeedbackTypeMapper;
 import net.mingsoft.fxxf.service.*;
 import net.mingsoft.fxxf.service.impl.MyFeedbackService;
-import net.mingsoft.fxxf.bean.vo.*;
+import org.apache.commons.compress.utils.Lists;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.time.LocalDateTime;
+import java.util.*;
 
 /**
  * 留言反馈
@@ -60,6 +59,15 @@ public class FeedbackController {
 
     @Resource
     private FeedbackStatService feedbackStatService;
+
+    @Resource
+    FeedbackTypeMapper feedbackTypeMapper;
+
+    @Value("${saveAttachmentPath}")
+    private String feedbackAbsolutePath;
+
+    @Resource
+    private FeedbackMapper feedbackMapper;
 
     /**
      *  查询企业投诉数量和已处理数量统计数据
@@ -211,6 +219,163 @@ public class FeedbackController {
         } catch (IOException e) {
             log.error("导出留言反馈统计报表发生异常:", e);
         }
+    }
+
+
+    @ApiOperation(value = "保存留言反馈", notes = "留言反馈/保存留言反馈")
+    @PostMapping("/saveFeedbackInfo")
+    @DynamicParameters(
+            name = "feedback",
+            properties = {
+                    @DynamicParameter(name = "feedback", value = "留言反馈实体类", required = true)
+            })
+    public ApiResult saveFeedbackInfo(@RequestBody Feedback feedback) {
+        try {
+
+            Integer applicantsId = feedback.getApplicantsId();
+            if (applicantsId != null) {
+                LocalDateTime now = LocalDateTime.now();
+                feedback.setCreateTime(now);
+                feedback.setUpdateTime(now);
+                //状态默认未处理
+                feedback.setStatus("0");
+                feedback.setIsNew(1);
+
+                //解析附件信息
+                List<FeedbackUpload> fileList = feedback.getFileList();
+                String filesInfo = JSON.toJSONString(fileList);
+                feedback.setFilesInfo(filesInfo);
+
+                feedbackService.save(feedback);
+                return ApiResult.success();
+            } else {
+                return new ApiResult("500", "请选择经营注册企业");
+            }
+        } catch (Exception e) {
+            log.error("保存留言反馈发生异常，{}", e);
+            return ApiResult.fail();
+        }
+    }
+
+    @ApiOperation(value = "经营注册者列表", notes = "留言反馈/经营注册者列表")
+    @GetMapping("/companyList")
+    public ApiResult<List<Applicants>> companyList(@RequestParam(required = false) @ApiParam(name = "keyword", value = "关键字") String keyword) {
+        try {
+            List<Applicants> list = feedbackService.companyList(keyword);
+            return ApiResult.success(list);
+        } catch (Exception e) {
+            log.error("保存留言反馈发生异常，{}", e);
+            return ApiResult.fail();
+        }
+    }
+
+    @ApiOperation(value = "反馈类型", notes = "留言反馈/反馈类型")
+    @GetMapping("/feedbackType")
+    public ApiResult<List<FeedbackType>> feedbackType(@RequestParam(required = false, defaultValue = "0") @ApiParam(name = "flag", value = "旗标值：0前台；1后台") Integer flag) {
+        try {
+            List<FeedbackType> feedbackTypeList = feedbackTypeMapper.feedbackType(flag);
+            return ApiResult.success(feedbackTypeList);
+        } catch (Exception e) {
+            log.error("反馈类型/反馈原因 查询发生异常，{}", e);
+            return ApiResult.fail();
+        }
+    }
+
+    @ApiOperation(value = "反馈原因", notes = "留言反馈/反馈原因")
+    @GetMapping("/feedbackReason")
+    public ApiResult<List<FeedbackType>> feedbackReason(@RequestParam(required = true) @ApiParam(name = "id", value = "类型id", required = true) Integer id) {
+        try {
+            List<FeedbackType> feedbackTypeList = feedbackTypeMapper.feedbackReason(id);
+            return ApiResult.success(feedbackTypeList);
+        } catch (Exception e) {
+            log.error("反馈类型/反馈原因 查询发生异常，{}", e);
+            return ApiResult.fail();
+        }
+    }
+
+    @ApiOperation(value = "留言反馈温馨提示", notes = "留言反馈温馨提示")
+    @GetMapping(value = "/msg")
+    public ApiResult<FeedbackMsgVo> feedbackMsg() {
+        try {
+            // 获取登录用户
+            User user = (User) SecurityUtils.getSubject().getPrincipal();
+            // roleId == 1 ，说明是管理员，可以查看全部，否则根据地市去查
+            Integer roleId = user.getRoleId();
+
+            FeedbackMsgVo feedbacks = feedbackMapper.getMsgCnt(roleId, user.getCity(), user.getDistrict());
+
+            return ApiResult.success(feedbacks);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return ApiResult.fail();
+    }
+
+
+    @ApiOperation(value = "附件批量上传", notes = "留言反馈/附件批量上传")
+    @PostMapping(value = "/uploadFile", produces = "application/json;charset=UTF-8")
+    public ApiResult<List<FeedbackUpload>> attachmentUpload(@RequestParam("files") @ApiParam(name = "files", value = "附件：任意数据格式；文件最大限制500M") MultipartFile[] files) {
+
+        // 限制为zip和图片格式（zip、jpg、jpeg、png），检查下上传文件大小校验10M以下
+        boolean match = Arrays.stream(files).noneMatch(f -> f.getOriginalFilename().endsWith(".zip")
+                || f.getOriginalFilename().endsWith(".jpg")
+                || f.getOriginalFilename().endsWith(".jpeg")
+                || f.getOriginalFilename().endsWith(".png"));
+
+        if(match){
+            return ApiResult.fail("上传失败，请上传zip、jpg、jpeg、png格式文件");
+        }
+
+        match = Arrays.stream(files).anyMatch(f -> f.getSize() > 10485760);
+
+        if(match){
+            return ApiResult.fail("上传失败，请上传10M内的文件", null);
+        }
+
+        List<FeedbackUpload> resultList = Lists.newArrayList();
+        FeedbackUpload feedbackUpload;
+        //1.获取文件名、文件流
+        InputStream in;
+        FileOutputStream fos;
+        String uuid;
+        String fileName;
+        //绝对路径
+        String absolutePath;
+        //相对路径
+        String relativePath;
+
+        for (MultipartFile file : files) {
+            feedbackUpload = new FeedbackUpload();
+            uuid = UUID.randomUUID().toString();
+            fileName = file.getOriginalFilename();
+            //UUID保证文件名称的唯一
+            absolutePath = feedbackAbsolutePath + "/" + uuid + fileName;
+            relativePath = feedbackAbsolutePath + "/" + uuid + fileName;
+            try {
+                //2.写入磁盘
+                fos = new FileOutputStream(absolutePath);
+                in = file.getInputStream();
+                byte[] b = new byte[1024];
+                int len;
+                while ((len = in.read(b)) != -1) {
+                    fos.write(b, 0, len);
+                }
+                in.close();
+                fos.close();
+                log.info("附件成功写入磁盘：" + absolutePath);
+
+                //组装实体类
+                feedbackUpload.setFileName(fileName);
+                feedbackUpload.setPath(relativePath);
+                resultList.add(feedbackUpload);
+            } catch (IOException e) {
+                log.error("留言反馈--保存附件发生异常:", e);
+                return ApiResult.fail();
+            }
+        }
+        //3.返回文件名、文件存储路径
+        return ApiResult.success(resultList);
     }
 
 }

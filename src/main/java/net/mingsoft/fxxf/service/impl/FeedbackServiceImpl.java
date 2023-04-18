@@ -8,18 +8,19 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import net.mingsoft.basic.entity.ManagerEntity;
+import net.mingsoft.fxxf.bean.entity.Applicants;
 import net.mingsoft.fxxf.bean.entity.Feedback;
 import net.mingsoft.fxxf.bean.entity.FeedbackStat;
 import net.mingsoft.fxxf.bean.entity.User;
+import net.mingsoft.fxxf.bean.request.BasePageResult;
+import net.mingsoft.fxxf.bean.request.FeedBackCompanyPageRequest;
+import net.mingsoft.fxxf.bean.vo.FeedbackComplaintVo;
+import net.mingsoft.fxxf.bean.vo.FeedbackStatisticRequest;
 import net.mingsoft.fxxf.mapper.ApplicantsMapper;
 import net.mingsoft.fxxf.mapper.FeedbackMapper;
 import net.mingsoft.fxxf.mapper.FeedbackStatMapper;
 import net.mingsoft.fxxf.mapper.UserMapper;
-import net.mingsoft.fxxf.bean.request.BasePageResult;
-import net.mingsoft.fxxf.bean.request.FeedBackCompanyPageRequest;
 import net.mingsoft.fxxf.service.FeedbackService;
-import net.mingsoft.fxxf.bean.vo.FeedbackComplaintVo;
-import net.mingsoft.fxxf.bean.vo.FeedbackStatisticRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -113,6 +114,12 @@ public class FeedbackServiceImpl extends ServiceImpl<FeedbackMapper, Feedback> i
             }
         }
         return statList;
+    }
+
+    @Override
+    public List<Applicants> companyList(String keyword) {
+        List<Applicants> applicantsList = applicantsMapper.companyList(keyword);
+        return applicantsList;
     }
 
 }
