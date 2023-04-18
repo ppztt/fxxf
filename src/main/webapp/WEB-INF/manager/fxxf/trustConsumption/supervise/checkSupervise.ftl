@@ -140,7 +140,7 @@
             //跳转页面
             goComplaint(row) {
                 this.id = row.id
-                this.action = ms.manager + "/xwh/supervise/complaint.do?id="+this.id
+                this.action = ms.manager + "/route/feedbackHandle.do?id="+this.id
             },
             getList(startTime,endTime){
                 //切分上个页面传过来的id
@@ -149,21 +149,16 @@
                 const match = url.match(regex);
                 const applicantsId = match ? match[1] : null;
                 //请求数据
-                if(startTime&&endTime){
+                if(startTime===undefined&&endTime===undefined){
+                    startTime=''
+                    endTime=''
+                }
                     ms.http.get(ms.manager + '/feedback/companyDetails.do?applicantsId='+applicantsId+'&current='+this.current+'&size=10&startTime='+startTime+'&endTime='+endTime).then((res) => {
                         const {records,total} = res.data
                         this.dataList = records
                         this.total = Number(total)
                         console.log(res)
                     })
-                }else{
-                    ms.http.get(ms.manager + '/feedback/companyDetails.do?applicantsId='+applicantsId+'&current='+this.current+'&size=10').then((res) => {
-                        const {records,total} = res.data
-                        this.dataList = records
-                        this.total = Number(total)
-                        console.log(res)
-                    })
-                }
             },
             //下一页
             handleCurrentChange(val) {
@@ -172,14 +167,16 @@
             },
             //查询
             inquire(){
-                if(this.startTime&&this.endTime){
-                    //处理日期格式
-                    const startTime = this.startTime.getFullYear() + '-' + ('0' + (this.startTime.getMonth() + 1)).slice(-2) + '-' + ('0' + this.startTime.getDate()).slice(-2);
-                    const endTime = this.endTime.getFullYear() + '-' + ('0' + (this.endTime.getMonth() + 1)).slice(-2) + '-' + ('0' + this.endTime.getDate()).slice(-2);
-                    this.getList(startTime,endTime)
-                }else{
-                    this.getList()
+                //处理日期格式
+                let startTime = '';
+                let endTime = '';
+                if (this.startTime) {
+                    startTime = this.startTime.getFullYear() + '-' + ('0' + (this.startTime.getMonth() + 1)).slice(-2) + '-' + ('0' + this.startTime.getDate()).slice(-2);
                 }
+                if (this.endTime) {
+                    endTime = this.endTime.getFullYear() + '-' + ('0' + (this.endTime.getMonth() + 1)).slice(-2) + '-' + ('0' + this.endTime.getDate()).slice(-2)
+                }
+                this.getList(startTime,endTime)
             }
         },
         created: function () {

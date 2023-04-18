@@ -108,7 +108,9 @@
             tableHeight: 500,//表格高度
             dataList: []//数据
         },
-        computed: {},
+        computed: {
+
+        },
         watch: {},
         methods: {
             //获取数据

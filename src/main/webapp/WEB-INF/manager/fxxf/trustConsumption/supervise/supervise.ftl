@@ -125,7 +125,7 @@
             },
             //跳转页面
             goCheck(row) {
-                this.action = ms.manager + `/xwh/supervise/checkSupervise.do?applicantsId=`+row.applicantsId
+                this.action = ms.manager + `/route/feedbackDetail.do?applicantsId=`+row.applicantsId
             }
 
         },

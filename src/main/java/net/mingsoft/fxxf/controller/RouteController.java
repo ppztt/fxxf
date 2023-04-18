@@ -4,8 +4,11 @@ import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 菜单页面路由跳转控制器
@@ -25,4 +28,62 @@ public class RouteController {
 //        return "/fxxf/feedback/index";
 //    }
 
+    /**
+     * /**
+     * 监督投诉页面
+     * @return
+     */
+    @GetMapping("/feedbackIndex")
+    public String feedbackIndex(HttpServletRequest request, ModelMap model) {
+        return "/fxxf/trustConsumption/supervise/supervise";
+    }
+    @GetMapping("/feedbackDetail")
+    public String feedbackDetail(){return "/fxxf/trustConsumption/supervise/checkSupervise"; }
+
+    @GetMapping("/feedbackHandle")
+    public String feedbackHandle(){return "/fxxf/trustConsumption/supervise/complaint"; }
+
+    /**
+     * /**
+     * 监督投诉统计
+     *
+     * @return
+     */
+    @GetMapping("/statisticsIndex")
+    public String statisticsIndex(HttpServletRequest request, ModelMap model) {
+        return "/fxxf/trustConsumption/statistics/index";
+    }
+
+    /**
+     * /**
+     * 经营者统计
+     *
+     * @return
+     */
+    @GetMapping("/operatorIndex")
+    public String operatorIndex(HttpServletRequest request, ModelMap model) {
+        return "/fxxf/trustConsumption/operator/index";
+    }
+
+    /**
+     * /**
+     * 商品和服务类别统计
+     *
+     * @return
+     */
+    @GetMapping("/managementIndex")
+    public String backstage(HttpServletRequest request, ModelMap model) {
+        return "/fxxf/manaGement/commodity/index";
+    }
+
+    /**
+     * /**
+     * 申报材料管理
+     *
+     * @return
+     */
+    @GetMapping("/declareMaterial")
+    public String declareMaterial(HttpServletRequest request, ModelMap model) {
+        return "/fxxf/manaGement/declare/index";
+    }
 }

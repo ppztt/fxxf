@@ -132,17 +132,14 @@
         methods: {
             //获取数据
             getList(startTime, endTime) {
-                //请求数据
-                //判断是否有日期
-                if (startTime && endTime) {
-                    ms.http.get(ms.manager + '/feedback/statistic.do?type=1&startTime=' + startTime + '&endTime=' + endTime).then((res) => {
-                        this.dataList = res.data.records
-                    })
-                } else {
-                    ms.http.get(ms.manager + '/feedback/statistic.do?type=1').then((res) => {
-                        this.dataList = res.data.records
-                    })
+
+                if (startTime === undefined && endTime === undefined) {
+                    startTime = ''
+                    endTime = ''
                 }
+                ms.http.get(ms.manager + '/feedback/statistic.do?type=1&startTime=' + startTime + '&endTime=' + endTime).then((res) => {
+                    this.dataList = res.data.records
+                })
             },
             //导出接口
             derive() {
@@ -151,14 +148,16 @@
             },
             //查询
             getOperatorStatisticList() {
-                if (this.startTime && this.endTime) {
-                    //处理日期格式
-                    const startTime = this.startTime.getFullYear() + '-' + ('0' + (this.startTime.getMonth() + 1)).slice(-2) + '-' + ('0' + this.startTime.getDate()).slice(-2);
-                    const endTime = this.endTime.getFullYear() + '-' + ('0' + (this.endTime.getMonth() + 1)).slice(-2) + '-' + ('0' + this.endTime.getDate()).slice(-2);
-                    this.getList(startTime, endTime)
-                } else {
-                    this.getList()
+                //处理日期格式
+                let startTime = '';
+                let endTime = '';
+                if (this.startTime) {
+                    startTime = this.startTime.getFullYear() + '-' + ('0' + (this.startTime.getMonth() + 1)).slice(-2) + '-' + ('0' + this.startTime.getDate()).slice(-2);
                 }
+                if (this.endTime) {
+                    endTime = this.endTime.getFullYear() + '-' + ('0' + (this.endTime.getMonth() + 1)).slice(-2) + '-' + ('0' + this.endTime.getDate()).slice(-2)
+                }
+                this.getList(startTime, endTime)
             }
         },
         created: function () {

@@ -262,7 +262,6 @@
                     this.data = res.data.feedback
                     this.data.filesInfo = JSON.parse(this.data.filesInfo);
                     this.history = res.data.history
-                    console.log(this.data)
                 })
             },
             resultMesInfo(){
@@ -273,7 +272,10 @@
                 const id = match ? match[1] : null;
                 const {processingSituation,result} = this.formValidate
                 ms.http.post(ms.manager + '/feedback/handleFeedback/' + id + '.do?id='+id+'&processingSituation='+processingSituation+'&result='+result).then((res) => {
-                    console.log(res)
+                    if(res.code==200) {
+                        this.getList()
+                    }
+
                 })
             },
             showImage(path) {
