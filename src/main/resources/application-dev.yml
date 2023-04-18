@@ -25,3 +25,5 @@ logging:
   level:
     net.mingsoft: debug
   config: classpath:log4j-spring.xml
+
+saveAttachmentPath: d://

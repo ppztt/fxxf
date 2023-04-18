@@ -6,10 +6,9 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import net.mingsoft.fxxf.service.GoodsAndServicesStatService;
 import net.mingsoft.fxxf.bean.vo.ApiResult;
 import net.mingsoft.fxxf.bean.vo.GoodsAndServicesStat;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import net.mingsoft.fxxf.service.GoodsAndServicesStatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +29,7 @@ public class GoodsAndServicesStatController {
     @Autowired
     private GoodsAndServicesStatService goodsAndServicesStatService;
 
-    @RequiresPermissions("manage:typestat")
+    // @RequiresPermissions("manage:typestat")
     @ApiOperation(value = "商品服务类型统计列表")
     @GetMapping("/list")
     @ApiImplicitParams({
