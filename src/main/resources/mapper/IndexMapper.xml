@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.mingsoft.fxxf.mapper.IndexMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="net.mingsoft.fxxf.bean.vo.ApplicantsExtend">
+        <id column="id" property="id"/>
+        <result column="type" property="type"/>
+        <result column="status" property="status"/>
+        <result column="reg_name" property="regName"/>
+        <result column="credit_code" property="creditCode"/>
+        <result column="store_name" property="storeName"/>
+        <result column="province" property="province"/>
+        <result column="city" property="city"/>
+        <result column="district" property="district"/>
+        <result column="town" property="town"/>
+        <result column="address" property="address"/>
+        <result column="online_name" property="onlineName"/>
+        <result column="platform" property="platform"/>
+        <result column="online_link" property="onlineLink"/>
+        <result column="management" property="management"/>
+        <result column="details" property="details"/>
+        <result column="principal" property="principal"/>
+        <result column="principal_tel" property="principalTel"/>
+        <result column="contacts" property="contacts"/>
+        <result column="contacts_tel" property="contactsTel"/>
+        <result column="join_industry" property="joinIndustry"/>
+        <result column="cont_commitment" property="contCommitment"/>
+        <result column="comm_num" property="commNum"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="contents1" property="contents1"/>
+        <result column="contents2" property="contents2"/>
+        <result column="contents3" property="contents3"/>
+        <result column="contents4" property="contents4"/>
+        <result column="statement" property="statement"/>
+        <result column="application_date" property="applicationDate"/>
+        <result column="industry_content" property="industryContent"/>
+        <result column="industry_date" property="industryDate"/>
+        <result column="cc_content" property="ccContent"/>
+        <result column="cc_date" property="ccDate"/>
+        <result column="del_time" property="delTime"/>
+        <result column="del_reason" property="delReason"/>
+        <result column="del_other" property="delOther"/>
+        <result column="pub_time" property="pubTime"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, type, status, reg_name, credit_code, store_name, province, city, district, town, address, online_name, platform, online_link, management, details, principal, principal_tel, contacts, contacts_tel, join_industry, cont_commitment, comm_num, start_time, end_time, contents1, contents2, contents3, contents4, statement, application_date, industry_content, industry_date, cc_content, cc_date, del_time, del_reason, del_other, pub_time, create_time, update_time
+    </sql>
+
+    <select id="searchList" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT <include refid="Base_Column_List"/> FROM cc_applicants
+        <where>
+            <if test="params.type != null and params.type != ''">
+                AND type = #{params.type}
+            </if>
+            <if test="params.status != null and params.status != ''">
+                AND status = #{params.status}
+            </if>
+            <if test="params.keyword != null and params.keyword != ''">
+                AND (
+                        create_time LIKE BINARY concat('%',#{params.keyword},'%')
+                        OR reg_name LIKE concat('%', #{params.keyword}, '%')
+                        OR credit_code LIKE concat('%', #{params.keyword}, '%')
+                        OR store_name LIKE concat('%', #{params.keyword}, '%')
+                )
+            </if>
+            ORDER BY create_time desc
+        </where>
+    </select>
+
+</mapper>
