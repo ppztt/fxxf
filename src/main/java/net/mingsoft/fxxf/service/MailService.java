@@ -1,12 +1,8 @@
 package net.mingsoft.fxxf.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 
 /**
  * @Author: yrg
@@ -16,8 +12,8 @@ import javax.mail.internet.MimeMessage;
 @Service
 public class MailService {
 
-    @Autowired
-    private JavaMailSender mailSender;
+//    @Autowired
+//    private JavaMailSender javaMailSender;
 
     /**
      * @param to      收件人
@@ -25,13 +21,13 @@ public class MailService {
      * @param content 正文
      */
     public void sendHtmlMail(String to, String subject, String content) throws MessagingException {
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        helper.setFrom("ts@gdcc315.cn");
-        helper.setTo(to);
-        helper.setSubject(subject);
-        helper.setText(content, true);
-        mailSender.send(message);
+//        MimeMessage message = javaMailSender.createMimeMessage();
+//        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+//        helper.setFrom("ts@gdcc315.cn");
+//        helper.setTo(to);
+//        helper.setSubject(subject);
+//        helper.setText(content, true);
+//        javaMailSender.send(message);
     }
 
 }
