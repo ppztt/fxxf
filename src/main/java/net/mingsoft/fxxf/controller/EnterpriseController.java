@@ -6,26 +6,21 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import net.mingsoft.basic.entity.ManagerEntity;
-import net.mingsoft.fxxf.anno.OperatorLogAnno;
-import net.mingsoft.fxxf.mapper.AuditLogMapper;
 import net.mingsoft.fxxf.bean.entity.Applicants;
 import net.mingsoft.fxxf.bean.entity.User;
-import net.mingsoft.fxxf.service.impl.EnterpriseService;
-import net.mingsoft.fxxf.service.impl.MyApplicantsUnitService;
 import net.mingsoft.fxxf.bean.vo.*;
+import net.mingsoft.fxxf.mapper.AuditLogMapper;
+import net.mingsoft.fxxf.service.ApplicantsService;
+import net.mingsoft.fxxf.service.impl.EnterpriseService;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -44,15 +39,11 @@ public class EnterpriseController {
     private AuditLogMapper auditLogMapper;
 
     @Resource
-    private MyApplicantsUnitService myApplicantsUnitService;
+    private ApplicantsService applicantsService;
 
 
     @GetMapping("/info/{userId}")
     @ApiOperation(value = "获取企业信息", notes = "获取企业信息")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "userId", value = "用户id", dataType = "int", required = true),
-    })
-    @OperatorLogAnno(operType = "查询", operModul = "企业端", operDesc = "获取企业信息")
     public ApiResult<EnterpriseInfoVo> getEnterpriseInfo(@PathVariable(value = "userId") Integer id) {
         try {
             User user = enterpriseService.getEnterpriseInfo(id);
@@ -69,11 +60,7 @@ public class EnterpriseController {
     }
 
     @PostMapping("/info/{userId}")
-    @ApiOperation(value = "更新企业信息", notes = "更新企业信息")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "userId", value = "用户id", dataType = "int", required = true),
-    })
-    @OperatorLogAnno(operType = "更新", operModul = "企业端", operDesc = "更新企业信息")
+    @ApiOperation(value = "更新企业信息")
     public ApiResult updateEnterpriseInfo(@PathVariable(value = "userId") Integer id, @RequestBody EnterpriseInfoVo enterpriseInfoVo) {
         try {
             User user = enterpriseService.getEnterpriseInfo(id);
@@ -91,15 +78,7 @@ public class EnterpriseController {
 
 
     @GetMapping("/apply")
-    @ApiOperation(value = "获取当前企业所有申请信息", notes = "获取当前企业所有申请信息")
-    @ApiImplicitParams(
-            {
-                    @ApiImplicitParam(name = "current", value = "当前页", dataType = "int", example = "1", defaultValue = "1"),
-                    @ApiImplicitParam(name = "size", value = "每页条数", dataType = "int", example = "10", defaultValue = "10"),
-                    @ApiImplicitParam(name = "userId", value = "用户id", dataType = "int", required = true),
-            }
-    )
-//    @OperatorLogAnno(operType="查询", operModul="企业端", operDesc="获取当前企业所有申请信息")
+    @ApiOperation(value = "获取当前企业所有申请信息")
     public ApiResult<PageResultLocal<Applicants>> getEnterpriseApplyInfo(
             @RequestParam(name = "current", defaultValue = "1") Integer current,
             @RequestParam(name = "size", defaultValue = "10") Integer size,
@@ -118,16 +97,8 @@ public class EnterpriseController {
 
     @GetMapping("/apply/{id}")
     @ApiOperation(value = "根据id获取申请信息", notes = "根据id获取申请信息")
-    @ApiImplicitParams(
-            {
-                    @ApiImplicitParam(name = "id", value = "承诺单位id", dataType = "int", required = true),
-            }
-    )
-//    @OperatorLogAnno(operType="查询", operModul="企业端", operDesc="根据id获取申请信息")
     public ApiResult<ApplicantsUnitParamsVo> getEnterpriseApplyInfoById(@PathVariable(value = "id") Integer id) {
         try {
-            ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
-
             Applicants applicants = enterpriseService.getEnterpriseApplyInfoById(id);
 
             ApplicantsUnitParamsVo applicantsUnitParamsVo = new ApplicantsUnitParamsVo();
@@ -138,26 +109,12 @@ public class EnterpriseController {
                     applicantsUnitParamsVo.setDetails(Arrays.asList(applicants.getDetails().split(",")));
                 }
 
-                /*状态(1:在期；0:摘牌；2:过期;
-                4:待审核;
-                5:县级审核通过;
-                6:市级审核通过;
-                7:审核不通过 )*/
                 List<AuditLogVo> auditLogs = auditLogMapper.getAuditLog(id, 2);
                 if (!Objects.equals(applicants.getStatus(), 1) || !Objects.equals(applicants.getStatus(), 7)) {
                     if (auditLogs.size() > 0) {
                         auditLogs.get(0).setContents("");
                     }
                 }
-               /* if(Objects.equals(applicants.getStatus(), 1) || Objects.equals(applicants.getStatus(), 7)){
-                    auditLogs = auditLogMapper.getAuditLog(id, 1);
-                }else if (Objects.equals(applicants.getStatus(), 5)){
-                    auditLogs = auditLogMapper.getAuditLog(id, 3);
-                }else if (Objects.equals(applicants.getStatus(), 6)) {
-                    auditLogs = auditLogMapper.getAuditLog(id, 2);
-                }else{
-                    auditLogs = auditLogMapper.getAuditLog(id, 1);
-                }*/
 
                 applicantsUnitParamsVo.setAuditLogs(auditLogs);
             }
@@ -170,23 +127,15 @@ public class EnterpriseController {
     }
 
     @PostMapping("/apply/1")
-    @ApiOperation(value = "申请信息-放心消费承诺新申请", notes = "申请信息-放心消费承诺新申请")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "userId", value = "用户id", dataType = "int", required = true),
-    })
-//    @DynamicParameters(
-//            name = "enterpriseUnitNewApplyVo",
-//            properties = {
-//                    @DynamicParameter(name = "enterpriseUnitNewApplyVo", value = "enterpriseUnitNewApplyVo", dataTypeClass = EnterpriseUnitNewApplyVo.class, required = true)
-//            }
-//    )
-//    @OperatorLogAnno(operType = "新增", operModul = "企业端", operDesc = "申请信息-放心消费承诺新申请")
-    public ApiResult<EnterpriseUnitNewApplyVo> saveEnterpriseUnitApplyInfo(@RequestParam(value = "userId") Integer id, @RequestBody EnterpriseUnitNewApplyVo enterpriseUnitNewApplyVo) {
+    @ApiOperation(value = "申请信息-放心消费承诺新申请")
+
+    public ApiResult<EnterpriseUnitNewApplyVo> saveEnterpriseUnitApplyInfo(@RequestParam(value = "userId") Integer id,
+                                                                           @RequestBody EnterpriseUnitNewApplyVo enterpriseUnitNewApplyVo) {
         try {
 
-            List<Applicants> applicantsByCreditCode = myApplicantsUnitService.findApplicantsByCreditCode(1, enterpriseUnitNewApplyVo.getCreditCode());
+            List<Applicants> applicantsByCreditCode = applicantsService.findApplicantsByCreditCode(1, enterpriseUnitNewApplyVo.getCreditCode());
 
-            if (applicantsByCreditCode != null && applicantsByCreditCode.size() > 0) {
+            if (!CollectionUtils.isEmpty(applicantsByCreditCode)) {
                 return ApiResult.fail("存在相同统一社会信用代码");
             }
 
@@ -248,13 +197,10 @@ public class EnterpriseController {
 
     @PostMapping("/apply/2")
     @ApiOperation(value = "申请信息-无理由退货承诺新申请", notes = "申请信息-无理由退货承诺新申请")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "userId", value = "用户id", dataType = "int", required = true),
-    })
-    @OperatorLogAnno(operType = "新增", operModul = "企业端", operDesc = "申请信息-无理由退货承诺新申请")
-    public ApiResult<EnterpriseStoreNewApplyVo> saveEnterpriseApplyInfo(@RequestParam(value = "userId") Integer id, @RequestBody EnterpriseStoreNewApplyVo enterpriseStoreNewApplyVo) {
+    public ApiResult<EnterpriseStoreNewApplyVo> saveEnterpriseApplyInfo(@RequestParam(value = "userId") Integer id,
+                                                                        @RequestBody EnterpriseStoreNewApplyVo enterpriseStoreNewApplyVo) {
         try {
-            List<Applicants> applicantsByCreditCode = myApplicantsUnitService.findApplicantsByCreditCode(2, enterpriseStoreNewApplyVo.getCreditCode());
+            List<Applicants> applicantsByCreditCode = applicantsService.findApplicantsByCreditCode(2, enterpriseStoreNewApplyVo.getCreditCode());
 
             if (applicantsByCreditCode != null && applicantsByCreditCode.size() > 0) {
                 return ApiResult.fail("存在相同统一社会信用代码");
@@ -318,16 +264,10 @@ public class EnterpriseController {
 
     @PostMapping("/apply/u/1")
     @ApiOperation(value = "申请信息-更新放心消费承诺新申请", notes = "申请信息-更新放心消费承诺新申请")
-    @ApiImplicitParams(
-            {
-                    @ApiImplicitParam(name = "id", value = "承诺单位id", dataType = "int", required = true),
-            }
-    )
-    @OperatorLogAnno(operType = "更新", operModul = "企业端", operDesc = "申请信息-更新放心消费承诺新申请")
     public ApiResult<EnterpriseUnitNewApplyVo> updateEnterpriseUnitApplyInfo(@RequestParam(value = "id") Integer id, @RequestBody EnterpriseUnitNewApplyVo enterpriseUnitNewApplyVo) {
         try {
 
-            List<Applicants> applicantsByCreditCode = myApplicantsUnitService.findApplicantsByCreditCode(id, 1, enterpriseUnitNewApplyVo.getCreditCode());
+            List<Applicants> applicantsByCreditCode = applicantsService.findApplicantsByCreditCode(id, 1, enterpriseUnitNewApplyVo.getCreditCode());
 
             if (applicantsByCreditCode != null && applicantsByCreditCode.size() > 0) {
                 return ApiResult.fail("存在相同统一社会信用代码");
@@ -393,15 +333,9 @@ public class EnterpriseController {
 
     @PostMapping("/apply/u/2")
     @ApiOperation(value = "申请信息-更新无理由退货承诺新申请", notes = "申请信息-更新无理由退货承诺新申请")
-    @ApiImplicitParams(
-            {
-                    @ApiImplicitParam(name = "id", value = "承诺单位id", dataType = "int", required = true),
-            }
-    )
-    @OperatorLogAnno(operType = "更新", operModul = "企业端", operDesc = "申请信息-更新无理由退货承诺新申请")
     public ApiResult<EnterpriseStoreNewApplyVo> updateEnterpriseApplyInfo(@RequestParam(value = "id") Integer id, @RequestBody EnterpriseStoreNewApplyVo enterpriseStoreNewApplyVo) {
         try {
-            List<Applicants> applicantsByCreditCode = myApplicantsUnitService.findApplicantsByCreditCode(id, 2, enterpriseStoreNewApplyVo.getCreditCode());
+            List<Applicants> applicantsByCreditCode = applicantsService.findApplicantsByCreditCode(id, 2, enterpriseStoreNewApplyVo.getCreditCode());
 
             if (applicantsByCreditCode != null && applicantsByCreditCode.size() > 0) {
                 return ApiResult.fail("存在相同统一社会信用代码");
@@ -505,54 +439,4 @@ public class EnterpriseController {
         return applicants;
     }
 
-    public static Applicants newUnitApplicants(TransportUnitNewApplyVo a) {
-        Applicants applicants = new Applicants();
-
-        BeanUtils.copyProperties(a, applicants);
-
-        applicants.setType(1);
-        applicants.setContCommitment("否");
-        applicants.setCreateTime(LocalDateTime.now());
-        applicants.setUpdateTime(LocalDateTime.now());
-        if (StringUtils.isNotBlank(a.getContents4())) {
-            applicants.setAddContents4Cnt(1);
-        }
-
-        //市级用户和省级用户导入，直接在期
-        applicants.setStatus(1);
-        applicants.setStartTime(LocalDate.now());
-        LocalDate localDate3After = applicants.getStartTime().plusYears(3).minusMonths(1);
-        applicants.setEndTime(LocalDate.of(localDate3After.getYear(), localDate3After.getMonthValue(), 01));
-        applicants.setCcDate(LocalDateTime.now());
-
-        applicants.setContents1("不提供假冒伪劣商品，不提供“三无”产品，不提供不合格商品，不提供来源不明商品，不提供过期商品，不提供缺陷商品，不提供侵犯知识产权商品。");
-        applicants.setContents2("不作虚假宣传，不搞低价诱导；恪守服务承诺，履行合同约定；明码实价，明白消费；守法经营，诚信待客。");
-        applicants.setContents3("履行保护消费者权益第一责任，提供便捷售后服务，高效处理消费纠纷，承担先行赔付和首问责任。");
-
-
-        applicants.setCreateType("市级录入");
-
-        return applicants;
-    }
-
-    public static Applicants newStoreApplicants(TransportStoreNewApplyVo a) {
-        Applicants applicants = new Applicants();
-
-        BeanUtils.copyProperties(a, applicants);
-
-        applicants.setType(2);
-        applicants.setCreateTime(LocalDateTime.now());
-        applicants.setPubTime(LocalDateTime.now());
-        applicants.setUpdateTime(LocalDateTime.now());
-
-        applicants.setStatus(1);
-        applicants.setStartTime(LocalDate.now());
-        LocalDate localDate3After = applicants.getStartTime().plusYears(3).minusMonths(1);
-        applicants.setEndTime(LocalDate.of(localDate3After.getYear(), localDate3After.getMonthValue(), 01));
-        applicants.setCcDate(LocalDateTime.now());
-
-        applicants.setCreateType("市级录入");
-
-        return applicants;
-    }
 }

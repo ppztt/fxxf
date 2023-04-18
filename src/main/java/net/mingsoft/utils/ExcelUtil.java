@@ -55,8 +55,6 @@ public class ExcelUtil {
             }
         }
         workbook = ExcelExportUtil.exportExcel(exportParams, pojoClass, dataList);
-        // ExcelExportUtil.closeExportBigExcel();
-        // Workbook workbook = ExcelExportUtil.exportBigExcel(exportParams, pojoClass, list);
         if (workbook != null) {
             downLoadExcel(fileName, request, response, workbook);
             dataList.clear();
@@ -76,16 +74,8 @@ public class ExcelUtil {
             response.setHeader("content-Type", "application/vnd.ms-excel");
             response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
             workbook.write(response.getOutputStream());
-
-            // response.setContentType("application/vnd.ms-excel;charset=utf-8");
-            // OutputStream os = response.getOutputStream();
-            // response.setHeader("Content-disposition", "attachment;filename="+fileName+".xlsx");//默认Excel名称
-            // workbook.write(os);
-            // os.flush();
-            // os.close();
         } catch (IOException e) {
             e.printStackTrace();
-            // throw new NormalException(e.getMessage());
         }
     }
 

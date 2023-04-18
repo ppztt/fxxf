@@ -24,7 +24,7 @@ public class SelfGlobalExceptionResolver extends GlobalExceptionResolver {
     public ModelAndView handleBusinessException(HttpServletRequest request, HttpServletResponse response, BusinessException e) {
         LOG.debug("handleBusinessException");
         response.setStatus(e.getCode().value());
-        return render(request, response, ResultData.build().code(e.getCode()).data(e.getData()).msg("请求失败"), e);
+        return render(request, response, ResultData.build().code(e.getCode()).data(e.getData()).msg(e.getMsg()), e);
     }
 
     @ExceptionHandler(value = Exception.class)
@@ -42,7 +42,7 @@ public class SelfGlobalExceptionResolver extends GlobalExceptionResolver {
 //        map.put("result", false);
 //        map.put("msg", message.toString());
 //        map.put("exc", e.getClass()); //详细异常信息
-        LOG.debug("url: {}",request.getRequestURI());
+        LOG.debug("url: {}", request.getRequestURI());
         e.printStackTrace();
         if (BasicUtil.isAjaxRequest(request)) {
             try {
