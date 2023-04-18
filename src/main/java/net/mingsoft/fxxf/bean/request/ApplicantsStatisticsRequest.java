@@ -15,7 +15,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @ApiModel(value = "ApplicantsStatisticsRequest", description = "经营者企业统计请求实体")
-public class ApplicantsStatisticsRequest extends BasePageRequest implements Serializable {
+public class ApplicantsStatisticsRequest implements Serializable {
 
     @ApiModelProperty(name = "type", value = "单位类型 1、放心消费承诺单位 2、无理由退货单位", dataType = "int", example = "1", required = true)
     private Integer type = 1;

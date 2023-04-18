@@ -16,14 +16,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.mingsoft.basic.entity.ManagerEntity;
+import net.mingsoft.basic.exception.BusinessException;
 import net.mingsoft.fxxf.bean.entity.Applicants;
 import net.mingsoft.fxxf.bean.entity.AuditLog;
 import net.mingsoft.fxxf.bean.entity.User;
 import net.mingsoft.fxxf.bean.enums.ApplicantsTypeEnum;
 import net.mingsoft.fxxf.bean.enums.CreateTypeEnum;
-import net.mingsoft.fxxf.bean.request.ApplicantsPageRequest;
-import net.mingsoft.fxxf.bean.request.ApplicantsStatisticsRequest;
-import net.mingsoft.fxxf.bean.request.EnterpriseNewApplyRequest;
+import net.mingsoft.fxxf.bean.request.*;
 import net.mingsoft.fxxf.bean.vo.*;
 import net.mingsoft.fxxf.mapper.ApplicantsMapper;
 import net.mingsoft.fxxf.mapper.AuditLogMapper;
@@ -111,12 +110,24 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
 
 
     @Override
-    public IPage<Applicants> listPage(ApplicantsPageRequest applicantsPageRequest) {
+    public ApiResult<BasePageResult<Applicants>> listPage(ApplicantsPageRequest applicantsPageRequest) {
         // 获取登录用户 roleId == 1 ，说明是管理员，可以查看全部，否则根据地市去查
         ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
-        User extendUserInfo = userMapper.selectById(user.getId());
+        if (user == null) {
+            return ApiResult.fail("当前登录用户为空，请重新登陆");
+        }
 
-        return applicantsMapper.listPage(new Page<>(applicantsPageRequest.getCurrent(), applicantsPageRequest.getSize()), applicantsPageRequest, user.getRoleId(), extendUserInfo.getCity(), extendUserInfo.getDistrict());
+        User extensionInfo = userMapper.selectById(user.getId());
+        if (extensionInfo == null) {
+            return ApiResult.fail("当前登录用户扩展信息为空，请前往补充");
+        }
+
+        IPage<Applicants> applicantsIPage = applicantsMapper.listPage(new Page<>(
+                        applicantsPageRequest.getCurrent(), applicantsPageRequest.getSize()), applicantsPageRequest, user.getRoleId(),
+                extensionInfo.getCity(), extensionInfo.getDistrict());
+
+        return ApiResult.success(new BasePageResult<>(applicantsIPage.getCurrent(), applicantsIPage.getSize(), applicantsIPage.getPages(),
+                applicantsIPage.getTotal(), applicantsIPage.getRecords()));
     }
 
     @Override
@@ -155,21 +166,21 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
      * 经营者列表-根据单位id更新状态及原因
      */
     @Override
-    public ApiResult updateApplicantsStatus(Integer id, Map<String, String> map) {
-        Applicants applicants = getById(id);
+    public ApiResult updateApplicantsStatus(ApplicantsStatusUpdateRequest applicantsStatusUpdateRequest) {
+        Applicants applicants = getById(applicantsStatusUpdateRequest.getApplicantsId());
 
         if (applicants != null) {
-            applicants.setDelReason(map.get("delReason"));
-            applicants.setDelOther(map.get("delOther"));
+            applicants.setDelReason(applicantsStatusUpdateRequest.getDelReason());
+            applicants.setDelOther(applicantsStatusUpdateRequest.getDelOther());
             applicants.setDelTime(LocalDateTime.now());
             applicants.setUpdateTime(LocalDateTime.now());
-            applicants.setStatus(0);
+            applicants.setStatus(applicantsStatusUpdateRequest.getStatus());
 
             applicants.updateById();
 
             return ApiResult.success();
         } else {
-            return ApiResult.fail("承诺单位不存在");
+            return ApiResult.fail("单位不存在");
         }
     }
 
@@ -521,7 +532,14 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
     public void export(Integer type, String status, HttpServletRequest request, HttpServletResponse response) {
         // 获取登录用户 roleId == 1 ，说明是管理员，可以查看全部，否则根据地市去查
         ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
+        if (user == null) {
+            throw new BusinessException("当前登录用户为空，请重新登陆");
+        }
+
         User extensionInfo = userMapper.selectById(user.getId());
+        if (extensionInfo == null) {
+            throw new BusinessException("当前登录用户扩展信息为空，请前往补充");
+        }
 
         int roleId = user.getRoleId();
         String city = extensionInfo.getCity();
@@ -567,33 +585,48 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
     }
 
     @Override
-    public List<OperatorStatisticsVo> operatorStatistics(ApplicantsStatisticsRequest applicantsStatisticsRequest) {
+    public ApiResult<List<OperatorStatisticsVo>> operatorStatistics(ApplicantsStatisticsRequest applicantsStatisticsRequest) {
         // 获取登录用户
         ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
+        if (user == null) {
+            return ApiResult.fail("当前登录用户为空，请重新登陆");
+        }
+
         User extensionInfo = userMapper.selectById(user.getId());
+        if (extensionInfo == null) {
+            return ApiResult.fail("当前登录用户扩展信息为空，请前往补充");
+        }
+
         // roleId == 1 ，说明是管理员，可以查看全部，否则根据地市去查
         if (ApplicantsTypeEnum.UNIT.getCode().equals(applicantsStatisticsRequest.getType())) {
             List<OperatorStatisticsVo> operatorStatisticsVos = applicantsMapper.unitOperatorStatistics(
                     applicantsStatisticsRequest.getStartTime(), applicantsStatisticsRequest.getEndTime(),
                     user.getRoleId(), extensionInfo.getCity(), extensionInfo.getDistrict());
 
-            return BeanUtil.copyToList(operatorStatisticsVos, OperatorStatisticsVo.class);
+            return ApiResult.success(BeanUtil.copyToList(operatorStatisticsVos, OperatorStatisticsVo.class));
         } else if (ApplicantsTypeEnum.STORE.getCode().equals(applicantsStatisticsRequest.getType())) {
             List<StoreOperatorStatisticsVo> storeOperatorStatisticsVos = applicantsMapper.storeOperatorStatistics(
                     applicantsStatisticsRequest.getStartTime(), applicantsStatisticsRequest.getEndTime()
                     , user.getRoleId(), extensionInfo.getCity(), extensionInfo.getDistrict());
 
-            return BeanUtil.copyToList(storeOperatorStatisticsVos, OperatorStatisticsVo.class);
+            return ApiResult.success(BeanUtil.copyToList(storeOperatorStatisticsVos, OperatorStatisticsVo.class));
         }
 
-        return new ArrayList<>();
+        return ApiResult.success(new ArrayList<>());
     }
 
     @Override
     public void operatorStatisticsExport(Integer type, String startTime, String endTime, HttpServletRequest request, HttpServletResponse response) {
         // 获取登录用户
         ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
+        if (user == null) {
+            throw new RuntimeException("当前登录用户扩展信息为空，请前往补充");
+        }
+
         User extensionInfo = userMapper.selectById(user.getId());
+        if (extensionInfo == null) {
+            throw new RuntimeException("当前登录用户扩展信息为空，请前往补充");
+        }
         // roleId == 1 ，说明是管理员，可以查看全部，否则根据地市去查
         int roleId = user.getRoleId();
         String city = extensionInfo.getCity();
@@ -644,6 +677,10 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
 
         // 获取登录用户
         ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
+        if (user == null) {
+            return ApiResult.fail("当前登录用户为空，请重新登陆");
+        }
+
         applicants.setCreater(Integer.parseInt(user.getId()));
 
         if (StringUtils.isNotBlank(applicants.getCity()) && StringUtils.isNotBlank(applicants.getDistrict())) {
@@ -1172,5 +1209,6 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
     public List<Applicants> findApplicantsByIdRegName(Integer id, String creditCode, String type) {
         return list(new QueryWrapper<Applicants>().eq("credit_code", creditCode).eq("type", type).eq("status", 1).notIn("id", id));
     }
+
 
 }
