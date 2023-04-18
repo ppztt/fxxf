@@ -8,7 +8,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 
 @EqualsAndHashCode(callSuper = false)
@@ -22,9 +21,9 @@ public class ApplicantsStatisticsRequest extends BasePageRequest implements Seri
     private Integer type = 1;
 
     @ApiModelProperty(value = "开始时间")
-    private LocalDateTime startTime;
+    private String startTime;
 
     @ApiModelProperty(value = "结束时间")
-    private LocalDateTime endTime;
+    private String endTime;
 
 }
