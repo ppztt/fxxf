@@ -470,7 +470,7 @@
                     align="left">
                 <template slot-scope="scope">
                     <span>{{ scope.row.startTime }}</span>
-                    ~
+                    <span v-if="scope.row.startTime">~</span>
                     <span>{{ scope.row.endTime }}</span>
                 </template>
             </el-table-column>
@@ -1041,13 +1041,15 @@
             },
             downLoadTemplate: function () {
                 // 下载数据 //状态(1:在期； 0:摘牌 ；2过期)
-                window.open('http://192.168.2.78:8080/applicants/downTemplateFile/'+this.type+'.do');
+                window.open('/applicants/downTemplateFile/'+this.type+'.do');
             },
             exportData(command) {
                 // 导出数据
                 console.log(command)
+
                 ms.http.get('/applicants/export.do',{status: command,type: this.type}).then((res)=>{
                     console.log(res)
+                    window.open('/applicants/export.do?status='+command+'&type='+this.type)
                     this.$message({
                         message: '导出成功',
                         type: "success"
@@ -1090,9 +1092,8 @@
                     .then((res) => {
                         let data = res.data;
                         console.log(data)
-                        // this.total = Number(data.total);
-                        // this.unitDataList = data.records;
-                        // this.reSetTableHeight();
+                        this.total = Number(data.total);
+                        this.unitDataList = data.records;
                         this.loading = false;
                     });
             },
@@ -1146,8 +1147,9 @@
             },
             // 录入功能
             setApply(type) {
+                let addrs = JSON.stringify(this.formData.addrs)
                 let params = JSON.stringify(this.formData)
-                ms.http.post('/applicants/apply/input.do', params,
+                ms.http.post('/applicants/apply/input.do', {...this.formData,addrs},
                     {headers: {'Content-type': 'application/json;charset=UTF-8'}}).then((res) => {
 
                 })
@@ -1244,6 +1246,7 @@
                   type: "success"
               })
             },
+
         },
         mounted: function () {
             this.getRegionData();

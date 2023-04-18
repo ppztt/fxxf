@@ -525,9 +525,9 @@
             <div class="btn">
                 <el-button size="small" v-if="detailType=='0'" class="blue_btn " @click="perEditUnitTnfo">保存
                 </el-button>
-                <el-button size="small" v-if="detailType=='3'" class="blue_btn " @click="auditUnitTnfo('1')">审核通过
+                <el-button size="small" v-if="detailType=='3'" class="blue_btn " @click="auditUnitTnfo()">审核通过
                 </el-button>
-                <el-button size="small" v-if="detailType=='3'" class="blue_btn " @click="auditUnitTnfo('2')">
+                <el-button size="small" v-if="detailType=='3'" class="blue_btn " @click="auditUnitTnfo('7')">
                     审核不通过
                 </el-button>
                 <el-button size="small" v-if="detailType=='2'" class="blue_btn ">提交</el-button>
@@ -612,6 +612,8 @@
                 contents2: "",
                 contents3: "",
                 applicationDate: "",
+                delReason: "",
+                delOther: "",
             },
             activeManageType: [
                 // 当前经营类别数据
@@ -712,6 +714,7 @@
                         ms.http.post('/applicants/update/' + this.consumerId + '.do', {...this.formData, addrs: adds},
                             {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
                             if (res.code == 200) {
+
                                 this.returnBack()
                                 this.currentTopic("审核成功")
                             }
@@ -743,13 +746,13 @@
                 }
             },
             // 审核按钮
-            auditUnitTnfo(type) {
+            auditUnitTnfo(status) {
                 let query = {
                     id: this.consumerId,
                     notes: this.formData.ccContent,
-                    type: type
+                    type: this.type
                 }
-                ms.http.get('/applicants/audit.do', query).then((res) => {
+                ms.http.get('/applicants/audit.do', query).then(async (res) => {
                     if (res.code == 200) {
                         this.returnBack()
                         this.currentTopic("审核成功")
@@ -759,9 +762,22 @@
                     }
                 })
             },
-            // 返回到上一个界面的
+            // 返回到上一个界面的提示
             currentTopic(msg) {
                 window.parent.currentTopic(msg)
+            },
+            // 根据id更新状态
+            delistUnitTnfo(status) {
+                let params = JSON.stringify({
+                    applicantsId: this.consumerId,
+                    delOther: this.formData.delOther,
+                    delReason: this.formData.delOther,
+                    status
+                })
+                ms.http.post('/applicants/updateApplicantsStatus.do', params,
+                    {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
+                    console.log(res)
+                })
             }
         },
         mounted: function () {
