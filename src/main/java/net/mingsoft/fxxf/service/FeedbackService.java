@@ -2,6 +2,7 @@ package net.mingsoft.fxxf.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import net.mingsoft.fxxf.bean.entity.Applicants;
 import net.mingsoft.fxxf.bean.entity.Feedback;
 import net.mingsoft.fxxf.bean.entity.FeedbackStat;
 import net.mingsoft.fxxf.bean.request.BasePageResult;
@@ -32,6 +33,9 @@ public interface FeedbackService extends IService<Feedback> {
      * 监督投诉统计
      */
     List<FeedbackStat> statistic(FeedbackStatisticRequest feedbackStatisticRequest);
+
+
+    List<Applicants> companyList(String keyword);
 
 
 }
