@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>个人密码修改</title>
+    <title>个人资料修改</title>
     <#include "../../include/head-file.ftl">
 </head>
 
