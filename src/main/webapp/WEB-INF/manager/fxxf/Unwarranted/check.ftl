@@ -659,7 +659,6 @@
                 })
                 ms.http.post('/applicants/updateApplicantsStatus.do', params,
                     {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
-                    console.log(res)
                 })
             }
         },
