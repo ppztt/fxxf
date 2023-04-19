@@ -385,15 +385,7 @@
         components: {},
         computed: {},
         methods: {
-            setRef(ref){
-                this.$nextTick(()=>{
-                    console.log(this.$refs)
-                })
-                // this.$refs[ref].resetFields()
-                // this.$refs[ref].validate((v)=>{
-                //     console.log(v)
-                // })
-            },
+
             getUserList() {
                 this.loading = true
                 ms.http.get('/user/industryAssociationList.do', {
@@ -484,9 +476,6 @@
             },
             // 提交
             sub(msg) {
-                this.$nextTick(()=>{
-                    console.log(this.$refs["modifyForm"])
-                })
                 if (msg == "modify") {
                     let params = JSON.stringify(this.formData)
                     ms.http.post('/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
@@ -547,10 +536,8 @@
                     });
                 });
             }
-
         },
         mounted() {
-            console.log(this.$refs)
             this.getUserList()
             this.getRegionData()
         }

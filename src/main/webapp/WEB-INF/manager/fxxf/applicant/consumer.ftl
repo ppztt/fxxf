@@ -366,7 +366,6 @@
                     <el-button size="medium" class="green_btn" type="primary" :disabled="!canImport"
                                icon="el-icon-bottom"
                                :title="!canImport ? '没有权限导入' : ''">
-
                         导入
                     </el-button>
                 </el-upload>
@@ -965,7 +964,6 @@
                         }
                     )
                 }
-                console.log(file)
                 // 上传前
             },
             uploadConfirm() {
@@ -993,7 +991,7 @@
                 }
             },
             uploadErrAction() {
-                console.log("导入失败");
+
                 this.$message.error("导入失败");
             },
             downLoadTemplate: function () {
@@ -1002,10 +1000,8 @@
             },
             exportData(command) {
                 // 导出数据
-                console.log(command)
-
                 ms.http.get('/applicants/export.do', {status: command, type: this.type}).then((res) => {
-                    console.log(res)
+
                     window.open('/applicants/export.do?status=' + command + '&type=' + this.type)
                     this.$message({
                         message: '导出成功',
@@ -1048,7 +1044,6 @@
                 }), {headers: {'Content-type': 'application/json;charset=UTF-8'},})
                     .then((res) => {
                         let data = res.data;
-                        console.log(data)
                         this.total = Number(data.total);
                         this.unitDataList = data.records;
                         this.loading = false;
@@ -1069,22 +1064,17 @@
             getManagerType() {
                 ms.http.get('/type/listGoodsAndServiceType.do').then((res) => {
                     this.manageType = res.data
-                    console.log(this.manageType)
                 })
             },
             managementChange(data) {
                 // 主经营类别改变
-                console.log(this.manageType)
                 if (data == "商品类") {
                     // 商品类
                     this.activeManageType = this.manageType.commodities || [];
-                    console.log(this.manageType.commodities)
                 } else if (data == "服务类") {
                     // 经营类
                     this.activeManageType = this.manageType.services || [];
-                    console.log(this.manageType.services)
                 } else if (data == "商品及服务类") {
-                    console.log(4)
                     this.activeManageType = [
                         ...this.manageType.commodities,
                         ...this.manageType.services,
@@ -1144,7 +1134,6 @@
             openNew(num, row) {
                 this.$refs.check.style.display = "block"
                 this.action = ms.manager + "/xwh/consumer/check.do?type=" + num + "&id=" + row.id;
-                console.log(row.id)
             },
             // 删除单个单位
             deleteConsumer(id) {
@@ -1211,13 +1200,11 @@
             this.getManagerType();
             this.getUnitList();
             // this.action = ms.manager + "/xwh/consumer/check.do";
-            console.log(this.$refs)
             let that = this
             window.returnBack = function () {
                 that.action = ""
             }
             window.currentTopic = this.currentTopic
-            console.log(this.total)
         }
     })
 </script>

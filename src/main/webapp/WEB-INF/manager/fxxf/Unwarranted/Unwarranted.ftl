@@ -357,14 +357,15 @@
                 </el-row>
             </el-dialog>
             <div class="item">
-                <el-upload class="upload" :show-upload-list="false" :before-upload="beforeUploadAction"
+                <el-upload class="upload" :show-file-list="false"
+                           accept="xlsm"
+                           :before-upload="beforeUploadAction"
                            :on-success="uploadSucAction"
                            :on-error="uploadErrAction"
-                           action="/applicants/preImport.do">
+                           :action="'/applicants/preImport.do?type='+type">
                     <el-button size="medium" class="green_btn" type="primary" :disabled="!canImport"
                                icon="el-icon-bottom"
                                :title="!canImport ? '没有权限导入' : ''">
-                        <!-- <img class="left" src="@/assets/images/1_13.png" alt /> -->
                         导入
                     </el-button>
                 </el-upload>
@@ -372,9 +373,7 @@
             <div class="item">
                 <el-dropdown @command="exportData">
                     <el-button size="medium" size="medium" class="dgreen_btn" icon="el-icon-top">
-                        <!-- <img class="left" src="@/assets/images/1_20.png" alt /> -->
                         导出
-                        <!-- <img class="right" src="@/assets/images/1_15.png" alt /> -->
                     </el-button>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item :command="''">导出全部</el-dropdown-item>
@@ -961,48 +960,25 @@
             }
             ,
             beforeUploadAction(file) {
-                if (
-                    this.allowFiles.indexOf(
-                        file.name.substring(file.name.lastIndexOf("."))
-                    ) === -1
-                ) {
+                if (this.allowFiles.indexOf(file.name.substring(file.name.lastIndexOf("."))) === -1) {
                     this.$message.error({
-                            message: '该后缀格式的文件不支持上传，仅支持'+this.allowFiles.join(" / ")+'文件'
+                            message: '该后缀格式的文件不支持上传，仅支持' + this.allowFiles.join(" / ") + '文件'
                         }
-
-                    );
-                    return false;
+                    )
                 }
                 // 上传前
             },
             uploadConfirm() {
                 // 确认上传
                 ms.http
-                    .post('/applicants/import.do', {
-                        fileId: this.uploadId,
-                    })
+                    .post('/applicants/import/'+this.uploadId+'.do')
                     .then((res) => {
-                        if (res.data.code == 200) {
+                        if (res.code == 200) {
                             this.$message({
                                 message: "导入成功",
                                 type: 'success'
                             });
                             this.getUnitList();
-                        } else if (res.code == 200 && res.data.length > 0) {
-                            errorMes = errorMes+"<p>行:"+item.rowNum+' 错误:'+item.errorMsg+'</p>';
-                            let errorMes = "";
-                            res.data.forEach((item) => {
-                                errorMes = errorMes+"<p>行:"+item.rowNum+' 错误:'+item.errorMsg+'</p>';
-                            });
-                            console.log("错误");
-                            this.$message.error( "导入失败详细信息");
-                        } else {
-                            this.$message.error("导入失败");
-                            let errorMes = "";
-                            res.data.forEach((item) => {
-                                errorMes = errorMes+"<p>行:"+item.rowNum+' 错误:'+item.errorMsg+'</p>';
-                            });
-                            this.$message.error( "导入失败详细信息");
                         }
                         this.isShowComfirm = false;
                     });
@@ -1012,36 +988,12 @@
                 if (even.code == 200 && even.data.length > 0 && !even.data[0].errorMsg) {
                     this.uploadId = even.data[0].fileId;
                     this.uploadConfirm();
-                } else if (
-                    even.code == 200 &&
-                    even.data.length > 0 &&
-                    even.data[0].errorMsg
-                ) {
-                    this.uploadId = even.data[0].fileId;
-                    let errorMes = "";
-                    even.data.forEach((item) => {
-                        errorMes = errorMes+"<p>行:"+item.rowNum+' 错误:'+item.errorMsg+'</p>';
-                    });
-                    this.comfirmContent = errorMes;
-                    this.isShowComfirm = true;
-                } else {
-                    if (even.data.length > 0 && even.data[0].errorMsg) {
-                        this.$message.error("导入失败");
-                        let errorMes = "";
-                        even.data.forEach((item) => {
-                            errorMes = errorMes+"<p>行:"+item.rowNum+' 错误:'+item.errorMsg+'</p>';
-                        });
-                        this.$message.error( "导入失败详细信息");
-                    } else {
-                        this.$message.error(`导入失败`);
-                    }
+                }else if(even.code == 500){
+                    this.$message.error(even.data[0].errorMsg)
                 }
-                this.$Spin.hide();
             },
             uploadErrAction() {
-                console.log("导入失败");
-                this.$Message.error("导入失败");
-                this.$Spin.hide();
+                this.$message.error("导入失败");
             },
             downLoadTemplate: function () {
                 // 下载数据 //状态(1:在期； 0:摘牌 ；2过期)
@@ -1049,10 +1001,7 @@
             },
             exportData(command) {
                 // 导出数据
-                console.log(command)
-
                 ms.http.get('/applicants/export.do',{status: command,type: this.type}).then((res)=>{
-                    console.log(res)
                     window.open('/applicants/export.do?status='+command+'&type='+this.type)
                     this.$message({
                         message: '导出成功',
@@ -1095,7 +1044,6 @@
                 }), {headers: {'Content-type': 'application/json;charset=UTF-8'},})
                     .then((res) => {
                         let data = res.data;
-                        console.log(data)
                         this.total = Number(data.total);
                         this.unitDataList = data.records;
                         this.loading = false;
@@ -1116,22 +1064,17 @@
             getManagerType(){
                 ms.http.get('/type/listGoodsAndServiceType.do').then((res)=>{
                     this.manageType = res.data
-                    console.log( this.manageType )
                 })
             },
             managementChange(data) {
                 // 主经营类别改变
-                console.log(this.manageType)
                 if (data == "商品类") {
                     // 商品类
                     this.activeManageType = this.manageType.commodities || [];
-                    console.log(this.manageType.commodities)
                 } else if (data == "服务类") {
                     // 经营类
                     this.activeManageType = this.manageType.services || [];
-                    console.log(this.manageType.services)
                 } else if (data == "商品及服务类") {
-                    console.log(4)
                     this.activeManageType = [
                         ...this.manageType.commodities,
                         ...this.manageType.services,
@@ -1191,7 +1134,6 @@
             openNew(num, row) {
                 this.$refs.check.style.display = "block"
                 this.action = ms.manager + "/route/UnwarrantedCheck.do?type=" + num + "&id=" + row.id;
-                console.log(row.id)
             },
             // 删除单个单位
             deleteConsumer(id) {
@@ -1257,13 +1199,11 @@
             this.getManagerType();
             this.getUnitList();
             // this.action = ms.manager + "/xwh/consumer/check.do";
-            console.log(this.$refs)
             let that = this
             window.returnBack = function () {
                 that.action = ""
             }
             window.currentTopic = this.currentTopic
-            console.log(this.total)
         }
     })
 </script>
