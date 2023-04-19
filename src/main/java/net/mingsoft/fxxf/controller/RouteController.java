@@ -47,4 +47,23 @@ public class RouteController {
     public String associationUser() {
         return "/fxxf/associationUser/associationUser";
     }
+
+    @GetMapping("/Unwarranted")
+    public String Unwarranted() {
+        return "/fxxf/Unwarranted/Unwarranted";
+    }
+    @GetMapping("/UnwarrantedCheck")
+    public String UnwarrantedCheck() {
+        return "/fxxf/Unwarranted/check";
+    }
+
+    @GetMapping("/passwordChange")
+    public String passwordChange() {
+        return "/fxxf/passwordChange/passwordChange";
+    }
+    @GetMapping("/userInfoChange")
+    public String userInfoChange() {
+        return "/fxxf/userInfoChange/index";
+    }
+
 }

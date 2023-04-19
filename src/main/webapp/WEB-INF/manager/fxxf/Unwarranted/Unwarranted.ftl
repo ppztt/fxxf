@@ -464,6 +464,7 @@
                 </template>
             </el-table-column>
             <el-table-column
+                    v-if="type == 1"
                     prop="validity"
                     label="有效期"
                     width="170"
@@ -589,7 +590,7 @@
                 zipcode: ""
             },
             action: "",
-            modalType: 1,
+            modalType: 2,
             isShowEnteringModal: false,
             // 弹出框数据
             formData: {
@@ -628,8 +629,11 @@
                 management: [{required: true, message: '经营类别不能为空', trigger: 'blur'}],
                 details: [{required: true, message: '详细类别不能为空', trigger: 'blur'}],
                 principal: [{required: true, message: '负责人姓名不能为空', trigger: 'blur'}],
-                principalTel: [{required: true, message: '手机号码不能为空', trigger: 'blur'},
-                    {min: 11, max: 11, message: '请输入正确的手机号码', trigger: 'blur'}],
+                contents1: [{required: true, message: '适用商品不能为空', trigger: 'blur'}],
+                contents2: [{required: true, message: '退货期限不能为空', trigger: 'blur'}],
+                contents3: [{required: true, message: '退货约定不能为空', trigger: 'blur'}],
+                principalTel:[{required: true, message: '手机号码不能为空', trigger: 'blur'},
+                    {min: 11, message: '请输入正确的手机号码', trigger: 'blur'}]
             },
             districtDataArr: [],
             textList: {
@@ -885,7 +889,7 @@
             // 级联选
             canImport: true,
             // 消费者 1 无承诺 2
-            type: "1",
+            type: "2",
             details: "",
             // 被删除的id
             ids: {ids: []}
@@ -963,7 +967,7 @@
                     ) === -1
                 ) {
                     this.$message.error({
-                        message: '该后缀格式的文件不支持上传，仅支持'+this.allowFiles.join(" / ")+'文件'
+                            message: '该后缀格式的文件不支持上传，仅支持'+this.allowFiles.join(" / ")+'文件'
                         }
 
                     );
@@ -1111,7 +1115,7 @@
             },
             getManagerType(){
                 ms.http.get('/type/listGoodsAndServiceType.do').then((res)=>{
-                        this.manageType = res.data
+                    this.manageType = res.data
                     console.log( this.manageType )
                 })
             },
@@ -1186,7 +1190,7 @@
             // 打开编辑等页面
             openNew(num, row) {
                 this.$refs.check.style.display = "block"
-                this.action = ms.manager + "/xwh/consumer/check.do?type=" + num + "&id=" + row.id;
+                this.action = ms.manager + "/route/UnwarrantedCheck.do?type=" + num + "&id=" + row.id;
                 console.log(row.id)
             },
             // 删除单个单位
@@ -1241,10 +1245,10 @@
             },
             // 从上一级页面返回新页面时的成功的提示
             currentTopic(msg){
-              this.$message({
-                  message: msg,
-                  type: "success"
-              })
+                this.$message({
+                    message: msg,
+                    type: "success"
+                })
             },
 
         },

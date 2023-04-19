@@ -14,42 +14,48 @@
         <el-button size="mini" icon="iconfont icon-fanhui" plain onclick="javascript:history.go(-1)">返回</el-button>
     </el-header>
     <el-main class="ms-container">
-        <el-form ref="form" :model="form" :rules="rules" label-width="75px" label-position="left" size="small">
+        <div class="box">
+            <el-form ref="form" :model="form" :rules="rules" label-width="90px" label-position="left" size="medium">
 
-            <!--旧密码-->
+                <!--旧密码-->
 
-            <el-form-item label="旧密码" prop="passwordone">
-                <el-input type="password"
-                          :show-password="true"
-                          :clearable="true" autocomplete="off"
-                          v-model="form.passwordone" :style="{width:'30%'}"
-                          :disabled="false"
-                          placeholder="请输入内容"></el-input>
-            </el-form-item>
+                <el-form-item label="旧密码" prop="passwordone">
+                    <el-input type="password"
+                              :show-password="true"
+                              :clearable="true" autocomplete="off"
+                              v-model="form.passwordone"
+                              :disabled="false"
+                              placeholder="请输入内容"></el-input>
+                </el-form-item>
 
-            <!--新密码-->
+                <!--新密码-->
 
-            <el-form-item label="新密码" prop="passwordtwo">
-                <el-input type="password"
-                          :show-password="true"
-                          :clearable="true" autocomplete="off"
-                          v-model="form.passwordtwo" :style="{width:'30%'}"
-                          :disabled="false"
-                          placeholder="请输入内容"></el-input>
-            </el-form-item>
+                <el-form-item label="新密码" prop="passwordtwo">
+                    <el-input type="password"
+                              :show-password="true"
+                              :clearable="true" autocomplete="off"
+                              v-model="form.passwordtwo"
+                              :disabled="false"
+                              placeholder="请输入内容"></el-input>
+                </el-form-item>
 
-            <!--确认密码-->
+                <!--确认密码-->
 
-            <el-form-item label="确认密码" prop="realpassword">
-                <el-input type="password"
-                          :show-password="true"
-                          :clearable="true" autocomplete="off"
-                          v-model="form.realpassword" :style="{width:'30%'}"
-                          :disabled="false"
-                          placeholder="请输入内容"></el-input>
-            </el-form-item>
+                <el-form-item label="确认密码" prop="realpassword">
+                    <el-input type="password"
+                              :show-password="true"
+                              :clearable="true" autocomplete="off"
+                              v-model="form.realpassword"
+                              :disabled="false"
+                              placeholder="请输入内容"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" class="blue_btn">提交</el-button>
+                </el-form-item>
 
-        </el-form>
+            </el-form>
+        </div>
+
     </el-main>
 </div>
 </body>
@@ -152,4 +158,23 @@
 
 </script>
 <style>
+    .box{
+        width: 30%;
+        /*min-width: 400px;*/
+    }
+    .blue_btn {
+        background: #5d7cc9 !important;
+        color: #fff !important;
+        border: 0;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .blue_btn:hover {
+        background: #899ed1 !important;
+        color: #fff !important;
+        border: 0;
+        outline: none;
+    }
 </style>

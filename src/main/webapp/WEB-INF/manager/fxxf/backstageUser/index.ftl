@@ -31,14 +31,14 @@
                     <el-col>
                         <el-button
                                 size="medium"
-                                class="blue_btn" icon="el-icon-search" @click="getUserList">
+                                class="blue_btn btns_type" icon="el-icon-search" @click="getUserList">
                             查询
                         </el-button>
                     </el-col>
                     <el-col >
                         <el-button
                                 size="medium"
-                                class="green_btn"
+                                class="green_btn btns_type"
                                 icon="el-icon-plus"
                                 @click="showEditUser()">
                             新增
@@ -685,7 +685,7 @@
         background: transparent !important;
         border: none;
     }
-    .el-button{
+    .btns_type{
         width: 90%;
         margin-left: 10% !important;
     }
