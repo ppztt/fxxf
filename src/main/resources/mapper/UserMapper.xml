@@ -39,13 +39,13 @@
     </sql>
 
     <select id="userList" resultMap="BaseResultMap">
-        SELECT u.id,u.account, r.name as roleName, u.city, u.district, u.phone
+        SELECT u.id,u.account, r.role_name as roleName, u.city, u.district, u.phone
         FROM sys_user u
-        LEFT JOIN sys_role AS r ON r.id = u.role_id
+        LEFT JOIN role AS r ON r.id = u.role_id
         where usertype = 1
         <if test="keyword != null and keyword != ''">
             AND u.account LIKE concat('%', #{keyword},'%')
-            OR r.name LIKE concat('%', #{keyword},'%')
+            OR r.role_name LIKE concat('%', #{keyword},'%')
             OR u.city LIKE concat('%', #{keyword},'%')
             OR u.phone LIKE concat('%', #{keyword},'%')
         </if>
@@ -53,7 +53,7 @@
     </select>
 
     <select id="roleList" resultType="net.mingsoft.fxxf.bean.entity.Role">
-        SELECT name,explation FROM sys_role
+        SELECT role_name FROM role
     </select>
 
     <select id="existsAccount" resultType="string">

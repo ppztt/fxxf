@@ -7,8 +7,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
+import net.mingsoft.basic.entity.ManagerEntity;
 import net.mingsoft.fxxf.bean.entity.Attachment;
-import net.mingsoft.fxxf.bean.entity.User;
 import net.mingsoft.fxxf.bean.vo.ApiResult;
 import net.mingsoft.fxxf.service.AttachmentService;
 import net.mingsoft.fxxf.service.UserService;
@@ -89,9 +89,8 @@ public class AttachmentController {
      * @date 2020/1/9 15:50
      **/
     @ApiOperation(value = "附件批量上传", notes = "资料管理/附件批量上传")
-    @PostMapping(value = "/uploadFile/{id}", produces = "application/json;charset=UTF-8")
-    public ApiResult attachmentUpload(@RequestParam("files") @ApiParam(name = "files", value = "附件：任意数据格式；文件最大限制500M") MultipartFile[] files,
-                                      @PathVariable Integer id) {
+    @PostMapping(value = "/uploadFile", produces = "application/json;charset=UTF-8", headers ="content-type=multipart/form-data")
+    public ApiResult attachmentUpload(@RequestParam("files") @ApiParam(name = "files", value = "附件：任意数据格式；文件最大限制500M") MultipartFile[] files) {
         InputStream in;
         String retMsg = "";
         FileOutputStream fos;
@@ -125,14 +124,8 @@ public class AttachmentController {
                     log.info("附件成功写入磁盘：" + storage);
 
                     //记录上传时间、操作人、文件存储路径、文件名到 DB
-                    User user;
-                    if (id == null) {
-                        //前端未传id时从session获取用户信息
-                        user = (User) SecurityUtils.getSubject().getPrincipal();
-                    } else {
-                        user = userService.getById(id);
-                    }
-                    String uploader = user.getAccount();
+                    ManagerEntity managerEntity = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
+                    String uploader = managerEntity.getManagerName();
                     int downloads = 0;
                     LocalDateTime now = LocalDateTime.now();
                     Attachment attachment = new Attachment(fileName, storage, uploader, downloads, now, now);
