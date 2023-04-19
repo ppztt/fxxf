@@ -120,12 +120,12 @@
             startTime: '',//开始日期
             endTime: '',//结束日期
             tableHeight: 530, //表格高度,
+            loadingShow: true,
             total:0,
             size:10,
             current:0,
             pages:4,
             id:0,
-            loadingShow: true,
         },
         computed: {
             //计算总共有多少页return Math.ceil(total / pageSize);
@@ -144,7 +144,7 @@
             //跳转页面
             goComplaint(row) {
                 this.id = row.id
-                this.action = ms.manager + "/route/feedbackHandle.do?id="+this.id
+                this.action = ms.manager + "/route/reasonHandle.do?id="+this.id
             },
             getList(startTime,endTime){
                 //切分上个页面传过来的id

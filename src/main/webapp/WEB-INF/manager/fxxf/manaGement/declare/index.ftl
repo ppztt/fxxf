@@ -12,17 +12,20 @@
     <el-row>
         <el-col span="5">
             <el-input v-model="keyword" clearable placeholder="请输入关键字"></el-input>
+
         </el-col>
         <el-col span="7">
             <div class="buttonBox">
-                <el-button style="width: 150px" type="primary" icon="el-icon-search" @click="getOperatorStatisticList">
-                    查询
-                </el-button>
-                <el-button style="width: 150px" type="primary" plain icon="el-icon-top"
-                           @click="getOperatorStatisticList">
-                    上传
-                </el-button>
-                <el-button style="width: 150px" :type="judgmentButton" :disabled="judgmentDisable"
+                <el-button ref="query" class="itemBox"  type="primary" icon="el-icon-search" @click="getOperatorStatisticList"> 查询</el-button>
+                <el-upload
+                        ref="upload"
+                        action
+                        :http-request="uploadFile"
+                        :show-file-list="false"
+                >
+                        <el-button class="itemBox" type="primary" plain icon="el-icon-top">上传</el-button>
+                </el-upload>
+                <el-button class="itemBox" :type="judgmentButton" :disabled="judgmentDisable"
                            :plain="judgmentDisable" icon="el-icon-close" @click="deleteOperatorStatisticList">
                     删除
                 </el-button>
@@ -103,7 +106,10 @@
             current: 1,//当前页数
             pages: 4,//页码按钮的数量，当总页数超过该值时会折叠
             size: 10,//一页展示多少条数据
-
+            headers: {
+                // 添加需要的请求头信息
+                "Content-Type": "multipart/form-data"
+            },
         },
         computed: {
             //计算总共有多少页return Math.ceil(total / pageSize);
@@ -184,12 +190,34 @@
                 this.current = val
                 this.getList()
             },
+
+
+            //上传文件
+            uploadFile(item) {
+                let formData = new FormData()
+                formData.append('files', item.file);
+                ms.http.post('/attachment/uploadFile.do', formData, {headers: {"Content-Type": "multipart/form-data"}}).then(res => {
+                    if (res.code == 200) {
+                        this.getList()
+                        this.$message({
+                            type: 'success',
+                            message: res.msg
+                        });
+                    } else {
+                        this.$message({
+                            type: 'error',
+                            message: '上传失败'
+                        });
+                    }
+                    console.log(res)
+                })
+            },
         },
         created: function () {
             this.getList()
         },
         mounted: function () {
-
+            console.log(this.$refs.query)
         },
     })
 </script>
@@ -205,7 +233,11 @@
 
     .buttonBox {
         display: flex;
-        justify-content: space-around;
+        /*justify-content: space-around;*/
+    }
+    .itemBox{
+        width: 150px;
+        margin-left: 10px;
     }
 
     .paginationbox {

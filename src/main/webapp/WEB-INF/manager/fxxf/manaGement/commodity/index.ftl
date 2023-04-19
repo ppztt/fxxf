@@ -13,7 +13,7 @@
         <#--        工具栏-->
         <el-col :span="20">
             <el-row>
-                <el-col :span="8">
+                <el-col :span="16">
                     <div class="date-range">
                         <el-select @change="selectCity(city)" @clear="clearCity" clearable v-model="city"
                                    placeholder="市">
@@ -33,28 +33,25 @@
                                     :value="item.name">
                             </el-option>
                         </el-select>
+                        <el-date-picker
+                                v-model="startTime"
+                                type="date"
+                                placeholder="开始日期"
+                                style="width: 220px"
+                        ></el-date-picker>
+                        <el-date-picker
+                                style="margin: 0 10px"
+                                v-model="endTime"
+                                type="date"
+                                placeholder="结束日期"
+                                style="width: 220px"
+                        ></el-date-picker>
                     </div>
                 </el-col>
-                <el-col span="8">
-                    <el-date-picker
-                            v-model="startTime"
-                            type="date"
-                            placeholder="开始日期"
-                            style="width: 220px"
-                    ></el-date-picker>
-                    <el-date-picker
-                            style="margin: 0 10px"
-                            v-model="endTime"
-                            type="date"
-                            placeholder="结束日期"
-                            style="width: 220px"
-                    ></el-date-picker>
-                </el-col>
             </el-row>
-
         </el-col>
 
-        <el-col :span="2">
+        <el-col :span="4">
             <el-row class="button_groud" type="flex">
                 <el-col span="24">
                     <el-button type="primary" icon="el-icon-search" @click="getOperatorStatisticList">查询</el-button>
@@ -104,9 +101,9 @@
         data: {
             dataList: [],//数据
             area: [],//广东省地区
-            city: '',//市
+            city: '',//选择的市
             district: [],//区/县
-            region: '',
+            region: '',//选择的区/县
             startTime: '',//开始日期
             endTime: '',//结束日期
         },
@@ -119,7 +116,6 @@
                     startTime=''
                     endTime=''
                 }
-                console.log(startTime, endTime)
                 ms.http.get("/typestat/list?city="+this.city+"&district="+this.region+"&startTime="+startTime+"&endTime="+endTime).then(res => {
                     this.dataList = res.data
                     console.log(res)
@@ -194,7 +190,6 @@
     .date-range {
         display: flex;
         align-items: center;
-        width: 500px;
     }
 
     .date-separator {

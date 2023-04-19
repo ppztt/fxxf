@@ -51,9 +51,9 @@
     </el-row>
 
     <el-table
+            class="table"
             element-loading-text = "加载中，请稍后..."
             v-loading="loadingShow"
-            class="table"
             :data="dataList"
             show-summary
             border
@@ -129,6 +129,7 @@
             tableHeight: 500,//表格高度
             dataList: [],//数据
             loadingShow: true,
+
         },
         computed: {},
         watch: {},
@@ -139,7 +140,7 @@
                     startTime = ''
                     endTime = ''
                 }
-                ms.http.get(ms.manager + '/feedback/statistic.do?type=1&startTime=' + startTime + '&endTime=' + endTime).then((res) => {
+                ms.http.get(ms.manager + '/feedback/statistic.do?type=2&startTime=' + startTime + '&endTime=' + endTime).then((res) => {
                     if(res.code!=200)return
                     this.dataList = res.data.records
                     this.loadingShow = false
@@ -147,7 +148,7 @@
             },
             //导出接口
             derive() {
-                window.open(ms.manager + '/feedback/exportStatistic.do?type=1')
+                window.open(ms.manager + '/feedback/exportStatistic.do?type=2')
             },
             //查询
             getOperatorStatisticList() {

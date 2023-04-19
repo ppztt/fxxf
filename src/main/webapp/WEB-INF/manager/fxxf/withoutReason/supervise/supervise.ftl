@@ -115,7 +115,7 @@
             },
             //获取数据
             getMesNumList() {
-                ms.http.get(ms.manager + '/feedback/countByApplicantList.do?current='+this.current+'&search='+this.search+'&type=1').then((res) => {
+                ms.http.get(ms.manager + '/feedback/countByApplicantList.do?current='+this.current+'&search='+this.search+'&type=2').then((res) => {
                     if(res.code!=200)return
                     this.mesNumDataList = res.data.records
                     this.total = Number(res.data.total)
@@ -130,7 +130,7 @@
             },
             //跳转页面
             goCheck(row) {
-                this.action = ms.manager + `/route/feedbackDetail.do?applicantsId=`+row.applicantsId
+                this.action = ms.manager + `/route/reasonDetail.do?applicantsId=`+row.applicantsId
             }
 
         },

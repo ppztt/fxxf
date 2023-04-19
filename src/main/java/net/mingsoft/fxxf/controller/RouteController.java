@@ -30,22 +30,28 @@ public class RouteController {
 
     /**
      * /**
-     * 监督投诉页面
+     * 放心消费承诺监督投诉页面
+     *
      * @return
      */
     @GetMapping("/feedbackIndex")
     public String feedbackIndex(HttpServletRequest request, ModelMap model) {
         return "/fxxf/trustConsumption/supervise/supervise";
     }
+
     @GetMapping("/feedbackDetail")
-    public String feedbackDetail(){return "/fxxf/trustConsumption/supervise/checkSupervise"; }
+    public String feedbackDetail() {
+        return "/fxxf/trustConsumption/supervise/checkSupervise";
+    }
 
     @GetMapping("/feedbackHandle")
-    public String feedbackHandle(){return "/fxxf/trustConsumption/supervise/complaint"; }
+    public String feedbackHandle() {
+        return "/fxxf/trustConsumption/supervise/complaint";
+    }
 
     /**
      * /**
-     * 监督投诉统计
+     * 放心消费承诺监督投诉统计
      *
      * @return
      */
@@ -56,7 +62,7 @@ public class RouteController {
 
     /**
      * /**
-     * 经营者统计
+     * 放心消费承诺经营者统计
      *
      * @return
      */
@@ -86,4 +92,50 @@ public class RouteController {
     public String declareMaterial(HttpServletRequest request, ModelMap model) {
         return "/fxxf/manaGement/declare/index";
     }
+
+
+    /**
+     * /**
+     * 无理由退货承诺监督投诉页面
+     *
+     * @return
+     */
+    @GetMapping("/reasonSupervision")
+    public String reasonSupervision(HttpServletRequest request, ModelMap model) {
+        return "/fxxf/withoutReason/supervise/supervise";
+    }
+
+    @GetMapping("/reasonDetail")
+    public String reasonDetail() {
+        return "/fxxf/withoutReason/supervise/checkSupervise";
+    }
+
+    @GetMapping("/reasonHandle")
+    public String reasonHandle() {
+        return "/fxxf/withoutReason/supervise/complaint";
+    }
+
+    /**
+     * /**
+     * 无理由退货承诺监督投诉统计
+     *
+     * @return
+     */
+    @GetMapping("/reasonStatistic")
+    public String reasonStatistic(HttpServletRequest request, ModelMap model) {
+        return "/fxxf/withoutReason/statistics/index";
+    }
+
+    /**
+     * /**
+     * 无理由退货承诺经营者统计
+     *
+     * @return
+     */
+    @GetMapping("/reasonOperator")
+    public String reasonOperator(HttpServletRequest request, ModelMap model) {
+        return "/fxxf/withoutReason/operator/index";
+    }
 }
+
+

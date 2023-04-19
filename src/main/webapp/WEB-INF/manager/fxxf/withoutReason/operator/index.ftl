@@ -60,61 +60,35 @@
             style="width: 100%"
             :max-height="tableHeight">
         <el-table-column
-                prop="city"
+                prop="area"
                 label="地区"
-                align="center">
+                align=left">
         </el-table-column>
         <el-table-column
-                prop="companyTotal"
-                label="承诺单位数量"
-                align="center">
+                prop="applicantsCnt"
+                label="承诺单位总数"
+                align=left">
         </el-table-column>
         <el-table-column
-                prop="complaintCompanyNum"
-                label="被反馈单位数量"
-                align="center">
+                prop="addContents1Cnt"
+                label="退货期限超过七天的承诺店数量"
+                align=left">
         </el-table-column>
         <el-table-column
-                prop="takeOff"
-                label="摘牌数量"
-                align="center">
+                prop="nullCnt"
+                label="零有效投诉单位数量"
+                align=left">
         </el-table-column>
         <el-table-column
-                prop="complaintTotal"
-                label="监督投诉的总条数"
-                align="center">
+                prop="beSupervisedCnt"
+                label="被监督告诫单位数量"
+                align=left">
         </el-table-column>
-
         <el-table-column
-                label="处理结果"
-                align="center">
-            <el-table-column
-                    prop="unprocessed"
-                    label="待处理"
-                    align="center">
-            </el-table-column>
-            <el-table-column
-                    prop="warning"
-                    label="督促告诫"
-                    align="center">
-            </el-table-column>
-            <el-table-column
-                    prop="disqualification"
-                    label="摘牌"
-                    align="center">
-            </el-table-column>
-            <el-table-column
-                    prop="nonExistentComplaints"
-                    label="投诉问题不存在"
-                    align="center">
-            </el-table-column>
-            <el-table-column
-                    prop="other"
-                    label="其他"
-                    align="center">
-            </el-table-column>
+                prop="delCnt"
+                label="被摘牌单位数量"
+                align=left">
         </el-table-column>
-
     </el-table>
 </div>
 </body>
@@ -130,7 +104,9 @@
             dataList: [],//数据
             loadingShow: true,
         },
-        computed: {},
+        computed: {
+
+        },
         watch: {},
         methods: {
             //获取数据
@@ -139,15 +115,15 @@
                     startTime = ''
                     endTime = ''
                 }
-                ms.http.get(ms.manager + '/feedback/statistic.do?type=1&startTime=' + startTime + '&endTime=' + endTime).then((res) => {
+                ms.http.post('/applicants/operatorStatistics/list.do',JSON.stringify({"type": 2,"startTime":startTime,"endTime":endTime}),{headers:{'Content-Type': 'application/json'}}).then(res=>{
                     if(res.code!=200)return
-                    this.dataList = res.data.records
+                    this.dataList = res.data
                     this.loadingShow = false
                 })
             },
             //导出接口
             derive() {
-                window.open(ms.manager + '/feedback/exportStatistic.do?type=1')
+                window.open('/applicants/operatorStatistics/export.do?type=2')
             },
             //查询
             getOperatorStatisticList() {
@@ -203,8 +179,5 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-    }
-    .el-table thead.is-group th.el-table__cell{
-        background: none;
     }
 </style>
