@@ -1,9 +1,11 @@
 package net.mingsoft.fxxf.controller;
 
+import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
+import net.mingsoft.basic.dao.IManagerDao;
 import net.mingsoft.basic.entity.ManagerEntity;
 import net.mingsoft.fxxf.bean.entity.User;
 import net.mingsoft.fxxf.bean.vo.ApiResult;
@@ -41,6 +43,9 @@ public class UserController {
 
     @Resource
     UserMapper userMapper;
+
+    @Resource
+    IManagerDao managerDao;
 
     // @RequiresPermissions("manage:user")
     @ApiOperation(value = "用户列表", notes = "用户管理/用户列表")
@@ -93,6 +98,14 @@ public class UserController {
                         user.setUpdateTime(now);
                         user.setUsertype(1);
                         service.save(user);
+
+                        // 新增manager表记录
+                        ManagerEntity manager = new ManagerEntity();
+                        manager.setManagerName(user.getAccount());
+                        manager.setManagerPassword(SecureUtil.md5(pwd));
+                        manager.setManagerNickName(user.getRealname());
+                        manager.setRoleId(user.getRoleId());
+                        managerDao.insert(manager);
                         return ApiResult.success();
                     }else{
                         return ApiResult.fail("密码最小长度为8位，至少包含数字、大写字母、小写字母和特殊字符中的三种");
