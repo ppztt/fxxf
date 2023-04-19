@@ -13,7 +13,7 @@
         <#--        工具栏-->
         <el-col :span="10">
             <el-row class="datetime">
-                <el-col :span="4">时间范围 :</el-col>
+                <el-col :span="4" style="white-space:nowrap">时间范围 :</el-col>
                 <el-col :span="9">
                     <div class="date-range">
                         <el-date-picker
@@ -29,18 +29,12 @@
                                 placeholder="结束日期"
                                 style="width: 220px"
                         ></el-date-picker>
+                        <el-button style="margin-left: 20px" type="primary" icon="el-icon-search" @click="inquire">查询</el-button>
                     </div>
                 </el-col>
             </el-row>
         </el-col>
 
-        <el-col :span="2">
-            <el-row class="button_groud" type="flex">
-                <el-col span="24">
-                    <el-button type="primary" icon="el-icon-search" @click="inquire">查询</el-button>
-                </el-col>
-            </el-row>
-        </el-col>
     </el-row>
     <#--    表格-->
     <el-table
@@ -92,7 +86,7 @@
     </el-table>
     <#--    分页-->
     <div class="pagination-box">
-        <span>共{{total}}条信息 共{{Totalpage}}页</span>
+        <span style="white-space:nowrap">共{{total}}条信息 共{{Totalpage}}页</span>
         <el-pagination
                 @current-change="handleCurrentChange"
                 :current-page.sync="current"
