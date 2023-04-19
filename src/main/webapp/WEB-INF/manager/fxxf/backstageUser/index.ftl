@@ -35,7 +35,7 @@
                             查询
                         </el-button>
                     </el-col>
-                    <el-col >
+                    <el-col>
                         <el-button
                                 size="medium"
                                 class="green_btn btns_type"
@@ -50,8 +50,10 @@
     </el-header>
     <el-main class="ms-container">
         <el-table
+                v-loading="loading"
                 :data="userDataList"
                 style="width: 100%"
+                height="100%"
                 border>
             <el-table-column
                     v-for="item in columns"
@@ -73,13 +75,16 @@
                 </template>
             </el-table-column>
         </el-table>
+        <#-- 修改用户弹窗 -->
         <el-pagination
+                :disable="loading"
                 background
                 @size-change="sizeChange"
                 @current-change="currentChange"
                 :current-page="current"
+                :page-sizes="[10, 20, 30, 40]"
                 :page-size="size"
-                layout="total, prev, pager, next, jumper"
+                layout="total, sizes, prev, pager, next, jumper"
                 :total="total">
         </el-pagination>
         <el-dialog title="修改后台用户"
@@ -165,15 +170,15 @@
                             type="password"
                             :password="true"
                             v-model="formData.password"
-                            placeholder="请输入登录密码，留空则不修改密码"
+                            placeholder="请输入登录密码，留空则表示不修改"
                     ></el-input>
                 </el-form-item>
-                <el-form-item label="确认密码" prop="repassword">
+                <el-form-item label="确认密码" prop="newPassword">
                     <el-input
                             type="password"
                             :password="true"
-                            v-model="formData.repassword"
-                            placeholder="请输入确认密码，留空则不修改密码"
+                            v-model="formData.newPassword"
+                            placeholder="请输入确认密码，留空则表示不修改"
                     ></el-input>
                 </el-form-item>
             </el-form>
@@ -293,6 +298,7 @@
         el: '#form',
         data: function () {
             return {
+                loading: false,
                 from: '',
                 userId: '',
                 loading: false,
@@ -304,33 +310,7 @@
                 modify: false,
                 // 新增的弹出框
                 newAdd: false,
-                userDataList: [
-                    {
-                        account: "hqfj",
-                        address: null,
-                        city: "汕尾市",
-                        createTime: null,
-                        creditCode: null,
-                        district: "华侨管理区",
-                        email: null,
-                        id: 178,
-                        management: null,
-                        newPassword: null,
-                        password: null,
-                        phone: "15880383933",
-                        principal: null,
-                        principalTel: null,
-                        province: null,
-                        realname: null,
-                        roleId: null,
-                        roleName: "区县工作人员",
-                        storeName: null,
-                        town: null,
-                        updateTime: null,
-                        usertype: 0,
-                        zipcode: null
-                    }
-                ],
+                userDataList: [],
                 roleId: 0,
                 roleList: [
 
@@ -364,8 +344,11 @@
                 // 地区信息
                 regionData: [],
                 districtData: [],
+                // 检验密码
+                password: '',
                 // 添加用户信息表单
                 formData: {
+                    usertype: 1,
                     account: "", //用户名
                     realname: "", //真实姓名
                     industryName: "", // 行业协会名称
@@ -376,7 +359,7 @@
                     zipcode: "", //邮政编码
                     phone: "", //手机
                     password: "", //密码
-                    repassword: "", //确认密码
+                    newPassword: "", //确认密码
                     roleId: 3, //所属组
                 },
                 ruleValidate: {
@@ -418,21 +401,21 @@
                     phone: [
                         {
                             required: true,
-
+                            message: "联系电话不能为空",
                             trigger: "blur",
                         },
                     ],
                     password: [
                         {
                             required: false,
-
+                            message: '密码最小长度为8位，至少包含数字、大写字母、小写字母和特殊字符中的三种',
                             trigger: "blur",
                         },
                     ],
-                    repassword: [
+                    newPassword: [
                         {
                             required: false,
-
+                            message: '密码最小长度为8位，至少包含数字、大写字母、小写字母和特殊字符中的三种',
                             trigger: "blur",
                         },
                     ],
@@ -492,7 +475,17 @@
         computed: {},
         methods: {
             getUserList() {
-
+                this.loading = true
+                ms.http.get('/user/userList.do', {
+                    current: this.current,
+                    keyword: this.keyword,
+                    size: this.size
+                }).then((res) => {
+                    let data = res.data
+                    this.userDataList = data.records
+                    this.total = Number(data.total)
+                    this.loading = false
+                })
             },
             showEditUser() {
                 this.formData = {
@@ -509,11 +502,15 @@
                     repassword: "", //确认密码
                     roleId: '', //所属组
                 }
-                    this.newAdd = true
+                this.newAdd = true
             },
-            sizeChange() {
+            sizeChange(size) {
+                this.size = size
+                this.getUserList()
             },
-            currentChange() {
+            currentChange(current) {
+                this.current = current
+                this.getUserList()
             },
             getRegionData() {
                 ms.http.get('/gd-regin.do').then((res) => {
@@ -540,7 +537,14 @@
             // 修改用户信息
             modifyUser(id) {
                 this.modify = true;
-                ms.http.get()
+                ms.http.get('/user/userInfo.do', {id}).then((res) => {
+                    if (res.code === '200') {
+                        let data = res.data
+                        this.formData.id = data.id
+                        this.formData = {...this.formData, ...data}
+                        console.log(this.formData)
+                    }
+                })
             },
             // 重置修改的用户信息
             reset() {
@@ -555,22 +559,31 @@
                     zipcode: "", //邮政编码
                     phone: "", //手机
                     password: "", //密码
-                    repassword: "", //确认密码
+                    newPassword: "", //确认密码
                     roleId: '', //所属组
+                    id: -1
                 }
             },
             // 提交修改
-            sub(msg){
-                let params = JSON.stringify(this.formData)
-                if(msg == "newAdd"){
-                    ms.http.post('',params).then((res)=>{})
-                }
-                if(msg == 'modify'){
-                    ms.http.post('',params).then((res)=>{})
+            sub(msg) {
+                console.log(this.formData.newPassword, this.formData.password)
+                if (this.formData.password == this.formData.newPassword) {
+                    let params = JSON.stringify(this.formData)
+                    ms.http.post('/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
+                        if (res.code == '200') {
+                            this.$message({
+                                message: '修改成功',
+                                type: 'success'
+                            })
+                        }
+                    })
+                } else {
+                    this.$message.error("两次密码输入不一致")
                 }
             }
         },
         mounted() {
+            this.getUserList()
             this.getRegionData()
         }
     });
@@ -685,7 +698,8 @@
         background: transparent !important;
         border: none;
     }
-    .btns_type{
+
+    .btns_type {
         width: 90%;
         margin-left: 10% !important;
     }

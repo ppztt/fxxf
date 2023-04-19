@@ -52,7 +52,8 @@
         <el-table
                 :data="userDataList"
                 style="width: 100%"
-                border>
+                border
+                height="100%">
             <el-table-column
                     v-for="item in columns"
                     :key="item.key"
