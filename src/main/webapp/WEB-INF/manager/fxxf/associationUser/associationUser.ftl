@@ -48,8 +48,9 @@
             </el-col>
         </el-row>
     </el-header>
-    <el-main class="ms-container">
+    <el-main class="ms-container" ref="sakks">
         <el-table
+                v-loading="loading"
                 :data="userDataList"
                 style="width: 100%"
                 border
@@ -67,28 +68,31 @@
                     label="操作">
                 <template slot-scope="{row}">
                     <div class="actions" :id="row.id">
-                        <el-button class="action_btn blue_text" icon="el-icon-edit" @click="()=>modify = true">修改
+                        <el-button class="action_btn blue_text" icon="el-icon-edit" @click="modifyUser(row.id)">修改
                         </el-button>
-                        <el-button class="action_btn red_text" icon="el-icon-close">删除</el-button>
+                        <el-button class="action_btn red_text" icon="el-icon-close" @click="deleteBack(row.id)">删除</el-button>
                     </div>
                 </template>
             </el-table-column>
         </el-table>
         <el-pagination
+                :disable="loading"
                 background
                 @size-change="sizeChange"
                 @current-change="currentChange"
                 :current-page="current"
+                :page-sizes="[10, 20, 30, 40]"
                 :page-size="size"
-                layout="total, prev, pager, next, jumper"
+                layout="total, sizes, prev, pager, next, jumper"
                 :total="total">
         </el-pagination>
         <el-dialog title="修改行业协会用户"
                    center
                    :visible.sync="modify"
-                   width="30%">
+                   width="30%"
+                   @open="setRef('modifyForm')">
             <el-form
-                    ref="formData"
+                    ref="modify"
                     :model="formData"
                     :rules="ruleValidate"
                     label-width="90px">
@@ -101,9 +105,9 @@
                 </el-form-item>
                 <el-form-item
                         label="行业协会"
-                        prop="industryName">
+                        prop="realname">
                     <el-input
-                            v-model="formData.industryName"
+                            v-model="formData.realname"
                             placeholder="请输入行业协会名称"
                     ></el-input>
                 </el-form-item>
@@ -137,11 +141,11 @@
                             placeholder="请输入登录密码，留空则不修改密码"
                     ></el-input>
                 </el-form-item>
-                <el-form-item label="确认密码" prop="repassword">
+                <el-form-item label="确认密码" prop="newPassword">
                     <el-input
                             type="password"
                             :password="true"
-                            v-model="formData.repassword"
+                            v-model="formData.newPassword"
                             placeholder="请输入确认密码，留空则不修改密码"
                     ></el-input>
                 </el-form-item>
@@ -156,7 +160,7 @@
                    :visible.sync="newAdd"
                    width="30%">
             <el-form
-                    ref="formData"
+                    ref="newAdd"
                     :model="formData"
                     :rules="ruleValidate"
                     label-width="90px">
@@ -164,14 +168,13 @@
                     <el-input
                             v-model="formData.account"
                             placeholder="请输入用户名"
-                            :disabled="userId != 'none'"
                     ></el-input>
                 </el-form-item>
                 <el-form-item
                         label="行业协会"
-                        prop="industryName">
+                        prop="realname">
                     <el-input
-                            v-model="formData.industryName"
+                            v-model="formData.realname"
                             placeholder="请输入行业协会名称"
                     ></el-input>
                 </el-form-item>
@@ -205,11 +208,11 @@
                             placeholder="请输入登录密码，留空则不修改密码"
                     ></el-input>
                 </el-form-item>
-                <el-form-item label="确认密码" prop="repassword">
+                <el-form-item label="确认密码" prop="newPassword">
                     <el-input
                             type="password"
                             :password="true"
-                            v-model="formData.repassword"
+                            v-model="formData.newPassword"
                             placeholder="请输入确认密码，留空则不修改密码"
                     ></el-input>
                 </el-form-item>
@@ -241,33 +244,7 @@
                 modify: false,
                 // 新增的弹出框
                 newAdd: false,
-                userDataList: [
-                    {
-                        account: "hqfj",
-                        address: null,
-                        city: "汕尾市",
-                        createTime: null,
-                        creditCode: null,
-                        district: "华侨管理区",
-                        email: null,
-                        id: 178,
-                        management: null,
-                        newPassword: null,
-                        password: null,
-                        phone: "15880383933",
-                        principal: null,
-                        principalTel: null,
-                        province: null,
-                        realname: null,
-                        roleId: null,
-                        roleName: "区县工作人员",
-                        storeName: null,
-                        town: null,
-                        updateTime: null,
-                        usertype: 0,
-                        zipcode: null
-                    }
-                ],
+                userDataList: [],
                 roleId: '',
                 roleList: [],
                 // 地区信息
@@ -276,8 +253,7 @@
                 // 添加用户信息表单
                 formData: {
                     account: "", //用户名
-                    realname: "", //真实姓名
-                    industryName: "", // 行业协会名称
+                    realname: "", // 行业协会名称
                     // industryUserName: "", // 行业协会用户名
                     email: "", //邮箱
                     city: "", //市
@@ -285,7 +261,7 @@
                     zipcode: "", //邮政编码
                     phone: "", //手机
                     password: "", //密码
-                    repassword: "", //确认密码
+                    newPassword: "", //确认密码
                     roleId: "3", //所属组
                 },
                 ruleValidate: {
@@ -303,7 +279,7 @@
                             trigger: "blur",
                         },
                     ],
-                    industryName: [
+                    realname: [
                         {
                             required: true,
                             message: "行业协会名称不能为空",
@@ -334,16 +310,25 @@
                     password: [
                         {
                             required: false,
-
+                            message: '密码最小长度为8位，至少包含数字、大写字母、小写字母和特殊字符中的三种',
                             trigger: "blur",
                         },
+                        {
+                            min: 8,
+                            trigger: "blur",
+                        }
                     ],
-                    repassword: [
+                    newPassword: [
                         {
                             required: false,
-
+                            message: '密码最小长度为8位，至少包含数字、大写字母、小写字母和特殊字符中的三种',
                             trigger: "blur",
                         },
+                        {
+                            min: 8,
+                            trigger: "blur",
+                        }
+
                     ],
                     roleId: [
                         {
@@ -400,15 +385,51 @@
         components: {},
         computed: {},
         methods: {
+            setRef(ref){
+                this.$nextTick(()=>{
+                    console.log(this.$refs)
+                })
+                // this.$refs[ref].resetFields()
+                // this.$refs[ref].validate((v)=>{
+                //     console.log(v)
+                // })
+            },
             getUserList() {
-
+                this.loading = true
+                ms.http.get('/user/industryAssociationList.do', {
+                    current: this.current,
+                    keyword: this.keyword,
+                    size: this.size
+                }).then((res) => {
+                    let data = res.data
+                    this.userDataList = data.records
+                    this.total = Number(data.total)
+                    this.loading = false
+                })
             },
             showEditUser() {
+                this.formData = {
+                    account: "", //用户名
+                    realname: "", // 行业协会名称
+                    // industryUserName: "", // 行业协会用户名
+                    email: "", //邮箱
+                    city: "", //市
+                    district: "", // 区县
+                    zipcode: "", //邮政编码
+                    phone: "", //手机
+                    password: "", //密码
+                    newPassword: "", //确认密码
+                    roleId: '', //所属组
+                }
                 this.newAdd = true
             },
-            sizeChange() {
+            sizeChange(size) {
+                this.size = size
+                this.getUserList()
             },
-            currentChange() {
+            currentChange(current) {
+                this.current = current
+                this.getUserList()
             },
             getRegionData() {
                 ms.http.get('/gd-regin.do').then((res) => {
@@ -435,14 +456,20 @@
             // 修改用户信息
             modifyUser(id) {
                 this.modify = true;
-                ms.http.get()
+                ms.http.get('/user/userInfo.do', {id}).then((res) => {
+                    if (res.code === '200') {
+                        let data = res.data
+                        this.formData.id = data.id
+                        this.formData = {...this.formData, ...data}
+                    }
+                })
             },
             // 重置修改的用户信息
             reset() {
                 this.formData = {
                     account: "", //用户名
                     realname: "", //真实姓名
-                    industryName: "", // 行业协会名称
+                    realname: "", // 行业协会名称
                     // industryUserName: "", // 行业协会用户名
                     email: "", //邮箱
                     city: "", //市
@@ -450,24 +477,81 @@
                     zipcode: "", //邮政编码
                     phone: "", //手机
                     password: "", //密码
-                    repassword: "", //确认密码
+                    newPassword: "", //确认密码
                     roleId: '', //所属组
+                    id: -1
                 }
             },
-            // 提交修改
+            // 提交
             sub(msg) {
-                let params = JSON.stringify(this.formData)
-                if (msg == "newAdd") {
-                    ms.http.post('', params).then((res) => {
+                this.$nextTick(()=>{
+                    console.log(this.$refs["modifyForm"])
+                })
+                if (msg == "modify") {
+                    let params = JSON.stringify(this.formData)
+                    ms.http.post('/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
+                        if (res.code == '200') {
+                            this.$message({
+                                message: '修改成功',
+                                type: 'success'
+                            })
+                            this.modify = false
+                            this.reset()
+                            this.getUserList()
+                        }
+                        else{
+                            this.$message.error(res.msg)
+                        }
                     })
+                } else {
+                    if (this.formData.password == this.formData.newPassword) {
+                        let params = JSON.stringify(this.formData)
+                        ms.http.post('/user/addIndustryAssociation.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
+                            if (res.code == '200') {
+                                this.$message({
+                                    message: '新增用户成功',
+                                    type: 'success'
+                                })
+                                this.newAdd = false
+                                this.reset()
+                                this.getUserList()
+                            }
+                            else{
+                                this.$message.error(res.msg)
+                            }
+                        })
+                    } else {
+                        this.$message.error("两次密码输入不一致")
+                    }
                 }
-                if (msg == 'modify') {
-                    ms.http.post('', params).then((res) => {
+            },
+            // 删除用户信息
+            deleteBack(id) {
+                this.$confirm('确认删除该项数据?', '删除提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'error',
+                    center: true
+                }).then(() => {
+                    ms.http.post('/user/del/' + id + '.do').then(()=>{
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                        this.getUnitList()
                     })
-                }
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             }
+
         },
         mounted() {
+            console.log(this.$refs)
+            this.getUserList()
             this.getRegionData()
         }
     });

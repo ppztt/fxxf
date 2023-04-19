@@ -70,12 +70,12 @@
                     <div class="actions" :id="row.id">
                         <el-button class="action_btn blue_text" icon="el-icon-edit" @click="modifyUser(row.id)">修改
                         </el-button>
-                        <el-button class="action_btn red_text" icon="el-icon-close">删除</el-button>
+                        <el-button class="action_btn red_text" icon="el-icon-close" @click="deleteBack(row.id)">删除
+                        </el-button>
                     </div>
                 </template>
             </el-table-column>
         </el-table>
-        <#-- 修改用户弹窗 -->
         <el-pagination
                 :disable="loading"
                 background
@@ -87,6 +87,7 @@
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="total">
         </el-pagination>
+        <#-- 修改用户弹窗 -->
         <el-dialog title="修改后台用户"
                    center
                    :visible.sync="modify"
@@ -200,7 +201,6 @@
                     <el-input
                             v-model="formData.account"
                             placeholder="请输入用户名"
-                            :disabled="userId != 'none'"
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="真实姓名" prop="realname">
@@ -270,15 +270,15 @@
                             type="password"
                             :password="true"
                             v-model="formData.password"
-                            placeholder="请输入登录密码，留空则不修改密码"
+                            placeholder="请输入登录密码"
                     ></el-input>
                 </el-form-item>
-                <el-form-item label="确认密码" prop="repassword">
+                <el-form-item label="确认密码" prop="newPassword">
                     <el-input
                             type="password"
                             :password="true"
-                            v-model="formData.repassword"
-                            placeholder="请输入确认密码，留空则不修改密码"
+                            v-model="formData.newPassword"
+                            placeholder="请输入确认密码"
                     ></el-input>
                 </el-form-item>
             </el-form>
@@ -404,20 +404,35 @@
                             message: "联系电话不能为空",
                             trigger: "blur",
                         },
+                        ,
+                        {
+                            min: 11,
+                            max: 11,
+                            trigger: "blur",
+                        }
                     ],
                     password: [
                         {
-                            required: false,
+                            required: true,
                             message: '密码最小长度为8位，至少包含数字、大写字母、小写字母和特殊字符中的三种',
                             trigger: "blur",
                         },
+                        ,
+                        {
+                            min: 8,
+                            trigger: "blur",
+                        }
                     ],
                     newPassword: [
                         {
-                            required: false,
+                            required: true,
                             message: '密码最小长度为8位，至少包含数字、大写字母、小写字母和特殊字符中的三种',
                             trigger: "blur",
                         },
+                        {
+                            min: 8,
+                            trigger: "blur",
+                        }
                     ],
                     roleId: [
                         {
@@ -499,7 +514,7 @@
                     zipcode: "", //邮政编码
                     phone: "", //手机
                     password: "", //密码
-                    repassword: "", //确认密码
+                    newPassword: "", //确认密码
                     roleId: '', //所属组
                 }
                 this.newAdd = true
@@ -542,7 +557,6 @@
                         let data = res.data
                         this.formData.id = data.id
                         this.formData = {...this.formData, ...data}
-                        console.log(this.formData)
                     }
                 })
             },
@@ -566,8 +580,7 @@
             },
             // 提交修改
             sub(msg) {
-                console.log(this.formData.newPassword, this.formData.password)
-                if (this.formData.password == this.formData.newPassword) {
+                if (msg == "modify") {
                     let params = JSON.stringify(this.formData)
                     ms.http.post('/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
                         if (res.code == '200') {
@@ -575,11 +588,57 @@
                                 message: '修改成功',
                                 type: 'success'
                             })
+                            this.modify = false
+                            this.reset()
+                            this.getUserList()
+                        }
+                        if(res.code == '500'){
+                            this.$message.error(res.msg)
                         }
                     })
                 } else {
-                    this.$message.error("两次密码输入不一致")
+                    if (this.formData.password == this.formData.newPassword) {
+                        let params = JSON.stringify(this.formData)
+                        ms.http.post('/user/addUser.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
+                            if (res.code == '200') {
+                                this.$message({
+                                    message: '新增用户成功',
+                                    type: 'success'
+                                })
+                                this.newAdd = false
+                                this.reset()
+                                this.getUserList()
+                            }
+                            if(res.code == '500'){
+                                this.$message.error(res.msg)
+                            }
+                        })
+                    } else {
+                        this.$message.error("两次密码输入不一致")
+                    }
                 }
+            },
+            // 删除用户信息
+            deleteBack(id) {
+                this.$confirm('确认删除该项数据?', '删除提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'error',
+                    center: true
+                }).then(() => {
+                    ms.http.post('/user/del/' + id + '.do').then(()=>{
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                        this.getUserList()
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             }
         },
         mounted() {

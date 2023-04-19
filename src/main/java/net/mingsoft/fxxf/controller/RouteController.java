@@ -57,10 +57,6 @@ public class RouteController {
         return "/fxxf/Unwarranted/check";
     }
 
-    @GetMapping("/passwordChange")
-    public String passwordChange() {
-        return "/fxxf/passwordChange/passwordChange";
-    }
     @GetMapping("/userInfoChange")
     public String userInfoChange() {
         return "/fxxf/userInfoChange/index";
