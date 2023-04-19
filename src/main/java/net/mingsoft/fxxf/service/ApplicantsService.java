@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -51,11 +50,11 @@ public interface ApplicantsService extends IService<Applicants> {
      */
     void downTemplateFile(Integer type, HttpServletRequest request, HttpServletResponse response);
 
-    ApiResult templatePreImport(MultipartFile file);
+    ApiResult templatePreImport(Integer type,MultipartFile file);
 
     ApiResult audit(Integer id, Integer type, String notes);
 
-    ApiResult<List<Applicants>> templateImport(Map map);
+    ApiResult<List<Applicants>> templateImport(String fileId);
 
     void export(Integer type, String status, HttpServletRequest request, HttpServletResponse response);
 

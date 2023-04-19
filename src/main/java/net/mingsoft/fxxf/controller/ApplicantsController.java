@@ -148,13 +148,14 @@ public class ApplicantsController {
 
     @PostMapping(value = "/preImport")
     @ApiOperation(value = "经营者列表-预导入，检查导入的在期单位名称中是否存在与现有在期名单相同项")
-    public ApiResult<List<ExcelImportErrorMsgVo>> templatePreImport(@RequestParam("file") MultipartFile file) {
+    public ApiResult<List<ExcelImportErrorMsgVo>> templatePreImport(@RequestParam("type") Integer type,
+                                                                    @RequestParam("file") MultipartFile file) {
 
         if (!Objects.isNull(file) && !file.getOriginalFilename().endsWith(".xlsm")) {
             return ApiResult.fail("上传失败，请上传xlsm格式文件");
         }
 
-        return applicantsService.templatePreImport(file);
+        return applicantsService.templatePreImport(type,file);
     }
 
     @GetMapping(value = "/audit")
@@ -170,10 +171,10 @@ public class ApplicantsController {
     }
 
     //    @RequiresPermissions("wlythcn:upload")
-    @PostMapping(value = "/import")
+    @PostMapping(value = "/import/{fileId}")
     @ApiOperation(value = "经营者列表-导入")
-    public ApiResult<List<Applicants>> templateImport(@RequestBody Map map) {
-        return applicantsService.templateImport(map);
+    public ApiResult<List<Applicants>> templateImport(@PathVariable("fileId") String fileId) {
+        return applicantsService.templateImport(fileId);
     }
 
     //    @RequiresPermissions("wlythcn:list")
@@ -181,8 +182,8 @@ public class ApplicantsController {
     @ApiOperation(value = "经营者列表-导出", notes = "经营者列表-导出")
     @ApiImplicitParam(name = "status", value = "状态(1:在期； 0:摘牌)，为空则导出全部", example = "1")
     public void export(@RequestParam(value = "type") Integer type,
-                            @RequestParam(value = "status", required = false) String status,
-                            HttpServletRequest request, HttpServletResponse response) {
+                       @RequestParam(value = "status", required = false) String status,
+                       HttpServletRequest request, HttpServletResponse response) {
 
         applicantsService.export(type, status, request, response);
     }
@@ -205,9 +206,9 @@ public class ApplicantsController {
     @GetMapping("/operatorStatistics/export")
     @ApiOperation(value = "经营者统计-导出", notes = "经营者统计-导出")
     public void operatorStatisticsExport(@RequestParam(value = "type") Integer type,
-                                              @RequestParam(value = "startTime", required = false) String startTime,
-                                              @RequestParam(value = "endTime", required = false) String endTime,
-                                              HttpServletRequest request, HttpServletResponse response) {
+                                         @RequestParam(value = "startTime", required = false) String startTime,
+                                         @RequestParam(value = "endTime", required = false) String endTime,
+                                         HttpServletRequest request, HttpServletResponse response) {
 
         try {
             applicantsService.operatorStatisticsExport(type, startTime, endTime, request, response);
