@@ -1,4 +1,4 @@
-package net.mingsoft.utils;
+package net.mingsoft.fxxf.vaild;
 
 import cn.afterturn.easypoi.excel.entity.result.ExcelVerifyHandlerResult;
 import cn.afterturn.easypoi.handler.inter.IExcelVerifyHandler;

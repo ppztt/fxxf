@@ -1,4 +1,4 @@
-package net.mingsoft.utils;
+package net.mingsoft.fxxf.vaild;
 
 import cn.afterturn.easypoi.excel.entity.result.ExcelVerifyHandlerResult;
 import cn.afterturn.easypoi.handler.inter.IExcelVerifyHandler;
@@ -55,7 +55,7 @@ public class ApplicantsStoreExcelVerifyHandlerImpl implements IExcelVerifyHandle
         }
 
         ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
-        if (user!=null) {
+        if (user != null) {
             User userExtensionInfo = userMapper.selectById(user.getId());
             if (user.getRoleId() != 1) {
                 if (StringUtils.isNotBlank(applicantsStoreExcelImportVo.getCity())
