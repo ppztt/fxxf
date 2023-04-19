@@ -7,6 +7,7 @@ import net.mingsoft.fxxf.bean.request.*;
 import net.mingsoft.fxxf.bean.vo.*;
 import net.mingsoft.fxxf.service.ApplicantsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -125,7 +126,6 @@ public class ApplicantsController {
         }
         return ApiResult.fail();
     }
-
     /**
      * 根据经营者id更新状态及原因
      */
