@@ -312,7 +312,7 @@
     })
 </script>
 <style>
-    html, body {
+    html {
         overflow: scroll;
     }
 

@@ -34,6 +34,8 @@
     </el-row>
 
     <el-table
+            element-loading-text="加载中，请稍后..."
+            v-loading="loadingShow"
             class="table"
             ref="multipleTable"
             :data="dataList"
@@ -42,13 +44,13 @@
             @selection-change="handleSelectionChange">
         <el-table-column
                 type="selection"
-                width="55"
+                width="50"
                 align="center">
         </el-table-column>
-        <el-table-column type="index" label="序号" width="100" align="center"></el-table-column>
+        <el-table-column type="index" label="序号" width="130" align="center"></el-table-column>
         <el-table-column
                 prop="filename"
-                label="资料排名"
+                label="资料名称"
                 width="800"
                 align="left">
         </el-table-column>
@@ -80,7 +82,7 @@
     </el-table>
 
     <div class="paginationbox">
-        <span>共{{total}}条信息 共{{Totalpage}}页</span>
+        <span style="white-space:nowrap">共{{total}}条信息 共{{Totalpage}}页</span>
         <el-pagination
                 @current-change="handleCurrentChange"
                 :current-page.sync="current"
@@ -110,6 +112,7 @@
                 // 添加需要的请求头信息
                 "Content-Type": "multipart/form-data"
             },
+            loadingShow: true,
         },
         computed: {
             //计算总共有多少页return Math.ceil(total / pageSize);
@@ -130,12 +133,15 @@
             //获取数据
             getList() {
                 ms.http.get('/attachment/info.do?current=' + this.current + '&keyword=' + this.keyword + '&size=10').then(res => {
+                    if (res.code != 200) return
                     this.dataList = res.data.records
                     this.total = Number(res.data.total)
+                    this.loadingShow = false
                 })
             },
             //查询
             getOperatorStatisticList() {
+                this.loadingShow = true
                 this.getList()
             },
             //批量删除
@@ -151,6 +157,7 @@
                 }).then(() => {
                     ms.http.post('/attachment/del.do', JSON.stringify(idArr), {headers: {'Content-Type': 'application/json'}}).then(res => {
                         if (res.code == 200) {
+                            this.loadingShow = true
                             this.getList()
                         }
                     })
@@ -198,6 +205,7 @@
                 formData.append('files', item.file);
                 ms.http.post('/attachment/uploadFile.do', formData, {headers: {"Content-Type": "multipart/form-data"}}).then(res => {
                     if (res.code == 200) {
+                        this.loadingShow = true
                         this.getList()
                         this.$message({
                             type: 'success',
@@ -209,7 +217,6 @@
                             message: '上传失败'
                         });
                     }
-                    console.log(res)
                 })
             },
         },
