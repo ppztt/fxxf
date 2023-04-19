@@ -29,8 +29,9 @@ import net.mingsoft.fxxf.mapper.AuditLogMapper;
 import net.mingsoft.fxxf.mapper.UserMapper;
 import net.mingsoft.fxxf.service.ApplicantsService;
 import net.mingsoft.fxxf.service.AuditLogService;
+import net.mingsoft.fxxf.vaild.ApplicantsStoreExcelVerifyHandlerImpl;
+import net.mingsoft.fxxf.vaild.ApplicantsUnitExcelVerifyHandlerImpl;
 import net.mingsoft.utils.ApplicantsImportUtil;
-import net.mingsoft.utils.ApplicantsStoreExcelVerifyHandlerImpl;
 import net.mingsoft.utils.ExcelUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -67,7 +68,15 @@ import java.util.stream.Collectors;
 @Service
 public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applicants> implements ApplicantsService {
 
-    private final String[] title = new String[]{"经营者注册名称", "统一社会信用代码", "门店名称", "经营场所-所在市", "经营场所-所在区县", "经营场所-详细地址", "经营类别", "类别明细", "负责人姓名", "负责人电话", "适用商品-承诺事项及内容", "退货期限（天）", "退货约定-承诺事项及内容", "企业申请日期"};
+    private final String[] unitImportTitle = new String[]{"经营者注册名称", "统一社会信用代码", "门店名称", "经营场所-所在市", "经营场所-所在区县",
+            "经营场所-详细地址", "网店名称", "所属平台", "经营类别", "类别明细",
+            "负责人姓名", "负责人电话", "其他承诺事项及具体内容", "企业申请日期"};
+
+    private final String[] storeImportTitle = new String[]{"经营者注册名称", "统一社会信用代码", "门店名称", "经营场所-所在市",
+            "经营场所-所在区县", "经营场所-详细地址", "经营类别", "类别明细", "负责人姓名", "负责人电话",
+            "适用商品-承诺事项及内容", "退货期限（天）",
+            "退货约定-承诺事项及内容", "企业申请日期"};
+
 
     /**
      * 导入模板
@@ -102,6 +111,13 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
 
     @Autowired
     private EnterpriseService enterpriseService;
+
+
+    @Autowired
+    private ApplicantsStoreExcelVerifyHandlerImpl storeVerifyHandler;
+
+    @Autowired
+    private ApplicantsUnitExcelVerifyHandlerImpl unitVerifyHandler;
 
     @Override
     public List<RegionVo> getGdRegion() {
@@ -281,7 +297,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
     }
 
     @Override
-    public ApiResult templatePreImport(MultipartFile file) {
+    public ApiResult templatePreImport(Integer type, MultipartFile file) {
         InputStream in = null;
         List<ExcelImportErrorMsgVo> errorMsgVoList = new ArrayList<>();
         try {
@@ -290,17 +306,34 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
             ImportParams importParams = new ImportParams();
             importParams.setStartRows(1);
             importParams.setNeedVerify(true);
-            importParams.setVerifyHandler(new ApplicantsStoreExcelVerifyHandlerImpl());
-            importParams.setImportFields(title);
 
-            ExcelImportResult<ApplicantsStoreExcelImportVo> result = ExcelImportUtil.importExcelMore(in, ApplicantsStoreExcelImportVo.class, importParams);
+            ExcelImportResult<ApplicantsExcelImportVo> result = new ExcelImportResult<>();
+            if (ApplicantsTypeEnum.UNIT.getCode().equals(type)) {
+                importParams.setVerifyHandler(unitVerifyHandler);
+                importParams.setImportFields(unitImportTitle);
+                ExcelImportResult<ApplicantsUnitExcelImportVo> unitApplicantsImportRes = ExcelImportUtil.importExcelMore(
+                        in, ApplicantsUnitExcelImportVo.class, importParams);
+
+                result.setVerifyFail(unitApplicantsImportRes.isVerifyFail());
+                result.setList(BeanUtil.copyToList(unitApplicantsImportRes.getList(), ApplicantsExcelImportVo.class));
+                result.setFailList(BeanUtil.copyToList(unitApplicantsImportRes.getList(), ApplicantsExcelImportVo.class));
+            }
+
+            if (ApplicantsTypeEnum.STORE.getCode().equals(type)) {
+                importParams.setVerifyHandler(storeVerifyHandler);
+                importParams.setImportFields(storeImportTitle);
+                ExcelImportResult<ApplicantsStoreExcelImportVo> storeApplicantsImportRes = ExcelImportUtil.importExcelMore(
+                        in, ApplicantsStoreExcelImportVo.class, importParams);
+
+                result.setVerifyFail(storeApplicantsImportRes.isVerifyFail());
+                result.setList(BeanUtil.copyToList(storeApplicantsImportRes.getList(), ApplicantsExcelImportVo.class));
+                result.setFailList(BeanUtil.copyToList(storeApplicantsImportRes.getList(), ApplicantsExcelImportVo.class));
+            }
+
 
             // 是否存在校验失败
-            boolean verfiyFail = result.isVerifyFail();
-            List<ApplicantsStoreExcelImportVo> failList = result.getFailList();
-            List<ApplicantsStoreExcelImportVo> applicantsStoreExcelImportVos = result.getList();
-
-            if (verfiyFail) {
+            if (result.isVerifyFail()) {
+                List<ApplicantsExcelImportVo> failList = result.getFailList();
                 failList.forEach(e -> {
                     errorMsgVoList.add(new ExcelImportErrorMsgVo(e.getRowNum(), e.getErrorMsg()));
                 });
@@ -308,19 +341,26 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                     return ApiResult.fail(errorMsgVoList);
                 }
             }
-            if (!applicantsStoreExcelImportVos.isEmpty()) {
 
+            List<ApplicantsExcelImportVo> applicantsExcelImportVos = result.getList();
+            if (!applicantsExcelImportVos.isEmpty()) {
                 //检测数据是否跨区县
+                // 获取登录用户
                 ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
+                if (user == null) {
+                    return ApiResult.fail("当前登录用户为空，请重新登陆");
+                }
+
                 User userExtensionInfo = userMapper.selectById(user.getId());
+                if (userExtensionInfo == null) {
+                    return ApiResult.fail("当前登录用户扩展信息为空，请前往补充");
+                }
 
                 int roleId = user.getRoleId();
-
                 if (roleId == 3) {
-
                     String district = userExtensionInfo.getDistrict();
-                    for (int i = 0; i < applicantsStoreExcelImportVos.size(); i++) {
-                        String vo = applicantsStoreExcelImportVos.get(i).getDistrict();
+                    for (ApplicantsExcelImportVo applicantsExcelImportVo : applicantsExcelImportVos) {
+                        String vo = applicantsExcelImportVo.getDistrict();
                         if (!vo.contains(district)) {
                             errorMsgVoList.add(new ExcelImportErrorMsgVo("当前导入文件中【统一社会信用代码】包含其他其他地区数据，请去掉后再上传"));
                             return ApiResult.fail(errorMsgVoList);
@@ -328,8 +368,8 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                     }
                 } else if (roleId == 2) {
                     String city = userExtensionInfo.getCity();
-                    for (int i = 0; i < applicantsStoreExcelImportVos.size(); i++) {
-                        String vo = applicantsStoreExcelImportVos.get(i).getCity();
+                    for (ApplicantsExcelImportVo applicantsExcelImportVo : applicantsExcelImportVos) {
+                        String vo = applicantsExcelImportVo.getCity();
                         if (!vo.contains(city)) {
                             errorMsgVoList.add(new ExcelImportErrorMsgVo("当前导入文件中【统一社会信用代码】包含其他其他市区数据，请去掉后再上传"));
                             return ApiResult.fail(errorMsgVoList);
@@ -337,8 +377,8 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                     }
                 } else if (roleId == 4) {
                     String city = userExtensionInfo.getCity();
-                    for (int i = 0; i < applicantsStoreExcelImportVos.size(); i++) {
-                        String vo = applicantsStoreExcelImportVos.get(i).getCity();
+                    for (ApplicantsExcelImportVo applicantsExcelImportVo : applicantsExcelImportVos) {
+                        String vo = applicantsExcelImportVo.getCity();
                         if (!vo.contains(city)) {
                             errorMsgVoList.add(new ExcelImportErrorMsgVo("当前导入文件中【统一社会信用代码】包含其他其他市区数据，请去掉后再上传"));
                             return ApiResult.fail(errorMsgVoList);
@@ -347,24 +387,24 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                 }
 
                 List<String> creditCodes = new ArrayList<>();
-
-                for (int i = 0; i < applicantsStoreExcelImportVos.size(); i++) {
-                    creditCodes.add(applicantsStoreExcelImportVos.get(i).getCreditCode());
+                for (int i = 0; i < applicantsExcelImportVos.size(); i++) {
+                    creditCodes.add(applicantsExcelImportVos.get(i).getCreditCode());
                 }
                 String[] array = new String[creditCodes.size()];
                 array = creditCodes.toArray(array);
+
                 List<ArrayList<String>> same = ApplicantsImportUtil.findSame(array);
-                if (same.size() > 0) {
+                if (!CollectionUtils.isEmpty(same)) {
                     errorMsgVoList.add(new ExcelImportErrorMsgVo("当前导入文件中【统一社会信用代码】存在重复，行:" + same));
                     return ApiResult.fail(errorMsgVoList);
                 }
 
-                List<Applicants> applicantsStatus5_6 = findApplicantsByCreditCodeAndStatus5_6(creditCodes.toArray(), 2);
+                List<Applicants> applicantsStatus5_6 = findApplicantsByCreditCodeAndStatus5_6(creditCodes.toArray(), type);
                 AtomicInteger rowNum0 = new AtomicInteger(3);
                 AtomicBoolean flag0 = new AtomicBoolean(false);
-                boolean isAduit = applicantsStoreExcelImportVos.stream().sequential().anyMatch(app -> {
-                    for (int i = 0; i < applicantsStatus5_6.size(); i++) {
-                        if (Objects.equals(app.getCreditCode(), applicantsStatus5_6.get(i).getCreditCode())) {
+                boolean isAduit = applicantsExcelImportVos.stream().anyMatch(app -> {
+                    for (Applicants applicants : applicantsStatus5_6) {
+                        if (Objects.equals(app.getCreditCode(), applicants.getCreditCode())) {
                             errorMsgVoList.add(new ExcelImportErrorMsgVo(rowNum0.get(), "导入的统一社会信用代码中存在与现有在审核名单相同项"));
                             flag0.set(true);
                             break;
@@ -381,10 +421,10 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                     return ApiResult.fail(errorMsgVoList);
                 }
 
-                List<Applicants> applicantsStatus1 = findApplicantsByRegName(2, creditCodes.toArray());
+                List<Applicants> applicantsStatus1 = findApplicantsByRegName(type, creditCodes.toArray());
                 AtomicInteger rowNum1 = new AtomicInteger(3);
                 AtomicBoolean flag1 = new AtomicBoolean(false);
-                boolean isRepact1 = applicantsStoreExcelImportVos.stream().sequential().anyMatch(app -> {
+                boolean isRepact1 = applicantsExcelImportVos.stream().anyMatch(app -> {
                     for (int i = 0; i < applicantsStatus1.size(); i++) {
                         if (Objects.equals(app.getCreditCode(), applicantsStatus1.get(i).getCreditCode())) {
                             errorMsgVoList.add(new ExcelImportErrorMsgVo(rowNum1.get(), "导入的统一社会信用代码中存在与现有在期名单相同项"));
@@ -403,16 +443,17 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                     return ApiResult.fail(errorMsgVoList);
                 }
 
-                List<Applicants> applicantsStatus4 = findApplicantsByRegNameAndStatus4(2, creditCodes.toArray());
+                List<Applicants> applicantsStatus4 = findApplicantsByRegNameAndStatus4(type, creditCodes.toArray());
 
                 boolean isRepact = false;
                 AtomicInteger rowNum = new AtomicInteger(3);
                 AtomicBoolean flag = new AtomicBoolean(false);
-                if (applicantsStatus4 != null && applicantsStatus4.size() > 0) {
-                    isRepact = applicantsStoreExcelImportVos.stream().sequential().anyMatch(app -> {
-                        for (int i = 0; i < applicantsStatus4.size(); i++) {
-                            if (Objects.equals(app.getCreditCode(), applicantsStatus4.get(i).getCreditCode())) {
-                                errorMsgVoList.add(new ExcelImportErrorMsgVo(rowNum.get(), "导入的统一社会信用代码中存在与现有待审核名单相同项，点击确定按钮将覆盖系统中现有数据，点击取消将不上传文件内容！"));
+                if (!CollectionUtils.isEmpty(applicantsStatus4)) {
+                    isRepact = applicantsExcelImportVos.stream().anyMatch(app -> {
+                        for (Applicants applicants : applicantsStatus4) {
+                            if (Objects.equals(app.getCreditCode(), applicants.getCreditCode())) {
+                                errorMsgVoList.add(new ExcelImportErrorMsgVo(rowNum.get(),
+                                        "导入的统一社会信用代码中存在与现有待审核名单相同项，点击确定按钮将覆盖系统中现有数据，点击取消将不上传文件内容！"));
                                 flag.set(true);
                                 break;
                             }
@@ -443,9 +484,12 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                     errorMsgVo.setFileId(dest.getName());
                     errorMsgVoList.add(errorMsgVo);
                 }
+
                 return ApiResult.success(errorMsgVoList);
             }
+
             errorMsgVoList.add(new ExcelImportErrorMsgVo(null, "导入文件为空，请重新选择"));
+
             return ApiResult.fail(errorMsgVoList);
         } catch (ExcelImportException e) {
             e.printStackTrace();
@@ -484,16 +528,17 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
     }
 
     @Override
-    public ApiResult templateImport(Map map) {
+    public ApiResult templateImport(String fileId) {
         File file = null;
         try {
             String path = ResourceUtils.getURL("classpath:").getPath() + importFileTmp;
-            file = ResourceUtils.getFile(path + map.get("fileId"));
+            file = ResourceUtils.getFile(path + fileId);
 
             ImportParams importParams = new ImportParams();
             importParams.setStartRows(1);
 
-            ExcelImportResult<ApplicantsExcelImportVo> result = ExcelImportUtil.importExcelMore(file, ApplicantsExcelImportVo.class, importParams);
+            ExcelImportResult<ApplicantsExcelImportVo> result = ExcelImportUtil.importExcelMore(
+                    file, ApplicantsExcelImportVo.class, importParams);
 
             // 是否存在校验失败
             boolean verfiyFail = result.isVerifyFail();

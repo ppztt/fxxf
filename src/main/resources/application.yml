@@ -33,7 +33,7 @@ ms:
   xss:
     xssEnable: true #xss过滤器的开关
     filterUrl: /**   #过滤的url,多个用逗号分开
-    excludeUrl: /ms/**,/static/**,/template/**,/file/upload.do,/static/plugins/ueditor/1.4.3.3/jsp/editor.do,/attachment/** #排除的url,多个用逗号分开
+    excludeUrl: /ms/**,/static/**,/template/**,/file/upload.do,/static/plugins/ueditor/1.4.3.3/jsp/editor.do,/applicants/**,/attachment/**  #排除的url,多个用逗号分开
   upload:
     enable-web: true  #启用web层的上传
     template: template #模板文件夹支持重命名，不支持路径
@@ -72,7 +72,7 @@ spring:
   servlet:
     multipart:
       max-request-size: 100MB
-      enabled: true
+      enabled: false
   freemarker:
     suffix: .ftl
     charset: UTF-8
