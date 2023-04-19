@@ -15,7 +15,10 @@ import net.mingsoft.fxxf.bean.request.FeedBackCompanyPageRequest;
 import net.mingsoft.fxxf.bean.vo.*;
 import net.mingsoft.fxxf.mapper.FeedbackMapper;
 import net.mingsoft.fxxf.mapper.FeedbackTypeMapper;
-import net.mingsoft.fxxf.service.*;
+import net.mingsoft.fxxf.service.ApplicantsService;
+import net.mingsoft.fxxf.service.FeedbackService;
+import net.mingsoft.fxxf.service.RecordService;
+import net.mingsoft.fxxf.service.UserService;
 import net.mingsoft.fxxf.service.impl.MyFeedbackService;
 import org.apache.commons.compress.utils.Lists;
 import org.apache.shiro.SecurityUtils;
@@ -56,9 +59,6 @@ public class FeedbackController {
 
     @Resource
     private MyFeedbackService myFeedbackService;
-
-    @Resource
-    private FeedbackStatService feedbackStatService;
 
     @Resource
     FeedbackTypeMapper feedbackTypeMapper;
@@ -229,9 +229,8 @@ public class FeedbackController {
             properties = {
                     @DynamicParameter(name = "feedback", value = "留言反馈实体类", required = true)
             })
-    public ApiResult saveFeedbackInfo(@RequestBody Feedback feedback) {
+    public BaseResult<String> saveFeedbackInfo(@RequestBody Feedback feedback) {
         try {
-
             Integer applicantsId = feedback.getApplicantsId();
             if (applicantsId != null) {
                 LocalDateTime now = LocalDateTime.now();
@@ -247,55 +246,55 @@ public class FeedbackController {
                 feedback.setFilesInfo(filesInfo);
 
                 feedbackService.save(feedback);
-                return ApiResult.success();
+                return BaseResult.success();
             } else {
-                return new ApiResult("500", "请选择经营注册企业");
+                return new BaseResult<>("500", "请选择经营注册企业");
             }
         } catch (Exception e) {
-            log.error("保存留言反馈发生异常，{}", e);
-            return ApiResult.fail();
+            log.error("保存留言反馈发生异常", e);
+            return BaseResult.fail();
         }
     }
 
     @ApiOperation(value = "经营注册者列表", notes = "留言反馈/经营注册者列表")
     @GetMapping("/companyList")
-    public ApiResult<List<Applicants>> companyList(@RequestParam(required = false) @ApiParam(name = "keyword", value = "关键字") String keyword) {
+    public BaseResult<ArrayList<Applicants>> companyList(@RequestParam(required = false) @ApiParam(name = "keyword", value = "关键字") String keyword) {
         try {
-            List<Applicants> list = feedbackService.companyList(keyword);
-            return ApiResult.success(list);
+            ArrayList<Applicants> list = feedbackService.companyList(keyword);
+            return BaseResult.success(list);
         } catch (Exception e) {
-            log.error("保存留言反馈发生异常，{}", e);
-            return ApiResult.fail();
+            log.error("保存留言反馈发生异常", e);
+            return BaseResult.fail();
         }
     }
 
     @ApiOperation(value = "反馈类型", notes = "留言反馈/反馈类型")
     @GetMapping("/feedbackType")
-    public ApiResult<List<FeedbackType>> feedbackType(@RequestParam(required = false, defaultValue = "0") @ApiParam(name = "flag", value = "旗标值：0前台；1后台") Integer flag) {
+    public BaseResult<ArrayList<FeedbackType>> feedbackType(@RequestParam(required = false, defaultValue = "0") @ApiParam(name = "flag", value = "旗标值：0前台；1后台") Integer flag) {
         try {
-            List<FeedbackType> feedbackTypeList = feedbackTypeMapper.feedbackType(flag);
-            return ApiResult.success(feedbackTypeList);
+            ArrayList<FeedbackType> feedbackTypeList = feedbackTypeMapper.feedbackType(flag);
+            return BaseResult.success(feedbackTypeList);
         } catch (Exception e) {
-            log.error("反馈类型/反馈原因 查询发生异常，{}", e);
-            return ApiResult.fail();
+            log.error("反馈类型/反馈原因 查询发生异常", e);
+            return BaseResult.fail();
         }
     }
 
     @ApiOperation(value = "反馈原因", notes = "留言反馈/反馈原因")
     @GetMapping("/feedbackReason")
-    public ApiResult<List<FeedbackType>> feedbackReason(@RequestParam(required = true) @ApiParam(name = "id", value = "类型id", required = true) Integer id) {
+    public BaseResult<ArrayList<FeedbackType>> feedbackReason(@RequestParam(required = true) @ApiParam(name = "id", value = "类型id", required = true) Integer id) {
         try {
-            List<FeedbackType> feedbackTypeList = feedbackTypeMapper.feedbackReason(id);
-            return ApiResult.success(feedbackTypeList);
+            ArrayList<FeedbackType> feedbackTypeList = feedbackTypeMapper.feedbackReason(id);
+            return BaseResult.success(feedbackTypeList);
         } catch (Exception e) {
-            log.error("反馈类型/反馈原因 查询发生异常，{}", e);
-            return ApiResult.fail();
+            log.error("反馈类型/反馈原因 查询发生异常", e);
+            return BaseResult.fail();
         }
     }
 
     @ApiOperation(value = "留言反馈温馨提示", notes = "留言反馈温馨提示")
     @GetMapping(value = "/msg")
-    public ApiResult<FeedbackMsgVo> feedbackMsg() {
+    public BaseResult<FeedbackMsgVo> feedbackMsg() {
         try {
             // 获取登录用户
             User user = (User) SecurityUtils.getSubject().getPrincipal();
@@ -304,36 +303,36 @@ public class FeedbackController {
 
             FeedbackMsgVo feedbacks = feedbackMapper.getMsgCnt(roleId, user.getCity(), user.getDistrict());
 
-            return ApiResult.success(feedbacks);
+            return BaseResult.success(feedbacks);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return ApiResult.fail();
+        return BaseResult.fail();
     }
 
 
     @ApiOperation(value = "附件批量上传", notes = "留言反馈/附件批量上传")
     @PostMapping(value = "/uploadFile", produces = "application/json;charset=UTF-8")
-    public ApiResult<List<FeedbackUpload>> attachmentUpload(@RequestParam("files") @ApiParam(name = "files", value = "附件：任意数据格式；文件最大限制500M") MultipartFile[] files) {
+    public BaseResult<ArrayList<FeedbackUpload>> attachmentUpload(@RequestParam("files") @ApiParam(name = "files", value = "附件：任意数据格式；文件最大限制500M") MultipartFile[] files) {
 
         // 限制为zip和图片格式（zip、jpg、jpeg、png），检查下上传文件大小校验10M以下
-        boolean match = Arrays.stream(files).noneMatch(f -> f.getOriginalFilename().endsWith(".zip")
+        boolean match = Arrays.stream(files).noneMatch(f -> Objects.requireNonNull(f.getOriginalFilename()).endsWith(".zip")
                 || f.getOriginalFilename().endsWith(".jpg")
                 || f.getOriginalFilename().endsWith(".jpeg")
                 || f.getOriginalFilename().endsWith(".png"));
 
         if(match){
-            return ApiResult.fail("上传失败，请上传zip、jpg、jpeg、png格式文件");
+            return BaseResult.fail("上传失败，请上传zip、jpg、jpeg、png格式文件");
         }
 
         match = Arrays.stream(files).anyMatch(f -> f.getSize() > 10485760);
 
         if(match){
-            return ApiResult.fail("上传失败，请上传10M内的文件", null);
+            return BaseResult.fail("上传失败，请上传10M内的文件", null);
         }
 
-        List<FeedbackUpload> resultList = Lists.newArrayList();
+        ArrayList<FeedbackUpload> resultList = Lists.newArrayList();
         FeedbackUpload feedbackUpload;
         //1.获取文件名、文件流
         InputStream in;
@@ -371,11 +370,11 @@ public class FeedbackController {
                 resultList.add(feedbackUpload);
             } catch (IOException e) {
                 log.error("留言反馈--保存附件发生异常:", e);
-                return ApiResult.fail();
+                return BaseResult.fail();
             }
         }
         //3.返回文件名、文件存储路径
-        return ApiResult.success(resultList);
+        return BaseResult.success(resultList);
     }
 
 }

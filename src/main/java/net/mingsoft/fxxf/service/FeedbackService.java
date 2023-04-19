@@ -10,6 +10,7 @@ import net.mingsoft.fxxf.bean.request.FeedBackCompanyPageRequest;
 import net.mingsoft.fxxf.bean.vo.FeedbackComplaintVo;
 import net.mingsoft.fxxf.bean.vo.FeedbackStatisticRequest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,7 +36,7 @@ public interface FeedbackService extends IService<Feedback> {
     List<FeedbackStat> statistic(FeedbackStatisticRequest feedbackStatisticRequest);
 
 
-    List<Applicants> companyList(String keyword);
+    ArrayList<Applicants> companyList(String keyword);
 
 
 }

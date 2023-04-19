@@ -12,6 +12,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,7 +56,7 @@ public interface ApplicantsMapper extends BaseMapper<Applicants> {
 
     List<RegionVo> getGdRegion();
 
-    List<Applicants> companyList(String keyword);
+    ArrayList<Applicants> companyList(String keyword);
 
 
     List<OperatorStatisticsVo> unitOperatorStatistics(
