@@ -414,25 +414,16 @@
                     password: [
                         {
                             required: true,
-                            message: '密码最小长度为8位，至少包含数字、大写字母、小写字母和特殊字符中的三种',
+                            message: '密码不能为空',
                             trigger: "blur",
                         },
-                        ,
-                        {
-                            min: 8,
-                            trigger: "blur",
-                        }
+                        { min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur' },
+                        {pattern: "^(?![A-z0-9]+$)(?=.[^%&',;=?$\x22])(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}$", message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'}
                     ],
                     newPassword: [
-                        {
-                            required: true,
-                            message: '密码最小长度为8位，至少包含数字、大写字母、小写字母和特殊字符中的三种',
-                            trigger: "blur",
-                        },
-                        {
-                            min: 8,
-                            trigger: "blur",
-                        }
+                        {required: true, message: '不能为空', trigger: "blur",},
+                        { min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur' },
+                        {pattern: "^(?![A-z0-9]+$)(?=.[^%&',;=?$\x22])(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}$", message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'}
                     ],
                     roleId: [
                         {
@@ -580,6 +571,16 @@
             },
             // 提交修改
             sub(msg) {
+                this.$nextTick(()=>{
+                    this.$refs.validate(valid=>{
+                        if(valid){
+
+                        }
+                        else{
+                            this.$message.error("请按规则正确填写信息")
+                        }
+                    })
+                })
                 if (msg == "modify") {
                     let params = JSON.stringify(this.formData)
                     ms.http.post('/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {

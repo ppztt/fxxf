@@ -15,7 +15,7 @@
     </el-header>
     <el-main class="ms-container">
         <div class="box">
-            <el-form ref="form" :model="form" label-width="90px" label-position="left" size="medium">
+            <el-form ref="form" :model="userData" label-width="90px" label-position="left" size="medium">
                 <el-row>
                     <el-col :span="24">
                     <el-form-item label="用户名：">
@@ -65,7 +65,7 @@
                     </el-col>
                 </el-row>
                 <el-form-item>
-                    <el-button type="primary" class="blue_btn">提交</el-button>
+                    <el-button type="primary" class="blue_btn" @click="sub">提交</el-button>
                 </el-form-item>
 
             </el-form>
@@ -85,7 +85,31 @@
                 loading: false,
                 saveDisabled: false,
                 //表单数据
-                userData: {},
+                userData: {
+                    account: "",
+                    address: "",
+                    city: "",
+                    createTime: "",
+                    creditCode: "",
+                    district: "",
+                    email: "",
+                    id: 0,
+                    management: "",
+                    newPassword: "",
+                    password: "",
+                    phone: "",
+                    principal: "",
+                    principalTel: "",
+                    province: "",
+                    realname: "",
+                    roleId: 0,
+                    roleName: "",
+                    storeName: "",
+                    town: "",
+                    updateTime: "",
+                    usertype: 0,
+                    zipcode: ""
+                },
                 regionData: []
             }
         },
@@ -99,8 +123,30 @@
                     this.regionData = res.data
                 })
             },
+            getUserList(){
+                let id = sessionStorage.getItem('userId')
+                ms.http.get('/user/userInfo.do',{id}).then((res)=>{
+                    if(res.code == 200){
+                        this.userData = {...this.userData,...res.data, id}
+                        console.log(this.userData)
+                    }
+                })
+            },
+            sub(){
+                let params = JSON.stringify(this.userData)
+                this.$nextTick(()=>{
+                    this.$refs['form'].validate((valid)=>{
+                        if(valid){
+                            ms.http.post('/user/updateById.do',params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res)=>{
+                                console.log(res)
+                            })
+                        }
+                    })
+                })
+            }
         },
         mounted(){
+            this.getUserList()
             this.getRegionData()
         }
     });
@@ -125,5 +171,8 @@
         color: #fff !important;
         border: 0;
         outline: none;
+    }
+    .el-form-item p{
+        margin: 0 !important;
     }
 </style>

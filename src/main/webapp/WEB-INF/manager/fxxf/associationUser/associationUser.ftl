@@ -70,7 +70,8 @@
                     <div class="actions" :id="row.id">
                         <el-button class="action_btn blue_text" icon="el-icon-edit" @click="modifyUser(row.id)">修改
                         </el-button>
-                        <el-button class="action_btn red_text" icon="el-icon-close" @click="deleteBack(row.id)">删除</el-button>
+                        <el-button class="action_btn red_text" icon="el-icon-close" @click="deleteBack(row.id)">删除
+                        </el-button>
                     </div>
                 </template>
             </el-table-column>
@@ -307,28 +308,26 @@
                             trigger: "blur",
                         },
                     ],
+
                     password: [
                         {
-                            required: false,
-                            message: '密码最小长度为8位，至少包含数字、大写字母、小写字母和特殊字符中的三种',
+                            required: true,
+                            message: '密码不能为空',
                             trigger: "blur",
                         },
+                        {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
                         {
-                            min: 8,
-                            trigger: "blur",
+                            pattern: "^(?![A-z0-9]+$)(?=.[^%&',;=?$\x22])(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}$",
+                            message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'
                         }
                     ],
                     newPassword: [
+                        {required: true, message: '不能为空', trigger: "blur",},
+                        {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
                         {
-                            required: false,
-                            message: '密码最小长度为8位，至少包含数字、大写字母、小写字母和特殊字符中的三种',
-                            trigger: "blur",
-                        },
-                        {
-                            min: 8,
-                            trigger: "blur",
+                            pattern: "^(?![A-z0-9]+$)(?=.[^%&',;=?$\x22])(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}$",
+                            message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'
                         }
-
                     ],
                     roleId: [
                         {
@@ -476,6 +475,16 @@
             },
             // 提交
             sub(msg) {
+                this.$nextTick(()=>{
+                    this.$refs.validate(valid=>{
+                        if(valid){
+
+                        }
+                        else{
+                            this.$message.error("请按规则正确填写信息")
+                        }
+                    })
+                })
                 if (msg == "modify") {
                     let params = JSON.stringify(this.formData)
                     ms.http.post('/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
@@ -487,8 +496,7 @@
                             this.modify = false
                             this.reset()
                             this.getUserList()
-                        }
-                        else{
+                        } else {
                             this.$message.error(res.msg)
                         }
                     })
@@ -504,8 +512,7 @@
                                 this.newAdd = false
                                 this.reset()
                                 this.getUserList()
-                            }
-                            else{
+                            } else {
                                 this.$message.error(res.msg)
                             }
                         })
@@ -522,7 +529,7 @@
                     type: 'error',
                     center: true
                 }).then(() => {
-                    ms.http.post('/user/del/' + id + '.do').then(()=>{
+                    ms.http.post('/user/del/' + id + '.do').then(() => {
                         this.$message({
                             type: 'success',
                             message: '删除成功!'
@@ -653,7 +660,8 @@
         background: transparent !important;
         border: none;
     }
-    .btns_type{
+
+    .btns_type {
         width: 90%;
         margin-left: 10% !important;
     }
