@@ -24,7 +24,10 @@ import net.mingsoft.fxxf.bean.entity.AuditLog;
 import net.mingsoft.fxxf.bean.entity.User;
 import net.mingsoft.fxxf.bean.enums.ApplicantsTypeEnum;
 import net.mingsoft.fxxf.bean.enums.CreateTypeEnum;
-import net.mingsoft.fxxf.bean.request.*;
+import net.mingsoft.fxxf.bean.request.ApplicantsPageRequest;
+import net.mingsoft.fxxf.bean.request.ApplicantsStatisticsRequest;
+import net.mingsoft.fxxf.bean.request.ApplicantsStatusUpdateRequest;
+import net.mingsoft.fxxf.bean.request.EnterpriseNewApplyRequest;
 import net.mingsoft.fxxf.bean.vo.*;
 import net.mingsoft.fxxf.mapper.ApplicantsMapper;
 import net.mingsoft.fxxf.mapper.AuditLogMapper;
@@ -290,7 +293,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
     @Override
     public BaseResult templatePreImport(Integer type, MultipartFile file) {
         InputStream in = null;
-        List<ExcelImportErrorMsgVo> errorMsgVoList = new ArrayList<>();
+        ArrayList<ExcelImportErrorMsgVo> errorMsgVoList = new ArrayList<>();
         try {
             in = file.getInputStream();
 
@@ -537,7 +540,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
             List<ApplicantsExcelImportVo> applicantsExcelVos = result.getList();
 
             if (verfiyFail) {
-                List<ExcelImportErrorMsgVo> errorMsgVoList = new ArrayList<>();
+                ArrayList<ExcelImportErrorMsgVo> errorMsgVoList = new ArrayList<>();
                 failList.forEach(e -> {
                     errorMsgVoList.add(new ExcelImportErrorMsgVo(e.getRowNum(), e.getErrorMsg()));
                 });
@@ -551,7 +554,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
             if (!CollectionUtils.isEmpty(applicantsExcelVos)) {
 
                 // 批量更新写入
-                List<Applicants> applicantsList = ((ApplicantsServiceImpl) AopContext.currentProxy()).templateSyncDbWrite(applicantsExcelVos);
+                ArrayList<Applicants> applicantsList = ((ApplicantsServiceImpl) AopContext.currentProxy()).templateSyncDbWrite(applicantsExcelVos);
 
                 return BaseResult.success(applicantsList);
             }
@@ -625,7 +628,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
     }
 
     @Override
-    public BaseResult operatorStatistics(ApplicantsStatisticsRequest applicantsStatisticsRequest) {
+    public BaseResult<ArrayList<OperatorStatisticsVo>> operatorStatistics(ApplicantsStatisticsRequest applicantsStatisticsRequest) {
         // 获取登录用户
         ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
         if (user == null) {
@@ -638,21 +641,18 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
         }
 
         // roleId == 1 ，说明是管理员，可以查看全部，否则根据地市去查
+        ArrayList<OperatorStatisticsVo> operatorStatisticsVos = new ArrayList<>();
         if (ApplicantsTypeEnum.UNIT.getCode().equals(applicantsStatisticsRequest.getType())) {
-            List<OperatorStatisticsVo> operatorStatisticsVos = applicantsMapper.unitOperatorStatistics(
+            operatorStatisticsVos = applicantsMapper.unitOperatorStatistics(
                     applicantsStatisticsRequest.getStartTime(), applicantsStatisticsRequest.getEndTime(),
                     user.getRoleId(), extensionInfo.getCity(), extensionInfo.getDistrict());
-
-            return BaseResult.success(BeanUtil.copyToList(operatorStatisticsVos, OperatorStatisticsVo.class));
         } else if (ApplicantsTypeEnum.STORE.getCode().equals(applicantsStatisticsRequest.getType())) {
-            List<StoreOperatorStatisticsVo> storeOperatorStatisticsVos = applicantsMapper.storeOperatorStatistics(
+            operatorStatisticsVos = applicantsMapper.storeOperatorStatistics(
                     applicantsStatisticsRequest.getStartTime(), applicantsStatisticsRequest.getEndTime()
                     , user.getRoleId(), extensionInfo.getCity(), extensionInfo.getDistrict());
-
-            return BaseResult.success(BeanUtil.copyToList(storeOperatorStatisticsVos, OperatorStatisticsVo.class));
         }
 
-        return BaseResult.success(Collections.emptyList());
+        return BaseResult.success(operatorStatisticsVos);
     }
 
     @Override
@@ -686,7 +686,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
         }
 
         if (ApplicantsTypeEnum.STORE.getCode().equals(type)) {
-            List<StoreOperatorStatisticsVo> storeOperatorStatisticsVos = applicantsMapper.storeOperatorStatistics(
+            ArrayList<OperatorStatisticsVo> storeOperatorStatisticsVos = applicantsMapper.storeOperatorStatistics(
                     startTime, endTime, roleId, city, extensionInfo.getDistrict());
             ExcelUtil.exportExcel(storeOperatorStatisticsVos, "", "", StoreOperatorStatisticsVo.class, fileName, request, response);
         }
@@ -782,14 +782,14 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
      * 放心消费单位写入
      */
     @Transactional(rollbackFor = Exception.class)
-    public List<Applicants> templateSyncDbWrite(List<ApplicantsExcelImportVo> applicantsExcelVos) {
+    public ArrayList<Applicants> templateSyncDbWrite(List<ApplicantsExcelImportVo> applicantsExcelVos) {
 
         ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
 
         List<String> creditCodes = applicantsExcelVos.stream().map(ApplicantsExcelImportVo::getCreditCode).collect(Collectors.toList());
         List<Applicants> applicantsByDbs = list(new QueryWrapper<Applicants>().eq("type", 1).in("credit_code", creditCodes));
 
-        List<Applicants> applicantsList = new ArrayList<>();
+        ArrayList<Applicants> applicantsList = new ArrayList<>();
         List<Applicants> applicantsListNeedUpdate = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 

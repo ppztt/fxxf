@@ -5,14 +5,15 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.DynamicParameter;
 import io.swagger.annotations.DynamicParameters;
 import lombok.extern.slf4j.Slf4j;
-import net.mingsoft.fxxf.bean.entity.Applicants;
 import net.mingsoft.fxxf.bean.base.BaseResult;
+import net.mingsoft.fxxf.bean.entity.Applicants;
 import net.mingsoft.fxxf.bean.vo.TransportStoreNewApplyVo;
 import net.mingsoft.fxxf.bean.vo.TransportUnitNewApplyVo;
 import net.mingsoft.fxxf.service.ApplicantsService;
 import net.mingsoft.fxxf.service.impl.CommonDataService;
 import net.mingsoft.utils.ApplicantsImportUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,7 +63,7 @@ public class TransportController {
             }
 
             // 校验数据
-            List<Map<String, Object>> errorListMap = checkUnitData(transportUnitNewApplyVos);
+            ArrayList<Map<String, Object>> errorListMap = checkUnitData(transportUnitNewApplyVos);
 
             if (errorListMap.size() > 0) {
                 return BaseResult.fail("5001", "数据校验不通过", errorListMap);
@@ -80,7 +81,8 @@ public class TransportController {
             List<Applicants> applicants = applicantsService.findApplicantsByCreditCodes(1, creditCodes);
 
             if (applicants.size() > 0) {
-                List<String> creditCodesTmp = applicants.stream().map(transportUnitNewApplyVo -> transportUnitNewApplyVo.getCreditCode()).collect(Collectors.toList());
+                ArrayList<String> creditCodesTmp = applicants.stream().map(Applicants::getCreditCode)
+                        .collect(Collectors.toCollection(ArrayList::new));
 
                 return BaseResult.fail("5001", "与数据库存在相同统一社会信用代码", creditCodesTmp);
             }
@@ -121,7 +123,7 @@ public class TransportController {
             }
 
             // 校验数据
-            List<Map<String, Object>> errorListMap = checkStoreData(transportStoreNewApplyVos);
+            ArrayList<Map<String, Object>> errorListMap = checkStoreData(transportStoreNewApplyVos);
 
             if (errorListMap.size() > 0) {
                 return BaseResult.fail("5001", "数据校验不通过", errorListMap);
@@ -137,9 +139,9 @@ public class TransportController {
             }
 
             List<Applicants> applicants = applicantsService.findApplicantsByCreditCodes(2, creditCodes);
-
-            if (applicants.size() > 0) {
-                List<String> creditCodesTmp = applicants.stream().map(transportUnitNewApplyVo -> transportUnitNewApplyVo.getCreditCode()).collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(applicants)) {
+                ArrayList<String> creditCodesTmp = applicants.stream().map(
+                        Applicants::getCreditCode).collect(Collectors.toCollection(ArrayList::new));
 
                 return BaseResult.fail("5001", "与数据库存在相同统一社会信用代码", creditCodesTmp);
             }
@@ -170,8 +172,8 @@ public class TransportController {
      * @return List<Map < String, Object>>
      * @author laijunbao 2022-11-25 14:37:00
      */
-    public List<Map<String, Object>> checkUnitData(List<TransportUnitNewApplyVo> enterpriseUnitNewApplyVos) {
-        List<Map<String, Object>> errorListMap = new ArrayList<>();
+    public ArrayList<Map<String, Object>> checkUnitData(List<TransportUnitNewApplyVo> enterpriseUnitNewApplyVos) {
+        ArrayList<Map<String, Object>> errorListMap = new ArrayList<>();
 
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         AtomicInteger num = new AtomicInteger(1);
@@ -265,13 +267,13 @@ public class TransportController {
      * @return List<Map < String, Object>>
      * @author laijunbao 2022-11-25 14:37:00
      */
-    public List<Map<String, Object>> checkStoreData(List<TransportStoreNewApplyVo> transportStoreNewApplyVos) {
-        List<Map<String, Object>> errorListMap = new ArrayList<>();
+    public ArrayList<Map<String, Object>> checkStoreData(List<TransportStoreNewApplyVo> transportStoreNewApplyVos) {
+        ArrayList<Map<String, Object>> errorListMap = new ArrayList<>();
 
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         AtomicInteger num = new AtomicInteger(1);
         transportStoreNewApplyVos.forEach(enterpriseUnitNewApplyVo -> {
-            List<String> list = new ArrayList<>();
+            ArrayList<String> list = new ArrayList<>();
 
             if (StringUtils.isBlank(enterpriseUnitNewApplyVo.getRegName())) {
                 list.add("经营者注册名称不能为空");

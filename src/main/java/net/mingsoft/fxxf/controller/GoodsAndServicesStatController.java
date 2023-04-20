@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * 商品服务类型统计
@@ -39,14 +39,13 @@ public class GoodsAndServicesStatController {
             @ApiImplicitParam(name = "endTime", value = "结束时间（格式：2020-04-01）"),
     })
 //    @OperatorLogAnno(operType="查询", operModul="商品服务类型统计", operDesc="商品服务类型统计列表")
-    public BaseResult<List<GoodsAndServicesStat>> list(@RequestParam(name = "city", required = false) String city,
-                                                       @RequestParam(name = "district", required = false) String district,
-                                                       @RequestParam(name = "startTime", required = false) String startTime,
-                                                       @RequestParam(name = "endTime", required = false) String endTime
+    public BaseResult<ArrayList<GoodsAndServicesStat>> list(@RequestParam(name = "city", required = false) String city,
+                                                            @RequestParam(name = "district", required = false) String district,
+                                                            @RequestParam(name = "startTime", required = false) String startTime,
+                                                            @RequestParam(name = "endTime", required = false) String endTime
     ) {
         log.info("商品服务类型统计列表参数：city:{}, district:{}, startTime:{}", city, district, startTime);
-        List<GoodsAndServicesStat> list = goodsAndServicesStatService.list(city, district, startTime, endTime);
-        return BaseResult.success(list);
+        return BaseResult.success(goodsAndServicesStatService.list(city, district, startTime, endTime));
     }
 
 }

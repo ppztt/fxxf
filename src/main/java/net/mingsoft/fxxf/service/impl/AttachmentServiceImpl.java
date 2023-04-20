@@ -1,8 +1,8 @@
 package net.mingsoft.fxxf.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import net.mingsoft.fxxf.bean.entity.Attachment;
 import net.mingsoft.fxxf.bean.base.BaseResult;
+import net.mingsoft.fxxf.bean.entity.Attachment;
 import net.mingsoft.fxxf.mapper.AttachmentMapper;
 import net.mingsoft.fxxf.service.AttachmentService;
 import net.mingsoft.utils.ResponseBean;
@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,7 +31,7 @@ public class AttachmentServiceImpl extends ServiceImpl<AttachmentMapper, Attachm
     @Override
     public BaseResult attachmentInfo(Attachment attachment) {
         //TODO 分页查询
-        List<Attachment> attachments;
+        ArrayList<Attachment> attachments;
         try {
             attachments = attachmentMapper.attachmentInfo(attachment);
             return BaseResult.success(attachments);

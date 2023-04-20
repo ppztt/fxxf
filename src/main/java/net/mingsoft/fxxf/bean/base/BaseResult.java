@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @Date: 2020-01-09-0009 12:50
  * @Description: 接口统一返回格式
  */
-public class BaseResult<T> implements Serializable {
+public class BaseResult<T extends Serializable> implements Serializable {
 
     /**
      * 请求成功状态码
@@ -61,7 +61,7 @@ public class BaseResult<T> implements Serializable {
         this.data = data;
     }
 
-    public static <T> BaseResult<T> success() {
+    public static <T extends Serializable> BaseResult<T> success() {
         return new BaseResult<>(CODE_SUCCESS, MSG_SUCCESS);
     }
 
@@ -69,16 +69,11 @@ public class BaseResult<T> implements Serializable {
         return new BaseResult<>(CODE_SUCCESS, MSG_SUCCESS, data);
     }
 
-    public static BaseResult success(Object data) {
-        return new BaseResult(CODE_SUCCESS, MSG_SUCCESS, data);
-    }
-
-
-    public static <T> BaseResult<T> fail() {
+    public static <T extends Serializable> BaseResult<T> fail() {
         return new BaseResult<>(CODE_FAIL, MSG_FAIL);
     }
 
-    public static <T> BaseResult<T> fail(String msg) {
+    public static <T extends Serializable> BaseResult<T> fail(String msg) {
         return new BaseResult<>(CODE_FAIL, msg);
     }
 
@@ -86,15 +81,11 @@ public class BaseResult<T> implements Serializable {
         return new BaseResult<>(CODE_FAIL, MSG_FAIL, data);
     }
 
-    public static BaseResult fail(Object data) {
-        return new BaseResult(CODE_FAIL, MSG_FAIL, data);
-    }
-
-    public static <T> BaseResult<T> fail(String msg, T data) {
+    public static <T extends Serializable> BaseResult<T> fail(String msg, T data) {
         return new BaseResult<>(CODE_FAIL, msg, data);
     }
 
-    public static <T> BaseResult<T> fail(String code, String msg, T data) {
+    public static <T extends Serializable> BaseResult<T> fail(String code, String msg, T data) {
         return new BaseResult<>(code, msg, data);
     }
 

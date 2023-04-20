@@ -5,12 +5,16 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import net.mingsoft.fxxf.bean.base.BasePageResult;
 import net.mingsoft.fxxf.bean.base.BaseResult;
 import net.mingsoft.fxxf.bean.entity.Applicants;
-import net.mingsoft.fxxf.bean.request.*;
+import net.mingsoft.fxxf.bean.request.ApplicantsPageRequest;
+import net.mingsoft.fxxf.bean.request.ApplicantsStatisticsRequest;
+import net.mingsoft.fxxf.bean.request.ApplicantsStatusUpdateRequest;
+import net.mingsoft.fxxf.bean.request.EnterpriseNewApplyRequest;
 import net.mingsoft.fxxf.bean.vo.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,11 +55,11 @@ public interface ApplicantsService extends IService<Applicants> {
 
     BaseResult audit(Integer id, Integer type, String notes);
 
-    BaseResult<List<Applicants>> templateImport(String fileId);
+    BaseResult<ArrayList<Applicants>> templateImport(String fileId);
 
     void export(Integer type, String status, HttpServletRequest request, HttpServletResponse response);
 
-    BaseResult<List<OperatorStatisticsVo>> operatorStatistics(ApplicantsStatisticsRequest applicantsStatisticsRequest);
+    BaseResult<ArrayList<OperatorStatisticsVo>> operatorStatistics(ApplicantsStatisticsRequest applicantsStatisticsRequest);
 
     void operatorStatisticsExport(Integer type, String startTime, String endTime, HttpServletRequest request, HttpServletResponse response);
 

@@ -6,10 +6,13 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.mingsoft.fxxf.bean.base.BasePageResult;
-import net.mingsoft.fxxf.bean.entity.Applicants;
-import net.mingsoft.fxxf.bean.request.*;
-import net.mingsoft.fxxf.bean.vo.ApplicantsParamsVo;
 import net.mingsoft.fxxf.bean.base.BaseResult;
+import net.mingsoft.fxxf.bean.entity.Applicants;
+import net.mingsoft.fxxf.bean.request.ApplicantsPageRequest;
+import net.mingsoft.fxxf.bean.request.ApplicantsStatisticsRequest;
+import net.mingsoft.fxxf.bean.request.ApplicantsStatusUpdateRequest;
+import net.mingsoft.fxxf.bean.request.EnterpriseNewApplyRequest;
+import net.mingsoft.fxxf.bean.vo.ApplicantsParamsVo;
 import net.mingsoft.fxxf.bean.vo.ExcelImportErrorMsgVo;
 import net.mingsoft.fxxf.bean.vo.OperatorStatisticsVo;
 import net.mingsoft.fxxf.service.ApplicantsService;
@@ -20,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -153,8 +157,8 @@ public class ApplicantsController {
 
     @PostMapping(value = "/preImport")
     @ApiOperation(value = "经营者列表-预导入，检查导入的在期单位名称中是否存在与现有在期名单相同项")
-    public BaseResult<List<ExcelImportErrorMsgVo>> templatePreImport(@RequestParam("type") Integer type,
-                                                                     @RequestParam("file") MultipartFile file) {
+    public BaseResult<ArrayList<ExcelImportErrorMsgVo>> templatePreImport(@RequestParam("type") Integer type,
+                                                                          @RequestParam("file") MultipartFile file) {
 
         if (!Objects.isNull(file) && !file.getOriginalFilename().endsWith(".xlsm")) {
             return BaseResult.fail("上传失败，请上传xlsm格式文件");
@@ -178,7 +182,7 @@ public class ApplicantsController {
     //    @RequiresPermissions("wlythcn:upload")
     @PostMapping(value = "/import/{fileId}")
     @ApiOperation(value = "经营者列表-导入")
-    public BaseResult<List<Applicants>> templateImport(@PathVariable("fileId") String fileId) {
+    public BaseResult<ArrayList<Applicants>> templateImport(@PathVariable("fileId") String fileId) {
         return applicantsService.templateImport(fileId);
     }
 
@@ -197,7 +201,7 @@ public class ApplicantsController {
     //    @RequiresPermissions("wlythcn:jdtstj")
     @PostMapping("/operatorStatistics/list")
     @ApiOperation(value = "经营者统计-列表", notes = "经营者统计-列表")
-    public BaseResult<List<OperatorStatisticsVo>> operatorStatistics(@RequestBody ApplicantsStatisticsRequest applicantsStatisticsRequest) {
+    public BaseResult<ArrayList<OperatorStatisticsVo>> operatorStatistics(@RequestBody ApplicantsStatisticsRequest applicantsStatisticsRequest) {
 
         try {
             return applicantsService.operatorStatistics(applicantsStatisticsRequest);
