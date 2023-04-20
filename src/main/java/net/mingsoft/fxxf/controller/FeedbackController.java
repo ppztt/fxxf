@@ -297,10 +297,12 @@ public class FeedbackController {
     public BaseResult<FeedbackMsgVo> feedbackMsg() {
         try {
             // 获取登录用户
-            User user = (User) SecurityUtils.getSubject().getPrincipal();
+            ManagerEntity managerEntity = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
             // roleId == 1 ，说明是管理员，可以查看全部，否则根据地市去查
-            Integer roleId = user.getRoleId();
+            Integer roleId = managerEntity.getRoleId();
 
+
+            User user = userService.getById(managerEntity.getIntegerId());
             FeedbackMsgVo feedbacks = feedbackMapper.getMsgCnt(roleId, user.getCity(), user.getDistrict());
 
             return BaseResult.success(feedbacks);
