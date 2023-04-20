@@ -5,14 +5,15 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.DynamicParameter;
 import io.swagger.annotations.DynamicParameters;
 import lombok.extern.slf4j.Slf4j;
+import net.mingsoft.fxxf.bean.base.BaseResult;
 import net.mingsoft.fxxf.bean.entity.Applicants;
-import net.mingsoft.fxxf.bean.vo.ApiResult;
 import net.mingsoft.fxxf.bean.vo.TransportStoreNewApplyVo;
 import net.mingsoft.fxxf.bean.vo.TransportUnitNewApplyVo;
 import net.mingsoft.fxxf.service.ApplicantsService;
 import net.mingsoft.fxxf.service.impl.CommonDataService;
 import net.mingsoft.utils.ApplicantsImportUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +43,7 @@ public class TransportController {
      * 传输放心消费承诺数据到广州市的账号
      *
      * @param transportUnitNewApplyVos transportUnitNewApplyVos
-     * @return {@link ApiResult}
+     * @return {@link BaseResult}
      * @DocView.Name 传输放心消费承诺数据到广州市的账号
      */
     @PostMapping("/unit")
@@ -54,18 +55,18 @@ public class TransportController {
             }
     )
 
-    public ApiResult unit(@RequestBody List<TransportUnitNewApplyVo> transportUnitNewApplyVos) {
+    public BaseResult unit(@RequestBody List<TransportUnitNewApplyVo> transportUnitNewApplyVos) {
 
         try {
             if (transportUnitNewApplyVos == null || transportUnitNewApplyVos.size() == 0) {
-                return ApiResult.fail("数据不能为空");
+                return BaseResult.fail("数据不能为空");
             }
 
             // 校验数据
-            List<Map<String, Object>> errorListMap = checkUnitData(transportUnitNewApplyVos);
+            ArrayList<Map<String, Object>> errorListMap = checkUnitData(transportUnitNewApplyVos);
 
             if (errorListMap.size() > 0) {
-                return ApiResult.fail("5001", "数据校验不通过", errorListMap);
+                return BaseResult.fail("5001", "数据校验不通过", errorListMap);
             }
 
             List<String> creditCodes = transportUnitNewApplyVos.stream().map(transportUnitNewApplyVo -> transportUnitNewApplyVo.getCreditCode()).collect(Collectors.toList());
@@ -74,15 +75,16 @@ public class TransportController {
             array = creditCodes.toArray(array);
             List<ArrayList<String>> same = ApplicantsImportUtil.findSame(array);
             if (same.size() > 0) {
-                return ApiResult.fail("当前数据中【统一社会信用代码】存在重复，行:" + same);
+                return BaseResult.fail("当前数据中【统一社会信用代码】存在重复，行:" + same);
             }
 
             List<Applicants> applicants = applicantsService.findApplicantsByCreditCodes(1, creditCodes);
 
             if (applicants.size() > 0) {
-                List<String> creditCodesTmp = applicants.stream().map(transportUnitNewApplyVo -> transportUnitNewApplyVo.getCreditCode()).collect(Collectors.toList());
+                ArrayList<String> creditCodesTmp = applicants.stream().map(Applicants::getCreditCode)
+                        .collect(Collectors.toCollection(ArrayList::new));
 
-                return ApiResult.fail("5001", "与数据库存在相同统一社会信用代码", creditCodesTmp);
+                return BaseResult.fail("5001", "与数据库存在相同统一社会信用代码", creditCodesTmp);
             }
 
             List<Applicants> applicantsList = new ArrayList<>();
@@ -98,10 +100,10 @@ public class TransportController {
         } catch (Exception e) {
             e.printStackTrace();
 
-            return ApiResult.fail("请求异常。" + e.getMessage());
+            return BaseResult.fail("请求异常。" + e.getMessage());
         }
 
-        return ApiResult.success();
+        return BaseResult.success();
     }
 
     @PostMapping("/store")
@@ -113,18 +115,18 @@ public class TransportController {
             }
     )
 
-    public ApiResult store(@RequestBody List<TransportStoreNewApplyVo> transportStoreNewApplyVos) {
+    public BaseResult store(@RequestBody List<TransportStoreNewApplyVo> transportStoreNewApplyVos) {
 
         try {
             if (transportStoreNewApplyVos == null || transportStoreNewApplyVos.size() == 0) {
-                return ApiResult.fail("数据不能为空");
+                return BaseResult.fail("数据不能为空");
             }
 
             // 校验数据
-            List<Map<String, Object>> errorListMap = checkStoreData(transportStoreNewApplyVos);
+            ArrayList<Map<String, Object>> errorListMap = checkStoreData(transportStoreNewApplyVos);
 
             if (errorListMap.size() > 0) {
-                return ApiResult.fail("5001", "数据校验不通过", errorListMap);
+                return BaseResult.fail("5001", "数据校验不通过", errorListMap);
             }
 
             List<String> creditCodes = transportStoreNewApplyVos.stream().map(transportUnitNewApplyVo -> transportUnitNewApplyVo.getCreditCode()).collect(Collectors.toList());
@@ -133,15 +135,15 @@ public class TransportController {
             array = creditCodes.toArray(array);
             List<ArrayList<String>> same = ApplicantsImportUtil.findSame(array);
             if (same.size() > 0) {
-                return ApiResult.fail("当前数据中【统一社会信用代码】存在重复，行:" + same);
+                return BaseResult.fail("当前数据中【统一社会信用代码】存在重复，行:" + same);
             }
 
             List<Applicants> applicants = applicantsService.findApplicantsByCreditCodes(2, creditCodes);
+            if (!CollectionUtils.isEmpty(applicants)) {
+                ArrayList<String> creditCodesTmp = applicants.stream().map(
+                        Applicants::getCreditCode).collect(Collectors.toCollection(ArrayList::new));
 
-            if (applicants.size() > 0) {
-                List<String> creditCodesTmp = applicants.stream().map(transportUnitNewApplyVo -> transportUnitNewApplyVo.getCreditCode()).collect(Collectors.toList());
-
-                return ApiResult.fail("5001", "与数据库存在相同统一社会信用代码", creditCodesTmp);
+                return BaseResult.fail("5001", "与数据库存在相同统一社会信用代码", creditCodesTmp);
             }
 
             List<Applicants> applicantsList = new ArrayList<>();
@@ -157,10 +159,10 @@ public class TransportController {
         } catch (Exception e) {
             e.printStackTrace();
 
-            return ApiResult.fail("请求异常。" + e.getMessage());
+            return BaseResult.fail("请求异常。" + e.getMessage());
         }
 
-        return ApiResult.success();
+        return BaseResult.success();
     }
 
     /**
@@ -170,8 +172,8 @@ public class TransportController {
      * @return List<Map < String, Object>>
      * @author laijunbao 2022-11-25 14:37:00
      */
-    public List<Map<String, Object>> checkUnitData(List<TransportUnitNewApplyVo> enterpriseUnitNewApplyVos) {
-        List<Map<String, Object>> errorListMap = new ArrayList<>();
+    public ArrayList<Map<String, Object>> checkUnitData(List<TransportUnitNewApplyVo> enterpriseUnitNewApplyVos) {
+        ArrayList<Map<String, Object>> errorListMap = new ArrayList<>();
 
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         AtomicInteger num = new AtomicInteger(1);
@@ -265,13 +267,13 @@ public class TransportController {
      * @return List<Map < String, Object>>
      * @author laijunbao 2022-11-25 14:37:00
      */
-    public List<Map<String, Object>> checkStoreData(List<TransportStoreNewApplyVo> transportStoreNewApplyVos) {
-        List<Map<String, Object>> errorListMap = new ArrayList<>();
+    public ArrayList<Map<String, Object>> checkStoreData(List<TransportStoreNewApplyVo> transportStoreNewApplyVos) {
+        ArrayList<Map<String, Object>> errorListMap = new ArrayList<>();
 
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         AtomicInteger num = new AtomicInteger(1);
         transportStoreNewApplyVos.forEach(enterpriseUnitNewApplyVo -> {
-            List<String> list = new ArrayList<>();
+            ArrayList<String> list = new ArrayList<>();
 
             if (StringUtils.isBlank(enterpriseUnitNewApplyVo.getRegName())) {
                 list.add("经营者注册名称不能为空");

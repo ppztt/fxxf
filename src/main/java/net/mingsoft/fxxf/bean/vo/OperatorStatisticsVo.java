@@ -34,6 +34,13 @@ public class OperatorStatisticsVo implements Serializable {
     private Integer applicantsCnt;
 
     /**
+     * 退货期限超过七天的承诺店数量
+     */
+    @ApiModelProperty(value = "退货期限超过七天的承诺店数量")
+    @Excel(name = "退货期限超过七天的承诺店数量")
+    private Integer contents2Cnt;
+
+    /**
      * 审核通过时间
      */
     @ApiModelProperty(value = "审核通过时间")

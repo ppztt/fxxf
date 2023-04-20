@@ -7,10 +7,10 @@
  * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
  * the Software, and to permit persons to whom the Software is furnished to do so,
  * subject to the following conditions:
-
+ * <p>
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
-
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
  * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
@@ -26,10 +26,7 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.spring.stat.BeanTypeAutoProxyCreator;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import net.mingsoft.basic.filter.SelfXSSEscapeFilter;
-import net.mingsoft.basic.filter.XSSEscapeFilter;
 import net.mingsoft.basic.interceptor.ActionInterceptor;
 import net.mingsoft.mdiy.biz.IConfigBiz;
 import net.mingsoft.mdiy.entity.ConfigEntity;
@@ -105,7 +102,7 @@ public class WebConfig implements WebMvcConfigurer {
         // 上传路径映射 这里的映射不能使用File.separator Windows会存在映射问题
         registry.addResourceHandler(uploadMapping).addResourceLocations("/" + uploadFolderPath + "/", "file:" + uploadFolderPath + "/");
         registry.addResourceHandler("/" + template + "/**").addResourceLocations("/" + template + "/", "file:" + template + "/");
-        registry.addResourceHandler("/"+htmlDir+"/**").addResourceLocations("/"+htmlDir+"/", "file:"+htmlDir+"/");
+        registry.addResourceHandler("/" + htmlDir + "/**").addResourceLocations("/" + htmlDir + "/", "file:" + htmlDir + "/");
         //三种映射方式 webapp下、当前目录下、jar内
         registry.addResourceHandler("/app/**").addResourceLocations("/app/", "file:app/", "classpath:/app/");
         registry.addResourceHandler("/static/**").addResourceLocations("/static/", "file:static/", "classpath:/static/", "classpath:/META-INF/resources/");
@@ -202,7 +199,7 @@ public class WebConfig implements WebMvcConfigurer {
         if (!StringUtils.isEmpty(configName) && !StringUtils.isEmpty(configName)) {
             ConfigEntity configEntity = new ConfigEntity();
             configEntity.setConfigName(configName);
-            configEntity = (ConfigEntity)this.configBiz.getOne(new QueryWrapper(configEntity));
+            configEntity = (ConfigEntity) this.configBiz.getOne(new QueryWrapper(configEntity));
             return configEntity != null && !StringUtils.isEmpty(configEntity.getConfigData()) ? (Map) JSON.parseObject(configEntity.getConfigData(), HashMap.class) : null;
         } else {
             return null;
