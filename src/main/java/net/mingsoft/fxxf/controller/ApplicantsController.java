@@ -1,13 +1,19 @@
 package net.mingsoft.fxxf.controller;
 
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.mingsoft.fxxf.bean.entity.Applicants;
 import net.mingsoft.fxxf.bean.request.*;
-import net.mingsoft.fxxf.bean.vo.*;
+import net.mingsoft.fxxf.bean.vo.ApiResult;
+import net.mingsoft.fxxf.bean.vo.ApplicantsParamsVo;
+import net.mingsoft.fxxf.bean.vo.ExcelImportErrorMsgVo;
+import net.mingsoft.fxxf.bean.vo.OperatorStatisticsVo;
 import net.mingsoft.fxxf.service.ApplicantsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -82,14 +88,11 @@ public class ApplicantsController {
     /**
      * 根据 id 更新实体店
      */
-    @PostMapping("/update/{id}")
-    @ApiOperation(value = "经营者列表-编辑保存", notes = "经营者列表-根据 id 更新单位")
-    @ApiImplicitParams({@ApiImplicitParam(name = "id", value = "实体店id", required = true)})
-    @DynamicParameters(name = "applicants", properties = {@DynamicParameter(name = "applicants", value = "applicants",
-            dataTypeClass = ApplicantsStoreParamsVo.class, required = true)})
-    public ApiResult updateApplicants(@PathVariable(value = "id") Integer id, @RequestBody ApplicantsStoreParamsVo2 applicants) {
+    @PostMapping("/update")
+    @ApiOperation(value = "经营者列表-编辑保存")
+    public ApiResult updateApplicants(@RequestBody @Validated ApplicantsParamsVo applicants) {
         try {
-            return applicantsService.updateApplicants(id, applicants);
+            return applicantsService.updateApplicants(applicants);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -126,6 +129,7 @@ public class ApplicantsController {
         }
         return ApiResult.fail();
     }
+
     /**
      * 根据经营者id更新状态及原因
      */

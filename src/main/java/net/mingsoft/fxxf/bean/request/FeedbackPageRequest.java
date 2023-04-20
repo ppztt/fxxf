@@ -1,9 +1,8 @@
-package net.mingsoft.fxxf.bean.vo;
+package net.mingsoft.fxxf.bean.request;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
-import net.mingsoft.fxxf.bean.request.BasePageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;

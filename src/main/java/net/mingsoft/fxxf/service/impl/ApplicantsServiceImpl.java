@@ -204,78 +204,67 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
      * 经营者列表-编辑保存
      */
     @Override
-    public ApiResult updateApplicants(Integer id, ApplicantsStoreParamsVo2 applicants) {
-        Applicants applicantsById = getById(id);
-        if (applicantsById != null) {
-            BeanUtils.copyProperties(applicants, applicantsById, "id,status");
-            if (StringUtils.isNotBlank(applicants.getStartTime()) && applicants.getStartTime().split("-").length == 2) {
-                applicants.setStartTime(applicants.getStartTime() + "-01");
-                applicantsById.setStartTime(LocalDate.parse(applicants.getStartTime()));
-            } else {
-                if (StringUtils.isNotBlank(applicants.getStartTime())) {
-                    applicantsById.setStartTime(LocalDate.parse(applicants.getStartTime()));
-                }
-            }
-            if (StringUtils.isNotBlank(applicants.getEndTime()) && applicants.getEndTime().split("-").length == 2) {
-                applicants.setEndTime(applicants.getEndTime() + "-01");
-                applicantsById.setEndTime(LocalDate.parse(applicants.getEndTime()));
-            } else {
-                if (StringUtils.isNotBlank(applicants.getEndTime())) {
-                    applicantsById.setEndTime(LocalDate.parse(applicants.getEndTime()));
-                }
-            }
-            applicantsById.setManagement(applicants.getManagement());
-            if (applicants.getDetails() != null && !applicants.getDetails().isEmpty()) {
-                applicantsById.setDetails(String.join(",", applicants.getDetails()));
-            }
-
-            ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
-            // 不通过的数据，更改为待审核作态
-            if (Objects.equals(applicantsById.getStatus(), 7)) {
-                applicantsById.setStatus(4);
-                applicantsById.setAuditRoleId(user.getRoleId() + 1);
-            }
-
-            //多个地址解析
-            if (StringUtils.isNotBlank(applicants.getAddrs())) {
-                JSONArray jsonArray = JSON.parseArray(applicants.getAddrs());
-
-                int size = jsonArray.size();
-                StringBuilder citys = new StringBuilder();
-                StringBuilder districts = new StringBuilder();
-                StringBuilder addressStr = new StringBuilder();
-                for (int i = 0; i < size; i++) {
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    String city = jsonObject.getString("city");
-                    String district = jsonObject.getString("district");
-                    String address = jsonObject.getString("address");
-
-                    citys.append(city);
-                    districts.append(district);
-                    addressStr.append(address);
-
-                    //验证多个地址是否完整
-                    if (StringUtils.isEmpty(city) || StringUtils.isEmpty(district) || StringUtils.isEmpty(address)) {
-                        return ApiResult.fail("地址不全,请补全");
-                    }
-
-                    if ((size - 1) != i) {
-                        citys.append(",");
-                        districts.append(",");
-                        addressStr.append(",");
-                    }
-                }
-                applicantsById.setCity(citys.toString());
-                applicantsById.setDistrict(districts.toString());
-                applicantsById.setAddress(addressStr.toString());
-            }
-
-            updateById(applicantsById);
-
-            return ApiResult.success();
-        } else {
+    public ApiResult updateApplicants(ApplicantsParamsVo applicantsParamsVo) {
+        Applicants applicantsById = getById(applicantsParamsVo.getId());
+        if (applicantsById == null) {
             return ApiResult.fail("承诺单位不存在");
         }
+
+        BeanUtils.copyProperties(applicantsParamsVo, applicantsById, "id,status");
+
+        applicantsById.setStartTime(LocalDate.parse( applicantsParamsVo.getStartTime()));
+        applicantsById.setEndTime(LocalDate.parse(applicantsParamsVo.getEndTime()));
+
+        // 类别明细
+        if (!CollectionUtils.isEmpty(applicantsParamsVo.getDetails())) {
+            applicantsById.setDetails(String.join(",", applicantsParamsVo.getDetails()));
+        }
+
+        ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
+        // 不通过的数据，更改为待审核作态
+        if (Objects.equals(applicantsById.getStatus(), 7)) {
+            applicantsById.setStatus(4);
+            applicantsById.setAuditRoleId(user.getRoleId() + 1);
+        }
+
+        //多个地址解析
+        if (StringUtils.isNotBlank(applicantsParamsVo.getAddrs())) {
+            JSONArray jsonArray = JSON.parseArray(applicantsParamsVo.getAddrs());
+
+            int size = jsonArray.size();
+            StringBuilder citys = new StringBuilder();
+            StringBuilder districts = new StringBuilder();
+            StringBuilder addressStr = new StringBuilder();
+            for (int i = 0; i < size; i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String city = jsonObject.getString("city");
+                String district = jsonObject.getString("district");
+                String address = jsonObject.getString("address");
+
+                //验证多个地址是否完整
+                if (StringUtils.isEmpty(city) || StringUtils.isEmpty(district) || StringUtils.isEmpty(address)) {
+                    return ApiResult.fail("地址不全,请补全");
+                }
+
+                citys.append(city);
+                districts.append(district);
+                addressStr.append(address);
+
+                if ((size - 1) != i) {
+                    citys.append(",");
+                    districts.append(",");
+                    addressStr.append(",");
+                }
+            }
+
+            applicantsById.setCity(citys.toString());
+            applicantsById.setDistrict(districts.toString());
+            applicantsById.setAddress(addressStr.toString());
+        }
+
+        updateById(applicantsById);
+
+        return ApiResult.success();
     }
 
     /**
@@ -624,6 +613,10 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
             fileName = city + concatName;
         } else if (roleId == 3 && !Objects.isNull(city) && !Objects.isNull(extensionInfo.getDistrict())) {
             fileName = city + "_" + extensionInfo.getDistrict() + concatName;
+        }
+
+        if(CollectionUtils.isEmpty(applicantsExcelVos)) {
+            applicantsExcelVos.add(new ApplicantsExcelVo());
         }
 
         ExcelUtil.exportExcel(applicantsExcelVos, "", "", ApplicantsExcelVo.class, fileName, request, response);
