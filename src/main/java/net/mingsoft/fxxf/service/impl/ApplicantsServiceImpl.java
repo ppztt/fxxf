@@ -217,8 +217,12 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
 
         BeanUtils.copyProperties(applicantsParamsVo, applicantsById, "id,status");
 
-        applicantsById.setStartTime(LocalDate.parse(applicantsParamsVo.getStartTime()));
-        applicantsById.setEndTime(LocalDate.parse(applicantsParamsVo.getEndTime()));
+        if (StringUtils.isNotBlank(applicantsParamsVo.getStartTime())) {
+            applicantsById.setStartTime(LocalDate.parse(applicantsParamsVo.getStartTime()));
+        }
+        if (StringUtils.isNotBlank(applicantsParamsVo.getEndTime())) {
+            applicantsById.setEndTime(LocalDate.parse(applicantsParamsVo.getEndTime()));
+        }
 
         // 类别明细
         if (!CollectionUtils.isEmpty(applicantsParamsVo.getDetails())) {
