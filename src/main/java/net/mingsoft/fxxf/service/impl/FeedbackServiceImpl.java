@@ -15,7 +15,7 @@ import net.mingsoft.fxxf.bean.entity.User;
 import net.mingsoft.fxxf.bean.request.BasePageResult;
 import net.mingsoft.fxxf.bean.request.FeedBackCompanyPageRequest;
 import net.mingsoft.fxxf.bean.vo.FeedbackComplaintVo;
-import net.mingsoft.fxxf.bean.vo.FeedbackStatisticRequest;
+import net.mingsoft.fxxf.bean.request.FeedbackStatisticRequest;
 import net.mingsoft.fxxf.mapper.ApplicantsMapper;
 import net.mingsoft.fxxf.mapper.FeedbackMapper;
 import net.mingsoft.fxxf.mapper.FeedbackStatMapper;

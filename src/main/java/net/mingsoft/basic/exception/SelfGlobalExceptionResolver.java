@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import net.mingsoft.base.entity.ResultData;
 import net.mingsoft.basic.util.BasicUtil;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,6 +26,13 @@ public class SelfGlobalExceptionResolver extends GlobalExceptionResolver {
         LOG.debug("handleBusinessException");
         response.setStatus(e.getCode().value());
         return render(request, response, ResultData.build().code(e.getCode()).data(e.getData()).msg(e.getMsg()), e);
+    }
+
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public ModelAndView handleArgValidException(HttpServletRequest request, HttpServletResponse response, MethodArgumentNotValidException e) {
+        LOG.debug("handleArgValidException");
+        return render(request, response, ResultData.build().code(HttpStatus.INTERNAL_SERVER_ERROR)
+                .data(null).msg(e.getBindingResult().getAllErrors().get(0).getDefaultMessage()), e);
     }
 
     @ExceptionHandler(value = Exception.class)
