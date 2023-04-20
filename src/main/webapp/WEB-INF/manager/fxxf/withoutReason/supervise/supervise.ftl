@@ -33,14 +33,19 @@
                 border
                 class="table"
                 :data="mesNumDataList"
-                border
                 style="width: 100%"
                 :max-height="tableHeight">
             <el-table-column
-                    prop="regName"
                     label="经营者注册名称"
                     align=left">
-
+                <template #default="{ row }">
+                        <img
+                                class="new"
+                                v-show="row.isNew || row.count !== row.handleCnt"
+                                src="${base}/static/images/be-done.png"
+                                alt=""
+                        /><span>{{ row.regName }}</span>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="count"
@@ -61,7 +66,6 @@
                         <i class="el-icon-s-tools"></i>
                         <span style="color:#409EFF">查看处理</span>
                     </div>
-
                 </template>
             </el-table-column>
         </el-table>
@@ -176,7 +180,6 @@
     <#-- 表格  -->
     .table {
         margin-top: 15px;
-        border: 1px solid #e2e7e9;
     }
 
     .actions {
@@ -195,9 +198,12 @@
     }
 
 
-    img {
+    .new {
+        position: absolute;
+        top: 0;
+        left: 0;
         display: block;
-        width: 15px;
+        width: 25px;
         margin-right: 5px;
     }
 

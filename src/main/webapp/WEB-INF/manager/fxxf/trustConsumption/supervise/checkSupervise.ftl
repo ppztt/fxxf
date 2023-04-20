@@ -193,6 +193,7 @@
     })
 </script>
 <style>
+
     #complaint {
         border: 0;
         width: 100%;
@@ -236,7 +237,6 @@
     /*    表格*/
     .table {
         margin-top: 15px;
-        border: 1px solid #e2e7e9;
     }
 
     /*    分页*/

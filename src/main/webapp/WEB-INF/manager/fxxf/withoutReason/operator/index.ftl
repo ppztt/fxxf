@@ -136,6 +136,9 @@
     })
 </script>
 <style>
+    body{
+        /*background-color: #fff;*/
+    }
     .statistics {
         padding: 10px;
     }
