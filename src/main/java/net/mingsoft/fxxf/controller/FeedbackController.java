@@ -8,10 +8,18 @@ import com.google.common.collect.Maps;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import net.mingsoft.basic.entity.ManagerEntity;
+import net.mingsoft.fxxf.bean.base.BasePageResult;
+import net.mingsoft.fxxf.bean.base.BaseResult;
 import net.mingsoft.fxxf.bean.entity.Record;
 import net.mingsoft.fxxf.bean.entity.*;
-import net.mingsoft.fxxf.bean.request.*;
-import net.mingsoft.fxxf.bean.vo.*;
+import net.mingsoft.fxxf.bean.request.FeedBackCompanyPageRequest;
+import net.mingsoft.fxxf.bean.request.FeedbackHandleRequest;
+import net.mingsoft.fxxf.bean.request.FeedbackPageRequest;
+import net.mingsoft.fxxf.bean.request.FeedbackStatisticRequest;
+import net.mingsoft.fxxf.bean.vo.FeedbackCompanyDetailsVo;
+import net.mingsoft.fxxf.bean.vo.FeedbackComplaintVo;
+import net.mingsoft.fxxf.bean.vo.FeedbackMsgVo;
+import net.mingsoft.fxxf.bean.vo.FeedbackVo;
 import net.mingsoft.fxxf.mapper.FeedbackMapper;
 import net.mingsoft.fxxf.mapper.FeedbackTypeMapper;
 import net.mingsoft.fxxf.service.ApplicantsService;
@@ -281,7 +289,7 @@ public class FeedbackController {
 
     @ApiOperation(value = "反馈原因", notes = "留言反馈/反馈原因")
     @GetMapping("/feedbackReason")
-    public BaseResult<ArrayList<FeedbackType>> feedbackReason(@RequestParam(required = true) @ApiParam(name = "id", value = "类型id", required = true) Integer id) {
+    public BaseResult<ArrayList<FeedbackType>> feedbackReason(@RequestParam @ApiParam(name = "id", value = "类型id", required = true) Integer id) {
         try {
             ArrayList<FeedbackType> feedbackTypeList = feedbackTypeMapper.feedbackReason(id);
             return BaseResult.success(feedbackTypeList);
@@ -322,22 +330,18 @@ public class FeedbackController {
                 || f.getOriginalFilename().endsWith(".jpg")
                 || f.getOriginalFilename().endsWith(".jpeg")
                 || f.getOriginalFilename().endsWith(".png"));
-
         if(match){
             return BaseResult.fail("上传失败，请上传zip、jpg、jpeg、png格式文件");
         }
-
         match = Arrays.stream(files).anyMatch(f -> f.getSize() > 10485760);
 
         if(match){
             return BaseResult.fail("上传失败，请上传10M内的文件", null);
         }
-
         ArrayList<FeedbackUpload> resultList = Lists.newArrayList();
         FeedbackUpload feedbackUpload;
         //1.获取文件名、文件流
         InputStream in;
-        FileOutputStream fos;
         String uuid;
         String fileName;
         //绝对路径
@@ -350,11 +354,10 @@ public class FeedbackController {
             uuid = UUID.randomUUID().toString();
             fileName = file.getOriginalFilename();
             //UUID保证文件名称的唯一
-            absolutePath = feedbackAbsolutePath + "/" + uuid + fileName;
-            relativePath = feedbackAbsolutePath + "/" + uuid + fileName;
-            try {
+            absolutePath = feedbackAbsolutePath + File.separator + uuid + fileName;
+            relativePath = feedbackAbsolutePath + File.separator + uuid + fileName;
+            try (FileOutputStream fos = new FileOutputStream(absolutePath)){
                 //2.写入磁盘
-                fos = new FileOutputStream(absolutePath);
                 in = file.getInputStream();
                 byte[] b = new byte[1024];
                 int len;
@@ -362,9 +365,7 @@ public class FeedbackController {
                     fos.write(b, 0, len);
                 }
                 in.close();
-                fos.close();
                 log.info("附件成功写入磁盘：" + absolutePath);
-
                 //组装实体类
                 feedbackUpload.setFileName(fileName);
                 feedbackUpload.setPath(relativePath);

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import net.mingsoft.fxxf.bean.base.BasePageRequest;
 
 /**
  * 监督投诉-企业详情分页请求实体

@@ -7,13 +7,11 @@ import net.mingsoft.fxxf.bean.entity.Applicants;
 import net.mingsoft.fxxf.bean.request.ApplicantsPageRequest;
 import net.mingsoft.fxxf.bean.vo.OperatorStatisticsVo;
 import net.mingsoft.fxxf.bean.vo.RegionVo;
-import net.mingsoft.fxxf.bean.vo.StoreOperatorStatisticsVo;
 import org.apache.ibatis.annotations.Param;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * <p>
@@ -48,18 +46,18 @@ public interface ApplicantsMapper extends BaseMapper<Applicants> {
             @Param("management") String management,
             @Param("details") String details);
 
-    List<Applicants> applicantsExport(@Param("type") int type,
-                                      @Param("status") String status,
-                                      @Param("roleId") Integer roleId,
-                                      @Param("cityAccess") String cityAccess,
-                                      @Param("districtAccess") String districtAccess);
+    ArrayList<Applicants> applicantsExport(@Param("type") int type,
+                                           @Param("status") String status,
+                                           @Param("roleId") Integer roleId,
+                                           @Param("cityAccess") String cityAccess,
+                                           @Param("districtAccess") String districtAccess);
 
-    List<RegionVo> getGdRegion();
+    ArrayList<RegionVo> getGdRegion();
 
     ArrayList<Applicants> companyList(String keyword);
 
 
-    List<OperatorStatisticsVo> unitOperatorStatistics(
+    ArrayList<OperatorStatisticsVo> unitOperatorStatistics(
             @Param("startTime") String startTime,
             @Param("endTime") String endTime,
             @Param("roleId") Integer roleId,
@@ -67,7 +65,7 @@ public interface ApplicantsMapper extends BaseMapper<Applicants> {
             @Param("district") String district);
 
 
-    List<StoreOperatorStatisticsVo> storeOperatorStatistics(
+    ArrayList<OperatorStatisticsVo> storeOperatorStatistics(
             @Param("startTime") String startTime,
             @Param("endTime") String endTime,
             @Param("roleId") Integer roleId,

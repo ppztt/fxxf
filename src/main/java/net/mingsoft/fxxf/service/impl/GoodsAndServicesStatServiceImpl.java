@@ -1,9 +1,9 @@
 package net.mingsoft.fxxf.service.impl;
 
 
+import net.mingsoft.fxxf.bean.vo.GoodsAndServicesStat;
 import net.mingsoft.fxxf.mapper.GoodsAndServicesStatMapper;
 import net.mingsoft.fxxf.service.GoodsAndServicesStatService;
-import net.mingsoft.fxxf.bean.vo.GoodsAndServicesStat;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +21,9 @@ public class GoodsAndServicesStatServiceImpl implements GoodsAndServicesStatServ
     @Resource
     private GoodsAndServicesStatMapper goodsAndServicesStatMapper;
 
-    public List<GoodsAndServicesStat> list(String city, String district, String startTime, String endTime) {
+    public ArrayList<GoodsAndServicesStat> list(String city, String district, String startTime, String endTime) {
 
-        List<GoodsAndServicesStat> result = new ArrayList<>();
+        ArrayList<GoodsAndServicesStat> result = new ArrayList<>();
         List<Map> list = goodsAndServicesStatMapper.list2(city, district, startTime, endTime);
 
         List<Map> listType = goodsAndServicesStatMapper.listType();
