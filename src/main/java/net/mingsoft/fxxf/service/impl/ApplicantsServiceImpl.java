@@ -660,7 +660,8 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
     }
 
     @Override
-    public void operatorStatisticsExport(Integer type, String startTime, String endTime, HttpServletRequest request, HttpServletResponse response) {
+    public void operatorStatisticsExport(Integer type, String startTime, String endTime,
+                                         HttpServletRequest request, HttpServletResponse response) {
         // 获取登录用户
         ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
         if (user == null) {
@@ -684,15 +685,19 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
 
         // roleId == 1 ，说明是管理员，可以查看全部，否则根据地市去查
         if (ApplicantsTypeEnum.UNIT.getCode().equals(type)) {
-            List<OperatorStatisticsVo> operatorStatisticsVos = applicantsMapper.unitOperatorStatistics(
+            ArrayList<OperatorStatisticsVo> unitStatisticsVos = applicantsMapper.unitOperatorStatistics(
                     startTime, endTime, roleId, city, extensionInfo.getDistrict());
-            ExcelUtil.exportExcel(operatorStatisticsVos, "", "", OperatorStatisticsVo.class, fileName, request, response);
+
+            ExcelUtil.exportExcel(BeanUtil.copyToList(unitStatisticsVos, UnitOperatorStatisticsVo.class)
+                    , "", "", UnitOperatorStatisticsVo.class, fileName, request, response);
         }
 
         if (ApplicantsTypeEnum.STORE.getCode().equals(type)) {
-            ArrayList<OperatorStatisticsVo> storeOperatorStatisticsVos = applicantsMapper.storeOperatorStatistics(
+            ArrayList<OperatorStatisticsVo> storeStatisticsVos = applicantsMapper.storeOperatorStatistics(
                     startTime, endTime, roleId, city, extensionInfo.getDistrict());
-            ExcelUtil.exportExcel(storeOperatorStatisticsVos, "", "", StoreOperatorStatisticsVo.class, fileName, request, response);
+
+            ExcelUtil.exportExcel(BeanUtil.copyToList(storeStatisticsVos, StoreOperatorStatisticsVo.class),
+                    "", "", StoreOperatorStatisticsVo.class, fileName, request, response);
         }
     }
 
