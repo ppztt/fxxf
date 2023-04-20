@@ -90,7 +90,7 @@ public class AttachmentController {
      **/
     @ApiOperation(value = "附件批量上传", notes = "资料管理/附件批量上传")
     @PostMapping(value = "/uploadFile", produces = "application/json;charset=UTF-8", headers ="content-type=multipart/form-data")
-    public ApiResult attachmentUpload(@RequestParam("files") @ApiParam(name = "files", value = "附件：任意数据格式；文件最大限制500M") MultipartFile[] files) {
+    public ApiResult attachmentUpload(@ApiParam(name = "files", value = "附件：任意数据格式；文件最大限制500M") MultipartFile[] files) {
         InputStream in;
         String retMsg = "";
         FileOutputStream fos;

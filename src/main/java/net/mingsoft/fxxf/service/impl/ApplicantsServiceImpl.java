@@ -665,12 +665,12 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
         // 获取登录用户
         ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
         if (user == null) {
-            throw new RuntimeException("当前登录用户扩展信息为空，请前往补充");
+            throw new BusinessException("当前登录用户扩展信息为空，请前往补充");
         }
 
         User extensionInfo = userMapper.selectById(user.getId());
         if (extensionInfo == null) {
-            throw new RuntimeException("当前登录用户扩展信息为空，请前往补充");
+            throw new BusinessException("当前登录用户扩展信息为空，请前往补充");
         }
         // roleId == 1 ，说明是管理员，可以查看全部，否则根据地市去查
         int roleId = user.getRoleId();
