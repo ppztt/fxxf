@@ -397,6 +397,7 @@
                 ms.http.get(ms.manager + "/basic/manager/get.do")
                     .then(function (data) {
                         that.managerInfo = data.data
+                        sessionStorage.setItem('userId',data.data.id)
                     }, function (err) {
                         that.$notify({
                             title: '错误',
