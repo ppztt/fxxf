@@ -3,7 +3,7 @@ package net.mingsoft.fxxf.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import net.mingsoft.basic.entity.ManagerEntity;
-import net.mingsoft.fxxf.vo.ManagerInfoVo;
+import net.mingsoft.fxxf.bean.vo.ManagerInfoVo;
 
 import java.util.List;
 

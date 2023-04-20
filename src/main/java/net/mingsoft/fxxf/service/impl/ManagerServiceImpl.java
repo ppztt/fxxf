@@ -13,7 +13,7 @@ import net.mingsoft.fxxf.bean.entity.ManagerInfo;
 import net.mingsoft.fxxf.mapper.ManagerMapper;
 import net.mingsoft.fxxf.service.ManagerInfoService;
 import net.mingsoft.fxxf.service.ManagerService;
-import net.mingsoft.fxxf.vo.ManagerInfoVo;
+import net.mingsoft.fxxf.bean.vo.ManagerInfoVo;
 import net.mingsoft.utils.CheckPassword;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.shiro.SecurityUtils;
@@ -164,6 +164,10 @@ public class ManagerServiceImpl extends ServiceImpl<ManagerMapper, ManagerEntity
         ManagerInfo managerInfo = managerInfoService.getById(userId);
         BeanUtil.copyProperties(managerEntity, managerInfoVo);
         BeanUtil.copyProperties(managerInfo, managerInfoVo);
+        // 由于使用了@JsonProperty,部分属性复制对应不上
+        managerInfoVo.setManagerName(managerEntity.getManagerName());
+        managerInfoVo.setManagerNickname(managerEntity.getManagerNickName());
+        managerInfoVo.setManagerPassword(managerEntity.getManagerPassword());
         return managerInfoVo;
     }
 
@@ -176,8 +180,13 @@ public class ManagerServiceImpl extends ServiceImpl<ManagerMapper, ManagerEntity
         ManagerInfo managerInfo = new ManagerInfo();
         BeanUtil.copyProperties(user, managerEntity, "id");
         BeanUtil.copyProperties(user, managerInfo, "id");
-        this.save(managerEntity);
-        managerInfoService.save(managerInfo);
+        managerEntity.setRoleIds(user.getRoleIds());
+        managerEntity.setManagerNickName(user.getManagerNickname());
+        boolean save = this.save(managerEntity);
+        if (save) {
+            managerInfo.setId(managerEntity.getId());
+            managerInfoService.save(managerInfo);
+        }
     }
 
     @Transactional(rollbackFor = Exception.class)

@@ -6,10 +6,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import net.mingsoft.basic.entity.ManagerEntity;
-import net.mingsoft.fxxf.anno.OperatorLogAnno;
 import net.mingsoft.fxxf.bean.vo.BaseResult;
 import net.mingsoft.fxxf.service.ManagerService;
-import net.mingsoft.fxxf.vo.ManagerInfoVo;
+import net.mingsoft.fxxf.bean.vo.ManagerInfoVo;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -64,7 +63,7 @@ public class ManagerController {
                                                     @RequestParam(name = "size", defaultValue = "10") Integer size,
                                                     @RequestParam(name = "keyword", defaultValue = "") String keyword) {
         Page<ManagerInfoVo> page = new Page<>(current, size);
-        List<ManagerInfoVo> users = managerService.userList(keyword, page);
+        List<ManagerInfoVo> users = managerService.userList(keyword.trim(), page);
         page.setRecords(users);
         return BaseResult.success(page);
     }
@@ -82,7 +81,7 @@ public class ManagerController {
                                                                    @RequestParam(name = "size", defaultValue = "10") Integer size,
                                                                    @RequestParam(name = "keyword", defaultValue = "") String keyword) {
         Page<ManagerInfoVo> page = new Page<>(current, size);
-        List<ManagerInfoVo> users = managerService.industryAssociationList(keyword, page);
+        List<ManagerInfoVo> users = managerService.industryAssociationList(keyword.trim(), page);
         page.setRecords(users);
         return BaseResult.success(page);
     }

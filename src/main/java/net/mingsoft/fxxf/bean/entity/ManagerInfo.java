@@ -1,5 +1,8 @@
 package net.mingsoft.fxxf.bean.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -12,10 +15,12 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "ManagerInfo")
+@TableName("manager_info")
 public class ManagerInfo {
 
     @ApiModelProperty(value = "与manager表id对应")
-    private Integer id;
+    @TableId(type = IdType.INPUT)
+    private String id;
 
     @ApiModelProperty(value = "电子邮件")
     private String email;

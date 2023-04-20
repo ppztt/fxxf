@@ -1,5 +1,6 @@
-package net.mingsoft.fxxf.vo;
+package net.mingsoft.fxxf.bean.vo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class ManagerInfoVo implements Serializable {
     private String id;
 
     @ApiModelProperty(value = "角色编号")
+    @JsonProperty("roleId")
     private String roleIds;
 
     @ApiModelProperty(value = "角色编号")
@@ -32,15 +34,19 @@ public class ManagerInfoVo implements Serializable {
     private String managerAdmin;
 
     @ApiModelProperty(value = "管理员用户名")
+    @JsonProperty("account")
     private String managerName;
 
     @ApiModelProperty(value = "管理员昵称")
+    @JsonProperty("realname")
     private String managerNickname;
 
     @ApiModelProperty(value = "密码")
+    @JsonProperty("password")
     private String managerPassword;
 
     @ApiModelProperty(value = "新密码")
+    @JsonProperty("newPassword")
     private String newManagerPassword;
 
     @ApiModelProperty(value = "更新人")
@@ -53,6 +59,7 @@ public class ManagerInfoVo implements Serializable {
     private String createBy;
 
     @ApiModelProperty(value = "创建时间")
+    @JsonProperty("createTime")
     private LocalDateTime createDate;
 
     @ApiModelProperty(value = "删除标记")
