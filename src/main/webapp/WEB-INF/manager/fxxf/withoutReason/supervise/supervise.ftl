@@ -66,7 +66,7 @@
             </el-table-column>
         </el-table>
 
-        <div class="paginationbox">
+        <div class="pagination-box">
             <span style="white-space:nowrap">共{{total}}条信息 共{{Totalpage}}页</span>
             <el-pagination
                     @current-change="handleCurrentChange"
@@ -201,7 +201,7 @@
         margin-right: 5px;
     }
 
-    .paginationbox {
+    .pagination-box {
         display: flex;
         align-items: center;
         margin-top: 8px;

@@ -11,9 +11,9 @@
 <div id="app" class="statistics">
     <el-row>
         <#--        工具栏-->
-        <el-col :span="7">
-            <el-row class="datetime">
-                <el-col :span="9">
+        <el-col :span="12">
+            <el-row class="date-time">
+                <el-col :span="24">
                     <div class="date-range">
                         <el-date-picker
                                 v-model="startTime"
@@ -28,26 +28,13 @@
                                 placeholder="结束日期"
                                 style="width: 220px"
                         ></el-date-picker>
+                        <el-button style="margin-left: 50px" type="primary" icon="el-icon-search" @click="getOperatorStatisticList">查询</el-button>
+                        <el-button style="margin-left: 200px" type="success" icon="el-icon-top" @click="derive">导出</el-button>
                     </div>
                 </el-col>
             </el-row>
         </el-col>
 
-        <el-col :span="2">
-            <el-row class="button_groud" type="flex">
-                <el-col span="24">
-                    <el-button type="primary" icon="el-icon-search" @click="getOperatorStatisticList">查询</el-button>
-                </el-col>
-            </el-row>
-        </el-col>
-
-        <el-col :span="4">
-            <el-row class="button_groud" type="flex">
-                <el-col span="24">
-                    <el-button type="success" icon="el-icon-top" @click="derive">导出</el-button>
-                </el-col>
-            </el-row>
-        </el-col>
     </el-row>
 
     <el-table
@@ -182,7 +169,7 @@
         margin-top: 10px;
     }
 
-    .datetime {
+    .date-time {
         display: flex;
         justify-content: flex-start;
         align-items: center;
@@ -191,7 +178,6 @@
     .date-range {
         display: flex;
         align-items: center;
-        width: 500px;
     }
 
     .date-separator {
@@ -200,11 +186,6 @@
         font-weight: bold;
     }
 
-    .button_groud {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
     .el-table thead.is-group th.el-table__cell{
         background: none;
     }

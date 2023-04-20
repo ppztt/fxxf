@@ -123,8 +123,10 @@
                     if (res.code != 200) return
                     this.dataList = res.data
                     this.loadingShow = false
-                    console.log(res)
                 })
+            },
+            //获取地区数据
+            getArea(){
                 ms.http.get("/gd-regin.do").then(res => {
                     this.area = res.data
                 })
@@ -168,6 +170,7 @@
         },
         created: function () {
             this.getList()
+            this.getArea()
         },
         mounted: function () {
 

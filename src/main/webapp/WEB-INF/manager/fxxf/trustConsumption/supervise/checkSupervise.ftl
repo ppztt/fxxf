@@ -12,7 +12,7 @@
     <el-row>
         <#--        工具栏-->
         <el-col :span="10">
-            <el-row class="datetime">
+            <el-row class="date-time">
                 <el-col :span="4" style="white-space:nowrap">时间范围 :</el-col>
                 <el-col :span="9">
                     <div class="date-range">
@@ -209,7 +209,7 @@
         width: 100%;
     }
 
-    .datetime {
+    .date-time {
         display: flex;
         justify-content: flex-start;
         align-items: center;
