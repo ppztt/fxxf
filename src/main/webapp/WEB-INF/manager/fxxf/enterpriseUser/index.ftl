@@ -91,11 +91,11 @@
         <el-dialog title="企业用户信息"
                    center
                    :visible.sync="modify"
-                   width="30%">
+                   width="50%">
             <el-form
                     ref="formData"
                     :model="formData"
-                    label-width="90px">
+                    label-width="150px">
                 <el-form-item label="经营者注册名称" prop="realname">
                     <el-input
                             v-model="formData.realname"
@@ -150,12 +150,14 @@
                     <el-input
                             v-model="formData.principal"
                             placeholder="请输入负责人姓名"
+                            disabled
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="负责人电话" prop="principalTel">
                     <el-input
                             v-model="formData.principalTel"
                             placeholder="请输入负责人电话"
+                            disabled
                     ></el-input>
                 </el-form-item>
             </el-form>
@@ -434,7 +436,7 @@
                                 trigger: "blur",
                             },
                             { min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur' },
-                            {pattern: "^(?![A-z0-9]+$)(?=.[^%&',;=?$\x22])(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}$", message: '密码最小长度为8位，至少包含数字、大写字母、小写字母和特殊字符中的三种'}
+                            {pattern: "^(?![A-z0-9]+$)(?=.[^%&',;=?$\x22])(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}$", message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'}
                         ],
                         reNewPassword: [
                             {
@@ -443,7 +445,7 @@
                                 trigger: "blur",
                             },
                             { min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur' },
-                            {pattern: "^(?![A-z0-9]+$)(?=.[^%&',;=?$\x22])(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}$", message: '密码最小长度为8位，至少包含数字、大写字母、小写字母和特殊字符中的三种'}
+                            {pattern: "^(?![A-z0-9]+$)(?=.[^%&',;=?$\x22])(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}$", message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'}
                         ],
                     },
                 }

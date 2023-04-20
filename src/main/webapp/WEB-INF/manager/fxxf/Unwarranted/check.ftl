@@ -73,8 +73,8 @@
                     </el-row>
                     <el-row>
                         <el-col span="24">
-                            <el-form-item label="企业申请日期：" prop="applicationDate">
-                                <p v-if="formData.applicationDate">{{ formData.applicationDate }}</p>
+                            <el-form-item label="企业申请日期：" prop="createTime">
+                                <p v-if="formData.createTime">{{ formData.createTime }}</p>
                                 <p v-else>无</p>
                             </el-form-item>
                         </el-col>
@@ -223,11 +223,11 @@
                     </el-row>
                     <el-row>
                         <el-col span="24">
-                            <el-form-item label="企业申请日期：" prop="applicationDate">
+                            <el-form-item label="企业申请日期：" prop="createTime">
                                 <el-date-picker
-                                        v-model="formData.applicationDate"
-                                        type="date"
-                                        value-format="yyyy-MM-dd"
+                                        v-model="formData.createTime"
+                                        type="datetime"
+                                        value-format="yyyy-MM-dd HH:mm:ss"
                                         placeholder="请选择时间">
                                 </el-date-picker>
                             </el-form-item>
@@ -317,6 +317,7 @@
                                 <el-date-picker
                                         v-model="formData.applicationDate"
                                         type="date"
+                                        value-format="yyyy-MM-dd HH-mm-ss"
                                         placeholder="选择日期"
                                         disabled>
                                 </el-date-picker>
@@ -594,7 +595,7 @@
                     }).then((res) => {
                     let isReapt = res.data.isRepeatRegName
                     if (!isReapt) {
-                        ms.http.post('/applicants/update/' + this.consumerId + '.do', {...this.formData, addrs: adds},
+                        ms.http.post('/applicants/update.do', {...this.formData, addrs: adds, type: '2'},
                             {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
                             if (res.code == 200) {
 
@@ -665,6 +666,7 @@
         mounted: function () {
             this.detailType = window.location.href.split("?")[1].split("&")[0].split('=')[1]
             this.consumerId = Number(window.location.href.split("?")[1].split("&")[1].split('=')[1])
+            this.getRegionData()
             this.getList();
         }
     });
