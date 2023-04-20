@@ -33,6 +33,7 @@ public class StoreOperatorStatisticsVo implements Serializable {
     @Excel(name = "承诺店总数")
     private Integer applicantsCnt;
 
+
     /**
      * 退货期限超过七天的承诺店数量
      */
