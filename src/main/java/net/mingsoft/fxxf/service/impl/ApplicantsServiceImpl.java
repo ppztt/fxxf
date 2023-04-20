@@ -17,6 +17,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.mingsoft.basic.entity.ManagerEntity;
 import net.mingsoft.basic.exception.BusinessException;
+import net.mingsoft.fxxf.bean.base.BasePageResult;
+import net.mingsoft.fxxf.bean.base.BaseResult;
 import net.mingsoft.fxxf.bean.entity.Applicants;
 import net.mingsoft.fxxf.bean.entity.AuditLog;
 import net.mingsoft.fxxf.bean.entity.User;
@@ -126,23 +128,23 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
 
 
     @Override
-    public ApiResult<BasePageResult<Applicants>> listPage(ApplicantsPageRequest applicantsPageRequest) {
+    public BaseResult<BasePageResult<Applicants>> listPage(ApplicantsPageRequest applicantsPageRequest) {
         // 获取登录用户 roleId == 1 ，说明是管理员，可以查看全部，否则根据地市去查
         ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
         if (user == null) {
-            return ApiResult.fail("当前登录用户为空，请重新登陆");
+            return BaseResult.fail("当前登录用户为空，请重新登陆");
         }
 
         User extensionInfo = userMapper.selectById(user.getId());
         if (extensionInfo == null) {
-            return ApiResult.fail("当前登录用户扩展信息为空，请前往补充");
+            return BaseResult.fail("当前登录用户扩展信息为空，请前往补充");
         }
 
         IPage<Applicants> applicantsIPage = applicantsMapper.listPage(new Page<>(
                         applicantsPageRequest.getCurrent(), applicantsPageRequest.getSize()), applicantsPageRequest, user.getRoleId(),
                 extensionInfo.getCity(), extensionInfo.getDistrict());
 
-        return ApiResult.success(new BasePageResult<>(applicantsIPage.getCurrent(), applicantsIPage.getSize(), applicantsIPage.getPages(),
+        return BaseResult.success(new BasePageResult<>(applicantsIPage.getCurrent(), applicantsIPage.getSize(), applicantsIPage.getPages(),
                 applicantsIPage.getTotal(), applicantsIPage.getRecords()));
     }
 
@@ -182,7 +184,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
      * 经营者列表-根据单位id更新状态及原因
      */
     @Override
-    public ApiResult updateApplicantsStatus(ApplicantsStatusUpdateRequest applicantsStatusUpdateRequest) {
+    public BaseResult updateApplicantsStatus(ApplicantsStatusUpdateRequest applicantsStatusUpdateRequest) {
         Applicants applicants = getById(applicantsStatusUpdateRequest.getApplicantsId());
 
         if (applicants != null) {
@@ -194,9 +196,9 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
 
             applicants.updateById();
 
-            return ApiResult.success();
+            return BaseResult.success();
         } else {
-            return ApiResult.fail("单位不存在");
+            return BaseResult.fail("单位不存在");
         }
     }
 
@@ -204,15 +206,15 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
      * 经营者列表-编辑保存
      */
     @Override
-    public ApiResult updateApplicants(ApplicantsParamsVo applicantsParamsVo) {
+    public BaseResult updateApplicants(ApplicantsParamsVo applicantsParamsVo) {
         Applicants applicantsById = getById(applicantsParamsVo.getId());
         if (applicantsById == null) {
-            return ApiResult.fail("承诺单位不存在");
+            return BaseResult.fail("承诺单位不存在");
         }
 
         BeanUtils.copyProperties(applicantsParamsVo, applicantsById, "id,status");
 
-        applicantsById.setStartTime(LocalDate.parse( applicantsParamsVo.getStartTime()));
+        applicantsById.setStartTime(LocalDate.parse(applicantsParamsVo.getStartTime()));
         applicantsById.setEndTime(LocalDate.parse(applicantsParamsVo.getEndTime()));
 
         // 类别明细
@@ -243,7 +245,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
 
                 //验证多个地址是否完整
                 if (StringUtils.isEmpty(city) || StringUtils.isEmpty(district) || StringUtils.isEmpty(address)) {
-                    return ApiResult.fail("地址不全,请补全");
+                    return BaseResult.fail("地址不全,请补全");
                 }
 
                 citys.append(city);
@@ -264,7 +266,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
 
         updateById(applicantsById);
 
-        return ApiResult.success();
+        return BaseResult.success();
     }
 
     /**
@@ -286,7 +288,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
     }
 
     @Override
-    public ApiResult templatePreImport(Integer type, MultipartFile file) {
+    public BaseResult templatePreImport(Integer type, MultipartFile file) {
         InputStream in = null;
         List<ExcelImportErrorMsgVo> errorMsgVoList = new ArrayList<>();
         try {
@@ -327,7 +329,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                     errorMsgVoList.add(new ExcelImportErrorMsgVo(e.getRowNum(), e.getErrorMsg()));
                 });
                 if (!errorMsgVoList.isEmpty()) {
-                    return ApiResult.fail(errorMsgVoList);
+                    return BaseResult.fail(errorMsgVoList);
                 }
             }
 
@@ -337,12 +339,12 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                 // 获取登录用户
                 ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
                 if (user == null) {
-                    return ApiResult.fail("当前登录用户为空，请重新登陆");
+                    return BaseResult.fail("当前登录用户为空，请重新登陆");
                 }
 
                 User userExtensionInfo = userMapper.selectById(user.getId());
                 if (userExtensionInfo == null) {
-                    return ApiResult.fail("当前登录用户扩展信息为空，请前往补充");
+                    return BaseResult.fail("当前登录用户扩展信息为空，请前往补充");
                 }
 
                 int roleId = user.getRoleId();
@@ -352,7 +354,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                         String vo = applicantsExcelImportVo.getDistrict();
                         if (!vo.contains(district)) {
                             errorMsgVoList.add(new ExcelImportErrorMsgVo("当前导入文件中【统一社会信用代码】包含其他其他地区数据，请去掉后再上传"));
-                            return ApiResult.fail(errorMsgVoList);
+                            return BaseResult.fail(errorMsgVoList);
                         }
                     }
                 } else if (roleId == 2) {
@@ -361,7 +363,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                         String vo = applicantsExcelImportVo.getCity();
                         if (!vo.contains(city)) {
                             errorMsgVoList.add(new ExcelImportErrorMsgVo("当前导入文件中【统一社会信用代码】包含其他其他市区数据，请去掉后再上传"));
-                            return ApiResult.fail(errorMsgVoList);
+                            return BaseResult.fail(errorMsgVoList);
                         }
                     }
                 } else if (roleId == 4) {
@@ -370,7 +372,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                         String vo = applicantsExcelImportVo.getCity();
                         if (!vo.contains(city)) {
                             errorMsgVoList.add(new ExcelImportErrorMsgVo("当前导入文件中【统一社会信用代码】包含其他其他市区数据，请去掉后再上传"));
-                            return ApiResult.fail(errorMsgVoList);
+                            return BaseResult.fail(errorMsgVoList);
                         }
                     }
                 }
@@ -385,7 +387,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                 List<ArrayList<String>> same = ApplicantsImportUtil.findSame(array);
                 if (!CollectionUtils.isEmpty(same)) {
                     errorMsgVoList.add(new ExcelImportErrorMsgVo("当前导入文件中【统一社会信用代码】存在重复，行:" + same));
-                    return ApiResult.fail(errorMsgVoList);
+                    return BaseResult.fail(errorMsgVoList);
                 }
 
                 List<Applicants> applicantsStatus5_6 = findApplicantsByCreditCodeAndStatus5_6(creditCodes.toArray(), type);
@@ -407,7 +409,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                     return false;
                 });
                 if (isAduit) {
-                    return ApiResult.fail(errorMsgVoList);
+                    return BaseResult.fail(errorMsgVoList);
                 }
 
                 List<Applicants> applicantsStatus1 = findApplicantsByRegName(type, creditCodes.toArray());
@@ -429,7 +431,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                     return false;
                 });
                 if (isRepact1) {
-                    return ApiResult.fail(errorMsgVoList);
+                    return BaseResult.fail(errorMsgVoList);
                 }
 
                 List<Applicants> applicantsStatus4 = findApplicantsByRegNameAndStatus4(type, creditCodes.toArray());
@@ -474,17 +476,17 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                     errorMsgVoList.add(errorMsgVo);
                 }
 
-                return ApiResult.success(errorMsgVoList);
+                return BaseResult.success(errorMsgVoList);
             }
 
             errorMsgVoList.add(new ExcelImportErrorMsgVo(null, "导入文件为空，请重新选择"));
 
-            return ApiResult.fail(errorMsgVoList);
+            return BaseResult.fail(errorMsgVoList);
         } catch (ExcelImportException e) {
             e.printStackTrace();
             if (e.getMessage().contains("不是合法的Excel模板")) {
                 errorMsgVoList.add(new ExcelImportErrorMsgVo(1, "不是合法的模板"));
-                return ApiResult.fail(errorMsgVoList);
+                return BaseResult.fail(errorMsgVoList);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -498,26 +500,26 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
             }
         }
 
-        return ApiResult.fail();
+        return BaseResult.fail();
     }
 
     @Override
-    public ApiResult audit(Integer id, Integer type, String notes) {
+    public BaseResult audit(Integer id, Integer type, String notes) {
 
         if (StringUtils.isBlank(notes)) {
-            return ApiResult.fail("原因不能为空");
+            return BaseResult.fail("原因不能为空");
         }
 
         String flagStr = updateApplicantsStatusByAudit(type, id, notes);
 
         if (flagStr == "success") {
-            return ApiResult.success();
+            return BaseResult.success();
         }
-        return ApiResult.fail(flagStr);
+        return BaseResult.fail(flagStr);
     }
 
     @Override
-    public ApiResult templateImport(String fileId) {
+    public BaseResult templateImport(String fileId) {
         File file = null;
         try {
             String path = ResourceUtils.getURL("classpath:").getPath() + importFileTmp;
@@ -539,7 +541,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                 failList.forEach(e -> {
                     errorMsgVoList.add(new ExcelImportErrorMsgVo(e.getRowNum(), e.getErrorMsg()));
                 });
-                return ApiResult.fail(errorMsgVoList);
+                return BaseResult.fail(errorMsgVoList);
             }
 
             if (file != null) {
@@ -551,15 +553,15 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                 // 批量更新写入
                 List<Applicants> applicantsList = ((ApplicantsServiceImpl) AopContext.currentProxy()).templateSyncDbWrite(applicantsExcelVos);
 
-                return ApiResult.success(applicantsList);
+                return BaseResult.success(applicantsList);
             }
 
-            return ApiResult.fail("导入文件为空，请重新选择");
+            return BaseResult.fail("导入文件为空，请重新选择");
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return ApiResult.fail("导入失败");
+        return BaseResult.fail("导入失败");
     }
 
     @Override
@@ -615,7 +617,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
             fileName = city + "_" + extensionInfo.getDistrict() + concatName;
         }
 
-        if(CollectionUtils.isEmpty(applicantsExcelVos)) {
+        if (CollectionUtils.isEmpty(applicantsExcelVos)) {
             applicantsExcelVos.add(new ApplicantsExcelVo());
         }
 
@@ -623,16 +625,16 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
     }
 
     @Override
-    public ApiResult<List<OperatorStatisticsVo>> operatorStatistics(ApplicantsStatisticsRequest applicantsStatisticsRequest) {
+    public BaseResult operatorStatistics(ApplicantsStatisticsRequest applicantsStatisticsRequest) {
         // 获取登录用户
         ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
         if (user == null) {
-            return ApiResult.fail("当前登录用户为空，请重新登陆");
+            return BaseResult.fail("当前登录用户为空，请重新登陆");
         }
 
         User extensionInfo = userMapper.selectById(user.getId());
         if (extensionInfo == null) {
-            return ApiResult.fail("当前登录用户扩展信息为空，请前往补充");
+            return BaseResult.fail("当前登录用户扩展信息为空，请前往补充");
         }
 
         // roleId == 1 ，说明是管理员，可以查看全部，否则根据地市去查
@@ -641,16 +643,16 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                     applicantsStatisticsRequest.getStartTime(), applicantsStatisticsRequest.getEndTime(),
                     user.getRoleId(), extensionInfo.getCity(), extensionInfo.getDistrict());
 
-            return ApiResult.success(BeanUtil.copyToList(operatorStatisticsVos, OperatorStatisticsVo.class));
+            return BaseResult.success(BeanUtil.copyToList(operatorStatisticsVos, OperatorStatisticsVo.class));
         } else if (ApplicantsTypeEnum.STORE.getCode().equals(applicantsStatisticsRequest.getType())) {
             List<StoreOperatorStatisticsVo> storeOperatorStatisticsVos = applicantsMapper.storeOperatorStatistics(
                     applicantsStatisticsRequest.getStartTime(), applicantsStatisticsRequest.getEndTime()
                     , user.getRoleId(), extensionInfo.getCity(), extensionInfo.getDistrict());
 
-            return ApiResult.success(BeanUtil.copyToList(storeOperatorStatisticsVos, OperatorStatisticsVo.class));
+            return BaseResult.success(BeanUtil.copyToList(storeOperatorStatisticsVos, OperatorStatisticsVo.class));
         }
 
-        return ApiResult.success(new ArrayList<>());
+        return BaseResult.success(Collections.emptyList());
     }
 
     @Override
@@ -691,11 +693,11 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
     }
 
     @Override
-    public ApiResult saveEnterpriseApplyInfo(EnterpriseNewApplyRequest enterpriseNewApplyRequest) {
+    public BaseResult saveEnterpriseApplyInfo(EnterpriseNewApplyRequest enterpriseNewApplyRequest) {
         List<Applicants> applicantsByCreditCode = findApplicantsByCreditCode(enterpriseNewApplyRequest.getType(), enterpriseNewApplyRequest.getCreditCode());
 
         if (!CollectionUtils.isEmpty(applicantsByCreditCode)) {
-            return ApiResult.fail("存在相同统一社会信用代码");
+            return BaseResult.fail("存在相同统一社会信用代码");
         }
 
         Applicants applicants = new Applicants();
@@ -716,7 +718,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
         // 获取登录用户
         ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
         if (user == null) {
-            return ApiResult.fail("当前登录用户为空，请重新登陆");
+            return BaseResult.fail("当前登录用户为空，请重新登陆");
         }
 
         applicants.setCreater(Integer.parseInt(user.getId()));
@@ -757,7 +759,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                 //验证多个地址是否完整
                 if (StringUtils.isEmpty(city) || StringUtils.isEmpty(district) || StringUtils.isEmpty(address)) {
 
-                    return ApiResult.fail("地址不全,请补全");
+                    return BaseResult.fail("地址不全,请补全");
                 }
 
                 if ((size - 1) != i) {
@@ -773,7 +775,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
 
         enterpriseService.saveEnterpriseApplyInfo(applicants);
 
-        return ApiResult.success();
+        return BaseResult.success();
     }
 
     /**

@@ -2,10 +2,10 @@ package net.mingsoft.fxxf.service.impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.mingsoft.fxxf.bean.entity.Applicants;
 import net.mingsoft.fxxf.bean.entity.User;
+import net.mingsoft.fxxf.bean.base.BasePageResult;
 import net.mingsoft.fxxf.service.ApplicantsService;
 import net.mingsoft.fxxf.service.UserService;
 import org.springframework.context.annotation.Lazy;
@@ -37,11 +37,13 @@ public class EnterpriseService {
         userService.updateById(user);
     }
 
-    public IPage<Applicants> getEnterpriseApplyInfo(Integer current, Integer sise, Integer userId) {
-        return applicantsService.page(
+    public BasePageResult<Applicants> getEnterpriseApplyInfo(Integer current, Integer sise, Integer userId) {
+        Page<Applicants> enterpriseApplyPage = applicantsService.page(
                 new Page<>(current, sise),
                 new QueryWrapper<Applicants>().eq("creater", userId).eq("create_type", "企业提交")
         );
+        return new BasePageResult<>(enterpriseApplyPage.getCurrent(), enterpriseApplyPage.getSize(),
+                enterpriseApplyPage.getPages(), enterpriseApplyPage.getTotal(), enterpriseApplyPage.getRecords());
     }
 
     public Applicants getEnterpriseApplyInfoById(Integer id) {

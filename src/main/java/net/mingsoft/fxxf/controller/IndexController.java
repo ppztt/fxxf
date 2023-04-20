@@ -8,8 +8,9 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import net.mingsoft.fxxf.bean.entity.Attachment;
-import net.mingsoft.fxxf.bean.vo.ApiResult;
+import net.mingsoft.fxxf.bean.base.BasePageResult;
 import net.mingsoft.fxxf.bean.vo.ApplicantsExtend;
+import net.mingsoft.fxxf.bean.base.BaseResult;
 import net.mingsoft.fxxf.service.AttachmentService;
 import net.mingsoft.fxxf.service.IndexService;
 import net.mingsoft.utils.DateUtil;
@@ -58,13 +59,13 @@ public class IndexController {
             @ApiImplicitParam(name = "type", value = "申报单位类型(1:放心消费单位； 2:无理由退货实体店)", required = true),
             @ApiImplicitParam(name = "status", value = "状态(1:在期； 0:摘牌)", required = true)
     })
-    public ApiResult<Page<ApplicantsExtend>> searchList(@RequestParam(name = "current", defaultValue = "1") Integer current,
-                                                        @RequestParam(name = "size", defaultValue = "10") Integer size,
-                                                        @RequestParam(name = "keyword", defaultValue = "") String keyword,
-                                                        @RequestParam(name = "type", defaultValue = "1") String type,
-                                                        @RequestParam(name = "status", defaultValue = "1") String status) {
+    public BaseResult<Page<ApplicantsExtend>> searchList(@RequestParam(name = "current", defaultValue = "1") Integer current,
+                                                         @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                                         @RequestParam(name = "keyword", defaultValue = "") String keyword,
+                                                         @RequestParam(name = "type", defaultValue = "1") String type,
+                                                         @RequestParam(name = "status", defaultValue = "1") String status) {
         Page<ApplicantsExtend> page = indexService.searchList(current, size, keyword, type, status);
-        return ApiResult.success(page);
+        return BaseResult.success(page);
     }
 
     @ApiOperation(value = "放心消费承诺单位-在期经营者公示", notes = "首页管理/放心消费承诺单位-在期经营者公示")
@@ -74,13 +75,13 @@ public class IndexController {
             @ApiImplicitParam(name = "size", value = "每页展示条数", required = true),
             @ApiImplicitParam(name = "keyword", value = "关键字：企业名称、时间", required = false)
     })
-    public ApiResult<Page<ApplicantsExtend>> fxPublicOnline(@RequestParam(name = "current", defaultValue = "1") Integer current,
-                                                            @RequestParam(name = "size", defaultValue = "10") Integer size,
-                                                            @RequestParam(name = "keyword", defaultValue = "") String keyword) {
+    public BaseResult<Page<ApplicantsExtend>> fxPublicOnline(@RequestParam(name = "current", defaultValue = "1") Integer current,
+                                                             @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                                             @RequestParam(name = "keyword", defaultValue = "") String keyword) {
         String type = "1";
         String status = "1";
         Page<ApplicantsExtend> page = indexService.searchList(current, size, null, type, status);
-        return ApiResult.success(page);
+        return BaseResult.success(page);
     }
 
     @ApiOperation(value = "放心消费承诺单位-摘牌经营者公示", notes = "首页管理/放心消费承诺单位-摘牌经营者公示")
@@ -90,13 +91,13 @@ public class IndexController {
             @ApiImplicitParam(name = "size", value = "每页展示条数", required = true),
             @ApiImplicitParam(name = "keyword", value = "关键字：企业名称、时间", required = false)
     })
-    public ApiResult<Page<ApplicantsExtend>> fxPublicOffline(@RequestParam(name = "current", defaultValue = "1") Integer current,
-                                                             @RequestParam(name = "size", defaultValue = "10") Integer size,
-                                                             @RequestParam(name = "keyword", defaultValue = "") String keyword) {
+    public BaseResult<Page<ApplicantsExtend>> fxPublicOffline(@RequestParam(name = "current", defaultValue = "1") Integer current,
+                                                              @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                                              @RequestParam(name = "keyword", defaultValue = "") String keyword) {
         String type = "1";
         String status = "0";
         Page<ApplicantsExtend> page = indexService.searchList(current, size, null, type, status);
-        return ApiResult.success(page);
+        return BaseResult.success(page);
     }
 
     @ApiOperation(value = "无理由退货承诺实体店-在期经营者公示", notes = "首页管理/无理由退货承诺实体店-在期经营者公示")
@@ -106,13 +107,13 @@ public class IndexController {
             @ApiImplicitParam(name = "size", value = "每页展示条数", required = true),
             @ApiImplicitParam(name = "keyword", value = "关键字：企业名称、时间", required = false)
     })
-    public ApiResult<Page<ApplicantsExtend>> noReasonReturnPublicOnline(@RequestParam(name = "current", defaultValue = "1") Integer current,
-                                                                        @RequestParam(name = "size", defaultValue = "10") Integer size,
-                                                                        @RequestParam(name = "keyword", defaultValue = "") String keyword) {
+    public BaseResult<Page<ApplicantsExtend>> noReasonReturnPublicOnline(@RequestParam(name = "current", defaultValue = "1") Integer current,
+                                                                         @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                                                         @RequestParam(name = "keyword", defaultValue = "") String keyword) {
         String type = "2";
         String status = "1";
         Page<ApplicantsExtend> page = indexService.searchList(current, size, null, type, status);
-        return ApiResult.success(page);
+        return BaseResult.success(page);
     }
 
     @ApiOperation(value = "无理由退货承诺实体店-摘牌经营者公示", notes = "首页管理/无理由退货承诺实体店-摘牌经营者公示")
@@ -122,13 +123,13 @@ public class IndexController {
             @ApiImplicitParam(name = "size", value = "每页展示条数", required = true),
             @ApiImplicitParam(name = "keyword", value = "关键字：企业名称、时间", required = false)
     })
-    public ApiResult<Page<ApplicantsExtend>> noReasonReturnPublicOffline(@RequestParam(name = "current", defaultValue = "1") Integer current,
-                                                                         @RequestParam(name = "size", defaultValue = "10") Integer size,
-                                                                         @RequestParam(name = "keyword", defaultValue = "") String keyword) {
+    public BaseResult<Page<ApplicantsExtend>> noReasonReturnPublicOffline(@RequestParam(name = "current", defaultValue = "1") Integer current,
+                                                                          @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                                                          @RequestParam(name = "keyword", defaultValue = "") String keyword) {
         String type = "2";
         String status = "0";
         Page<ApplicantsExtend> page = indexService.searchList(current, size, null, type, status);
-        return ApiResult.success(page);
+        return BaseResult.success(page);
     }
 
     @ApiOperation(value = "资料下载", notes = "首页管理/资料下载")
@@ -136,9 +137,9 @@ public class IndexController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "文件id", required = true)
     })
-    public ApiResult downloadAttachment(Integer id, HttpServletRequest request, HttpServletResponse response) {
+    public BaseResult downloadAttachment(Integer id, HttpServletRequest request, HttpServletResponse response) {
         if (id == null) {
-            return ApiResult.fail("文件id不允许为空");
+            return BaseResult.fail("文件id不允许为空");
         }
         Attachment attachment = attachmentService.getById(id);
         String filePath = attachment.getStorage();
@@ -165,9 +166,9 @@ public class IndexController {
             os.close();
         } catch (IOException e) {
             log.error("文件下载失败：{}", e);
-            return ApiResult.fail();
+            return BaseResult.fail();
         }
-        return ApiResult.success();
+        return BaseResult.success();
     }
 
     @ApiOperation(value = "资料列表", notes = "首页管理/资料列表")
@@ -178,20 +179,20 @@ public class IndexController {
             @ApiImplicitParam(name = "keyword", value = "关键字：资料名称、创建时间", required = false)
 
     })
-    public ApiResult<Page<Attachment>> attachmentList(@RequestParam Integer current, @RequestParam Integer size, String keyword) {
-        IPage<Attachment> page;
+    public BaseResult<BasePageResult<Attachment>> attachmentList(@RequestParam Integer current, @RequestParam Integer size, String keyword) {
         try {
-            page = attachmentService.page(
+            IPage<Attachment> attachmentListPage = attachmentService.page(
                     new Page<>(current, size),
                     new QueryWrapper<Attachment>()
                             .like(StringUtils.isNotBlank(keyword), "filename", keyword)
                             .or()
                             .like(StringUtils.isNotBlank(keyword), "uploader", keyword)
                             .orderByDesc("create_time"));
-            return ApiResult.success(page);
+            return BaseResult.success(new BasePageResult<>(attachmentListPage.getCurrent(), attachmentListPage.getSize(),
+                    attachmentListPage.getPages(), attachmentListPage.getTotal(), attachmentListPage.getRecords()));
         } catch (Exception e) {
             log.error("资料列表查询发生异常:{}", e);
-            return ApiResult.fail();
+            return BaseResult.fail();
         }
     }
 
@@ -200,23 +201,23 @@ public class IndexController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "公告id")
     })
-    public ApiResult<ApplicantsExtend> detail(@RequestParam Integer id) {
+    public BaseResult<ApplicantsExtend> detail(@RequestParam Integer id) {
         ApplicantsExtend applicants = indexService.getById(id);
         //格式化日期：由 yyyy-MM-dd 修改为 yyyy-MM
         String startTime = applicants.getStartTime();
         String endTime = applicants.getEndTime();
         //无理由退换货类型无有效期时间，不需要转换日期
-        if(StringUtils.isNotBlank(startTime) && StringUtils.isNotBlank(endTime)){
-            startTime = DateUtil.format(DateUtil.parse(startTime, DateUtil.FORMAT_SHORT_DATE),DateUtil.FORMAT_SHORT_DATE);
-            endTime = DateUtil.format(DateUtil.parse(endTime, DateUtil.FORMAT_SHORT_DATE),DateUtil.FORMAT_SHORT_DATE);
+        if (StringUtils.isNotBlank(startTime) && StringUtils.isNotBlank(endTime)) {
+            startTime = DateUtil.format(DateUtil.parse(startTime, DateUtil.FORMAT_SHORT_DATE), DateUtil.FORMAT_SHORT_DATE);
+            endTime = DateUtil.format(DateUtil.parse(endTime, DateUtil.FORMAT_SHORT_DATE), DateUtil.FORMAT_SHORT_DATE);
             applicants.setStartTime(startTime);
             applicants.setEndTime(endTime);
         }
         try {
-            return ApiResult.success(applicants);
+            return BaseResult.success(applicants);
         } catch (Exception e) {
             log.error("查看 放心消费/无理由退货 公告详情发生异常：{}", e);
-            return ApiResult.fail();
+            return BaseResult.fail();
         }
     }
 }

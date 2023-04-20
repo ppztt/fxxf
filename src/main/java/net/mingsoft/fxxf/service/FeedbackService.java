@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import net.mingsoft.fxxf.bean.entity.Applicants;
 import net.mingsoft.fxxf.bean.entity.Feedback;
 import net.mingsoft.fxxf.bean.entity.FeedbackStat;
-import net.mingsoft.fxxf.bean.request.BasePageResult;
+import net.mingsoft.fxxf.bean.base.BasePageResult;
 import net.mingsoft.fxxf.bean.request.FeedBackCompanyPageRequest;
 import net.mingsoft.fxxf.bean.vo.FeedbackComplaintVo;
 import net.mingsoft.fxxf.bean.request.FeedbackStatisticRequest;

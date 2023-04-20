@@ -8,6 +8,8 @@ import com.google.common.collect.Maps;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import net.mingsoft.basic.entity.ManagerEntity;
+import net.mingsoft.fxxf.bean.base.BasePageResult;
+import net.mingsoft.fxxf.bean.base.BaseResult;
 import net.mingsoft.fxxf.bean.entity.Record;
 import net.mingsoft.fxxf.bean.entity.*;
 import net.mingsoft.fxxf.bean.request.*;

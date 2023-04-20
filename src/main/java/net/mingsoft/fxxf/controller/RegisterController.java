@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.mingsoft.fxxf.bean.entity.User;
-import net.mingsoft.fxxf.bean.vo.ApiResult;
+import net.mingsoft.fxxf.bean.base.BaseResult;
 import net.mingsoft.fxxf.bean.vo.RegisterUserVo;
 import net.mingsoft.fxxf.service.MailService;
 import net.mingsoft.fxxf.service.UserService;
@@ -54,37 +54,38 @@ public class RegisterController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "email", value = "邮箱账号", required = true),
     })
-    public ApiResult sendmail(@Email(message = "电子邮件格式不正确") String email) {
+    public BaseResult sendmail(@Email(message = "电子邮件格式不正确") String email) {
         String code = VerifyCodeUtil.generateVerifyCode(6);
         try {
-             mailService.sendHtmlMail(email, "注册验证码", "欢迎注册，您的验证码为：<b>" + code +"</b>");
+            mailService.sendHtmlMail(email, "注册验证码", "欢迎注册，您的验证码为：<b>" + code + "</b>");
             log.info("企业端注册邮箱验证码发送成功：code=" + code);
             ecodeLocalCache.put(email, code);
-            return ApiResult.success(code);
+            return BaseResult.success(code);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ApiResult.fail();
+        return BaseResult.fail();
     }
 
     /**
      * 注册
+     *
      * @return
      */
     @PostMapping("/save")
     @ApiOperation(value = "提交注册", notes = "提交注册")
-    public ApiResult save(@Valid @RequestBody RegisterUserVo userVo) {
+    public BaseResult save(@Valid @RequestBody RegisterUserVo userVo) {
         log.info(userVo.toString());
         String ecode = ecodeLocalCache.getIfPresent(userVo.getEmail());
         if (StringUtils.isBlank(ecode)) {
-            return ApiResult.fail("验证码已过期");
+            return BaseResult.fail("验证码已过期");
         } else if (ecode.equals(userVo.getEcode())) {
             // 检查用户名是否存在
             List<String> accounts = service.existsAccount(userVo.getAccount());
             if (BeanUtil.isBlank(accounts)) {
                 // 密码强度校验
                 boolean isPass = CheckPassword.checkPasswordRule(userVo.getPassword());
-                if(isPass){
+                if (isPass) {
                     User user = new User();
                     user.setPassword(DigestUtils.sha256Hex(userVo.getPassword()));
                     user.setUsertype(2);
@@ -94,15 +95,15 @@ public class RegisterController {
                     user.setCreateTime(now);
                     user.setUpdateTime(now);
                     service.save(user);
-                    return ApiResult.success();
-                }else{
-                    return ApiResult.fail("密码最小长度为8位，至少包含数字、大写字母、小写字母和特殊字符中的三种");
+                    return BaseResult.success();
+                } else {
+                    return BaseResult.fail("密码最小长度为8位，至少包含数字、大写字母、小写字母和特殊字符中的三种");
                 }
             } else {
-                return ApiResult.fail("账号已存在!");
+                return BaseResult.fail("账号已存在!");
             }
         } else {
-            return ApiResult.fail("验证码错误");
+            return BaseResult.fail("验证码错误");
         }
     }
 

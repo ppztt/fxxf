@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import net.mingsoft.fxxf.bean.entity.Type;
-import net.mingsoft.fxxf.bean.vo.BaseResult;
+import net.mingsoft.fxxf.bean.base.BaseResult;
 import net.mingsoft.fxxf.bean.vo.TypeVo;
 import net.mingsoft.fxxf.service.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;

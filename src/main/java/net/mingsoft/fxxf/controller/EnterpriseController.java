@@ -4,12 +4,13 @@ package net.mingsoft.fxxf.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import net.mingsoft.fxxf.bean.base.BaseResult;
 import net.mingsoft.fxxf.bean.entity.Applicants;
 import net.mingsoft.fxxf.bean.entity.User;
+import net.mingsoft.fxxf.bean.base.BasePageResult;
 import net.mingsoft.fxxf.bean.vo.*;
 import net.mingsoft.fxxf.mapper.AuditLogMapper;
 import net.mingsoft.fxxf.service.ApplicantsService;
@@ -45,7 +46,7 @@ public class EnterpriseController {
 
     @GetMapping("/info/{userId}")
     @ApiOperation(value = "获取企业信息", notes = "获取企业信息")
-    public ApiResult<EnterpriseInfoVo> getEnterpriseInfo(@PathVariable(value = "userId") Integer id) {
+    public BaseResult<EnterpriseInfoVo> getEnterpriseInfo(@PathVariable(value = "userId") Integer id) {
         try {
             User user = enterpriseService.getEnterpriseInfo(id);
 
@@ -53,16 +54,16 @@ public class EnterpriseController {
 
             BeanUtils.copyProperties(user, enterpriseInfoVo);
 
-            return ApiResult.success(enterpriseInfoVo);
+            return BaseResult.success(enterpriseInfoVo);
         } catch (Exception e) {
             e.printStackTrace();
-            return ApiResult.fail(e.getMessage());
+            return BaseResult.fail(e.getMessage());
         }
     }
 
     @PostMapping("/info/{userId}")
     @ApiOperation(value = "更新企业信息")
-    public ApiResult updateEnterpriseInfo(@PathVariable(value = "userId") Integer id, @RequestBody EnterpriseInfoVo enterpriseInfoVo) {
+    public BaseResult updateEnterpriseInfo(@PathVariable(value = "userId") Integer id, @RequestBody EnterpriseInfoVo enterpriseInfoVo) {
         try {
             User user = enterpriseService.getEnterpriseInfo(id);
 
@@ -70,35 +71,35 @@ public class EnterpriseController {
 
             enterpriseService.updateEnterpriseInfo(user);
 
-            return ApiResult.success();
+            return BaseResult.success();
         } catch (BeansException e) {
             e.printStackTrace();
-            return ApiResult.fail(e.getMessage());
+            return BaseResult.fail(e.getMessage());
         }
     }
 
 
     @GetMapping("/apply")
     @ApiOperation(value = "获取当前企业所有申请信息")
-    public ApiResult<PageResultLocal<Applicants>> getEnterpriseApplyInfo(
+    public BaseResult<BasePageResult<Applicants>> getEnterpriseApplyInfo(
             @RequestParam(name = "current", defaultValue = "1") Integer current,
             @RequestParam(name = "size", defaultValue = "10") Integer size,
             @RequestParam(name = "userId") Integer userId
     ) {
 
         try {
-            IPage<Applicants> applyInfo = enterpriseService.getEnterpriseApplyInfo(current, size, userId);
+            BasePageResult<Applicants> applyInfo = enterpriseService.getEnterpriseApplyInfo(current, size, userId);
 
-            return ApiResult.success(applyInfo);
+            return BaseResult.success(applyInfo);
         } catch (Exception e) {
             e.printStackTrace();
-            return ApiResult.fail(e.getMessage());
+            return BaseResult.fail(e.getMessage());
         }
     }
 
     @GetMapping("/apply/{id}")
     @ApiOperation(value = "根据id获取申请信息", notes = "根据id获取申请信息")
-    public ApiResult<ApplicantsParamsVo> getEnterpriseApplyInfoById(@PathVariable(value = "id") Integer id) {
+    public BaseResult<ApplicantsParamsVo> getEnterpriseApplyInfoById(@PathVariable(value = "id") Integer id) {
         try {
             Applicants applicants = enterpriseService.getEnterpriseApplyInfoById(id);
 
@@ -120,24 +121,24 @@ public class EnterpriseController {
                 applicantsParamsVo.setAuditLogs(auditLogs);
             }
 
-            return ApiResult.success(applicantsParamsVo);
+            return BaseResult.success(applicantsParamsVo);
         } catch (Exception e) {
             e.printStackTrace();
-            return ApiResult.fail(e.getMessage());
+            return BaseResult.fail(e.getMessage());
         }
     }
 
     @PostMapping("/apply/1")
     @ApiOperation(value = "申请信息-放心消费承诺新申请")
 
-    public ApiResult<EnterpriseUnitNewApplyVo> saveEnterpriseUnitApplyInfo(@RequestParam(value = "userId") Integer id,
-                                                                           @RequestBody EnterpriseUnitNewApplyVo enterpriseUnitNewApplyVo) {
+    public BaseResult<EnterpriseUnitNewApplyVo> saveEnterpriseUnitApplyInfo(@RequestParam(value = "userId") Integer id,
+                                                                            @RequestBody EnterpriseUnitNewApplyVo enterpriseUnitNewApplyVo) {
         try {
 
             List<Applicants> applicantsByCreditCode = applicantsService.findApplicantsByCreditCode(1, enterpriseUnitNewApplyVo.getCreditCode());
 
             if (!CollectionUtils.isEmpty(applicantsByCreditCode)) {
-                return ApiResult.fail("存在相同统一社会信用代码");
+                return BaseResult.fail("存在相同统一社会信用代码");
             }
 
             Applicants applicants = newUnitApplicants(enterpriseUnitNewApplyVo);
@@ -173,7 +174,7 @@ public class EnterpriseController {
                     //验证多个地址是否完整
                     if (StringUtils.isEmpty(city) || StringUtils.isEmpty(district) || StringUtils.isEmpty(address)) {
 
-                        return ApiResult.fail("地址不全,请补全");
+                        return BaseResult.fail("地址不全,请补全");
                     }
 
                     if ((size - 1) != i) {
@@ -189,22 +190,22 @@ public class EnterpriseController {
 
             enterpriseService.saveEnterpriseApplyInfo(applicants);
 
-            return ApiResult.success();
+            return BaseResult.success();
         } catch (Exception e) {
             e.printStackTrace();
-            return ApiResult.fail(e.getMessage());
+            return BaseResult.fail(e.getMessage());
         }
     }
 
     @PostMapping("/apply/2")
     @ApiOperation(value = "申请信息-无理由退货承诺新申请", notes = "申请信息-无理由退货承诺新申请")
-    public ApiResult<EnterpriseStoreNewApplyVo> saveEnterpriseApplyInfo(@RequestParam(value = "userId") Integer id,
-                                                                        @RequestBody EnterpriseStoreNewApplyVo enterpriseStoreNewApplyVo) {
+    public BaseResult<EnterpriseStoreNewApplyVo> saveEnterpriseApplyInfo(@RequestParam(value = "userId") Integer id,
+                                                                         @RequestBody EnterpriseStoreNewApplyVo enterpriseStoreNewApplyVo) {
         try {
             List<Applicants> applicantsByCreditCode = applicantsService.findApplicantsByCreditCode(2, enterpriseStoreNewApplyVo.getCreditCode());
 
             if (applicantsByCreditCode != null && applicantsByCreditCode.size() > 0) {
-                return ApiResult.fail("存在相同统一社会信用代码");
+                return BaseResult.fail("存在相同统一社会信用代码");
             }
 
             Applicants applicants = newStoreApplicants(enterpriseStoreNewApplyVo);
@@ -241,7 +242,7 @@ public class EnterpriseController {
                     //验证多个地址是否完整
                     if (StringUtils.isEmpty(city) || StringUtils.isEmpty(district) || StringUtils.isEmpty(address)) {
 
-                        return ApiResult.fail("地址不全,请补全");
+                        return BaseResult.fail("地址不全,请补全");
                     }
                     if ((size - 1) != i) {
                         citys += ",";
@@ -256,22 +257,22 @@ public class EnterpriseController {
 
             enterpriseService.saveEnterpriseApplyInfo(applicants);
 
-            return ApiResult.success();
+            return BaseResult.success();
         } catch (Exception e) {
             e.printStackTrace();
-            return ApiResult.fail(e.getMessage());
+            return BaseResult.fail(e.getMessage());
         }
     }
 
     @PostMapping("/apply/u/1")
     @ApiOperation(value = "申请信息-更新放心消费承诺新申请", notes = "申请信息-更新放心消费承诺新申请")
-    public ApiResult<EnterpriseUnitNewApplyVo> updateEnterpriseUnitApplyInfo(@RequestParam(value = "id") Integer id, @RequestBody EnterpriseUnitNewApplyVo enterpriseUnitNewApplyVo) {
+    public BaseResult<EnterpriseUnitNewApplyVo> updateEnterpriseUnitApplyInfo(@RequestParam(value = "id") Integer id, @RequestBody EnterpriseUnitNewApplyVo enterpriseUnitNewApplyVo) {
         try {
 
             List<Applicants> applicantsByCreditCode = applicantsService.findApplicantsByCreditCode(id, 1, enterpriseUnitNewApplyVo.getCreditCode());
 
             if (applicantsByCreditCode != null && applicantsByCreditCode.size() > 0) {
-                return ApiResult.fail("存在相同统一社会信用代码");
+                return BaseResult.fail("存在相同统一社会信用代码");
             }
 
             Applicants applicants = enterpriseService.getEnterpriseApplyInfoById(id);
@@ -311,7 +312,7 @@ public class EnterpriseController {
                     //验证多个地址是否完整
                     if (StringUtils.isEmpty(city) || StringUtils.isEmpty(district) || StringUtils.isEmpty(address)) {
 
-                        return ApiResult.fail("地址不全,请补全");
+                        return BaseResult.fail("地址不全,请补全");
                     }
                     if ((size - 1) != i) {
                         citys += ",";
@@ -325,21 +326,21 @@ public class EnterpriseController {
             }
             enterpriseService.updateEnterpriseApplyInfo(applicants);
 
-            return ApiResult.success();
+            return BaseResult.success();
         } catch (Exception e) {
             e.printStackTrace();
-            return ApiResult.fail(e.getMessage());
+            return BaseResult.fail(e.getMessage());
         }
     }
 
     @PostMapping("/apply/u/2")
     @ApiOperation(value = "申请信息-更新无理由退货承诺新申请", notes = "申请信息-更新无理由退货承诺新申请")
-    public ApiResult<EnterpriseStoreNewApplyVo> updateEnterpriseApplyInfo(@RequestParam(value = "id") Integer id, @RequestBody EnterpriseStoreNewApplyVo enterpriseStoreNewApplyVo) {
+    public BaseResult<EnterpriseStoreNewApplyVo> updateEnterpriseApplyInfo(@RequestParam(value = "id") Integer id, @RequestBody EnterpriseStoreNewApplyVo enterpriseStoreNewApplyVo) {
         try {
             List<Applicants> applicantsByCreditCode = applicantsService.findApplicantsByCreditCode(id, 2, enterpriseStoreNewApplyVo.getCreditCode());
 
             if (applicantsByCreditCode != null && applicantsByCreditCode.size() > 0) {
-                return ApiResult.fail("存在相同统一社会信用代码");
+                return BaseResult.fail("存在相同统一社会信用代码");
             }
 
             Applicants applicants = enterpriseService.getEnterpriseApplyInfoById(id);
@@ -379,7 +380,7 @@ public class EnterpriseController {
                     //验证多个地址是否完整
                     if (StringUtils.isEmpty(city) || StringUtils.isEmpty(district) || StringUtils.isEmpty(address)) {
 
-                        return ApiResult.fail("地址不全,请补全");
+                        return BaseResult.fail("地址不全,请补全");
                     }
                     if ((size - 1) != i) {
                         citys += ",";
@@ -394,10 +395,10 @@ public class EnterpriseController {
 
             enterpriseService.updateEnterpriseApplyInfo(applicants);
 
-            return ApiResult.success();
+            return BaseResult.success();
         } catch (Exception e) {
             e.printStackTrace();
-            return ApiResult.fail(e.getMessage());
+            return BaseResult.fail(e.getMessage());
         }
     }
 

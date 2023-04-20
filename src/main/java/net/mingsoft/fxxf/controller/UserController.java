@@ -8,7 +8,7 @@ import io.swagger.annotations.*;
 import net.mingsoft.basic.dao.IManagerDao;
 import net.mingsoft.basic.entity.ManagerEntity;
 import net.mingsoft.fxxf.bean.entity.User;
-import net.mingsoft.fxxf.bean.vo.ApiResult;
+import net.mingsoft.fxxf.bean.base.BaseResult;
 import net.mingsoft.fxxf.mapper.UserMapper;
 import net.mingsoft.fxxf.service.UserService;
 import net.mingsoft.utils.CheckPassword;
@@ -26,10 +26,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * @ClassName: UserController
- * @Description 用户管理控制器
- * @Author Ligy
- * @Date 2020/1/12 21:00
+ *  用户管理控制器
  **/
 @Api(tags = "用户管理")
 @RestController
@@ -57,13 +54,13 @@ public class UserController {
                     @ApiImplicitParam(name = "keyword", value = "关键字", dataType = "string", example = "张三", defaultValue = "张三")
             }
     )
-    public ApiResult<Page<User>> userList(@RequestParam(name = "current", defaultValue = "1") Integer current,
-                                          @RequestParam(name = "size", defaultValue = "10") Integer size,
-                                          @RequestParam(name = "keyword", defaultValue = "") String keyword) {
+    public BaseResult<Page<User>> userList(@RequestParam(name = "current", defaultValue = "1") Integer current,
+                                           @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                           @RequestParam(name = "keyword", defaultValue = "") String keyword) {
         Page<User> page = new Page<>(current, size);
         List<User> users = userMapper.userList(keyword, page);
         page.setRecords(users);
-        return ApiResult.success(page);
+        return BaseResult.success(page);
     }
 
     // @RequiresPermissions("manage:user")
@@ -75,22 +72,22 @@ public class UserController {
                     @DynamicParameter(name = "user", value = "user", dataTypeClass = User.class, required = true)
             }
     )
-    public ApiResult addUser(@Valid @RequestBody User user, BindingResult msg) {
+    public BaseResult addUser(@Valid @RequestBody User user, BindingResult msg) {
         if (msg.hasErrors()) {
             log.info(msg.getFieldError().getDefaultMessage());
-            return new ApiResult("500", msg.getFieldError().getDefaultMessage());
+            return new BaseResult("500", msg.getFieldError().getDefaultMessage());
         } else {
             //account唯一性校验
             String account = user.getAccount();
             List<User> uList = service.list(new QueryWrapper<User>().eq("account", account));
             if (uList.size() > 0) {
-                return new ApiResult("500", "帐号已存在");
+                return new BaseResult("500", "帐号已存在");
             } else {
                 try {
                     String pwd = user.getPassword();
                     // 密码强度校验
                     boolean isPass = CheckPassword.checkPasswordRule(pwd);
-                    if(isPass){
+                    if (isPass) {
                         user.setPassword(DigestUtils.sha256Hex(pwd));
 
                         LocalDateTime now = LocalDateTime.now();
@@ -106,13 +103,13 @@ public class UserController {
                         manager.setManagerNickName(user.getRealname());
                         manager.setRoleId(user.getRoleId());
                         managerDao.insert(manager);
-                        return ApiResult.success();
-                    }else{
-                        return ApiResult.fail("密码最小长度为8位，至少包含数字、大写字母、小写字母和特殊字符中的三种");
+                        return BaseResult.success();
+                    } else {
+                        return BaseResult.fail("密码最小长度为8位，至少包含数字、大写字母、小写字母和特殊字符中的三种");
                     }
                 } catch (Exception e) {
                     log.error("保存新增用户发生异常：{}", e);
-                    return ApiResult.fail();
+                    return BaseResult.fail();
                 }
             }
         }
@@ -124,18 +121,18 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "用户id", required = true)
     })
-    public ApiResult del(@PathVariable(value = "id") int id) {
+    public BaseResult del(@PathVariable(value = "id") int id) {
         try {
             ManagerEntity managerEntity = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
             Integer uId = managerEntity.getIntegerId();
             if (uId == id) {
-                return new ApiResult("500", "不允许删除当前登录用户");
+                return new BaseResult("500", "不允许删除当前登录用户");
             }
             service.removeById(id);
-            return ApiResult.success();
+            return BaseResult.success();
         } catch (Exception e) {
             log.error("删除用户发生异常:{}", e);
-            return ApiResult.fail();
+            return BaseResult.fail();
         }
     }
 
@@ -148,18 +145,18 @@ public class UserController {
                     @DynamicParameter(name = "user", value = "user", dataTypeClass = User.class, required = true)
             }
     )
-    public ApiResult updateById(@RequestBody User user) {
+    public BaseResult updateById(@RequestBody User user) {
         try {
             //密码
             String password = user.getPassword();
             if (password != null) {
                 // 密码强度校验
                 boolean isPass = CheckPassword.checkPasswordRule(password);
-                if(isPass){
+                if (isPass) {
                     password = DigestUtils.sha256Hex(password);
                     user.setPassword(password);
-                }else{
-                    return ApiResult.fail("密码最小长度为8位，至少包含数字、大写字母、小写字母和特殊字符中的三种");
+                } else {
+                    return BaseResult.fail("密码最小长度为8位，至少包含数字、大写字母、小写字母和特殊字符中的三种");
                 }
             }
             user.setUsertype(1);
@@ -167,10 +164,10 @@ public class UserController {
             user.update(
                     new UpdateWrapper<User>().eq("id", user.getId()).set("update_time", LocalDateTime.now())
             );
-            return ApiResult.success();
+            return BaseResult.success();
         } catch (Exception e) {
             log.error("更新用户信息发生异常：{}", e);
-            return ApiResult.fail();
+            return BaseResult.fail();
         }
     }
 
@@ -182,7 +179,7 @@ public class UserController {
 //                    @DynamicParameter(name = "user", value = "user", dataTypeClass = User.class, required = true)
 //            }
 //    )
-//    public ApiResult updatePwd(@RequestBody User user) {
+//    public BaseResult updatePwd(@RequestBody User user) {
 //        try {
 //            //密码校验
 //            User u = service.getById(user.getId());
@@ -197,22 +194,22 @@ public class UserController {
 //                if (dbPwd.equals(fontPwd)) {
 //                    String newPwd = DigestUtils.sha256Hex(user.getNewPassword());
 //                    if (dbPwd.equals(newPwd)) {
-//                        return new ApiResult("500", "旧密码与新密码相同");
+//                        return new BaseResult("500", "旧密码与新密码相同");
 //                    }
 //                    service.update(new UpdateWrapper<User>()
 //                            .set("password", newPwd)
 //                            .eq("id", user.getId())
 //                    );
-//                    return ApiResult.success();
+//                    return BaseResult.success();
 //                } else {
-//                    return new ApiResult("500", "旧密码不正确");
+//                    return new BaseResult("500", "旧密码不正确");
 //                }
 //            }else{
-//                return ApiResult.fail("密码最小长度为8位，至少包含数字、大写字母、小写字母和特殊字符中的三种");
+//                return BaseResult.fail("密码最小长度为8位，至少包含数字、大写字母、小写字母和特殊字符中的三种");
 //            }
 //        } catch (Exception e) {
 //            log.error("更新用户密码发生异常：{}", e);
-//            return ApiResult.fail();
+//            return BaseResult.fail();
 //        }
 //    }
 
@@ -222,18 +219,18 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "用户id", required = false)
     })
-    public ApiResult<User> userInfo(@RequestParam(required = false) String id) {
+    public BaseResult<User> userInfo(@RequestParam(required = false) String id) {
         try {
             if (StringUtils.isNotBlank(id)) {
                 User user = service.getById(id);
-                return ApiResult.success(user);
+                return BaseResult.success(user);
             } else {
                 User user = (User) SecurityUtils.getSubject().getPrincipal();
-                return ApiResult.success(user);
+                return BaseResult.success(user);
             }
         } catch (Exception e) {
             log.error("查询个人资料发生异常：{}", e);
-            return ApiResult.fail();
+            return BaseResult.fail();
         }
     }
 
@@ -248,13 +245,13 @@ public class UserController {
                     @ApiImplicitParam(name = "keyword", value = "关键字", dataType = "string", example = "张三", defaultValue = "张三")
             }
     )
-    public ApiResult<Page<User>> enterpriseList(@RequestParam(name = "current", defaultValue = "1") Integer current,
-                                          @RequestParam(name = "size", defaultValue = "10") Integer size,
-                                          @RequestParam(name = "keyword", defaultValue = "") String keyword) {
+    public BaseResult<Page<User>> enterpriseList(@RequestParam(name = "current", defaultValue = "1") Integer current,
+                                                 @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                                 @RequestParam(name = "keyword", defaultValue = "") String keyword) {
         Page<User> page = new Page<>(current, size);
         List<User> users = userMapper.enterpriseList(keyword, page);
         page.setRecords(users);
-        return ApiResult.success(page);
+        return BaseResult.success(page);
     }
 
 
@@ -269,13 +266,13 @@ public class UserController {
                     @ApiImplicitParam(name = "keyword", value = "关键字", dataType = "string", example = "张三", defaultValue = "张三")
             }
     )
-    public ApiResult<Page<User>> industryAssociationList(@RequestParam(name = "current", defaultValue = "1") Integer current,
-                                          @RequestParam(name = "size", defaultValue = "10") Integer size,
-                                          @RequestParam(name = "keyword", defaultValue = "") String keyword) {
+    public BaseResult<Page<User>> industryAssociationList(@RequestParam(name = "current", defaultValue = "1") Integer current,
+                                                          @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                                          @RequestParam(name = "keyword", defaultValue = "") String keyword) {
         Page<User> page = new Page<>(current, size);
         List<User> users = userMapper.industryAssociationList(keyword, page);
         page.setRecords(users);
-        return ApiResult.success(page);
+        return BaseResult.success(page);
     }
 
 
@@ -288,23 +285,23 @@ public class UserController {
                     @DynamicParameter(name = "user", value = "user", dataTypeClass = User.class, required = true)
             }
     )
-    public ApiResult addIndustryAssociation(@Valid @RequestBody User user, BindingResult msg) {
+    public BaseResult addIndustryAssociation(@Valid @RequestBody User user, BindingResult msg) {
         if (msg.hasErrors()) {
             log.info(msg.getFieldError().getDefaultMessage());
-            return new ApiResult("500", msg.getFieldError().getDefaultMessage());
+            return new BaseResult("500", msg.getFieldError().getDefaultMessage());
         } else {
             //account唯一性校验
             String account = user.getAccount();
             List<User> uList = service.list(new QueryWrapper<User>().eq("account", account));
             if (uList.size() > 0) {
-                return new ApiResult("500", "帐号已存在");
+                return new BaseResult("500", "帐号已存在");
             } else {
                 String pwd = user.getPassword();
 
                 try {
                     // 密码强度校验
                     boolean isPass = CheckPassword.checkPasswordRule(pwd);
-                    if(isPass){
+                    if (isPass) {
                         user.setPassword(DigestUtils.sha256Hex(pwd));
 
                         LocalDateTime now = LocalDateTime.now();
@@ -313,13 +310,13 @@ public class UserController {
                         user.setUsertype(3);
                         user.setRoleId(4);
                         service.save(user);
-                        return ApiResult.success();
-                    }else{
-                        return ApiResult.fail("密码最小长度为8位，至少包含数字、大写字母、小写字母和特殊字符中的三种");
+                        return BaseResult.success();
+                    } else {
+                        return BaseResult.fail("密码最小长度为8位，至少包含数字、大写字母、小写字母和特殊字符中的三种");
                     }
                 } catch (Exception e) {
                     log.error("保存新增行业协会用户发生异常：{}", e);
-                    return ApiResult.fail();
+                    return BaseResult.fail();
                 }
             }
         }

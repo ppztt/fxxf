@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import net.mingsoft.fxxf.bean.vo.ApiResult;
+import net.mingsoft.fxxf.bean.base.BaseResult;
 import net.mingsoft.fxxf.bean.vo.GoodsAndServicesStat;
 import net.mingsoft.fxxf.service.GoodsAndServicesStatService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,14 +39,14 @@ public class GoodsAndServicesStatController {
             @ApiImplicitParam(name = "endTime", value = "结束时间（格式：2020-04-01）"),
     })
 //    @OperatorLogAnno(operType="查询", operModul="商品服务类型统计", operDesc="商品服务类型统计列表")
-    public ApiResult<List<GoodsAndServicesStat>> list(@RequestParam(name = "city", required = false) String city,
-                                                      @RequestParam(name = "district", required = false) String district,
-                                                      @RequestParam(name = "startTime", required = false) String startTime,
-                                                      @RequestParam(name = "endTime", required = false) String endTime
-                          ) {
+    public BaseResult<List<GoodsAndServicesStat>> list(@RequestParam(name = "city", required = false) String city,
+                                                       @RequestParam(name = "district", required = false) String district,
+                                                       @RequestParam(name = "startTime", required = false) String startTime,
+                                                       @RequestParam(name = "endTime", required = false) String endTime
+    ) {
         log.info("商品服务类型统计列表参数：city:{}, district:{}, startTime:{}", city, district, startTime);
         List<GoodsAndServicesStat> list = goodsAndServicesStatService.list(city, district, startTime, endTime);
-        return ApiResult.success(list);
+        return BaseResult.success(list);
     }
 
 }
