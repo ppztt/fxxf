@@ -38,7 +38,7 @@ public interface ApplicantsService extends IService<Applicants> {
     /**
      * 经营者列表-编辑保存
      */
-    ApiResult updateApplicants(Integer id, ApplicantsStoreParamsVo2 applicants);
+    ApiResult updateApplicants(ApplicantsParamsVo applicantsParamVo);
 
     /**
      * 经营者列表-根据单位id更新状态及原因

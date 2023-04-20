@@ -15,7 +15,7 @@ import net.mingsoft.fxxf.bean.entity.User;
 import net.mingsoft.fxxf.bean.request.BasePageResult;
 import net.mingsoft.fxxf.bean.request.FeedBackCompanyPageRequest;
 import net.mingsoft.fxxf.bean.vo.FeedbackComplaintVo;
-import net.mingsoft.fxxf.bean.vo.FeedbackStatisticRequest;
+import net.mingsoft.fxxf.bean.request.FeedbackStatisticRequest;
 import net.mingsoft.fxxf.mapper.ApplicantsMapper;
 import net.mingsoft.fxxf.mapper.FeedbackMapper;
 import net.mingsoft.fxxf.mapper.FeedbackStatMapper;
@@ -27,6 +27,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,8 +118,8 @@ public class FeedbackServiceImpl extends ServiceImpl<FeedbackMapper, Feedback> i
     }
 
     @Override
-    public List<Applicants> companyList(String keyword) {
-        List<Applicants> applicantsList = applicantsMapper.companyList(keyword);
+    public ArrayList<Applicants> companyList(String keyword) {
+        ArrayList<Applicants> applicantsList = applicantsMapper.companyList(keyword);
         return applicantsList;
     }
 
