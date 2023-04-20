@@ -1,14 +1,12 @@
 package net.mingsoft.fxxf.bean.vo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -98,17 +96,15 @@ public class ApplicantsParamsVo implements Serializable {
      * 有效起始时间（审核通过时间）
      */
     @ApiModelProperty(value = "有效起始时间（审核通过时间）")
-    @JsonFormat(pattern = "yyyy-MM", timezone = "GMT+8")
-    @NotNull(message = "请输入有效起始时间")
-    private LocalDate startTime;
+    @NotBlank(message = "请输入有效起始时间")
+    private String startTime;
 
     /**
      * 有效截止时间
      */
     @ApiModelProperty(value = "有效截止时间")
-    @JsonFormat(pattern = "yyyy-MM", timezone = "GMT+8")
-    @NotNull(message = "请输入有效截止时间")
-    private LocalDate endTime;
+    @NotBlank(message = "请输入有效截止时间")
+    private String endTime;
 
     /**
      * 负责人姓名
@@ -275,6 +271,13 @@ public class ApplicantsParamsVo implements Serializable {
 
     @ApiModelProperty(value = "审核记录")
     List<AuditLogVo> auditLogs;
+
+    /**
+     * 经营场所-多个详细地址
+     */
+    @ApiModelProperty(value = "经营场所-多个详细地址")
+    @TableField(exist = false)
+    private String addrs;
 
     public void setCreditCode(String creditCode) {
         if (!Objects.isNull(creditCode)) {

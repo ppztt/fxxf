@@ -8,7 +8,7 @@ import net.mingsoft.fxxf.bean.entity.FeedbackStat;
 import net.mingsoft.fxxf.bean.request.BasePageResult;
 import net.mingsoft.fxxf.bean.request.FeedBackCompanyPageRequest;
 import net.mingsoft.fxxf.bean.vo.FeedbackComplaintVo;
-import net.mingsoft.fxxf.bean.vo.FeedbackStatisticRequest;
+import net.mingsoft.fxxf.bean.request.FeedbackStatisticRequest;
 
 import java.util.ArrayList;
 import java.util.List;
