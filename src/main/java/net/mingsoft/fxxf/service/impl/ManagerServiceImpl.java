@@ -10,10 +10,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import net.mingsoft.basic.entity.ManagerEntity;
 import net.mingsoft.basic.exception.BusinessException;
 import net.mingsoft.fxxf.bean.entity.ManagerInfo;
+import net.mingsoft.fxxf.bean.vo.ManagerInfoVo;
 import net.mingsoft.fxxf.mapper.ManagerMapper;
 import net.mingsoft.fxxf.service.ManagerInfoService;
 import net.mingsoft.fxxf.service.ManagerService;
-import net.mingsoft.fxxf.bean.vo.ManagerInfoVo;
 import net.mingsoft.utils.CheckPassword;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.shiro.SecurityUtils;
@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -66,7 +66,9 @@ public class ManagerServiceImpl extends ServiceImpl<ManagerMapper, ManagerEntity
 
     @Override
     public List<ManagerInfoVo> industryAssociationList(String keyword, Page<ManagerInfoVo> page) {
-        return managerMapper.industryAssociationList(keyword, page);
+        List<ManagerInfoVo> managerInfoVos = managerMapper.industryAssociationList(keyword, page);
+        managerInfoVos.forEach(item -> item.setManagerPassword(""));
+        return managerInfoVos;
     }
 
     @Override
@@ -75,9 +77,6 @@ public class ManagerServiceImpl extends ServiceImpl<ManagerMapper, ManagerEntity
         List<String> accounts = existsAccount(user.getManagerName());
         checkUserInfo(pwd, accounts);
         user.setManagerPassword(DigestUtils.sha256Hex(pwd));
-        LocalDateTime now = LocalDateTime.now();
-        user.setCreateDate(now);
-        user.setUpdateDate(now);
         // 使用managerService调用，使事务生效
         managerService.insertManagerInfo(user);
         return user.getId();
@@ -92,7 +91,6 @@ public class ManagerServiceImpl extends ServiceImpl<ManagerMapper, ManagerEntity
         }
         user.setUsertype(dbUser.getUsertype());
         // 不为NULL的属性都将被更新
-        user.setUpdateDate(LocalDateTime.now());
         // 使用managerService调用，使事务生效
         managerService.updateManagerInfoById(user);
     }
@@ -125,6 +123,61 @@ public class ManagerServiceImpl extends ServiceImpl<ManagerMapper, ManagerEntity
         update(updateWrapper);
     }
 
+    @Override
+    public ManagerInfoVo getManagerInfoById(String userId) {
+        ManagerInfoVo managerInfoVo = new ManagerInfoVo();
+        ManagerEntity managerEntity = getById(userId);
+        ManagerInfo managerInfo = managerInfoService.getById(userId);
+        BeanUtil.copyProperties(managerEntity, managerInfoVo);
+        BeanUtil.copyProperties(managerInfo, managerInfoVo);
+        return managerInfoVo;
+    }
+
+    /**
+     * 保存用户信息：包含manger、manager_info表
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void insertManagerInfo(ManagerInfoVo user) {
+        ManagerEntity loginUser = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
+        ManagerEntity managerEntity = new ManagerEntity();
+        ManagerInfo managerInfo = new ManagerInfo();
+        BeanUtil.copyProperties(user, managerEntity, "id");
+        BeanUtil.copyProperties(user, managerInfo, "id");
+        managerEntity.setCreateDate(new Date());
+        managerEntity.setUpdateDate(new Date());
+        managerEntity.setCreateBy(loginUser.getId());
+        managerEntity.setUpdateBy(loginUser.getId());
+        boolean save = this.save(managerEntity);
+        if (save) {
+            managerInfo.setId(managerEntity.getId());
+            managerInfo.setCreateTime(new Date());
+            managerInfo.setUpdateTime(new Date());
+            managerInfoService.save(managerInfo);
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void updateManagerInfoById(ManagerInfoVo user) {
+        if (Objects.isNull(user.getId())) {
+            throw new BusinessException("更新失败：id为空");
+        }
+        ManagerEntity loginUser = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
+        ManagerEntity managerEntity = new ManagerEntity();
+        ManagerInfo managerInfo = new ManagerInfo();
+        BeanUtil.copyProperties(user, managerEntity);
+        BeanUtil.copyProperties(user, managerInfo);
+        managerEntity.setUpdateDate(new Date());
+        managerEntity.setUpdateBy(loginUser.getId());
+        managerInfo.setUpdateTime(new Date());
+        saveOrUpdate(managerEntity);
+        managerInfoService.saveOrUpdate(managerInfo);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void removeManagerInfoById(String id) {
+        removeById(id);
+        managerInfoService.removeById(id);
+    }
 
     /**
      * 校验账号唯一性及密码强度
@@ -155,56 +208,5 @@ public class ManagerServiceImpl extends ServiceImpl<ManagerMapper, ManagerEntity
             throw new BusinessException("用户信息不存在");
         }
         return dbUser;
-    }
-
-    @Override
-    public ManagerInfoVo getManagerInfoById(String userId) {
-        ManagerInfoVo managerInfoVo = new ManagerInfoVo();
-        ManagerEntity managerEntity = getById(userId);
-        ManagerInfo managerInfo = managerInfoService.getById(userId);
-        BeanUtil.copyProperties(managerEntity, managerInfoVo);
-        BeanUtil.copyProperties(managerInfo, managerInfoVo);
-        // 由于使用了@JsonProperty,部分属性复制对应不上
-        managerInfoVo.setManagerName(managerEntity.getManagerName());
-        managerInfoVo.setManagerNickname(managerEntity.getManagerNickName());
-        managerInfoVo.setManagerPassword(managerEntity.getManagerPassword());
-        return managerInfoVo;
-    }
-
-    /**
-     * 保存用户信息：包含manger、manager_info表
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public void insertManagerInfo(ManagerInfoVo user) {
-        ManagerEntity managerEntity = new ManagerEntity();
-        ManagerInfo managerInfo = new ManagerInfo();
-        BeanUtil.copyProperties(user, managerEntity, "id");
-        BeanUtil.copyProperties(user, managerInfo, "id");
-        managerEntity.setRoleIds(user.getRoleIds());
-        managerEntity.setManagerNickName(user.getManagerNickname());
-        boolean save = this.save(managerEntity);
-        if (save) {
-            managerInfo.setId(managerEntity.getId());
-            managerInfoService.save(managerInfo);
-        }
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    public void updateManagerInfoById(ManagerInfoVo user) {
-        if (Objects.isNull(user.getId())) {
-            throw new BusinessException("更新失败：id为空");
-        }
-        ManagerEntity managerEntity = new ManagerEntity();
-        ManagerInfo managerInfo = new ManagerInfo();
-        BeanUtil.copyProperties(user, managerEntity);
-        BeanUtil.copyProperties(user, managerInfo);
-        saveOrUpdate(managerEntity);
-        managerInfoService.saveOrUpdate(managerInfo);
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    public void removeManagerInfoById(String id) {
-        removeById(id);
-        managerInfoService.removeById(id);
     }
 }

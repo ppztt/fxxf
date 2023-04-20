@@ -22,7 +22,7 @@ public class ManagerInfoVo implements Serializable {
 
     @ApiModelProperty(value = "角色编号")
     @JsonProperty("roleId")
-    private String roleIds;
+    private Integer roleIds;
 
     @ApiModelProperty(value = "角色编号")
     private String roleName;
@@ -39,7 +39,7 @@ public class ManagerInfoVo implements Serializable {
 
     @ApiModelProperty(value = "管理员昵称")
     @JsonProperty("realname")
-    private String managerNickname;
+    private String managerNickName;
 
     @ApiModelProperty(value = "密码")
     @JsonProperty("password")

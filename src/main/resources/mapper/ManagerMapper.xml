@@ -7,7 +7,7 @@
         <id column="id" property="id"/>
         <result column="manager_name" property="managerName"/>
         <result column="manager_password" property="managerPassword"/>
-        <result column="manager_nickname" property="managerNickname"/>
+        <result column="manager_nickname" property="managerNickName"/>
         <result column="email" property="email"/>
         <result column="province" property="province"/>
         <result column="city" property="city"/>
