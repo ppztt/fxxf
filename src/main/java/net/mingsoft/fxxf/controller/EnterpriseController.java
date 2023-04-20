@@ -98,29 +98,29 @@ public class EnterpriseController {
 
     @GetMapping("/apply/{id}")
     @ApiOperation(value = "根据id获取申请信息", notes = "根据id获取申请信息")
-    public ApiResult<ApplicantsUnitParamsVo> getEnterpriseApplyInfoById(@PathVariable(value = "id") Integer id) {
+    public ApiResult<ApplicantsParamsVo> getEnterpriseApplyInfoById(@PathVariable(value = "id") Integer id) {
         try {
             Applicants applicants = enterpriseService.getEnterpriseApplyInfoById(id);
 
-            ApplicantsUnitParamsVo applicantsUnitParamsVo = new ApplicantsUnitParamsVo();
+            ApplicantsParamsVo applicantsParamsVo = new ApplicantsParamsVo();
             if (applicants != null) {
-                BeanUtils.copyProperties(applicants, applicantsUnitParamsVo);
-                applicantsUnitParamsVo.setManagement(applicants.getManagement());
+                BeanUtils.copyProperties(applicants, applicantsParamsVo);
+                applicantsParamsVo.setManagement(applicants.getManagement());
                 if (applicants.getDetails() != null && StringUtils.isNotBlank(applicants.getDetails())) {
-                    applicantsUnitParamsVo.setDetails(Arrays.asList(applicants.getDetails().split(",")));
+                    applicantsParamsVo.setDetails(Arrays.asList(applicants.getDetails().split(",")));
                 }
 
                 List<AuditLogVo> auditLogs = auditLogMapper.getAuditLog(id, 2);
                 if (!Objects.equals(applicants.getStatus(), 1) || !Objects.equals(applicants.getStatus(), 7)) {
-                    if (auditLogs.size() > 0) {
+                    if (!CollectionUtils.isEmpty(auditLogs)) {
                         auditLogs.get(0).setContents("");
                     }
                 }
 
-                applicantsUnitParamsVo.setAuditLogs(auditLogs);
+                applicantsParamsVo.setAuditLogs(auditLogs);
             }
 
-            return ApiResult.success(applicantsUnitParamsVo);
+            return ApiResult.success(applicantsParamsVo);
         } catch (Exception e) {
             e.printStackTrace();
             return ApiResult.fail(e.getMessage());
