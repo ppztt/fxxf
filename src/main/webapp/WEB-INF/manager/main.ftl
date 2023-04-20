@@ -18,9 +18,6 @@
         <div  class="panel" style="min-height:200px;">
           <div   class="panel-title" style="display:inline;">
             常用功能
-            <el-tooltip effect="dark" content="鼠标移至上方功能大全，点击菜单右侧五角星即可添加到常用功能。" placement="left">
-              <i class="el-icon-question"></i>
-            </el-tooltip>
           </div>
           <div class="v-space"></div>
           <div class="panel-content" style="flex-direction: row;flex-wrap: wrap; flex: unset;margin-top:20px;">

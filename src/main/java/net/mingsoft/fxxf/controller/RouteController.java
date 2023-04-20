@@ -20,13 +20,47 @@ import javax.servlet.http.HttpServletRequest;
 @Scope("request")
 public class RouteController {
 
-//    /**
+    //    /**
 //     * 监督投诉统计菜单跳转
 //     */
 //    @GetMapping("/feedback/statistic")
 //    public String index() {
 //        return "/fxxf/feedback/index";
 //    }
+    @GetMapping("/consumer")
+    public String consumer(HttpServletRequest request, ModelMap model) {
+
+        return "/fxxf/applicant/consumer";
+    }
+
+    @GetMapping("/check")
+    public String check() {
+        return "/fxxf/applicant/check";
+    }
+
+
+    @GetMapping("/backstageUser")
+    public String backstageUser() {
+        return "/fxxf/backstageUser/index";
+    }
+    @GetMapping("/associationUser")
+    public String associationUser() {
+        return "/fxxf/associationUser/associationUser";
+    }
+
+    @GetMapping("/Unwarranted")
+    public String Unwarranted() {
+        return "/fxxf/Unwarranted/Unwarranted";
+    }
+    @GetMapping("/UnwarrantedCheck")
+    public String UnwarrantedCheck() {
+        return "/fxxf/Unwarranted/check";
+    }
+
+    @GetMapping("/userInfoChange")
+    public String userInfoChange() {
+        return "/fxxf/userInfoChange/index";
+    }
 
     /**
      * /**

@@ -34,7 +34,7 @@
                         </div>
                     </div>
                     <el-submenu :popper-class="['ms-admin-menu-aside-submenu',theme]" :index="menu.id+''"
-                                :data-index="menu.id+''" v-for="(menu,i) in asideMenuList" :key='i'>
+                                :data-index="menu.id+''" v-for="(menu,i) in parentMenuList" :key='i'>
                         <template slot="title">
                             <i class='ms-admin-icon iconfont' :class="menu.modelIcon"></i>
                             <span>{{menu.modelTitle}}</span>
@@ -45,9 +45,7 @@
                                       :key='sub.modelId' v-text="sub.modelTitle"
                                       @click.self='open(sub)'></el-menu-item>
                     </el-submenu>
-                    <!--  当没有菜单显示时显示提示图片  -->
-                    <img v-if="asideMenuList.length==0&&!state.menu" src="${base}/static/images/tip.png" />
-                    <!-- 收缩按钮 -->
+
                 </el-menu>
             </el-scrollbar>
         </el-aside>
@@ -63,34 +61,12 @@
                 <!--头部menu-->
                 <el-menu menu-trigger="hover" class="ms-admin-header-menu" :default-active="headMenuActive"
                          mode="horizontal">
-                    <el-submenu style="height: 100%;">
-
-                        <template slot="title">
-                            <i class="iconfont icon-gezi" style="font-size: 17px;margin-right:8PX"></i>
-                            <span>功能大全</span>
-                        </template>
-                        <div class="ms-admin-header-menu-all">
-                            <li class="ms-admin-header-menu-all-item" v-for="(item,index) of parentMenuList"
-                                :key='index' @click='openMenu(item,index)'>
-                                <i class="iconfont" :class="item.modelIcon" style="padding-right: 4px"></i>
-                                <div style="width:80px">{{item.modelTitle}}</div>
-                                <div style="float: right;width: 18px;">
-                                    <template>
-                                        <i v-if="markList.find(function(x) {
-                    return x.id == item.id
-                })!=undefined" @click="cancelMarkMenu(item)"
-                                           class='el-icon-star-on'></i>
-                                        <i v-else class='el-icon-star-off '
-                                           @click="markMenu(item)"></i>
-                                    </template>
-                                </div>
-
-                            </li>
-                        </div>
-                    </el-submenu>
                 </el-menu>
                 <!--头部右侧-->
                 <div class="ms-admin-header-right">
+                    <el-badge :value="2" :max="99" class="item">
+                        <el-button class="message" icon="el-icon-message"></el-button>
+                    </el-badge>
                     <!-- 主题切换 -->
                     <ms-switch-theme :theme.sync="theme"></ms-switch-theme>
                     <!-- 设置 -->
@@ -104,7 +80,7 @@
                         </template>
                     </ms-manager-icon>
                     <!--mstore按钮-->
-<!--                    <ms-store ref="storec" client="${client}"></ms-store>-->
+                    <!--                    <ms-store ref="storec" client="${client}"></ms-store>-->
                 </div>
 
             </el-header>
@@ -146,7 +122,7 @@
             headMenuActive: '', //头部菜单激活
             editableTabsValue: '',
             messageTypeList: [],
-            editableTabs: [{"modelTitle": "工作台","id": "0", "modelUrl": "main.do"}], //当前打开的tab页面
+            editableTabs: [{"modelTitle": "工作台", "id": "0", "modelUrl": "main.do"}], //当前打开的tab页面
             shortcutMenu: false, //快捷菜单显示状态
             collapseMenu: false, //菜单折叠，false不折叠
             currentTab: '0', //当前激活tab的name，初始值为工作台id
@@ -164,7 +140,7 @@
             callbackFun: {},
             //数据加载状态
             state: {
-              menu: true
+                menu: true
             }
         },
         computed: {
@@ -191,6 +167,19 @@
             },
             parentMenuList: function (n, o) {
                 var that = this
+                if (that.markList.length == 0) {
+                    console.log(11111)
+                    this.parentMenuList.forEach((item) => {
+                        let menu = {
+                            title: item.modelTitle,
+                            icon: item.modelIcon,
+                            id: item.id
+                        }
+                        this.markList.push(menu);
+                        localStorage.setItem("markList", JSON.stringify(this.markList))
+                    })
+                }
+
                 this.mainParentMenuList = n.slice(0, 5);
                 this.asideMenuList = n.filter(function (f) {
                     return that.markList.find(
@@ -212,7 +201,7 @@
                                 Object.keys(that.$refs).forEach(function (item, i) {
                                     item.indexOf(that.currentTab) > -1 ? index = i : ''
                                 }, that)
-                                if(that.$refs[Object.keys(that.$refs)[index]][0].contentDocument!=null) {
+                                if (that.$refs[Object.keys(that.$refs)[index]][0].contentDocument != null) {
                                     that.$refs[Object.keys(that.$refs)[index]][0].contentDocument.location.reload(true)
                                 }
 
@@ -239,18 +228,10 @@
                 localStorage.setItem("markList", JSON.stringify(this.markList))
                 this.callbackFun();
             },
-            cancelMarkMenu: function (item) {
-                var index = this.markList.findIndex(function (x) {
-                    return x.id == item.id
-                });
-                this.markList.splice(index, 1);
-                localStorage.setItem("markList", JSON.stringify(this.markList))
-                this.callbackFun();
-            },
             //  打开修改密码模态框
             openModal: function () {
                 var that = this
-                if(event.target.innerText.indexOf('修改密码') > -1 ){
+                if (event.target.innerText.indexOf('修改密码') > -1) {
                     resetPasswordVue.resetPasswordForm.managerName = that.managerInfo.managerName
                     resetPasswordVue.isShow = true
                 } else {
@@ -263,12 +244,12 @@
                 ms.http.get(ms.manager + "/model/list.do")
                     .then(function (data) {
                         that.menuList = data.data.rows
-                        var menuIdList = that.menuList.map(function(menuItem){
-                          return menuItem.id
+                        var menuIdList = that.menuList.map(function (menuItem) {
+                            return menuItem.id
                         })
                         that.state.menu = false
-                        that.markList = that.markList.filter(function(markItem){
-                          return menuIdList.includes(markItem.id)
+                        that.markList = that.markList.filter(function (markItem) {
+                            return menuIdList.includes(markItem.id)
                         })
                         localStorage.setItem("markList", JSON.stringify(that.markList))
                     }, function (err) {
@@ -278,9 +259,9 @@
                             type: 'error'
                         });
                         that.state.menu = false
-                    }).catch(function(err){
-                      that.state.menu = false
-                    })
+                    }).catch(function (err) {
+                    that.state.menu = false
+                })
             },
             // 菜单打开页面
             open: function (sub) {
@@ -443,6 +424,7 @@
             this.list();
             //获取登录用户信息
             this.managerGet();
+
         },
     })
 </script>
@@ -526,8 +508,6 @@
     }
 
 
-
-
     .ms-admin-menu-aside .ms-menu-expand i {
         font-weight: bolder;
         font-size: 14px;
@@ -547,7 +527,6 @@
         left: -10px;
         width: 30px;
     }
-
 
 
     .ms-admin-menu-aside .el-submenu__title,
@@ -592,7 +571,6 @@
     }
 
 
-
     .ms-admin-header .ms-admin-header-menu .ms-admin-shortcut-menu > li {
         margin: 0;
         padding: 0 20px;
@@ -610,7 +588,6 @@
         cursor: pointer;
         color: #0099ff;
     }
-
 
 
     .ms-admin-header-menu .el-submenu__title {
@@ -815,5 +792,23 @@
         width: 100%;
         height: 100%;
         border: none !important;
+    }
+
+    .item {
+        margin-right: 15px;
+    }
+
+    .el-badge__content {
+        line-height: 15px !important;
+    }
+
+    .message {
+        border: none;
+        padding: 0;
+    }
+
+    .el-icon-message:before {
+        display: inline-block;
+        font-size: 20px;
     }
 </style>

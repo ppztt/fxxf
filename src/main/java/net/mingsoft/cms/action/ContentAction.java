@@ -19,7 +19,6 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-
 package net.mingsoft.cms.action;
 
 import cn.hutool.core.date.DateUtil;
