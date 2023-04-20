@@ -5,10 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FeedbackMsgVo {
+public class FeedbackMsgVo implements Serializable {
 
     @ApiModelProperty(value = "放心消费承诺投诉总条数")
     private long type1Count;
