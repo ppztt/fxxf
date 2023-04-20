@@ -27,7 +27,7 @@ import java.util.Optional;
 @RestController
 @Slf4j
 @Api(tags = "用户信息管理")
-@RequestMapping("/manager")
+@RequestMapping("/user")
 public class ManagerController {
 
     @Resource
@@ -42,7 +42,6 @@ public class ManagerController {
                     @ApiImplicitParam(name = "keyword", value = "关键字", dataType = "string", example = "张三", defaultValue = "张三")
             }
     )
-    @OperatorLogAnno(operType="查询", operModul="用户管理", operDesc="企业用户列表")
     public BaseResult<Page<ManagerInfoVo>> enterpriseList(@RequestParam(name = "current", defaultValue = "1") Integer current,
                                                           @RequestParam(name = "size", defaultValue = "10") Integer size,
                                                           @RequestParam(name = "keyword", defaultValue = "") String keyword) {
@@ -61,7 +60,6 @@ public class ManagerController {
                     @ApiImplicitParam(name = "keyword", value = "关键字", dataType = "string", example = "张三", defaultValue = "张三")
             }
     )
-    @OperatorLogAnno(operType="查询", operModul="用户管理", operDesc="用户列表")
     public BaseResult<Page<ManagerInfoVo>> userList(@RequestParam(name = "current", defaultValue = "1") Integer current,
                                                     @RequestParam(name = "size", defaultValue = "10") Integer size,
                                                     @RequestParam(name = "keyword", defaultValue = "") String keyword) {
@@ -80,7 +78,6 @@ public class ManagerController {
                     @ApiImplicitParam(name = "keyword", value = "关键字", dataType = "string", example = "张三", defaultValue = "张三")
             }
     )
-    @OperatorLogAnno(operType="查询", operModul="用户管理", operDesc="行业协会用户列表")
     public BaseResult<Page<ManagerInfoVo>> industryAssociationList(@RequestParam(name = "current", defaultValue = "1") Integer current,
                                                                    @RequestParam(name = "size", defaultValue = "10") Integer size,
                                                                    @RequestParam(name = "keyword", defaultValue = "") String keyword) {
@@ -98,7 +95,6 @@ public class ManagerController {
                     @DynamicParameter(name = "user", value = "user", dataTypeClass = ManagerInfoVo.class, required = true)
             }
     )
-    @OperatorLogAnno(operType="新增", operModul="用户管理", operDesc="新增用户")
     public BaseResult<String> addUser(@Valid @RequestBody ManagerInfoVo managerInfo, BindingResult msg) {
         if (msg.hasErrors()) {
             return BaseResult.fail(Optional.ofNullable(msg.getFieldError()).map(FieldError::getDefaultMessage).orElse("参数有误"));
@@ -115,7 +111,6 @@ public class ManagerController {
                     @DynamicParameter(name = "user", value = "user", dataTypeClass = ManagerInfoVo.class, required = true)
             }
     )
-    @OperatorLogAnno(operType="新增", operModul="用户管理", operDesc="新增行业协会用户")
     public BaseResult<String> addIndustryAssociation(@Valid @RequestBody ManagerInfoVo managerInfo, BindingResult msg) {
         if (msg.hasErrors()) {
             return BaseResult.fail(Optional.ofNullable(msg.getFieldError()).map(FieldError::getDefaultMessage).orElse("参数有误"));
@@ -132,7 +127,6 @@ public class ManagerController {
                     @DynamicParameter(name = "user", value = "user", dataTypeClass = ManagerInfoVo.class, required = true)
             }
     )
-    @OperatorLogAnno(operType="更新", operModul="用户管理", operDesc="修改个人资料")
     public BaseResult<String> updateById(@RequestBody ManagerInfoVo managerInfo) {
         managerService.updateUserInfo(managerInfo);
         return BaseResult.success();
@@ -143,7 +137,6 @@ public class ManagerController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "用户id", required = true)
     })
-    @OperatorLogAnno(operType="删除", operModul="用户管理", operDesc="删除用户")
     public BaseResult<String> del(@PathVariable(value = "id") String id) {
         managerService.deleteUser(id);
         return BaseResult.success();
@@ -157,7 +150,6 @@ public class ManagerController {
                     @DynamicParameter(name = "managerInfo", value = "managerInfo", dataTypeClass = ManagerInfoVo.class, required = true)
             }
     )
-    @OperatorLogAnno(operType="更新", operModul="用户管理", operDesc="修改个人密码")
     public BaseResult<String> updatePwd(@RequestBody ManagerInfoVo managerInfo) {
         if (CharSequenceUtil.hasBlank(managerInfo.getManagerPassword(), managerInfo.getNewManagerPassword())) {
             return BaseResult.fail("密码不能为空");
@@ -171,7 +163,6 @@ public class ManagerController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "用户id")
     })
-    @OperatorLogAnno(operType="查询", operModul="用户管理", operDesc="查询个人资料")
     public BaseResult<ManagerInfoVo> userInfo(@RequestParam(required = false) String id) {
         ManagerInfoVo managerInfo = new ManagerInfoVo();
         if (CharSequenceUtil.isNotBlank(id)) {

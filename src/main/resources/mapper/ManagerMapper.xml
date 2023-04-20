@@ -54,7 +54,7 @@
         ORDER BY m.create_date DESC
     </select>
 
-    <select id="roleList" resultType="net.mingsoft.fxxf.entity.Role">
+    <select id="roleList" resultType="net.mingsoft.fxxf.bean.entity.Role">
         SELECT name,explation FROM sys_role
     </select>
 

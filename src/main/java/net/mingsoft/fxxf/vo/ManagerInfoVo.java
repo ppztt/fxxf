@@ -22,6 +22,9 @@ public class ManagerInfoVo implements Serializable {
     @ApiModelProperty(value = "角色编号")
     private String roleIds;
 
+    @ApiModelProperty(value = "角色编号")
+    private String roleName;
+
     @ApiModelProperty(value = "用户编号即商家编号")
     private Integer peopleId;
 
