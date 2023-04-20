@@ -43,6 +43,7 @@ public class RouteController {
     public String backstageUser() {
         return "/fxxf/backstageUser/index";
     }
+
     @GetMapping("/associationUser")
     public String associationUser() {
         return "/fxxf/associationUser/associationUser";
@@ -52,6 +53,7 @@ public class RouteController {
     public String Unwarranted() {
         return "/fxxf/Unwarranted/Unwarranted";
     }
+
     @GetMapping("/UnwarrantedCheck")
     public String UnwarrantedCheck() {
         return "/fxxf/Unwarranted/check";
@@ -62,4 +64,9 @@ public class RouteController {
         return "/fxxf/userInfoChange/index";
     }
 
+
+    @GetMapping("/enterpriseUser")
+    public String enterpriseUser() {
+        return "/fxxf/enterpriseUser/index";
+    }
 }
