@@ -421,6 +421,9 @@
                     fixed="left"
                     width="200"
                     align="left">
+                <template slot-scope="{row}">
+                    <img class="new" v-show="row.isNew" src="${base}/static/images/PendingTrial.png" alt="" /><span>{{ row.regName }}</span>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="createType"
@@ -1366,5 +1369,11 @@
         overflow-x: auto !important;
         flex-wrap: inherit !important;
     }
-
+    .new{
+        width: 30px;
+        height: 20px;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
 </style>
