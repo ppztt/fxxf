@@ -46,7 +46,7 @@ import java.util.Objects;
 /**
  * 留言反馈
  */
-@Api(tags = {"留言反馈相关接口"})
+@Api(tags = {"管理端留言反馈相关接口"})
 @RestController
 @RequestMapping("/${ms.manager.path}/feedback")
 @Slf4j
