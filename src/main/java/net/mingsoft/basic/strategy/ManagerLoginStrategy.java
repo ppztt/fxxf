@@ -11,13 +11,12 @@
 package net.mingsoft.basic.strategy;
 
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.crypto.SecureUtil;
 import net.mingsoft.basic.biz.IManagerBiz;
-import net.mingsoft.basic.constant.e.SessionConstEnum;
 import net.mingsoft.basic.entity.ManagerEntity;
 import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.basic.util.RedisUtil;
 import net.mingsoft.basic.util.SpringUtil;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -71,7 +70,7 @@ public class ManagerLoginStrategy implements ILoginStrategy{
             return false;
         } else {
             // 判断当前用户输入的密码是否正确
-            if (SecureUtil.md5(manager.getManagerPassword()).equals(_manager.getManagerPassword())) {
+            if (DigestUtils.sha256Hex(manager.getManagerPassword()).equals(_manager.getManagerPassword())) {
 //                 创建管理员session对象
                 ManagerEntity managerSession = new ManagerEntity();
 //                 压入管理员seesion

@@ -30,7 +30,7 @@ import java.util.List;
  **/
 @Api(tags = "用户管理")
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/user2")
 public class UserController {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
