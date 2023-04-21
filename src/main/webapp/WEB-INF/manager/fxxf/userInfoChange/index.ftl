@@ -8,11 +8,6 @@
 
 <body>
 <div id="form" v-loading="loading" v-cloak>
-    <el-header class="ms-header ms-tr" height="50px">
-        <el-button type="primary" icon="iconfont icon-baocun" size="mini" @click="save()" :loading="saveDisabled">保存
-        </el-button>
-        <el-button size="mini" icon="iconfont icon-fanhui" plain onclick="javascript:history.go(-1)">返回</el-button>
-    </el-header>
     <el-main class="ms-container">
         <div class="box">
             <el-form ref="form" :model="userData" :rules="ruleValidate" label-width="120px" label-position="left" size="medium">
