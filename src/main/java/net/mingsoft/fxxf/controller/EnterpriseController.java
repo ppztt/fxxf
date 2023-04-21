@@ -9,7 +9,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.mingsoft.fxxf.bean.base.BaseResult;
 import net.mingsoft.fxxf.bean.entity.Applicants;
-import net.mingsoft.fxxf.bean.entity.User;
 import net.mingsoft.fxxf.bean.base.BasePageResult;
 import net.mingsoft.fxxf.bean.vo.*;
 import net.mingsoft.fxxf.mapper.AuditLogMapper;
@@ -48,7 +47,7 @@ public class EnterpriseController {
     @ApiOperation(value = "获取企业信息", notes = "获取企业信息")
     public BaseResult<EnterpriseInfoVo> getEnterpriseInfo(@PathVariable(value = "userId") Integer id) {
         try {
-            User user = enterpriseService.getEnterpriseInfo(id);
+            ManagerInfoVo user = enterpriseService.getEnterpriseInfo(id);
 
             EnterpriseInfoVo enterpriseInfoVo = new EnterpriseInfoVo();
 
@@ -65,9 +64,10 @@ public class EnterpriseController {
     @ApiOperation(value = "更新企业信息")
     public BaseResult updateEnterpriseInfo(@PathVariable(value = "userId") Integer id, @RequestBody EnterpriseInfoVo enterpriseInfoVo) {
         try {
-            User user = enterpriseService.getEnterpriseInfo(id);
+            ManagerInfoVo user = enterpriseService.getEnterpriseInfo(id);
 
             BeanUtils.copyProperties(enterpriseInfoVo, user, "id");
+            user.setManagerNickName(enterpriseInfoVo.getRealname());
 
             enterpriseService.updateEnterpriseInfo(user);
 

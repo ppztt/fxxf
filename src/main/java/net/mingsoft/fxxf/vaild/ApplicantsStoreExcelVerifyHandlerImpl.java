@@ -3,9 +3,9 @@ package net.mingsoft.fxxf.vaild;
 import cn.afterturn.easypoi.excel.entity.result.ExcelVerifyHandlerResult;
 import cn.afterturn.easypoi.handler.inter.IExcelVerifyHandler;
 import net.mingsoft.basic.entity.ManagerEntity;
-import net.mingsoft.fxxf.bean.entity.User;
 import net.mingsoft.fxxf.bean.vo.ApplicantsStoreExcelImportVo;
-import net.mingsoft.fxxf.mapper.UserMapper;
+import net.mingsoft.fxxf.bean.vo.ManagerInfoVo;
+import net.mingsoft.fxxf.service.ManagerInfoService;
 import net.mingsoft.fxxf.service.impl.CommonDataService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 public class ApplicantsStoreExcelVerifyHandlerImpl implements IExcelVerifyHandler<ApplicantsStoreExcelImportVo> {
 
     @Autowired
-    private UserMapper userMapper;
+    private ManagerInfoService managerInfoService;
 
     @Override
     public ExcelVerifyHandlerResult verifyHandler(ApplicantsStoreExcelImportVo applicantsStoreExcelImportVo) {
@@ -56,7 +56,7 @@ public class ApplicantsStoreExcelVerifyHandlerImpl implements IExcelVerifyHandle
 
         ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
         if (user != null) {
-            User userExtensionInfo = userMapper.selectById(user.getId());
+            ManagerInfoVo userExtensionInfo = managerInfoService.getManagerInfoById(user.getId());
             if (user.getRoleId() != 1) {
                 if (StringUtils.isNotBlank(applicantsStoreExcelImportVo.getCity())
                         && !applicantsStoreExcelImportVo.getCity().equals(userExtensionInfo.getCity())) {

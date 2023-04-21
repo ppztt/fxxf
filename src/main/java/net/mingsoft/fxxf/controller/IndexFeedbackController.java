@@ -7,10 +7,11 @@ import net.mingsoft.basic.entity.ManagerEntity;
 import net.mingsoft.fxxf.bean.base.BaseResult;
 import net.mingsoft.fxxf.bean.entity.*;
 import net.mingsoft.fxxf.bean.vo.FeedbackMsgVo;
+import net.mingsoft.fxxf.bean.vo.ManagerInfoVo;
 import net.mingsoft.fxxf.mapper.FeedbackMapper;
 import net.mingsoft.fxxf.mapper.FeedbackTypeMapper;
 import net.mingsoft.fxxf.service.FeedbackService;
-import net.mingsoft.fxxf.service.UserService;
+import net.mingsoft.fxxf.service.ManagerInfoService;
 import org.apache.commons.compress.utils.Lists;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,9 +39,6 @@ public class IndexFeedbackController {
     private FeedbackService feedbackService;
 
     @Resource
-    private UserService userService;
-
-    @Resource
     FeedbackTypeMapper feedbackTypeMapper;
 
     @Value("${saveAttachmentPath}")
@@ -48,6 +46,9 @@ public class IndexFeedbackController {
 
     @Resource
     private FeedbackMapper feedbackMapper;
+
+    @Resource
+    private ManagerInfoService managerInfoService;
 
 
 
@@ -132,7 +133,7 @@ public class IndexFeedbackController {
             Integer roleId = managerEntity.getRoleId();
 
 
-            User user = userService.getById(managerEntity.getIntegerId());
+            ManagerInfoVo user = managerInfoService.getManagerInfoById(String.valueOf(managerEntity.getIntegerId()));
             FeedbackMsgVo feedbacks = feedbackMapper.getMsgCnt(roleId, user.getCity(), user.getDistrict());
 
             return BaseResult.success(feedbacks);

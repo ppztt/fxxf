@@ -11,7 +11,6 @@ import net.mingsoft.basic.entity.ManagerEntity;
 import net.mingsoft.fxxf.bean.entity.Attachment;
 import net.mingsoft.fxxf.bean.base.BaseResult;
 import net.mingsoft.fxxf.service.AttachmentService;
-import net.mingsoft.fxxf.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
@@ -48,8 +47,7 @@ public class AttachmentController {
     @Resource
     AttachmentService attachmentService;
 
-    @Resource
-    UserService userService;
+
 
     /**
      * @param keyword 关键字

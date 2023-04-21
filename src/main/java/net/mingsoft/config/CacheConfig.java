@@ -3,7 +3,7 @@ package net.mingsoft.config;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import net.mingsoft.fxxf.bean.entity.User;
+import net.mingsoft.basic.entity.ManagerEntity;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -61,7 +61,7 @@ public class CacheConfig {
      * @return Cache<String, String>
      */
     @Bean("tokenCache")
-    public Cache<String, User> tokenCache() {
+    public Cache<String, ManagerEntity> tokenCache() {
         return Caffeine.newBuilder().expireAfterWrite(expiration, TimeUnit.SECONDS).build();
     }
 
