@@ -590,7 +590,12 @@
                                 this.formData.newPassword = this.reviseForm.newPassword
                                 let params = JSON.stringify(this.formData)
                                 ms.http.post('/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
-                                    console.log(res)
+                                    if(res.code == 200){
+                                        this.$message({
+                                            message: '修改成功',
+                                            type: 'success'
+                                        })
+                                    }
                                     if (res.code == 500) {
                                         this.$message.error(res.msg)
                                     }

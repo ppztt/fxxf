@@ -1086,7 +1086,7 @@
                     if (valid) {
                         this.setApply(type);
                     } else {
-                        this.$message.error("录入提交失败，验证不通过");
+                        this.$message.error("请按要求重新填写");
                     }
                 });
                 // this.isShow = true;

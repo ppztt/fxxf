@@ -143,9 +143,15 @@
                         }
                     })
                 })
+            },
+            test(){
+                ms.http.get('/index/attachmentList.do',{current: 1, keyword: "汕尾", size: 10}).then((res)=>{
+                    console.log(res)
+                })
             }
         },
         mounted(){
+            this.test()
             this.getUserList()
             this.getRegionData()
         }
