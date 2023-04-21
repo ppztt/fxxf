@@ -17,7 +17,6 @@ import net.mingsoft.fxxf.bean.vo.ExcelImportErrorMsgVo;
 import net.mingsoft.fxxf.bean.vo.OperatorStatisticsVo;
 import net.mingsoft.fxxf.service.ApplicantsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -95,7 +94,7 @@ public class ApplicantsController {
      */
     @PostMapping("/update")
     @ApiOperation(value = "经营者列表-编辑保存")
-    public BaseResult updateApplicants(@RequestBody @Validated ApplicantsParamsVo applicants) {
+    public BaseResult updateApplicants(@RequestBody ApplicantsParamsVo applicants) {
         try {
             return applicantsService.updateApplicants(applicants);
         } catch (Exception e) {

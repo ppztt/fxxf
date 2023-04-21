@@ -128,7 +128,7 @@
                             <el-form-item label-width="130px" label="处理结果：" prop="result" class="form-survey">
                                 <el-select v-model="formValidate.result" placeholder="请选择" style="width:80%">
                                     <el-option value="督促告诫">督促告诫</el-option>
-                                    <el-option value="摘牌">摘牌</el-option>
+                                    <el-option value="摘牌" :disabled="status != 1">摘牌</el-option>
                                     <el-option value="投诉问题不存在">投诉问题不存在</el-option>
                                     <el-option value="其他">其他</el-option>
                                 </el-select>
@@ -220,7 +220,6 @@
             imagesPath: [
                 "https://raw.githubusercontent.com/FxPixels/SavePicGoImg/master/20200303234329.jpg",
             ],
-            $viewer: null,
             formValidate: {
                 result: "", //处理结果
                 processingSituation: "", //调查处理情况
@@ -242,6 +241,7 @@
                     },
                 ],
             },
+            status:""
         },
         computed: {},
         watch: {},
@@ -263,6 +263,7 @@
                     this.data = res.data.feedback
                     this.data.filesInfo = JSON.parse(this.data.filesInfo);
                     this.history = res.data.history
+                    this.status = res.data.status
                 })
             },
             //提交
@@ -312,7 +313,7 @@
     })
 </script>
 <style>
-    html, body {
+    html {
         overflow: scroll;
     }
 

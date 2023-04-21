@@ -289,7 +289,8 @@
             },
             //下载
             downloadData(path) {
-                window.open(window.location.origin.slice(0,window.location.origin.length) + path);
+                console.log(path)
+                // window.open(window.location.origin.slice(0,window.location.origin.length) + path);
             },
             //提交
             handleSubmit(name){
@@ -312,7 +313,7 @@
     })
 </script>
 <style>
-    html, body {
+    html {
         overflow: scroll;
     }
 
