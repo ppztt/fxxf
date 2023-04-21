@@ -7,7 +7,7 @@ import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import net.mingsoft.basic.entity.ManagerEntity;
 import net.mingsoft.fxxf.bean.base.BaseResult;
-import net.mingsoft.fxxf.service.ManagerService;
+import net.mingsoft.fxxf.service.ManagerInfoService;
 import net.mingsoft.fxxf.bean.vo.ManagerInfoVo;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.validation.BindingResult;
@@ -27,10 +27,10 @@ import java.util.Optional;
 @Slf4j
 @Api(tags = "用户信息管理")
 @RequestMapping("/user")
-public class ManagerController {
+public class ManagerInfoController {
 
     @Resource
-    private ManagerService managerService;
+    private ManagerInfoService managerInfoService;
 
     @ApiOperation(value = "企业用户列表", notes = "用户管理/企业用户管理列表")
     @GetMapping(value = "/enterpriseList", produces = "application/json;charset=UTF-8")
@@ -45,7 +45,7 @@ public class ManagerController {
                                                           @RequestParam(name = "size", defaultValue = "10") Integer size,
                                                           @RequestParam(name = "keyword", defaultValue = "") String keyword) {
         Page<ManagerInfoVo> page = new Page<>(current, size);
-        List<ManagerInfoVo> users = managerService.enterpriseList(keyword, page);
+        List<ManagerInfoVo> users = managerInfoService.enterpriseList(keyword.trim(), page);
         page.setRecords(users);
         return BaseResult.success(page);
     }
@@ -63,7 +63,7 @@ public class ManagerController {
                                                     @RequestParam(name = "size", defaultValue = "10") Integer size,
                                                     @RequestParam(name = "keyword", defaultValue = "") String keyword) {
         Page<ManagerInfoVo> page = new Page<>(current, size);
-        List<ManagerInfoVo> users = managerService.userList(keyword.trim(), page);
+        List<ManagerInfoVo> users = managerInfoService.userList(keyword.trim(), page);
         page.setRecords(users);
         return BaseResult.success(page);
     }
@@ -81,7 +81,7 @@ public class ManagerController {
                                                                    @RequestParam(name = "size", defaultValue = "10") Integer size,
                                                                    @RequestParam(name = "keyword", defaultValue = "") String keyword) {
         Page<ManagerInfoVo> page = new Page<>(current, size);
-        List<ManagerInfoVo> users = managerService.industryAssociationList(keyword.trim(), page);
+        List<ManagerInfoVo> users = managerInfoService.industryAssociationList(keyword.trim(), page);
         page.setRecords(users);
         return BaseResult.success(page);
     }
@@ -99,7 +99,7 @@ public class ManagerController {
             return BaseResult.fail(Optional.ofNullable(msg.getFieldError()).map(FieldError::getDefaultMessage).orElse("参数有误"));
         }
         managerInfo.setUsertype(1);
-        return BaseResult.success(managerService.addUser(managerInfo));
+        return BaseResult.success(managerInfoService.addUser(managerInfo));
     }
 
     @ApiOperation(value = "新增行业协会用户", notes = "用户管理/新增行业协会用户")
@@ -115,7 +115,7 @@ public class ManagerController {
             return BaseResult.fail(Optional.ofNullable(msg.getFieldError()).map(FieldError::getDefaultMessage).orElse("参数有误"));
         }
         managerInfo.setUsertype(3);
-        return BaseResult.success(managerService.addUser(managerInfo));
+        return BaseResult.success(managerInfoService.addUser(managerInfo));
     }
 
     @ApiOperation(value = "修改个人资料", notes = "用户管理/修改后台用户个人资料")
@@ -127,7 +127,7 @@ public class ManagerController {
             }
     )
     public BaseResult<String> updateById(@RequestBody ManagerInfoVo managerInfo) {
-        managerService.updateUserInfo(managerInfo);
+        managerInfoService.updateUserInfo(managerInfo);
         return BaseResult.success();
     }
 
@@ -137,7 +137,7 @@ public class ManagerController {
             @ApiImplicitParam(name = "id", value = "用户id", required = true)
     })
     public BaseResult<String> del(@PathVariable(value = "id") String id) {
-        managerService.deleteUser(id);
+        managerInfoService.deleteUser(id);
         return BaseResult.success();
     }
 
@@ -153,7 +153,7 @@ public class ManagerController {
         if (CharSequenceUtil.hasBlank(managerInfo.getManagerPassword(), managerInfo.getNewManagerPassword())) {
             return BaseResult.fail("密码不能为空");
         }
-        managerService.updatePwd(managerInfo);
+        managerInfoService.updatePwd(managerInfo);
         return BaseResult.success();
     }
 
@@ -165,7 +165,7 @@ public class ManagerController {
     public BaseResult<ManagerInfoVo> userInfo(@RequestParam(required = false) String id) {
         ManagerInfoVo managerInfo = new ManagerInfoVo();
         if (CharSequenceUtil.isNotBlank(id)) {
-            managerInfo = managerService.getManagerInfoById(id);
+            managerInfo = managerInfoService.getManagerInfoById(id);
         } else {
             ManagerEntity managerEntity = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
             BeanUtil.copyProperties(managerEntity, managerInfo);
