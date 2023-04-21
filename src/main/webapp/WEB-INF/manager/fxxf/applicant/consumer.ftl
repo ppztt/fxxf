@@ -79,10 +79,10 @@
             </div>
             <#-- 录入弹出框 -->
             <el-dialog
+                    ref="formData"
                     :visible.sync="isShowEnteringModal"
                     title="放心消费承诺经营者 - 录入"
                     width="800"
-                    :rules="formrules"
             >
                 <el-row>
                     <el-col offset="1" span="22">
@@ -630,7 +630,7 @@
                 details: [{required: true, message: '详细类别不能为空', trigger: 'blur'}],
                 principal: [{required: true, message: '负责人姓名不能为空', trigger: 'blur'}],
                 principalTel: [{required: true, message: '手机号码不能为空', trigger: 'blur'},
-                    {min: 11, max: 11, message: '请输入正确的手机号码', trigger: 'blur'}],
+                    {pattern: /^1[3|5|7|8|9]\d{9}$/, message: "请输入正确的手机号", trigger: "blur"}],
             },
             districtDataArr: [],
             textList: {

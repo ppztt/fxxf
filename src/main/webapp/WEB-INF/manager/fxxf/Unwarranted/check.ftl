@@ -598,7 +598,6 @@
                         ms.http.post('/applicants/update.do', {...this.formData, addrs: adds, type: '2'},
                             {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
                             if (res.code == 200) {
-
                                 this.returnBack()
                                 this.currentTopic("审核成功")
                             }

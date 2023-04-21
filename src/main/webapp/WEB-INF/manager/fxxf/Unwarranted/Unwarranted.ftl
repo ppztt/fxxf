@@ -632,7 +632,7 @@
                 contents2: [{required: true, message: '退货期限不能为空', trigger: 'blur'}],
                 contents3: [{required: true, message: '退货约定不能为空', trigger: 'blur'}],
                 principalTel:[{required: true, message: '手机号码不能为空', trigger: 'blur'},
-                    {min: 11, message: '请输入正确的手机号码', trigger: 'blur'}]
+                    {pattern: /^1[3|5|7|8|9]\d{9}$/, message: "请输入正确的手机号", trigger: "blur"}]
             },
             districtDataArr: [],
             textList: {
