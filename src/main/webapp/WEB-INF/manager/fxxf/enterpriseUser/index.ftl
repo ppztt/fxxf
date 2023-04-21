@@ -427,7 +427,10 @@
                                 trigger: "blur",
                             },
                             { min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur' },
-                            // {pattern: "^(?![A-z0-9]+$)(?=.[^%&',;=?$\x22])(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}$", message: '正则不对'}
+                            {
+                                pattern: /^(?![A-Za-z]+$)(?![A-Z\\d]+$)(?![A-Z\\W]+$)(?![a-z\\d]+$)(?![a-z\\W]+$)(?![\\d\\W]+$)\\S{8,18}$/,
+                                message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'
+                            }
                         ],
                         newPassword: [
                             {
@@ -436,7 +439,10 @@
                                 trigger: "blur",
                             },
                             { min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur' },
-                            {pattern: "^(?![A-z0-9]+$)(?=.[^%&',;=?$\x22])(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}$", message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'}
+                            {
+                                pattern: /^(?![A-Za-z]+$)(?![A-Z\\d]+$)(?![A-Z\\W]+$)(?![a-z\\d]+$)(?![a-z\\W]+$)(?![\\d\\W]+$)\\S{8,18}$/,
+                                message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'
+                            }
                         ],
                         reNewPassword: [
                             {
@@ -445,7 +451,10 @@
                                 trigger: "blur",
                             },
                             { min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur' },
-                            {pattern: "^(?![A-z0-9]+$)(?=.[^%&',;=?$\x22])(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}$", message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'}
+                            {
+                                pattern: /^(?![A-Za-z]+$)(?![A-Z\\d]+$)(?![A-Z\\W]+$)(?![a-z\\d]+$)(?![a-z\\W]+$)(?![\\d\\W]+$)\\S{8,18}$/,
+                                message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'
+                            }
                         ],
                     },
                 }
@@ -590,7 +599,12 @@
                                 this.formData.newPassword = this.reviseForm.newPassword
                                 let params = JSON.stringify(this.formData)
                                 ms.http.post('/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
-                                    console.log(res)
+                                    if(res.code == 200){
+                                        this.$message({
+                                            message: '修改成功',
+                                            type: 'success'
+                                        })
+                                    }
                                     if (res.code == 500) {
                                         this.$message.error(res.msg)
                                     }
