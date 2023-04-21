@@ -253,7 +253,7 @@
         order by sr.sort
     </select>
 
-    <select id="storeOperatorStatistics" resultType="net.mingsoft.fxxf.bean.vo.StoreOperatorStatisticsVo">
+    <select id="storeOperatorStatistics" resultType="net.mingsoft.fxxf.bean.vo.OperatorStatisticsVo">
         SELECT
         sr.name area,
         sum(IFNULL(applicantsCnt,0)) applicantsCnt,

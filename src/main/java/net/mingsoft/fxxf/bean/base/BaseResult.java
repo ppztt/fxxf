@@ -1,4 +1,4 @@
-package net.mingsoft.fxxf.bean.vo;
+package net.mingsoft.fxxf.bean.base;
 
 import io.swagger.annotations.ApiModelProperty;
 
@@ -24,12 +24,12 @@ public class BaseResult<T extends Serializable> implements Serializable {
     /**
      * 请求成功信息
      */
-    private static final String MSG_SUCCESS="请求成功";
+    private static final String MSG_SUCCESS = "请求成功";
 
     /**
      * 请求失败信息
      */
-    private static final String MSG_FAIL="请求失败";
+    private static final String MSG_FAIL = "请求失败";
 
     /**
      * 状态码
@@ -61,31 +61,31 @@ public class BaseResult<T extends Serializable> implements Serializable {
         this.data = data;
     }
 
-    public static <T extends Serializable> BaseResult<T> success(){
-        return new BaseResult<>(CODE_SUCCESS,MSG_SUCCESS);
+    public static <T extends Serializable> BaseResult<T> success() {
+        return new BaseResult<>(CODE_SUCCESS, MSG_SUCCESS);
     }
 
-    public static <T extends Serializable> BaseResult<T> success(T data){
-        return new BaseResult<>(CODE_SUCCESS,MSG_SUCCESS, data);
+    public static <T extends Serializable> BaseResult<T> success(T data) {
+        return new BaseResult<>(CODE_SUCCESS, MSG_SUCCESS, data);
     }
 
-    public static <T extends Serializable> BaseResult<T> fail(){
+    public static <T extends Serializable> BaseResult<T> fail() {
         return new BaseResult<>(CODE_FAIL, MSG_FAIL);
     }
 
-    public static <T extends Serializable> BaseResult<T> fail(String msg){
+    public static <T extends Serializable> BaseResult<T> fail(String msg) {
         return new BaseResult<>(CODE_FAIL, msg);
     }
 
-    public static <T extends Serializable> BaseResult<T> fail(T data){
-        return new BaseResult<>(CODE_FAIL, MSG_FAIL,data);
+    public static <T extends Serializable> BaseResult<T> fail(T data) {
+        return new BaseResult<>(CODE_FAIL, MSG_FAIL, data);
     }
 
-    public static <T extends Serializable> BaseResult<T> fail(String msg, T data){
-        return new BaseResult<>(CODE_FAIL, msg,data);
+    public static <T extends Serializable> BaseResult<T> fail(String msg, T data) {
+        return new BaseResult<>(CODE_FAIL, msg, data);
     }
 
-    public static <T extends Serializable> BaseResult<T> fail(String code, String msg, T data){
+    public static <T extends Serializable> BaseResult<T> fail(String code, String msg, T data) {
         return new BaseResult<>(code, msg, data);
     }
 

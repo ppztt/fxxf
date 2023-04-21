@@ -14,18 +14,18 @@
             <el-input v-model="keyword" clearable placeholder="请输入关键字"></el-input>
 
         </el-col>
-        <el-col span="7">
-            <div class="buttonBox">
-                <el-button ref="query" class="itemBox"  type="primary" icon="el-icon-search" @click="getOperatorStatisticList"> 查询</el-button>
-                <el-upload
-                        ref="upload"
-                        action
-                        :http-request="uploadFile"
-                        :show-file-list="false"
-                >
-                        <el-button class="itemBox" type="primary" plain icon="el-icon-top">上传</el-button>
-                </el-upload>
-                <el-button class="itemBox" :type="judgmentButton" :disabled="judgmentDisable"
+        <el-col span="19">
+            <div class="button-Box">
+                <el-button class="item-Box"  type="primary" icon="el-icon-search" @click="getOperatorStatisticList">查询</el-button>
+                    <el-upload
+                            ref="upload"
+                            action
+                            :http-request="uploadFile"
+                            :show-file-list="false"
+                    >
+                        <el-button class="upDateItemBox" type="primary"  icon="el-icon-top">上传</el-button>
+                    </el-upload>
+                <el-button class="item-Box" :type="judgmentButton" :disabled="judgmentDisable"
                            :plain="judgmentDisable" icon="el-icon-close" @click="deleteOperatorStatisticList">
                     删除
                 </el-button>
@@ -34,6 +34,8 @@
     </el-row>
 
     <el-table
+            element-loading-text="加载中，请稍后..."
+            v-loading="loadingShow"
             class="table"
             ref="multipleTable"
             :data="dataList"
@@ -42,13 +44,13 @@
             @selection-change="handleSelectionChange">
         <el-table-column
                 type="selection"
-                width="55"
+                width="50"
                 align="center">
         </el-table-column>
-        <el-table-column type="index" label="序号" width="100" align="center"></el-table-column>
+        <el-table-column type="index" label="序号" width="130" align="center"></el-table-column>
         <el-table-column
                 prop="filename"
-                label="资料排名"
+                label="资料名称"
                 width="800"
                 align="left">
         </el-table-column>
@@ -79,8 +81,8 @@
         </el-table-column>
     </el-table>
 
-    <div class="paginationbox">
-        <span>共{{total}}条信息 共{{Totalpage}}页</span>
+    <div class="pagination-box">
+        <span style="white-space:nowrap">共{{total}}条信息 共{{Totalpage}}页</span>
         <el-pagination
                 @current-change="handleCurrentChange"
                 :current-page.sync="current"
@@ -110,6 +112,7 @@
                 // 添加需要的请求头信息
                 "Content-Type": "multipart/form-data"
             },
+            loadingShow: true,
         },
         computed: {
             //计算总共有多少页return Math.ceil(total / pageSize);
@@ -125,17 +128,22 @@
                 return !this.chooseList.length > 0
             }
         },
-        watch: {},
+        watch: {
+
+        },
         methods: {
             //获取数据
             getList() {
                 ms.http.get('/attachment/info.do?current=' + this.current + '&keyword=' + this.keyword + '&size=10').then(res => {
+                    if (res.code != 200) return
                     this.dataList = res.data.records
                     this.total = Number(res.data.total)
+                    this.loadingShow = false
                 })
             },
             //查询
             getOperatorStatisticList() {
+                this.loadingShow = true
                 this.getList()
             },
             //批量删除
@@ -151,6 +159,7 @@
                 }).then(() => {
                     ms.http.post('/attachment/del.do', JSON.stringify(idArr), {headers: {'Content-Type': 'application/json'}}).then(res => {
                         if (res.code == 200) {
+                            this.loadingShow = true
                             this.getList()
                         }
                     })
@@ -198,6 +207,7 @@
                 formData.append('files', item.file);
                 ms.http.post('/attachment/uploadFile.do', formData, {headers: {"Content-Type": "multipart/form-data"}}).then(res => {
                     if (res.code == 200) {
+                        this.loadingShow = true
                         this.getList()
                         this.$message({
                             type: 'success',
@@ -209,7 +219,6 @@
                             message: '上传失败'
                         });
                     }
-                    console.log(res)
                 })
             },
         },
@@ -217,7 +226,7 @@
             this.getList()
         },
         mounted: function () {
-            console.log(this.$refs.query)
+
         },
     })
 </script>
@@ -231,21 +240,30 @@
         margin-top: 10px;
     }
 
-    .buttonBox {
-        display: flex;
-        /*justify-content: space-around;*/
+    .button-Box {
+        display: inline-flex;
     }
-    .itemBox{
+    .item-Box{
+        display: inline-block;
         width: 150px;
         margin-left: 10px;
     }
 
-    .paginationbox {
+    .pagination-box {
         display: flex;
         align-items: center;
         margin-top: 8px;
     }
 
+    .upDateItemBox {
+        background-color: #2db7f5;
+        width: 150px;
+        margin-left: 10px;
+    }
+
+    .upDateItemBox:hover {
+        background-color: #55c2f5;
+    }
     .el-pagination {
         margin: 0 auto;
     }

@@ -1,4 +1,4 @@
-package net.mingsoft.fxxf.bean.request;
+package net.mingsoft.fxxf.bean.base;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;

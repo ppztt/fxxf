@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.mingsoft.fxxf.bean.entity.Attachment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
  */
 public interface AttachmentMapper extends BaseMapper<Attachment> {
 
-    List<Attachment> attachmentInfo(Attachment attachment);
+    ArrayList<Attachment> attachmentInfo(Attachment attachment);
 
     void attachmentDel(List<Integer> idArr);
 

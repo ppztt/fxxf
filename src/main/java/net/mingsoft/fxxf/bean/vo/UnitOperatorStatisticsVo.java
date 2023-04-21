@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 /**
  * @author laijunbao
- * @Description 经营者统计
+ * @Description 经营者统计-无理由
  * @createTime 2020-03-02 0002 22:13
  */
 @Data
@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class OperatorStatisticsVo implements Serializable {
+public class UnitOperatorStatisticsVo implements Serializable {
 
     /**
      * 地区
@@ -32,13 +32,6 @@ public class OperatorStatisticsVo implements Serializable {
     @ApiModelProperty(value = "承诺单位总数")
     @Excel(name = "承诺单位总数")
     private Integer applicantsCnt;
-
-    /**
-     * 退货期限超过七天的承诺店数量
-     */
-    @ApiModelProperty(value = "退货期限超过七天的承诺店数量")
-    @Excel(name = "退货期限超过七天的承诺店数量")
-    private Integer contents2Cnt;
 
     /**
      * 审核通过时间

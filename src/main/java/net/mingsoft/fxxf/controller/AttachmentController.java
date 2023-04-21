@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
 import net.mingsoft.basic.entity.ManagerEntity;
 import net.mingsoft.fxxf.bean.entity.Attachment;
-import net.mingsoft.fxxf.bean.vo.ApiResult;
+import net.mingsoft.fxxf.bean.base.BaseResult;
 import net.mingsoft.fxxf.service.AttachmentService;
 import net.mingsoft.fxxf.service.UserService;
 import org.apache.commons.lang3.StringUtils;
@@ -67,9 +67,9 @@ public class AttachmentController {
                     @ApiImplicitParam(name = "keyword", value = "关键字", dataType = "string", example = "张三", defaultValue = "张三")
             }
     )
-    public ApiResult<IPage<Attachment>> attachmentInfo(@RequestParam(name = "current", defaultValue = "1") Integer current,
-                                                       @RequestParam(name = "size", defaultValue = "10") Integer size,
-                                                       @RequestParam(name = "keyword", defaultValue = "") String keyword) {
+    public BaseResult<IPage<Attachment>> attachmentInfo(@RequestParam(name = "current", defaultValue = "1") Integer current,
+                                                        @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                                        @RequestParam(name = "keyword", defaultValue = "") String keyword) {
         IPage<Attachment> page = attachmentService.page(
                 new Page<>(current, size),
                 new QueryWrapper<Attachment>()
@@ -77,7 +77,7 @@ public class AttachmentController {
                         .or()
                         .like(StringUtils.isNotBlank(keyword), "uploader", keyword)
                         .orderByDesc("create_time"));
-        return ApiResult.success(page);
+        return BaseResult.success(page);
     }
 
 
@@ -89,8 +89,8 @@ public class AttachmentController {
      * @date 2020/1/9 15:50
      **/
     @ApiOperation(value = "附件批量上传", notes = "资料管理/附件批量上传")
-    @PostMapping(value = "/uploadFile", produces = "application/json;charset=UTF-8", headers ="content-type=multipart/form-data")
-    public ApiResult attachmentUpload(@ApiParam(name = "files", value = "附件：任意数据格式；文件最大限制500M") MultipartFile[] files) {
+    @PostMapping(value = "/uploadFile", produces = "application/json;charset=UTF-8", headers = "content-type=multipart/form-data")
+    public BaseResult attachmentUpload(@ApiParam(name = "files", value = "附件：任意数据格式；文件最大限制500M") MultipartFile[] files) {
         InputStream in;
         String retMsg = "";
         FileOutputStream fos;
@@ -132,13 +132,13 @@ public class AttachmentController {
                     attachmentService.save(attachment);
                 } catch (IOException e) {
                     log.error("附件批量上传发生异常:", e);
-                    return ApiResult.fail();
+                    return BaseResult.fail();
                 }
             } else {
                 log.info("文件名为空字符，无效附件不执行上传操作");
             }
         }
-        return new ApiResult("200", retMsg);
+        return new BaseResult("200", retMsg);
     }
 
     /**
@@ -153,15 +153,15 @@ public class AttachmentController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "idArr", value = "附件id；1个或多个id用数组接收；数据请求样例：{\"idArr\": [1,2,3,4]}")
     })
-    public ApiResult attachmentDel(@RequestBody JSONObject idArr) {
+    public BaseResult attachmentDel(@RequestBody JSONObject idArr) {
         JSONArray array = idArr.getJSONArray("idArr");
         List<Integer> list = array.toJavaObject(List.class);
         try {
             attachmentService.removeByIds(list);
-            return ApiResult.success();
+            return BaseResult.success();
         } catch (Exception e) {
             log.error("附件批量删除发生异常：{}", e);
-            return ApiResult.fail();
+            return BaseResult.fail();
         }
     }
 
@@ -177,15 +177,15 @@ public class AttachmentController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "资料id", required = true)
     })
-    public ApiResult countDownloadById(@PathVariable(value = "id") int id) {
+    public BaseResult countDownloadById(@PathVariable(value = "id") int id) {
         try {
             Attachment entity = attachmentService.getById(id);
             entity.setDownloads(entity.getDownloads() + 1);
             entity.updateById();
-            return ApiResult.success();
+            return BaseResult.success();
         } catch (Exception e) {
             log.error("资料下载次数统计异常：{}", e);
-            return ApiResult.fail();
+            return BaseResult.fail();
         }
     }
 }

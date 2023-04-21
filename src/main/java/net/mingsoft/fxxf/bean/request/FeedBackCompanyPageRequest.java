@@ -3,6 +3,7 @@ package net.mingsoft.fxxf.bean.request;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
+import net.mingsoft.fxxf.bean.base.BasePageRequest;
 
 @ApiModel("经营者相关分页请求实体")
 @Data

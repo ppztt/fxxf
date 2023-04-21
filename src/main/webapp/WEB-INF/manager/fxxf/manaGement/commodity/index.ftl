@@ -61,6 +61,8 @@
     </el-row>
 
     <el-table
+            element-loading-text="加载中，请稍后..."
+            v-loading="loadingShow"
             class="table"
             :data="dataList"
             border
@@ -72,9 +74,9 @@
                 align="center"
                 width="880px">
             <template #default="{ row }">
-                <div style="display: flex;justify-content: space-around">
-                    <span>{{row.servicetype}}</span>
-                    <span>{{row.typename}}</span>
+                <div>
+                    <span class="category">{{row.servicetype}}</span>
+                    <span class="category">{{row.typename}}</span>
                 </div>
             </template>
         </el-table-column>
@@ -106,20 +108,25 @@
             region: '',//选择的区/县
             startTime: '',//开始日期
             endTime: '',//结束日期
+            loadingShow: true,
         },
         computed: {},
         watch: {},
         methods: {
             //获取数据
             getList(startTime, endTime) {
-                if(startTime===undefined&&endTime===undefined){
-                    startTime=''
-                    endTime=''
+                if (startTime === undefined && endTime === undefined) {
+                    startTime = ''
+                    endTime = ''
                 }
-                ms.http.get("/typestat/list?city="+this.city+"&district="+this.region+"&startTime="+startTime+"&endTime="+endTime).then(res => {
+                ms.http.get("/typestat/list?city=" + this.city + "&district=" + this.region + "&startTime=" + startTime + "&endTime=" + endTime).then(res => {
+                    if (res.code != 200) return
                     this.dataList = res.data
-                    console.log(res)
+                    this.loadingShow = false
                 })
+            },
+            //获取地区数据
+            getArea(){
                 ms.http.get("/gd-regin.do").then(res => {
                     this.area = res.data
                 })
@@ -138,12 +145,13 @@
             clearCity() {
                 this.district = []
                 //判断市区是否有选
-                if(!this.city){
-                    this.region=''
+                if (!this.city) {
+                    this.region = ''
                 }
             },
             //查询
             getOperatorStatisticList() {
+                this.loadingShow = true
                 //处理日期格式
                 let startTime = '';
                 let endTime = '';
@@ -154,14 +162,15 @@
                     endTime = this.endTime.getFullYear() + '-' + ('0' + (this.endTime.getMonth() + 1)).slice(-2) + '-' + ('0' + this.endTime.getDate()).slice(-2)
                 }
                 //判断市区是否有选
-                if(!this.city){
-                    this.region=''
+                if (!this.city) {
+                    this.region = ''
                 }
-                this.getList(startTime,endTime)
+                this.getList(startTime, endTime)
             }
         },
         created: function () {
             this.getList()
+            this.getArea()
         },
         mounted: function () {
 
@@ -169,7 +178,7 @@
     })
 </script>
 <style>
-    html, body {
+    html {
         overflow: scroll;
     }
 
@@ -179,6 +188,11 @@
 
     .table {
         margin-top: 10px;
+    }
+
+    .category {
+        width: 400px;
+        display: inline-block;
     }
 
     .datetime {
