@@ -11,7 +11,7 @@
 <div id="app" class="statistics">
     <el-row>
         <#--        工具栏-->
-        <el-col :span="12">
+        <el-col :span="24">
             <el-row class="date-time">
                 <el-col :span="24">
                     <div class="date-range">
@@ -19,14 +19,14 @@
                                 v-model="startTime"
                                 type="date"
                                 placeholder="开始日期"
-                                style="width: 220px"
+                                style="width: 320px"
                         ></el-date-picker>
                         <span class="date-separator">-</span>
                         <el-date-picker
                                 v-model="endTime"
                                 type="date"
                                 placeholder="结束日期"
-                                style="width: 220px"
+                                style="width: 320px"
                         ></el-date-picker>
                         <el-button style="margin-left: 50px" type="primary" icon="el-icon-search" @click="getOperatorStatisticList">查询</el-button>
                         <el-button style="margin-left: 200px" type="success" icon="el-icon-top" @click="derive">导出</el-button>

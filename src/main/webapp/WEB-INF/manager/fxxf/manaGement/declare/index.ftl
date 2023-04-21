@@ -224,6 +224,9 @@
         },
         created: function () {
             this.getList()
+            // ms.http.post('/attachment/countById/85.do').then(res => {
+            //     console.log(res)
+            // })
         },
         mounted: function () {
 
