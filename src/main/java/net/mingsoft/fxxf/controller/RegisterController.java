@@ -6,11 +6,11 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import net.mingsoft.fxxf.bean.entity.User;
 import net.mingsoft.fxxf.bean.base.BaseResult;
+import net.mingsoft.fxxf.bean.vo.ManagerInfoVo;
 import net.mingsoft.fxxf.bean.vo.RegisterUserVo;
 import net.mingsoft.fxxf.service.MailService;
-import net.mingsoft.fxxf.service.UserService;
+import net.mingsoft.fxxf.service.ManagerInfoService;
 import net.mingsoft.utils.BeanUtil;
 import net.mingsoft.utils.CheckPassword;
 import net.mingsoft.utils.VerifyCodeUtil;
@@ -47,7 +47,7 @@ public class RegisterController {
     private Cache<String, String> ecodeLocalCache;
 
     @Resource
-    private UserService service;
+    private ManagerInfoService managerInfoService;
 
     @GetMapping("/sendmail")
     @ApiOperation(value = "发送邮箱验证码", notes = "发送邮箱验证码")
@@ -81,20 +81,20 @@ public class RegisterController {
             return BaseResult.fail("验证码已过期");
         } else if (ecode.equals(userVo.getEcode())) {
             // 检查用户名是否存在
-            List<String> accounts = service.existsAccount(userVo.getAccount());
+            List<String> accounts = managerInfoService.existsAccount(userVo.getAccount());
             if (BeanUtil.isBlank(accounts)) {
                 // 密码强度校验
                 boolean isPass = CheckPassword.checkPasswordRule(userVo.getPassword());
                 if (isPass) {
-                    User user = new User();
-                    user.setPassword(DigestUtils.sha256Hex(userVo.getPassword()));
+                    ManagerInfoVo user = new ManagerInfoVo();
+                    user.setManagerPassword(DigestUtils.sha256Hex(userVo.getPassword()));
                     user.setUsertype(2);
-                    user.setAccount(userVo.getAccount());
+                    user.setManagerName(userVo.getAccount());
                     user.setEmail(userVo.getEmail());
                     LocalDateTime now = LocalDateTime.now();
-                    user.setCreateTime(now);
-                    user.setUpdateTime(now);
-                    service.save(user);
+                    user.setCreateDate(now);
+                    user.setUpdateDate(now);
+                    managerInfoService.insertManagerInfo(user);
                     return BaseResult.success();
                 } else {
                     return BaseResult.fail("密码最小长度为8位，至少包含数字、大写字母、小写字母和特殊字符中的三种");

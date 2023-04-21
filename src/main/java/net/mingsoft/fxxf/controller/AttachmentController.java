@@ -7,12 +7,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
-import lombok.extern.slf4j.Slf4j;
 import net.mingsoft.basic.entity.ManagerEntity;
 import net.mingsoft.fxxf.bean.entity.Attachment;
 import net.mingsoft.fxxf.bean.base.BaseResult;
 import net.mingsoft.fxxf.service.AttachmentService;
-import net.mingsoft.fxxf.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
@@ -31,12 +29,17 @@ import java.util.List;
 
 /**
  * 资料管理 前端控制器
+ *
+ * @author Ligy
+ * @since 2020-01-09
  */
 @Api(tags = "资料管理")
 @RestController
 @RequestMapping("/attachment")
-@Slf4j
 public class AttachmentController {
+
+    private Logger log = LoggerFactory.getLogger(this.getClass());
+
 
     @Value("${saveAttachmentPath}")
     private String saveAttachmentPath;
@@ -45,6 +48,14 @@ public class AttachmentController {
     AttachmentService attachmentService;
 
 
+
+    /**
+     * @param keyword 关键字
+     * @return ResponseBean
+     * @author Ligy
+     * @description 查询资料管理信息
+     * @date 2020/1/9 15:41
+     **/
     @ApiOperation(value = "查询资料列表", notes = "资料管理/资料列表")
     @GetMapping(value = "/info", produces = "application/json;charset=UTF-8")
     @ApiImplicitParams(
@@ -67,6 +78,14 @@ public class AttachmentController {
         return BaseResult.success(page);
     }
 
+
+    /**
+     * @param files 一个或多个附件
+     * @return ResponseBean
+     * @author Ligy
+     * @description 附件批量上传
+     * @date 2020/1/9 15:50
+     **/
     @ApiOperation(value = "附件批量上传", notes = "资料管理/附件批量上传")
     @PostMapping(value = "/uploadFile", produces = "application/json;charset=UTF-8", headers = "content-type=multipart/form-data")
     public BaseResult attachmentUpload(@ApiParam(name = "files", value = "附件：任意数据格式；文件最大限制500M") MultipartFile[] files) {
@@ -117,9 +136,16 @@ public class AttachmentController {
                 log.info("文件名为空字符，无效附件不执行上传操作");
             }
         }
-        return new BaseResult<>("200", retMsg);
+        return new BaseResult("200", retMsg);
     }
 
+    /**
+     * @param idArr 一个或多个附件id
+     * @return java.lang.String
+     * @author Ligy
+     * @description 附件批量删除
+     * @date 2020/1/9 15:52
+     **/
     @ApiOperation(value = "附件批量删除", notes = "资料管理/附件批量删除")
     @PostMapping(value = "/del", produces = "application/json;charset=UTF-8")
     @ApiImplicitParams({
@@ -132,12 +158,18 @@ public class AttachmentController {
             attachmentService.removeByIds(list);
             return BaseResult.success();
         } catch (Exception e) {
-            log.error("附件批量删除发生异常：", e);
+            log.error("附件批量删除发生异常：{}", e);
             return BaseResult.fail();
         }
     }
 
-
+    /**
+     * @param id 附件id
+     * @return ResponseBean
+     * @author Ligy
+     * @description
+     * @date 2020/1/9 15:55
+     **/
     @ApiOperation(value = "统计资料下载次数", notes = "资料管理/统计资料下载次数")
     @PostMapping(value = "/countById/{id}")
     @ApiImplicitParams({
@@ -150,7 +182,7 @@ public class AttachmentController {
             entity.updateById();
             return BaseResult.success();
         } catch (Exception e) {
-            log.error("资料下载次数统计异常：", e);
+            log.error("资料下载次数统计异常：{}", e);
             return BaseResult.fail();
         }
     }

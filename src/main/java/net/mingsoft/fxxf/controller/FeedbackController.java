@@ -21,10 +21,11 @@ import net.mingsoft.fxxf.bean.request.FeedbackStatisticRequest;
 import net.mingsoft.fxxf.bean.vo.FeedbackCompanyDetailsVo;
 import net.mingsoft.fxxf.bean.vo.FeedbackComplaintVo;
 import net.mingsoft.fxxf.bean.vo.FeedbackVo;
+import net.mingsoft.fxxf.bean.vo.ManagerInfoVo;
 import net.mingsoft.fxxf.service.ApplicantsService;
 import net.mingsoft.fxxf.service.FeedbackService;
+import net.mingsoft.fxxf.service.ManagerInfoService;
 import net.mingsoft.fxxf.service.RecordService;
-import net.mingsoft.fxxf.service.UserService;
 import net.mingsoft.fxxf.service.impl.MyFeedbackService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -62,7 +63,7 @@ public class FeedbackController {
     private RecordService recordService;
 
     @Resource
-    private UserService userService;
+    private ManagerInfoService managerInfoService;
 
     @Resource
     private MyFeedbackService myFeedbackService;
@@ -150,8 +151,8 @@ public class FeedbackController {
 
             // 留言反馈操作记录设置操作用户
             records.forEach(recordItem -> {
-                User user = userService.getById(recordItem.getUserid());
-                recordItem.setUserName(user.getAccount());
+                ManagerInfoVo user = managerInfoService.getManagerInfoById(recordItem.getUserid());
+                recordItem.setUserName(user.getManagerName());
             });
             feedback.setType("1".equals(feedback.getType()) ? "放心消费承诺单位" : "线下无理由退货承诺店");
             // 返回有操作记录的留言反馈对象

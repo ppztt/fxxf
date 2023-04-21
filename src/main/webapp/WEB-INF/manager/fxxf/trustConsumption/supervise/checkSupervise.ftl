@@ -29,7 +29,7 @@
                                 placeholder="结束日期"
                                 style="width: 320px"
                         ></el-date-picker>
-                        <el-button style="margin-left: 20px" type="primary" icon="el-icon-search" @click="inquire">查询</el-button>
+                        <el-button style="margin-left: 40px" type="primary" icon="el-icon-search" @click="inquire">查询</el-button>
                     </div>
                 </el-col>
             </el-row>

@@ -171,7 +171,7 @@
                             type="password"
                             :password="true"
                             v-model="formData.password"
-                            placeholder="请输入登录密码"
+                            placeholder="请输入登录密码，为空则表示不修改"
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="确认密码" prop="newPassword">
@@ -179,7 +179,7 @@
                             type="password"
                             :password="true"
                             v-model="formData.newPassword"
-                            placeholder="请确认密码"
+                            placeholder="请确认密码，为空则表示不修改"
                     ></el-input>
                 </el-form-item>
             </el-form>
@@ -195,7 +195,7 @@
             <el-form
                     ref="formData"
                     :model="formData"
-                    :rules="ruleValidate"
+                    :rules="newAddRules"
                     label-width="90px">
                 <el-form-item label="用户名" prop="account">
                     <el-input
@@ -363,6 +363,79 @@
                     roleId: 3, //所属组
                 },
                 ruleValidate: {
+                    account: [
+                        {
+                            required: true,
+                            message: "用户名不能为空",
+                            trigger: "blur",
+                        },
+                    ],
+                    realname: [
+                        {
+                            required: true,
+                            message: "真实姓名不能为空",
+                            trigger: "blur",
+                        },
+                    ],
+                    industryName: [
+                        {
+                            required: true,
+                            message: "行业协会名称不能为空",
+                            trigger: "blur",
+                        },
+                    ],
+                    city: [
+                        {
+                            required: true,
+                            message: "所属市不能为空",
+                            trigger: "change",
+                        },
+                    ],
+                    district: [
+                        {
+                            required: true,
+                            message: "所属区县不能为空",
+                            trigger: "change",
+                        },
+                    ],
+                    phone: [
+                        {
+                            required: true,
+                            message: "联系电话不能为空",
+                            trigger: "blur",
+                        },
+                        {pattern: /^1[3|5|7|8|9]\d{9}$/, message: "请输入正确的手机号", trigger: "blur"}
+                    ],
+                    password: [
+                        {
+                            required: false,
+                            message: '密码不能为空',
+                            trigger: "blur",
+                        },
+                        {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
+                        {
+                            pattern: /^(?![A-Za-z]+$)(?![A-Z\\d]+$)(?![A-Z\\W]+$)(?![a-z\\d]+$)(?![a-z\\W]+$)(?![\\d\\W]+$)\\S{8,18}$/,
+                            message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'
+                        }
+                    ],
+                    newPassword: [
+                        {required: false, message: '不能为空', trigger: "blur",},
+                        {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
+                        {
+                            pattern: /^(?![A-Za-z]+$)(?![A-Z\\d]+$)(?![A-Z\\W]+$)(?![a-z\\d]+$)(?![a-z\\W]+$)(?![\\d\\W]+$)\\S{8,18}$/,
+                            message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'
+                        }
+                    ],
+                    roleId: [
+                        {
+                            required: true,
+                            type: "number",
+                            message: "所属组不能为空",
+                            trigger: "change",
+                        },
+                    ],
+                },
+                newAddRules: {
                     account: [
                         {
                             required: true,
