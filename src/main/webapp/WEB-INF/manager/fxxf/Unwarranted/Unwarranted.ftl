@@ -51,14 +51,14 @@
                 </el-select>
             </el-col>
             <el-col span="6">
-                <el-date-picker format="yyyy-MM-dd" v-model="startTime" placeholder="开始时间" @on-change="
+                <el-date-picker format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="startTime" placeholder="开始时间" @on-change="
         (value) => {
           startTime = value;
         }
       "></el-date-picker>
             </el-col>
             <el-col span="6">
-                <el-date-picker format="yyyy-MM-dd" v-model="endTime" placeholder="结束时间" @on-change="
+                <el-date-picker format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="endTime" placeholder="结束时间" @on-change="
         (value) => {
           endTime = value;
         }
@@ -272,6 +272,7 @@
                                             <el-col :span="24">
                                                 <el-form-item prop="applicationDate">
                                                     <el-date-picker
+                                                            value-format="yyyy-MM-dd"
                                                             v-model="formData.applicationDate"
                                                             type="date"
                                                             placeholder="请选择时间"
