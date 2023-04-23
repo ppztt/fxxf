@@ -137,11 +137,13 @@
                         },
                     ],
                     zipcode: [
+
                         {
                             required: true,
                             message: "邮政编码不能为空",
                             trigger: "change",
                         },
+                        {pattern: /^[0-9]\d{5}$/, message: "请输入正确的邮政编码", trigger: "blur"}
                     ],
                     phone: [
                         {

@@ -300,6 +300,7 @@
                         <el-col span="24">
                             <el-form-item label="企业申请日期：" prop="applicationDate">
                                 <el-date-picker
+                                        value-format="yyyy-MM-dd"
                                         v-model="formData.applicationDate"
                                         type="date"
                                         placeholder="请选择时间">
@@ -429,6 +430,7 @@
                         <el-col span="24">
                             <el-form-item label="日期：" prop="applicationDate">
                                 <el-date-picker
+                                        value-format="yyyy-MM-dd"
                                         v-model="formData.applicationDate"
                                         type="date"
                                         placeholder="选择日期"
