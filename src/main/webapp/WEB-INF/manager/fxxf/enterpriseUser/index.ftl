@@ -427,10 +427,7 @@
                                 trigger: "blur",
                             },
                             { min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur' },
-                            {
-                                pattern: /^(?![A-Za-z]+$)(?![A-Z\\d]+$)(?![A-Z\\W]+$)(?![a-z\\d]+$)(?![a-z\\W]+$)(?![\\d\\W]+$)\\S{8,18}$/,
-                                message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'
-                            }
+                            {pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
                         ],
                         newPassword: [
                             {
@@ -439,10 +436,7 @@
                                 trigger: "blur",
                             },
                             { min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur' },
-                            {
-                                pattern: /^(?![A-Za-z]+$)(?![A-Z\\d]+$)(?![A-Z\\W]+$)(?![a-z\\d]+$)(?![a-z\\W]+$)(?![\\d\\W]+$)\\S{8,18}$/,
-                                message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'
-                            }
+                            {pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
                         ],
                         reNewPassword: [
                             {
@@ -451,10 +445,7 @@
                                 trigger: "blur",
                             },
                             { min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur' },
-                            {
-                                pattern: /^(?![A-Za-z]+$)(?![A-Z\\d]+$)(?![A-Z\\W]+$)(?![a-z\\d]+$)(?![a-z\\W]+$)(?![\\d\\W]+$)\\S{8,18}$/,
-                                message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'
-                            }
+                            {pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
                         ],
                     },
                 }
