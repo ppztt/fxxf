@@ -13,7 +13,7 @@
         <el-main class="ms-container">
 
             <el-form
-                    ref="formRef"
+                    ref="checkForm"
                     label-width="160px"
                     :model="formData"
                     label-position="right"

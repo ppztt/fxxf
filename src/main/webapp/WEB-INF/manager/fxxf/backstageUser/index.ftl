@@ -125,7 +125,7 @@
                 <el-form-item
                         label="所属市"
                         prop="city"
-                        v-show="formData.roleId != 1">
+                        v-if="formData.roleId != 1">
                     <el-select
                             v-model="formData.city"
                             placeholder="请选择所属市"
@@ -146,7 +146,7 @@
                 <el-form-item
                         label="所属区县"
                         prop="district"
-                        v-show="formData.roleId == 3 ">
+                        v-if="formData.roleId == 3 ">
                     <el-select
                             v-model="formData.district"
                             placeholder="请选择所属区县"
@@ -171,7 +171,7 @@
                             type="password"
                             :password="true"
                             v-model="formData.password"
-                            placeholder="请输入登录密码，留空则表示不修改"
+                            placeholder="请输入登录密码，为空则表示不修改"
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="确认密码" prop="newPassword">
@@ -179,7 +179,7 @@
                             type="password"
                             :password="true"
                             v-model="formData.newPassword"
-                            placeholder="请输入确认密码，留空则表示不修改"
+                            placeholder="请确认密码，为空则表示不修改"
                     ></el-input>
                 </el-form-item>
             </el-form>
@@ -195,7 +195,7 @@
             <el-form
                     ref="formData"
                     :model="formData"
-                    :rules="ruleValidate"
+                    :rules="newAddRules"
                     label-width="90px">
                 <el-form-item label="用户名" prop="account">
                     <el-input
@@ -224,7 +224,7 @@
                 <el-form-item
                         label="所属市"
                         prop="city"
-                        v-show="formData.roleId == 2 || formData.roleId == 3">
+                        v-if="formData.roleId == 2 || formData.roleId == 3">
                     <el-select
                             v-model="formData.city"
                             placeholder="请选择所属市"
@@ -245,7 +245,7 @@
                 <el-form-item
                         label="所属区县"
                         prop="district"
-                        v-show="formData.roleId == 3 ">
+                        v-if="formData.roleId == 3 ">
                     <el-select
                             v-model="formData.district"
                             placeholder="请选择所属区县"
@@ -404,12 +404,80 @@
                             message: "联系电话不能为空",
                             trigger: "blur",
                         },
-                        ,
+                        {pattern: /^1[3|5|7|8|9]\d{9}$/, message: "请输入正确的手机号", trigger: "blur"}
+                    ],
+                    password: [
                         {
-                            min: 11,
-                            max: 11,
+                            required: false,
+                            message: '密码不能为空',
                             trigger: "blur",
+                        },
+                        {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
+                        {
+                            pattern: /^(?![A-Za-z]+$)(?![A-Z\\d]+$)(?![A-Z\\W]+$)(?![a-z\\d]+$)(?![a-z\\W]+$)(?![\\d\\W]+$)\\S{8,18}$/,
+                            message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'
                         }
+                    ],
+                    newPassword: [
+                        {required: false, message: '不能为空', trigger: "blur",},
+                        {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
+                        {
+                            pattern: /^(?![A-Za-z]+$)(?![A-Z\\d]+$)(?![A-Z\\W]+$)(?![a-z\\d]+$)(?![a-z\\W]+$)(?![\\d\\W]+$)\\S{8,18}$/,
+                            message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'
+                        }
+                    ],
+                    roleId: [
+                        {
+                            required: true,
+                            type: "number",
+                            message: "所属组不能为空",
+                            trigger: "change",
+                        },
+                    ],
+                },
+                newAddRules: {
+                    account: [
+                        {
+                            required: true,
+                            message: "用户名不能为空",
+                            trigger: "blur",
+                        },
+                    ],
+                    realname: [
+                        {
+                            required: true,
+                            message: "真实姓名不能为空",
+                            trigger: "blur",
+                        },
+                    ],
+                    industryName: [
+                        {
+                            required: true,
+                            message: "行业协会名称不能为空",
+                            trigger: "blur",
+                        },
+                    ],
+                    city: [
+                        {
+                            required: true,
+                            message: "所属市不能为空",
+                            trigger: "change",
+                        },
+                    ],
+                    district: [
+                        {
+                            required: true,
+                            message: "所属区县不能为空",
+                            trigger: "change",
+                        },
+                    ],
+                    phone: [
+                        {
+                            required: true,
+                            message: "联系电话不能为空",
+                            trigger: "blur",
+                        },
+                        {pattern: /^1[3|5|7|8|9]\d{9}$/, message: "请输入正确的手机号", trigger: "blur"}
                     ],
                     password: [
                         {
@@ -417,13 +485,19 @@
                             message: '密码不能为空',
                             trigger: "blur",
                         },
-                        { min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur' },
-                        {pattern: "^(?![A-z0-9]+$)(?=.[^%&',;=?$\x22])(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}$", message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'}
+                        {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
+                        {
+                            pattern: /^(?![A-Za-z]+$)(?![A-Z\\d]+$)(?![A-Z\\W]+$)(?![a-z\\d]+$)(?![a-z\\W]+$)(?![\\d\\W]+$)\\S{8,18}$/,
+                            message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'
+                        }
                     ],
                     newPassword: [
                         {required: true, message: '不能为空', trigger: "blur",},
-                        { min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur' },
-                        {pattern: "^(?![A-z0-9]+$)(?=.[^%&',;=?$\x22])(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}$", message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'}
+                        {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
+                        {
+                            pattern: /^(?![A-Za-z]+$)(?![A-Z\\d]+$)(?![A-Z\\W]+$)(?![a-z\\d]+$)(?![a-z\\W]+$)(?![\\d\\W]+$)\\S{8,18}$/,
+                            message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'
+                        }
                     ],
                     roleId: [
                         {
@@ -571,53 +645,53 @@
             },
             // 提交修改
             sub(msg) {
-                this.$nextTick(()=>{
-                    this.$refs.validate(valid=>{
-                        if(valid){
-
-                        }
-                        else{
+                this.$nextTick(() => {
+                    this.$refs["formData"].validate(valid => {
+                        console.log(valid)
+                        if (valid) {
+                            if (msg == "modify") {
+                                let params = JSON.stringify(this.formData)
+                                ms.http.post('/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
+                                    if (res.code == '200') {
+                                        this.$message({
+                                            message: '修改成功',
+                                            type: 'success'
+                                        })
+                                        this.modify = false
+                                        this.reset()
+                                        this.getUserList()
+                                    }
+                                    if (res.code == '500') {
+                                        this.$message.error(res.msg)
+                                    }
+                                })
+                            } else {
+                                if (this.formData.password == this.formData.newPassword) {
+                                    let params = JSON.stringify(this.formData)
+                                    ms.http.post('/user/addUser.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
+                                        if (res.code == '200') {
+                                            this.$message({
+                                                message: '新增用户成功',
+                                                type: 'success'
+                                            })
+                                            this.newAdd = false
+                                            this.reset()
+                                            this.getUserList()
+                                        }
+                                        if (res.code == '500') {
+                                            this.$message.error(res.msg)
+                                        }
+                                    })
+                                } else {
+                                    this.$message.error("两次密码输入不一致")
+                                }
+                            }
+                        } else {
                             this.$message.error("请按规则正确填写信息")
                         }
                     })
                 })
-                if (msg == "modify") {
-                    let params = JSON.stringify(this.formData)
-                    ms.http.post('/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
-                        if (res.code == '200') {
-                            this.$message({
-                                message: '修改成功',
-                                type: 'success'
-                            })
-                            this.modify = false
-                            this.reset()
-                            this.getUserList()
-                        }
-                        if(res.code == '500'){
-                            this.$message.error(res.msg)
-                        }
-                    })
-                } else {
-                    if (this.formData.password == this.formData.newPassword) {
-                        let params = JSON.stringify(this.formData)
-                        ms.http.post('/user/addUser.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
-                            if (res.code == '200') {
-                                this.$message({
-                                    message: '新增用户成功',
-                                    type: 'success'
-                                })
-                                this.newAdd = false
-                                this.reset()
-                                this.getUserList()
-                            }
-                            if(res.code == '500'){
-                                this.$message.error(res.msg)
-                            }
-                        })
-                    } else {
-                        this.$message.error("两次密码输入不一致")
-                    }
-                }
+
             },
             // 删除用户信息
             deleteBack(id) {
@@ -627,7 +701,7 @@
                     type: 'error',
                     center: true
                 }).then(() => {
-                    ms.http.post('/user/del/' + id + '.do').then(()=>{
+                    ms.http.post('/user/del/' + id + '.do').then(() => {
                         this.$message({
                             type: 'success',
                             message: '删除成功!'
@@ -762,5 +836,10 @@
     .btns_type {
         width: 90%;
         margin-left: 10% !important;
+    }
+
+    .el-form-item__error {
+        position: relative !important;
+        margin-bottom: -15px !important;
     }
 </style>

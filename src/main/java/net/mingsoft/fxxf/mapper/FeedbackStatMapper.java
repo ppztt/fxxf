@@ -2,6 +2,7 @@ package net.mingsoft.fxxf.mapper;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.mingsoft.fxxf.bean.entity.FeedbackStat;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -12,9 +13,9 @@ import java.util.List;
  **/
 public interface FeedbackStatMapper {
 
-    List<FeedbackStat> statList(FeedbackStat feedback, Page page);
+    List<FeedbackStat> statList(@Param("feedback") FeedbackStat feedback, Page page);
 
-    List<FeedbackStat> statListByAdminRole(FeedbackStat feedback, Page page);
+    List<FeedbackStat> statListByAdminRole(@Param("feedback") FeedbackStat feedback, Page page);
 
-    List<FeedbackStat> statListByCityRole(FeedbackStat feedback, Page page);
+    List<FeedbackStat> statListByCityRole(@Param("feedback") FeedbackStat feedback, Page page);
 }

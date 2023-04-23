@@ -8,17 +8,12 @@
 
 <body>
 <div id="form" v-loading="loading" v-cloak>
-    <el-header class="ms-header ms-tr" height="50px">
-        <el-button type="primary" icon="iconfont icon-baocun" size="mini" @click="save()" :loading="saveDisabled">保存
-        </el-button>
-        <el-button size="mini" icon="iconfont icon-fanhui" plain onclick="javascript:history.go(-1)">返回</el-button>
-    </el-header>
     <el-main class="ms-container">
         <div class="box">
-            <el-form ref="form" :model="userData" label-width="90px" label-position="left" size="medium">
+            <el-form ref="form" :model="userData" :rules="ruleValidate" label-width="120px" label-position="left" size="medium">
                 <el-row>
                     <el-col :span="24">
-                    <el-form-item label="用户名：">
+                    <el-form-item label="用户名：" prop="account">
                         <p>{{ userData.account }}</p>
                     </el-form-item>
                     </el-col>
@@ -110,7 +105,53 @@
                     usertype: 0,
                     zipcode: ""
                 },
-                regionData: []
+                regionData: [],
+                ruleValidate: {
+                    account: [
+                        {
+                            required: true,
+                            message: "用户名不能为空",
+                            trigger: "blur",
+                        },
+                    ],
+                    realname: [
+                        {
+                            required: true,
+                            message: "真实姓名不能为空",
+                            trigger: "blur",
+                        },
+                    ],
+                    email: [
+                        {
+                            required: true,
+                            message: "邮箱不能为空",
+                            trigger: "blur",
+                        },
+                        {pattern: /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: "请输入正确的邮箱", trigger: "blur"}
+                    ],
+                    city: [
+                        {
+                            required: true,
+                            message: "所属市不能为空",
+                            trigger: "change",
+                        },
+                    ],
+                    zipcode: [
+                        {
+                            required: true,
+                            message: "邮政编码不能为空",
+                            trigger: "change",
+                        },
+                    ],
+                    phone: [
+                        {
+                            required: true,
+                            message: '手机号不能为空',
+                            trigger: "blur",
+                        },
+                        {pattern: /^1[3|5|7|8|9]\d{9}$/, message: "请输入正确的手机号", trigger: "blur"}
+                    ]
+                },
             }
         },
         watch: {},
@@ -143,7 +184,7 @@
                         }
                     })
                 })
-            }
+            },
         },
         mounted(){
             this.getUserList()

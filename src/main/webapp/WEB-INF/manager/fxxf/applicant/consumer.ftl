@@ -79,10 +79,10 @@
             </div>
             <#-- 录入弹出框 -->
             <el-dialog
+                    ref="formData"
                     :visible.sync="isShowEnteringModal"
                     title="放心消费承诺经营者 - 录入"
                     width="800"
-                    :rules="formrules"
             >
                 <el-row>
                     <el-col offset="1" span="22">
@@ -423,6 +423,9 @@
                     fixed="left"
                     width="200"
                     align="left">
+                <template slot-scope="{row}">
+                    <img class="new" v-show="row.isNew" src="${base}/static/images/PendingTrial.png" alt="" /><span>{{ row.regName }}</span>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="createType"
@@ -630,7 +633,7 @@
                 details: [{required: true, message: '详细类别不能为空', trigger: 'blur'}],
                 principal: [{required: true, message: '负责人姓名不能为空', trigger: 'blur'}],
                 principalTel: [{required: true, message: '手机号码不能为空', trigger: 'blur'},
-                    {min: 11, max: 11, message: '请输入正确的手机号码', trigger: 'blur'}],
+                    {pattern: /^1[3|5|7|8|9]\d{9}$/, message: "请输入正确的手机号", trigger: "blur"}],
             },
             districtDataArr: [],
             textList: {
@@ -991,7 +994,6 @@
                 }
             },
             uploadErrAction() {
-
                 this.$message.error("导入失败");
             },
             downLoadTemplate: function () {
@@ -1086,7 +1088,7 @@
                     if (valid) {
                         this.setApply(type);
                     } else {
-                        this.$message.error("录入提交失败，验证不通过");
+                        this.$message.error("请按要求重新填写");
                     }
                 });
                 // this.isShow = true;
@@ -1368,5 +1370,11 @@
         overflow-x: auto !important;
         flex-wrap: inherit !important;
     }
-
+    .new{
+        width: 30px;
+        height: 20px;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
 </style>

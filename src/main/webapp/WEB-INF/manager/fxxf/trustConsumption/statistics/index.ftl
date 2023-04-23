@@ -29,7 +29,7 @@
                                 style="width: 320px"
                         ></el-date-picker>
                         <el-button style="margin-left: 50px" type="primary" icon="el-icon-search" @click="getOperatorStatisticList">查询</el-button>
-                        <el-button style="margin-left: 200px" type="success" icon="el-icon-top" @click="derive">导出</el-button>
+                        <el-button style="margin-left: 100px" type="success" icon="el-icon-top" @click="derive">导出</el-button>
 
                     </div>
                 </el-col>
