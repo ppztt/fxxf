@@ -434,7 +434,7 @@
                 this.callbackFun = fun;
             },
             getMessage() {
-                ms.http.get('/xwh/feedback/msg.do').then(res =>{
+                ms.http.get('/feedback/msg.do').then(res =>{
                     if(res.code == 200){
                         this.message = res.data
                         this.messageCount = Number(res.data.type1NoHandlerCnt) + Number(res.data.type2NoHandlerCnt)
