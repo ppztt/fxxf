@@ -132,7 +132,8 @@
                             :disabled="formData.roleId == 1 || roleId == 2 || roleId == 3"
                             :clearable="true"
                             filterable
-                            @change="cityChange(formData.city)">
+                            @change="cityChange(formData.city)"
+                            @clear="clear">
                         <el-option
                                 v-for="(item, index) in regionData"
                                 :key="index"
@@ -231,7 +232,8 @@
                             :disabled="formData.roleId == 1 || roleId == 2 || roleId == 3"
                             :clearable="true"
                             filterable
-                            @change="cityChange(formData.city)">
+                            @change="cityChange(formData.city)"
+                            @clear="clear">
                         <el-option
                                 v-for="(item, index) in regionData"
                                 :key="index"
@@ -257,7 +259,7 @@
                                 v-for="item in districtData"
                                 :key="item.name"
                                 :value="item.name"
-                        >{{ item.name }}
+                        >
                         </el-option
                         >
                     </el-select>
@@ -597,12 +599,17 @@
                     this.regionData = res.data
                 })
             },
+            clear(){
+                this.district = "";
+                this.formData.district = ""
+            },
             cityChange: function (name) {
                 // 一级市发生改变
                 if (name) {
                     let cityData_active = this.regionData.find((value) => value.name == name);
                     this.districtData = cityData_active.children;
                     this.district = "";
+                    this.formData.district = ""
                     // this.town = "";
                 }
             },

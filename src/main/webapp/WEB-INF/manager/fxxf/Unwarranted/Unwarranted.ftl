@@ -20,7 +20,7 @@
             </el-col>
             <el-col span="20">
                 <el-select ref="city" v-model="city" placeholder="市" :clearable="true" filterable
-                           @change="cityChange(city)">
+                           @change="cityChange(city)" @clear="clear">
                     <el-option v-for="item in regionData" :value="item.name" :key="item.code" :label="item.name">
                     </el-option>
                 </el-select>
@@ -156,7 +156,8 @@
                                                 placeholder="市"
                                                 :clearable="true"
                                                 filterable
-                                                @change="cityChange(addr.city)">
+                                                @change="cityChange(addr.city)"
+                                                @clear="clear">
                                             <el-option
                                                     v-for="item in regionData"
                                                     :value="item.name"
@@ -947,12 +948,21 @@
 
             }
             ,
+            clear(){
+                this.district = "";
+                this.formData.district = ""
+            },
+            clear(){
+                this.district = "";
+                this.formData.district = ""
+            },
             cityChange: function (name) {
                 // 一级市发生改变
                 if (name) {
                     let cityData_active = this.regionData.find((value) => value.name == name);
                     this.districtData = cityData_active.children;
                     this.district = "";
+                    this.formData.district = ""
                     // this.town = "";
                 }
             },
@@ -1403,5 +1413,4 @@
         width: 18px;
         height: 18px;
     }
-
 </style>
