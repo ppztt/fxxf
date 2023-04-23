@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="net.mingsoft.fxxf.mapper.UserMapper">
+<mapper namespace="net.mingsoft.fxxf.mapper.ManagerInfoMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="net.mingsoft.fxxf.bean.entity.User">
+    <resultMap id="BaseResultMap" type="net.mingsoft.fxxf.bean.vo.ManagerInfoVo">
         <id column="id" property="id"/>
-        <result column="account" property="account"/>
-        <result column="password" property="password"/>
-        <result column="realname" property="realname"/>
+        <result column="manager_name" property="managerName"/>
+        <result column="manager_password" property="managerPassword"/>
+        <result column="manager_nickname" property="managerNickName"/>
         <result column="email" property="email"/>
         <result column="province" property="province"/>
         <result column="city" property="city"/>
@@ -16,7 +16,8 @@
         <result column="address" property="address"/>
         <result column="zipcode" property="zipcode"/>
         <result column="phone" property="phone"/>
-        <result column="role_id" property="roleId"/>
+        <result column="role_ids" property="roleIds"/>
+        <result column="role_name" property="roleName"/>
 
         <result column="usertype" property="usertype"/>
         <result column="credit_code" property="creditCode"/>
@@ -25,57 +26,59 @@
         <result column="principal" property="principal"/>
         <result column="principal_tel" property="principalTel"/>
 
-        <result column="create_time" property="createTime"/>
-        <result column="update_time" property="updateTime"/>
+        <result column="create_date" property="createDate"/>
+        <result column="update_date" property="updateDate"/>
 
         <!--<result column="industry_user_name" property="industryUserName"/>-->
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, account, password, realname, email, province, city, district, town, address, zipcode, phone, role_id,
+        id, manager_name, manager_password, manager_nickname, email, province, city, district, town, address, zipcode, phone, role_ids,
         usertype, credit_code, store_name, busin_scope, principal, principal_tel,
-        create_time, update_time
+        create_date, update_date
     </sql>
 
     <select id="userList" resultMap="BaseResultMap">
-        SELECT u.id,u.account, r.role_name as roleName, u.city, u.district, u.phone
-        FROM sys_user u
-        LEFT JOIN role AS r ON r.id = u.role_id
+        SELECT m.id,m.manager_name, r.role_name, mi.city, mi.district, mi.phone,m.create_date
+        FROM manager m
+        LEFT JOIN manager_info AS mi ON m.id = mi.id
+        LEFT JOIN role AS r ON r.id = m.role_ids
         where usertype = 1
         <if test="keyword != null and keyword != ''">
-            AND u.account LIKE concat('%', #{keyword},'%')
+            AND m.manager_name LIKE concat('%', #{keyword},'%')
             OR r.role_name LIKE concat('%', #{keyword},'%')
-            OR u.city LIKE concat('%', #{keyword},'%')
-            OR u.phone LIKE concat('%', #{keyword},'%')
+            OR mi.city LIKE concat('%', #{keyword},'%')
+            OR mi.phone LIKE concat('%', #{keyword},'%')
         </if>
-        ORDER BY u.create_time DESC
+        ORDER BY m.create_date DESC
     </select>
 
     <select id="roleList" resultType="net.mingsoft.fxxf.bean.entity.Role">
-        SELECT role_name FROM role
+        SELECT name,explation FROM sys_role
     </select>
 
     <select id="existsAccount" resultType="string">
-        SELECT account FROM sys_user where account = #{account}
+        SELECT manager_name FROM manager where manager_name = #{account}
     </select>
 
     <select id="enterpriseList" resultMap="BaseResultMap">
-        SELECT * FROM sys_user u where usertype = 2
+        SELECT m.id,m.manager_name,m.manager_nickname,mi.credit_code,m.create_date FROM manager m
+        left join manager_info mi on m.id = mi.id where mi.usertype = 2
         <if test="keyword != null and keyword != ''">
-            AND (u.account LIKE concat('%', #{keyword},'%')
-            OR u.realname LIKE concat('%', #{keyword},'%')
-            OR u.city LIKE concat('%', #{keyword},'%') )
+            AND (m.manager_name LIKE concat('%', #{keyword},'%')
+            OR m.manager_nickname LIKE concat('%', #{keyword},'%')
+            OR mi.city LIKE concat('%', #{keyword},'%') )
         </if>
     </select>
 
     <!--行业协会-->
     <select id="industryAssociationList" resultMap="BaseResultMap">
-        SELECT * FROM sys_user u where usertype = 3
+        SELECT * FROM manager m left join manager_info mi on m.id = mi.id where mi.usertype = 3
         <if test="keyword != null and keyword != ''">
-            AND (u.account LIKE concat('%', #{keyword},'%')
-            OR u.realname LIKE concat('%', #{keyword},'%')
-            OR u.city LIKE concat('%', #{keyword},'%') )
+            AND (m.manager_name LIKE concat('%', #{keyword},'%')
+            OR m.manager_nickname LIKE concat('%', #{keyword},'%')
+            OR mi.city LIKE concat('%', #{keyword},'%') )
         </if>
     </select>
 

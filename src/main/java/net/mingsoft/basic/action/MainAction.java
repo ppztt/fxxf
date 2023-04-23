@@ -35,6 +35,7 @@ import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.basic.util.RedisUtil;
 import net.mingsoft.basic.util.StringUtil;
 import net.mingsoft.config.MSProperties;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -96,7 +97,6 @@ public class MainAction extends BaseAction {
 
 	@Value("${ms.pass-change-max-day:90}")
 	private int passChangeMaxDay;
-
 
 
 	/**
@@ -167,12 +167,13 @@ public class MainAction extends BaseAction {
 			// 密码错误超时锁定中
 			return ResultData.build().error("密码错误超时锁定中（分钟）：" + RedisUtil.ttl("PassChangeErrLock:" + managerModifyPwdBean.getManagerName()) / 60);
 		}
+		String oldManagerPassword = request.getParameter("oldManagerPassword");
 		//获取新的密码
 		String newManagerPassword = managerModifyPwdBean.getNewManagerPassword();
 		//获取管理员信息
 		ManagerEntity manager = BasicUtil.getManager();
 		// 判断新密码和旧密码是否为空
-		if (StringUtils.isBlank(newManagerPassword) || StringUtils.isBlank(managerModifyPwdBean.getOldManagerPassword())) {
+		if (StringUtils.isBlank(newManagerPassword) || StringUtils.isBlank(oldManagerPassword)) {
 			return ResultData.build().error(getResString("err.empty", this.getResString("managerPassword")));
 		}
 		// 判断新密码长度
@@ -184,7 +185,7 @@ public class MainAction extends BaseAction {
 			return ResultData.build().error("请输入由大小写字母、数字和特殊符号组合的密码");
 		}
 		//判断旧的密码是否正确
-		if(!managerModifyPwdBean.getOldManagerPassword().equals(manager.getManagerPassword())){
+		if (!DigestUtils.sha256Hex(oldManagerPassword).equals(manager.getManagerPassword())) {
 			int times = 1;
 			String passChangeErrTimes = (String) RedisUtil.getValue("PassChangeErrTimes:" + manager.getManagerName());
 			if (StringUtils.isNotBlank(passChangeErrTimes)) {
@@ -205,7 +206,7 @@ public class MainAction extends BaseAction {
 			return ResultData.build().error(this.getResString("manager.password.old.err"));
 		}
 		//更改密码
-		manager.setManagerPassword(SecureUtil.md5(newManagerPassword));
+		manager.setManagerPassword(DigestUtils.sha256Hex(newManagerPassword));
 		//更新
 		managerBiz.updateUserPasswordByUserName(manager);
 		Subject subject = SecurityUtils.getSubject();
@@ -244,7 +245,7 @@ public class MainAction extends BaseAction {
 			return ResultData.build().error("请输入由大小写字母、数字和特殊符号组合的密码");
 		}
 		//判断旧的密码是否正确
-		if(!SecureUtil.md5(managerModifyPwdBean.getOldManagerPassword()).equals(manager.getManagerPassword())){
+		if(!DigestUtils.sha256Hex(managerModifyPwdBean.getOldManagerPassword()).equals(manager.getManagerPassword())){
 			int times = 1;
 			String passChangeErrTimes = (String) RedisUtil.getValue("PassChangeErrTimes:" + manager.getManagerName());
 			if (StringUtils.isNotBlank(passChangeErrTimes)) {
@@ -265,7 +266,7 @@ public class MainAction extends BaseAction {
 			return ResultData.build().error(this.getResString("manager.password.old.err"));
 		}
 		//更改密码
-		manager.setManagerPassword(SecureUtil.md5(newManagerPassword));
+		manager.setManagerPassword(DigestUtils.sha256Hex(newManagerPassword));
 		//更新
 		managerBiz.updateUserPasswordByUserName(manager);
 		Subject subject = SecurityUtils.getSubject();

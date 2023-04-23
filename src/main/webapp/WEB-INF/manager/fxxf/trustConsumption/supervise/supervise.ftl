@@ -33,14 +33,19 @@
                 border
                 class="table"
                 :data="mesNumDataList"
-                border
                 style="width: 100%"
                 :max-height="tableHeight">
             <el-table-column
-                    prop="regName"
                     label="经营者注册名称"
                     align=left">
-
+                <template #default="{ row }">
+                    <img
+                            class="new"
+                            v-show="row.isNew || row.count !== row.handleCnt"
+                            src="${base}/static/images/be-done.png"
+                            alt=""
+                    /><span>{{ row.regName }}</span>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="count"
@@ -66,7 +71,7 @@
             </el-table-column>
         </el-table>
 
-        <div class="paginationbox">
+        <div class="pagination_box">
             <span style="white-space:nowrap">共{{total}}条信息 共{{Totalpage}}页</span>
             <el-pagination
                     @current-change="handleCurrentChange"
@@ -148,6 +153,7 @@
     })
 </script>
 <style>
+
     #mes_num_list {
         border: 0;
         width: 100%;
@@ -176,7 +182,6 @@
     <#-- 表格  -->
     .table {
         margin-top: 15px;
-        border: 1px solid #e2e7e9;
     }
 
     .actions {
@@ -195,13 +200,16 @@
     }
 
 
-    img {
+    .new {
+        position: absolute;
+        top: 0;
+        left: 0;
         display: block;
-        width: 15px;
+        width: 25px;
         margin-right: 5px;
     }
 
-    .paginationbox {
+    .pagination_box {
         display: flex;
         align-items: center;
         margin-top: 8px;

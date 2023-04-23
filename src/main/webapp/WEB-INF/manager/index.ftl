@@ -64,8 +64,8 @@
                 </el-menu>
                 <!--头部右侧-->
                 <div class="ms-admin-header-right">
-                    <el-badge :value="2" :max="99" class="item">
-                        <el-button class="message" icon="el-icon-message"></el-button>
+                    <el-badge :value="messageCount" :max="99" class="item">
+                        <el-button class="message" icon="el-icon-message" @click="messageShow = true"></el-button>
                     </el-badge>
                     <!-- 主题切换 -->
                     <ms-switch-theme :theme.sync="theme"></ms-switch-theme>
@@ -100,6 +100,21 @@
                 </el-tabs>
             </el-main>
         </el-container>
+        <el-dialog
+                :visible.sync="messageShow"
+                width="30%"
+                center>
+            <div slot="title">
+                <i class=""></i>
+                <span style="font-size: 16px">温馨提示</span>
+            </div>
+            <p>当前系统共有{{ Number(message.type1Count) + Number(message.type2Count) }}条监督投诉，情况如下：</p>
+            <p>放心消费类型共有 {{ message.type1Count }} 条，其中 {{ message.type1NoHandlerCnt }} 条未处理；</p>
+            <p>无理由退货承诺类型共有 {{ message.type2Count }} 条，其中 {{ message.type2NoHandlerCnt }} 条未处理，请您尽快处理。</p>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="messageShow = false" size="medium">确 定</el-button>
+                </span>
+        </el-dialog>
     </el-container>
 </div>
 </body>
@@ -141,7 +156,16 @@
             //数据加载状态
             state: {
                 menu: true
-            }
+            },
+            // 消息提示
+            message: {
+                type1Count: "0",
+                type1NoHandlerCnt: "0",
+                type2Count: "0",
+                type2NoHandlerCnt: "0"
+            },
+            messageCount: 0,
+            messageShow: false
         },
         computed: {
             messageType: function (type) {
@@ -397,6 +421,7 @@
                 ms.http.get(ms.manager + "/basic/manager/get.do")
                     .then(function (data) {
                         that.managerInfo = data.data
+                        sessionStorage.setItem('userId', data.data.id)
                     }, function (err) {
                         that.$notify({
                             title: '错误',
@@ -407,6 +432,14 @@
             },
             addCallBackFun: function (fun) {
                 this.callbackFun = fun;
+            },
+            getMessage() {
+                ms.http.get('/xwh/feedback/msg.do').then(res =>{
+                    if(res.code == 200){
+                        this.message = res.data
+                        this.messageCount = Number(res.data.type1NoHandlerCnt) + Number(res.data.type2NoHandlerCnt)
+                    }
+                })
             }
         },
         created: function () {
@@ -417,7 +450,7 @@
             localStorage.setItem("markList", JSON.stringify(this.markList))
         },
         mounted: function () {
-            // this.getMessage();
+            this.getMessage();
             //this.dictList();
             //setInterval(this.getMessage,3000)
             // 菜单列表
@@ -429,7 +462,6 @@
     })
 </script>
 <style>
-
     .ms-admin-logo {
         display: flex;
         align-items: center;
@@ -795,7 +827,7 @@
     }
 
     .item {
-        margin-right: 15px;
+        margin-right: 25px;
     }
 
     .el-badge__content {

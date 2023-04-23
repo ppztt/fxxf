@@ -11,25 +11,25 @@
 <div id="app" class="mes_num_list">
     <el-row>
         <#--        工具栏-->
-        <el-col :span="10">
-            <el-row class="datetime">
-                <el-col :span="4" style="white-space:nowrap">时间范围 :</el-col>
-                <el-col :span="9">
+        <el-col :span="20">
+            <el-row class="date-time">
+                <el-col :span="2" style="white-space:nowrap">时间范围 :</el-col>
+                <el-col :span="15">
                     <div class="date-range">
                         <el-date-picker
                                 v-model="startTime"
                                 type="date"
                                 placeholder="开始日期"
-                                style="width: 220px"
+                                style="width: 320px"
                         ></el-date-picker>
                         <span class="date-separator">-</span>
                         <el-date-picker
                                 v-model="endTime"
                                 type="date"
                                 placeholder="结束日期"
-                                style="width: 220px"
+                                style="width: 320px"
                         ></el-date-picker>
-                        <el-button style="margin-left: 20px" type="primary" icon="el-icon-search" @click="inquire">查询</el-button>
+                        <el-button style="margin-left: 40px" type="primary" icon="el-icon-search" @click="inquire">查询</el-button>
                     </div>
                 </el-col>
             </el-row>
@@ -65,7 +65,6 @@
 
         </el-table-column>
         <el-table-column
-                prop="待处理"
                 label="状态"
                 align=left">
             <template #default="{ row }">
@@ -193,6 +192,7 @@
     })
 </script>
 <style>
+
     #complaint {
         border: 0;
         width: 100%;
@@ -209,7 +209,7 @@
         width: 100%;
     }
 
-    .datetime {
+    .date-time {
         display: flex;
         justify-content: flex-start;
         align-items: center;
@@ -218,7 +218,6 @@
     .date-range {
         display: flex;
         align-items: center;
-        width: 500px;
     }
 
     .date-separator {
@@ -236,7 +235,6 @@
     /*    表格*/
     .table {
         margin-top: 15px;
-        border: 1px solid #e2e7e9;
     }
 
     /*    分页*/

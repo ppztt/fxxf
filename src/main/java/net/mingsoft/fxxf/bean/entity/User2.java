@@ -31,7 +31,7 @@ import java.util.List;
 @ToString
 @Setter
 @Getter
-public class User extends Model<User> {
+public class User2 extends Model<User2> {
 
     private static final long serialVersionUID = 1L;
 

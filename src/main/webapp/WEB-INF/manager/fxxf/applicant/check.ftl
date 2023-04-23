@@ -13,7 +13,7 @@
         <el-main class="ms-container">
 
             <el-form
-                    ref="formRef"
+                    ref="checkForm"
                     label-width="160px"
                     :model="formData"
                     label-position="right"
@@ -132,7 +132,6 @@
                                 <el-row :key="index" v-for="(addr, index) in formData.addrs">
                                     <el-col span="5">
                                         <el-select
-                                                :ref="'city'+index"
                                                 v-model="addr.city"
                                                 placeholder="市"
                                                 :clearable="true"
@@ -142,14 +141,12 @@
                                                     v-for="item in regionData"
                                                     :value="item.name"
                                                     :key="item.code"
-                                                    :label="item.name"
-                                            >{{ item.name }}
+                                                    :label="item.name">
                                             </el-option>
                                         </el-select>
                                     </el-col>
                                     <el-col span="5">
                                         <el-select
-                                                :ref="`district${index}`"
                                                 v-model="addr.district"
                                                 placeholder="市/县/区/镇"
                                                 :clearable="true"
@@ -157,10 +154,9 @@
                                             <el-option
                                                     v-for="item in districtData"
                                                     :value="item.name"
-                                                    :key="item.name"
-                                            >{{ item.name }}
-                                            </el-option
-                                            >
+                                                    :label="item.name"
+                                                    :key="item.code">
+                                            </el-option>
                                         </el-select>
                                     </el-col>
                                     <el-col span="8">
@@ -182,7 +178,6 @@
             () => {
               formData.addrs.splice(index, 1);
               districtDataArr.splice(index, 1);
-              $forceUpdate();
             }
           "
                                         ></el-button>
@@ -203,12 +198,14 @@
                                 <el-date-picker
                                         v-model="formData.startTime"
                                         type="date"
+                                        value-format="yyyy-MM-dd"
                                         placeholder="开始有效期">
                                 </el-date-picker>
                                 ~
                                 <el-date-picker
                                         v-model="formData.endTime"
                                         type="date"
+                                        value-format="yyyy-MM-dd"
                                         placeholder="结束有效期">
                                 </el-date-picker>
                             </el-form-item>
@@ -304,7 +301,6 @@
                                 <el-date-picker
                                         v-model="formData.applicationDate"
                                         type="date"
-                                        value-format="yyyy-MM-dd"
                                         placeholder="请选择时间">
                                 </el-date-picker>
                             </el-form-item>
@@ -371,7 +367,7 @@
                         </el-col>
                     </el-row>
                 </div>
-                <div class="check-form-item" v-else>
+                <div class="check-form-item" v-if="type == 2">
                     <el-row>
                         <el-col span="8">
                             <el-form-item label="适用商品：" prop="contents1">
@@ -711,12 +707,11 @@
                     }).then((res) => {
                     let isReapt = res.data.isRepeatRegName
                     if (!isReapt) {
-                        ms.http.post('/applicants/update/' + this.consumerId + '.do', {...this.formData, addrs: adds},
+                        ms.http.post('/applicants/update.do', {...this.formData, addrs: adds},
                             {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
                             if (res.code == 200) {
-
                                 this.returnBack()
-                                this.currentTopic("审核成功")
+                                this.currentTopic("保存成功")
                             }
                         })
                     }
@@ -783,6 +778,7 @@
         mounted: function () {
             this.detailType = window.location.href.split("?")[1].split("&")[0].split('=')[1]
             this.consumerId = Number(window.location.href.split("?")[1].split("&")[1].split('=')[1])
+            this. getRegionData()
             this.getList();
         }
     });

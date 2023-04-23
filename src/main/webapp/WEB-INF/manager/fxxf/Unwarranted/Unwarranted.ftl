@@ -421,6 +421,9 @@
                     fixed="left"
                     width="200"
                     align="left">
+                <template slot-scope="{row}">
+                    <img class="new" v-show="row.isNew" src="${base}/static/images/PendingTrial.png" alt="" /><span>{{ row.regName }}</span>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="createType"
@@ -632,7 +635,7 @@
                 contents2: [{required: true, message: '退货期限不能为空', trigger: 'blur'}],
                 contents3: [{required: true, message: '退货约定不能为空', trigger: 'blur'}],
                 principalTel:[{required: true, message: '手机号码不能为空', trigger: 'blur'},
-                    {min: 11, message: '请输入正确的手机号码', trigger: 'blur'}]
+                    {pattern: /^1[3|5|7|8|9]\d{9}$/, message: "请输入正确的手机号", trigger: "blur"}]
             },
             districtDataArr: [],
             textList: {
@@ -1366,5 +1369,11 @@
         overflow-x: auto !important;
         flex-wrap: inherit !important;
     }
-
+    .new{
+        width: 30px;
+        height: 20px;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
 </style>

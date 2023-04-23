@@ -4,10 +4,11 @@ package net.mingsoft.fxxf.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
+import net.mingsoft.fxxf.bean.vo.ManagerInfoVo;
 import net.mingsoft.fxxf.mapper.FeedbackStatMapper;
 import net.mingsoft.fxxf.bean.entity.FeedbackStat;
-import net.mingsoft.fxxf.bean.entity.User;
 import net.mingsoft.fxxf.service.FeedbackStatService;
+import net.mingsoft.fxxf.service.ManagerInfoService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,8 @@ public class FeedbackStatServiceImpl implements FeedbackStatService {
 
     @Resource
     FeedbackStatMapper statMapper;
+    @Resource
+    private ManagerInfoService managerInfoService;
 
     @Override
     public Page statList(FeedbackStat feedback) {
@@ -42,9 +45,9 @@ public class FeedbackStatServiceImpl implements FeedbackStatService {
         List<FeedbackStat> statList;
 
         //根据角色id选择统计维度
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        ManagerInfoVo user = managerInfoService.getLoginUserInfo();
         String city = user.getCity();
-        Integer roleId = user.getRoleId();
+        Integer roleId = user.getRoleIds();
         feedback.setRoleId(roleId);
 
         //测试环境参数配置
@@ -75,9 +78,9 @@ public class FeedbackStatServiceImpl implements FeedbackStatService {
         List<FeedbackStat> statList;
 
         //根据角色id选择统计维度
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        ManagerInfoVo user = managerInfoService.getLoginUserInfo();
         String city = user.getCity();
-        Integer roleId = user.getRoleId();
+        Integer roleId = user.getRoleIds();
         feedback.setCity(city);
         feedback.setRoleId(roleId);
 
