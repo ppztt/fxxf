@@ -5,9 +5,10 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * @author luwb
@@ -33,11 +34,13 @@ public class ManagerInfoVo implements Serializable {
     @ApiModelProperty(value = "管理员标识，超级管理员：super，子管理员：open")
     private String managerAdmin;
 
+    @NotBlank(message = "用户名必填")
     @ApiModelProperty(value = "管理员用户名")
     @JsonProperty("account")
     private String managerName;
 
-    @ApiModelProperty(value = "管理员昵称")
+    @NotBlank(message = "真实姓名必填")
+    @ApiModelProperty(value = "真实姓名（企业用户为：经营者注册名称 企业用户为：行业协会名称）")
     @JsonProperty("realname")
     private String managerNickName;
 
@@ -68,6 +71,7 @@ public class ManagerInfoVo implements Serializable {
     @ApiModelProperty(value = "锁定状态")
     private String managerLock;
 
+    @Email(message = "电子邮件格式不正确")
     @ApiModelProperty(value = "电子邮件")
     private String email;
 
@@ -89,6 +93,7 @@ public class ManagerInfoVo implements Serializable {
     @ApiModelProperty(value = "邮政编码")
     private String zipcode;
 
+    @NotBlank(message = "联系电话必填")
     @ApiModelProperty(value = "联系电话")
     private String phone;
 
