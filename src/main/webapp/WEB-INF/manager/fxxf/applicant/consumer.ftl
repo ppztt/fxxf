@@ -1399,13 +1399,9 @@
 
     .el-table__body-wrapper::-webkit-scrollbar-thumb {
         background-color: #dddee0;
-        border-radius: 0px;
+        border-radius: 30px;
+        border: 6px solid #fff;
     }
-
-    /*
-    主要是靠这个 注意
-    上面.el-table__body-wrapper::-webkit-scrollbar 是 30px 下面这个也要 30px
-    */
     .el-scrollbar__wrap::-webkit-scrollbar{
         width: 18px;
         height: 18px;

@@ -8,6 +8,7 @@
     <script src="${base}/static/plugins/stomp/2.3.3/stomp.min.js"></script>
     <!-- 此部分是铭飞平台MStroe的客户端（MStore不在铭飞开源产品范围），如果不需要使用MStore可以删除掉 -->
     <script src="https://cdn.mingsoft.net/platform/ms-store.umd.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 </head>
 <body>
 <div id="index" class="ms-index">
@@ -406,7 +407,7 @@
                 :data="unitDataList"
                 ref="unitDataList"
                 border
-                height="250"
+                height="700"
                 @select="addIDs"
                 @select-all="addIDs">
             <el-table-column
@@ -1402,13 +1403,9 @@
 
     .el-table__body-wrapper::-webkit-scrollbar-thumb {
         background-color: #dddee0;
-        border-radius: 0px;
+        border-radius: 30px;
+        border: 6px solid #fff;
     }
-
-    /*
-    主要是靠这个 注意
-    上面.el-table__body-wrapper::-webkit-scrollbar 是 30px 下面这个也要 30px
-    */
     .el-scrollbar__wrap::-webkit-scrollbar{
         width: 18px;
         height: 18px;
