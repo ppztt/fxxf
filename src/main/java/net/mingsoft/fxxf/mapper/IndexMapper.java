@@ -3,6 +3,7 @@ package net.mingsoft.fxxf.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.mingsoft.fxxf.bean.vo.ApplicantsExtend;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,6 @@ import java.util.List;
  */
 public interface IndexMapper extends BaseMapper<ApplicantsExtend> {
 
-    List<ApplicantsExtend> searchList(HashMap<String, Object> params, Page page);
+    List<ApplicantsExtend> searchList(@Param("params") HashMap<String, Object> params, Page page);
 
 }

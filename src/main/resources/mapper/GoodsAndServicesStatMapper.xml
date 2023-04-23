@@ -57,41 +57,4 @@
             6)
     </select>
 
-
-    <select id="list2" resultType="Map">
-        SELECT
-        a.type,
-        a.city,
-        a.district,
-        a.management,
-        SUBSTRING_INDEX( SUBSTRING_INDEX( a.details, ',', b.help_topic_id + 1 ), ',',- 1 ) typename
-        FROM
-        cc_applicants a
-        LEFT JOIN mysql.help_topic b ON b.help_topic_id &lt; ( LENGTH( a.details ) - LENGTH( REPLACE ( a.details, ',', '' ) ) + 1 )
-        <where>
-            a.details is not null
-            <if test="city != '' and city != null">
-                AND a.city like concat('%', #{city},'%')
-            </if>
-            <if test="district != '' and district != null">
-                AND a.district like concat('%',  #{district},'%')
-            </if>
-            <if test="startTime != '' and startTime != null">
-                AND a.start_time &gt;= #{startTime}
-            </if>
-            <if test="endTime != '' and endTime != null">
-                AND a.start_time &lt; date_add(#{endTime}, INTERVAL 1 DAY)
-            </if>
-        </where>
-    </select>
-
-
-    <select id="listType" resultType="Map">
-        select
-        x.remarks servicetype,
-	    x.NAME typename,
-	    x.id
-	    from sys_type x where x.type IN (5, 6) and x.remarks is not null and x.NAME is not null
-    </select>
-
 </mapper>

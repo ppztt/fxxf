@@ -72,4 +72,5 @@ public interface ManagerInfoService extends IService<ManagerInfo> {
      */
     void removeManagerInfoById(String id);
 
+    ManagerInfoVo getLoginUserInfo();
 }

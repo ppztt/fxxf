@@ -21,7 +21,6 @@ import net.mingsoft.fxxf.bean.base.BasePageResult;
 import net.mingsoft.fxxf.bean.base.BaseResult;
 import net.mingsoft.fxxf.bean.entity.Applicants;
 import net.mingsoft.fxxf.bean.entity.AuditLog;
-import net.mingsoft.fxxf.bean.entity.User;
 import net.mingsoft.fxxf.bean.enums.ApplicantsTypeEnum;
 import net.mingsoft.fxxf.bean.enums.CreateTypeEnum;
 import net.mingsoft.fxxf.bean.request.ApplicantsPageRequest;
@@ -31,9 +30,9 @@ import net.mingsoft.fxxf.bean.request.EnterpriseNewApplyRequest;
 import net.mingsoft.fxxf.bean.vo.*;
 import net.mingsoft.fxxf.mapper.ApplicantsMapper;
 import net.mingsoft.fxxf.mapper.AuditLogMapper;
-import net.mingsoft.fxxf.mapper.UserMapper;
 import net.mingsoft.fxxf.service.ApplicantsService;
 import net.mingsoft.fxxf.service.AuditLogService;
+import net.mingsoft.fxxf.service.ManagerInfoService;
 import net.mingsoft.fxxf.vaild.ApplicantsStoreExcelVerifyHandlerImpl;
 import net.mingsoft.fxxf.vaild.ApplicantsUnitExcelVerifyHandlerImpl;
 import net.mingsoft.utils.ApplicantsImportUtil;
@@ -103,7 +102,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
     private ApplicantsMapper applicantsMapper;
 
     @Resource
-    private UserMapper userMapper;
+    private ManagerInfoService managerInfoService;
 
     @Autowired
     private AuditLogMapper auditLogMapper;
@@ -138,7 +137,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
             return BaseResult.fail("当前登录用户为空，请重新登陆");
         }
 
-        User extensionInfo = userMapper.selectById(user.getId());
+        ManagerInfoVo extensionInfo = managerInfoService.getManagerInfoById(user.getId());
         if (extensionInfo == null) {
             return BaseResult.fail("当前登录用户扩展信息为空，请前往补充");
         }
@@ -349,7 +348,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                     return BaseResult.fail("当前登录用户为空，请重新登陆");
                 }
 
-                User userExtensionInfo = userMapper.selectById(user.getId());
+                ManagerInfoVo userExtensionInfo = managerInfoService.getManagerInfoById(user.getId());
                 if (userExtensionInfo == null) {
                     return BaseResult.fail("当前登录用户扩展信息为空，请前往补充");
                 }
@@ -579,7 +578,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
             throw new BusinessException("当前登录用户为空，请重新登陆");
         }
 
-        User extensionInfo = userMapper.selectById(user.getId());
+        ManagerInfoVo extensionInfo = managerInfoService.getManagerInfoById(user.getId());
         if (extensionInfo == null) {
             throw new BusinessException("当前登录用户扩展信息为空，请前往补充");
         }
@@ -639,7 +638,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
             return BaseResult.fail("当前登录用户为空，请重新登陆");
         }
 
-        User extensionInfo = userMapper.selectById(user.getId());
+        ManagerInfoVo extensionInfo = managerInfoService.getManagerInfoById(user.getId());
         if (extensionInfo == null) {
             return BaseResult.fail("当前登录用户扩展信息为空，请前往补充");
         }
@@ -668,7 +667,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
             throw new BusinessException("当前登录用户扩展信息为空，请前往补充");
         }
 
-        User extensionInfo = userMapper.selectById(user.getId());
+        ManagerInfoVo extensionInfo = managerInfoService.getManagerInfoById(user.getId());
         if (extensionInfo == null) {
             throw new BusinessException("当前登录用户扩展信息为空，请前往补充");
         }

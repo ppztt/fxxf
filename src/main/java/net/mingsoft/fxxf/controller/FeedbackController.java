@@ -12,8 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import net.mingsoft.basic.entity.ManagerEntity;
 import net.mingsoft.fxxf.bean.base.BasePageResult;
 import net.mingsoft.fxxf.bean.base.BaseResult;
+import net.mingsoft.fxxf.bean.entity.Applicants;
+import net.mingsoft.fxxf.bean.entity.Feedback;
+import net.mingsoft.fxxf.bean.entity.FeedbackStat;
 import net.mingsoft.fxxf.bean.entity.Record;
-import net.mingsoft.fxxf.bean.entity.*;
 import net.mingsoft.fxxf.bean.request.FeedBackCompanyPageRequest;
 import net.mingsoft.fxxf.bean.request.FeedbackHandleRequest;
 import net.mingsoft.fxxf.bean.request.FeedbackPageRequest;
@@ -21,11 +23,13 @@ import net.mingsoft.fxxf.bean.request.FeedbackStatisticRequest;
 import net.mingsoft.fxxf.bean.vo.FeedbackCompanyDetailsVo;
 import net.mingsoft.fxxf.bean.vo.FeedbackComplaintVo;
 import net.mingsoft.fxxf.bean.vo.FeedbackVo;
+import net.mingsoft.fxxf.bean.vo.ManagerInfoVo;
 import net.mingsoft.fxxf.service.ApplicantsService;
 import net.mingsoft.fxxf.service.FeedbackService;
+import net.mingsoft.fxxf.service.ManagerInfoService;
 import net.mingsoft.fxxf.service.RecordService;
-import net.mingsoft.fxxf.service.UserService;
 import net.mingsoft.fxxf.service.impl.MyFeedbackService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;
@@ -33,10 +37,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +69,7 @@ public class FeedbackController {
     private RecordService recordService;
 
     @Resource
-    private UserService userService;
+    private ManagerInfoService managerInfoService;
 
     @Resource
     private MyFeedbackService myFeedbackService;
@@ -150,8 +157,8 @@ public class FeedbackController {
 
             // 留言反馈操作记录设置操作用户
             records.forEach(recordItem -> {
-                User user = userService.getById(recordItem.getUserid());
-                recordItem.setUserName(user.getAccount());
+                ManagerInfoVo user = managerInfoService.getManagerInfoById(recordItem.getUserid());
+                recordItem.setUserName(user.getManagerName());
             });
             feedback.setType("1".equals(feedback.getType()) ? "放心消费承诺单位" : "线下无理由退货承诺店");
             // 返回有操作记录的留言反馈对象
@@ -218,6 +225,38 @@ public class FeedbackController {
         } catch (IOException e) {
             log.error("导出留言反馈统计报表发生异常:", e);
         }
+    }
+
+    @ApiOperation(value = "监督投诉附件下载", notes = "监督投诉附件下载")
+    @GetMapping("/downloadAttachment")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "filePath", value = "文件标识", required = true),
+            @ApiImplicitParam(name = "fileName", value = "文件名", required = true)
+    })
+    public BaseResult downloadAttachment(String filePath, String fileName, HttpServletRequest request, HttpServletResponse response) {
+        if (StringUtils.isBlank(filePath)) {
+            return BaseResult.fail("文件标识不允许为空");
+        }
+        //根据文件路径、文件id下载文件
+        File file = new File(filePath);
+        try (FileInputStream fis = new FileInputStream(file)) {
+            OutputStream os = response.getOutputStream();
+            // 配置文件下载
+            response.setHeader("content-type", "application/octet-stream;application/json");
+            response.setContentType("application/octet-stream");
+            // 下载文件能正常显示中文
+            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+            byte[] bytes = new byte[1024];
+            int len = 0;
+            while ((len = fis.read(bytes)) != -1) {
+                os.write(bytes, 0, len);
+            }
+            os.close();
+        } catch (IOException e) {
+            log.error("文件下载失败：", e);
+            return BaseResult.fail();
+        }
+        return BaseResult.success();
     }
 
 }

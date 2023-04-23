@@ -4,10 +4,10 @@ package net.mingsoft.fxxf.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import net.mingsoft.fxxf.bean.entity.Applicants;
-import net.mingsoft.fxxf.bean.entity.User;
 import net.mingsoft.fxxf.bean.base.BasePageResult;
+import net.mingsoft.fxxf.bean.vo.ManagerInfoVo;
 import net.mingsoft.fxxf.service.ApplicantsService;
-import net.mingsoft.fxxf.service.UserService;
+import net.mingsoft.fxxf.service.ManagerInfoService;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -25,16 +25,15 @@ public class EnterpriseService {
     @Resource
     @Lazy
     private ApplicantsService applicantsService;
-
     @Resource
-    private UserService userService;
+    private ManagerInfoService managerInfoService;
 
-    public User getEnterpriseInfo(Integer id) {
-        return userService.getById(id);
+    public ManagerInfoVo getEnterpriseInfo(Integer id) {
+        return managerInfoService.getManagerInfoById(String.valueOf(id));
     }
 
-    public void updateEnterpriseInfo(User user) {
-        userService.updateById(user);
+    public void updateEnterpriseInfo(ManagerInfoVo user) {
+        managerInfoService.updateManagerInfoById(user);
     }
 
     public BasePageResult<Applicants> getEnterpriseApplyInfo(Integer current, Integer sise, Integer userId) {

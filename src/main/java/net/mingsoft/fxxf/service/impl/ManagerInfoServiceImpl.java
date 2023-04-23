@@ -17,6 +17,7 @@ import net.mingsoft.fxxf.service.ManagerService;
 import net.mingsoft.utils.CheckPassword;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -177,6 +178,12 @@ public class ManagerInfoServiceImpl extends ServiceImpl<ManagerInfoMapper, Manag
     public void removeManagerInfoById(String id) {
         removeById(id);
         managerInfoService.removeById(id);
+    }
+
+    @Override
+    public ManagerInfoVo getLoginUserInfo() {
+        ManagerEntity manager = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
+        return getManagerInfoById(manager.getId());
     }
 
     /**

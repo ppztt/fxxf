@@ -7,23 +7,20 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
-import net.mingsoft.basic.entity.ManagerEntity;
+import net.mingsoft.fxxf.bean.base.BasePageResult;
 import net.mingsoft.fxxf.bean.entity.Applicants;
 import net.mingsoft.fxxf.bean.entity.Feedback;
 import net.mingsoft.fxxf.bean.entity.FeedbackStat;
-import net.mingsoft.fxxf.bean.entity.User;
-import net.mingsoft.fxxf.bean.base.BasePageResult;
 import net.mingsoft.fxxf.bean.request.FeedBackCompanyPageRequest;
-import net.mingsoft.fxxf.bean.vo.FeedbackComplaintVo;
 import net.mingsoft.fxxf.bean.request.FeedbackStatisticRequest;
+import net.mingsoft.fxxf.bean.vo.FeedbackComplaintVo;
+import net.mingsoft.fxxf.bean.vo.ManagerInfoVo;
 import net.mingsoft.fxxf.mapper.ApplicantsMapper;
 import net.mingsoft.fxxf.mapper.FeedbackMapper;
 import net.mingsoft.fxxf.mapper.FeedbackStatMapper;
-import net.mingsoft.fxxf.mapper.UserMapper;
 import net.mingsoft.fxxf.service.FeedbackService;
+import net.mingsoft.fxxf.service.ManagerInfoService;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -48,7 +45,7 @@ public class FeedbackServiceImpl extends ServiceImpl<FeedbackMapper, Feedback> i
     ApplicantsMapper applicantsMapper;
 
     @Resource
-    UserMapper userMapper;
+    private ManagerInfoService managerInfoService;
 
     @Resource
     FeedbackMapper feedbackMapper;
@@ -61,17 +58,12 @@ public class FeedbackServiceImpl extends ServiceImpl<FeedbackMapper, Feedback> i
      */
     @Override
     public BasePageResult<FeedbackComplaintVo> countByApplicantList(FeedBackCompanyPageRequest feedBackCompanyPageRequest) {
-        // 获取登录用户
-        Subject currentSubject = SecurityUtils.getSubject();
-        ManagerEntity manager = (ManagerEntity) currentSubject.getPrincipal();
-        Integer roleId = manager.getRoleId();
-
-        User user = userMapper.selectById(manager.getId());
+        ManagerInfoVo loginUserInfo = managerInfoService.getLoginUserInfo();
         Map<String, Object> map = new HashMap<>();
 
-        map.put("roleId", roleId);
-        map.put("city", user.getCity());
-        map.put("district", user.getDistrict());
+        map.put("roleId", loginUserInfo.getRoleIds());
+        map.put("city", loginUserInfo.getCity());
+        map.put("district", loginUserInfo.getDistrict());
         map.put("type", feedBackCompanyPageRequest.getType());
         map.put("search", feedBackCompanyPageRequest.getSearch());
         IPage<FeedbackComplaintVo> feedbackIPage = feedbackMapper.feedbackList(new Page<>(
@@ -88,12 +80,8 @@ public class FeedbackServiceImpl extends ServiceImpl<FeedbackMapper, Feedback> i
     public List<FeedbackStat> statistic(FeedbackStatisticRequest feedbackStatisticRequest) {
         List<FeedbackStat> statList;
         //根据角色id选择统计维度
-        Subject currentSubject = SecurityUtils.getSubject();
-        ManagerEntity manager = (ManagerEntity) currentSubject.getPrincipal();
-
-        User user = userMapper.selectById(manager.getId());
-        String city = user.getCity();
-        int roleId = manager.getRoleId();
+        ManagerInfoVo loginUserInfo = managerInfoService.getLoginUserInfo();
+        int roleId = loginUserInfo.getRoleIds();
 
         // TODO 后续优化
         FeedbackStat feedback = new FeedbackStat();
@@ -106,11 +94,11 @@ public class FeedbackServiceImpl extends ServiceImpl<FeedbackMapper, Feedback> i
             statList = feedbackStatMapper.statListByAdminRole(feedback, null);
         } else {
             //地市管理员
-            if (StringUtils.isEmpty(city)) {
+            if (StringUtils.isEmpty(loginUserInfo.getCity())) {
                 log.info("当前登录用户归属地市为Null，不执行查询;返回空集合");
                 statList = Lists.newArrayList();
             } else {
-                feedback.setCity(city);
+                feedback.setCity(loginUserInfo.getCity());
                 statList = feedbackStatMapper.statListByCityRole(feedback, null);
             }
         }
