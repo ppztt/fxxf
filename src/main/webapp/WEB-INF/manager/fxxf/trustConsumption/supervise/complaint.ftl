@@ -108,8 +108,8 @@
                                     <div class="file-item" v-for="(item, index) in data.filesInfo" :key="index">
                                         <p class="files-p">
                                             <a class="files-a"><i class="el-icon-link">{{item.fileName}}</i></a>
-                                            <span class="files-span" v-if="allowImage.indexOf(item.fileName.substring(item.fileName.lastIndexOf('.'))) !== -1" @click="showImage(item.path)">预览</span>
-                                            <span class="files-span" @click="downloadData(item.path)">下载</span>
+                                            <span class="files-span" v-if="allowImage.indexOf(item.fileName.substring(item.fileName.lastIndexOf('.'))) !== -1" @click="showImage(item)">预览</span>
+                                            <span class="files-span" @click="downloadData(item)">下载</span>
                                         </p>
                                     </div>
                                 </div>
@@ -204,6 +204,10 @@
         </el-form>
         <#--    返回按钮-->
         <el-button id="backSupervise" type="primary" size="medium" @click="checkSupervise">返回</el-button>
+        <#--        图片预览框-->
+        <el-dialog width="70%"  :visible.sync="dialogImageVisible">
+            <img style="object-fit: cover;width: 100%" v-show="imageURL" :src="imageURL" alt="image" />
+        </el-dialog>
     </div>
 </div>
 </body>
@@ -220,11 +224,12 @@
             imagesPath: [
                 "https://raw.githubusercontent.com/FxPixels/SavePicGoImg/master/20200303234329.jpg",
             ],
-            $viewer: null,
+            dialogImageVisible: false,
             formValidate: {
                 result: "", //处理结果
                 processingSituation: "", //调查处理情况
             },
+            imageURL:'',
             //校验规则
             ruleValidate: {
                 result: [
@@ -281,16 +286,15 @@
                 })
             },
             //预览
-            showImage(path) {
-                // if()
-                // this.$viewer.destroy();
-                // this.imagesPath = [this.$HOST + path];
-                // this.$viewer.show();
+            showImage(item) {
+                const path = encodeURIComponent(item.path)
+                this.imageURL = ms.manager + '/feedback/downloadAttachment.do?fileName='+item.fileName+'&filePath='+path
+                this.dialogImageVisible = true
             },
             //下载
-            downloadData(path) {
-                console.log(path)
-                // window.open(window.location.origin.slice(0,window.location.origin.length) + path);
+            downloadData(item) {
+                const path = encodeURIComponent(item.path)
+                window.open(ms.manager + '/feedback/downloadAttachment.do?fileName='+item.fileName+'&filePath='+path);
             },
             //提交
             handleSubmit(name){

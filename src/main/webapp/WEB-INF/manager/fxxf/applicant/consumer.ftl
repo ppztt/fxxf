@@ -20,7 +20,7 @@
             </el-col>
             <el-col span="20">
                 <el-select ref="city" v-model="city" placeholder="市" :clearable="true" filterable
-                           @change="cityChange(city)">
+                           @change="cityChange(city)"  @clear="clear">
                     <el-option v-for="item in regionData" :value="item.name" :key="item.code" :label="item.name">
                     </el-option>
                 </el-select>
@@ -156,7 +156,8 @@
                                                 placeholder="市"
                                                 :clearable="true"
                                                 filterable
-                                                @change="cityChange(addr.city)">
+                                                @change="cityChange(addr.city)"
+                                                @clear="clear">
                                             <el-option
                                                     v-for="item in regionData"
                                                     :value="item.name"
@@ -894,7 +895,16 @@
             // 被删除的id
             ids: {ids: []}
         },
-        watch: {},
+        watch: {
+            "unitDataList":{
+                handler(){
+                    this.$nextTick(()=>{
+                        this.$refs.unitDataList.doLayout();
+                    })
+                },
+                deep: true
+            }
+        },
         methods: {
             save: function () {
             },
@@ -936,12 +946,17 @@
 
             }
             ,
+            clear(){
+                this.district = "";
+                this.formData.district = ""
+            },
             cityChange: function (name) {
                 // 一级市发生改变
                 if (name) {
                     let cityData_active = this.regionData.find((value) => value.name == name);
                     this.districtData = cityData_active.children;
                     this.district = "";
+                    this.formData.district = ""
                     // this.town = "";
                 }
             },
@@ -1376,5 +1391,19 @@
         position: absolute;
         top: 0;
         left: 0;
+    }
+    .el-table__body-wrapper::-webkit-scrollbar {
+        width: 18px;
+        height: 18px;
+    }
+
+    .el-table__body-wrapper::-webkit-scrollbar-thumb {
+        background-color: #dddee0;
+        border-radius: 30px;
+        border: 6px solid #fff;
+    }
+    .el-scrollbar__wrap::-webkit-scrollbar{
+        width: 18px;
+        height: 18px;
     }
 </style>

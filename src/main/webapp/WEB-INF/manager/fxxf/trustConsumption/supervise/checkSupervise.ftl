@@ -46,11 +46,15 @@
             style="width: 100%"
             :max-height="tableHeight">
         <el-table-column
-                prop="reason"
                 label="问题类型"
                 align=left">
-            <template slot="hh">
-                查看处理
+            <template #default="{ row }">
+                <img
+                        class="new"
+                        v-show="row.isNew"
+                        src="${base}/static/images/NEW.png"
+                        alt=""
+                /><span>{{ row.reason }}</span>
             </template>
         </el-table-column>
         <el-table-column
@@ -247,7 +251,14 @@
     .el-pagination {
         margin: 0 auto;
     }
-
+    .new {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        width: 25px;
+        margin-right: 5px;
+    }
 
     /*返回按钮*/
     #backSupervise {
