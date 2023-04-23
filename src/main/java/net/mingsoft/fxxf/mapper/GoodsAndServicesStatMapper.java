@@ -14,10 +14,4 @@ public interface GoodsAndServicesStatMapper {
 
     public List<GoodsAndServicesStat> list(String city, String district, String startTime, String endTime);
 
-
-    public List<Map> listType();
-
-    public List<Map> list2(@Param("city") String city, @Param("district") String district, @Param("startTime") String startTime, @Param("endTime") String endTime);
-
-
 }
