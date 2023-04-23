@@ -51,25 +51,22 @@
         <el-table-column
                 prop="filename"
                 label="资料名称"
-                width="800"
+                width="600"
                 align="left">
         </el-table-column>
         <el-table-column
                 prop="updateTime"
                 label="上传时间"
-                width="250"
                 show-overflow-tooltip>
         </el-table-column>
         <el-table-column
                 prop="uploader"
                 label="上传者"
-                width="250"
                 show-overflow-tooltip>
         </el-table-column>
         <el-table-column
                 prop="downloads"
                 label="下载次数"
-                width="200"
                 show-overflow-tooltip>
         </el-table-column>
         <el-table-column
