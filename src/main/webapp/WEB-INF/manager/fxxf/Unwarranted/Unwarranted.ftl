@@ -403,12 +403,11 @@
         <el-table
                 v-loading="loading"
                 :data="unitDataList"
+                ref="unitDataList"
                 border
                 height="250"
-                style="width:100%"
                 @select="addIDs"
                 @select-all="addIDs">
-
             <el-table-column
                     fixed="left"
                     width="60"
@@ -896,7 +895,17 @@
             // 被删除的id
             ids: {ids: []}
         },
-        watch: {},
+        watch: {
+            "unitDataList":{
+                handler(){
+                    console.log(1)
+                    this.$nextTick(()=>{
+                        this.$refs.unitDataList.doLayout();
+                    })
+                },
+                deep: true
+            }
+        },
         methods: {
             save: function () {
             },
@@ -1376,4 +1385,23 @@
         top: 0;
         left: 0;
     }
+    .el-table__body-wrapper::-webkit-scrollbar {
+        width: 18px;
+        height: 18px;
+    }
+
+    .el-table__body-wrapper::-webkit-scrollbar-thumb {
+        background-color: #dddee0;
+        border-radius: 0px;
+    }
+
+    /*
+    主要是靠这个 注意
+    上面.el-table__body-wrapper::-webkit-scrollbar 是 30px 下面这个也要 30px
+    */
+    .el-scrollbar__wrap::-webkit-scrollbar{
+        width: 18px;
+        height: 18px;
+    }
+
 </style>
