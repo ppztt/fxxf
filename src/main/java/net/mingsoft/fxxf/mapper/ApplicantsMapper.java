@@ -30,21 +30,6 @@ public interface ApplicantsMapper extends BaseMapper<Applicants> {
                                @Param("cityAccess") String cityAccess,
                                @Param("districtAccess") String districtAccess);
 
-    IPage<Applicants> applicantsList(
-            IPage<T> page,
-            @Param("type") int type,
-            @Param("city") String city,
-            @Param("district") String district,
-            @Param("town") String town,
-            @Param("status") String status,
-            @Param("startTime") String startTime,
-            @Param("endTime") String endTime,
-            @Param("roleId") Integer roleId,
-            @Param("cityAccess") String cityAccess,
-            @Param("districtAccess") String districtAccess,
-            @Param("search") String search,
-            @Param("management") String management,
-            @Param("details") String details);
 
     ArrayList<Applicants> applicantsExport(@Param("type") int type,
                                            @Param("status") String status,

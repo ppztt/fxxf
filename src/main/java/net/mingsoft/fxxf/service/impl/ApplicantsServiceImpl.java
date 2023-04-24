@@ -186,7 +186,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
      * 经营者列表-根据单位id更新状态及原因
      */
     @Override
-    public BaseResult updateApplicantsStatus(ApplicantsStatusUpdateRequest applicantsStatusUpdateRequest) {
+    public BaseResult<String> updateApplicantsStatus(ApplicantsStatusUpdateRequest applicantsStatusUpdateRequest) {
         Applicants applicants = getById(applicantsStatusUpdateRequest.getApplicantsId());
 
         if (applicants != null) {
