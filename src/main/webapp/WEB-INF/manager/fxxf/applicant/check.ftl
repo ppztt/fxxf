@@ -136,7 +136,8 @@
                                                 placeholder="市"
                                                 :clearable="true"
                                                 filterable
-                                                @change="cityChange(addr.city)">
+                                                @change="cityChange(addr.city)"
+                                                @clear="clear">
                                             <el-option
                                                     v-for="item in regionData"
                                                     :value="item.name"
@@ -299,6 +300,7 @@
                         <el-col span="24">
                             <el-form-item label="企业申请日期：" prop="applicationDate">
                                 <el-date-picker
+                                        value-format="yyyy-MM-dd"
                                         v-model="formData.applicationDate"
                                         type="date"
                                         placeholder="请选择时间">
@@ -428,6 +430,7 @@
                         <el-col span="24">
                             <el-form-item label="日期：" prop="applicationDate">
                                 <el-date-picker
+                                        value-format="yyyy-MM-dd"
                                         v-model="formData.applicationDate"
                                         type="date"
                                         placeholder="选择日期"
@@ -652,12 +655,18 @@
                     this.regionData = res.data
                 })
             },
+            clear(){
+                this.district = "";
+                this.formData.district = ""
+            },
+
             cityChange: function (name) {
                 // 一级市发生改变
                 if (name) {
                     let cityData_active = this.regionData.find((value) => value.name == name);
                     this.districtData = cityData_active.children;
                     this.district = "";
+                    this.formData.district = ""
                     // this.town = "";
                 }
             },

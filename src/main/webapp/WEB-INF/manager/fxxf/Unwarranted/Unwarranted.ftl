@@ -8,6 +8,7 @@
     <script src="${base}/static/plugins/stomp/2.3.3/stomp.min.js"></script>
     <!-- 此部分是铭飞平台MStroe的客户端（MStore不在铭飞开源产品范围），如果不需要使用MStore可以删除掉 -->
     <script src="https://cdn.mingsoft.net/platform/ms-store.umd.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 </head>
 <body>
 <div id="index" class="ms-index">
@@ -20,7 +21,7 @@
             </el-col>
             <el-col span="20">
                 <el-select ref="city" v-model="city" placeholder="市" :clearable="true" filterable
-                           @change="cityChange(city)">
+                           @change="cityChange(city)" @clear="clear">
                     <el-option v-for="item in regionData" :value="item.name" :key="item.code" :label="item.name">
                     </el-option>
                 </el-select>
@@ -50,14 +51,14 @@
                 </el-select>
             </el-col>
             <el-col span="6">
-                <el-date-picker format="yyyy-MM-dd" v-model="startTime" placeholder="开始时间" @on-change="
+                <el-date-picker format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="startTime" placeholder="开始时间" @on-change="
         (value) => {
           startTime = value;
         }
       "></el-date-picker>
             </el-col>
             <el-col span="6">
-                <el-date-picker format="yyyy-MM-dd" v-model="endTime" placeholder="结束时间" @on-change="
+                <el-date-picker format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="endTime" placeholder="结束时间" @on-change="
         (value) => {
           endTime = value;
         }
@@ -156,7 +157,8 @@
                                                 placeholder="市"
                                                 :clearable="true"
                                                 filterable
-                                                @change="cityChange(addr.city)">
+                                                @change="cityChange(addr.city)"
+                                                @clear="clear">
                                             <el-option
                                                     v-for="item in regionData"
                                                     :value="item.name"
@@ -270,6 +272,7 @@
                                             <el-col :span="24">
                                                 <el-form-item prop="applicationDate">
                                                     <el-date-picker
+                                                            value-format="yyyy-MM-dd"
                                                             v-model="formData.applicationDate"
                                                             type="date"
                                                             placeholder="请选择时间"
@@ -403,12 +406,11 @@
         <el-table
                 v-loading="loading"
                 :data="unitDataList"
+                ref="unitDataList"
                 border
-                height="250"
-                style="width:100%"
+                height="700"
                 @select="addIDs"
                 @select-all="addIDs">
-
             <el-table-column
                     fixed="left"
                     width="60"
@@ -896,7 +898,17 @@
             // 被删除的id
             ids: {ids: []}
         },
-        watch: {},
+        watch: {
+            "unitDataList":{
+                handler(){
+                    console.log(1)
+                    this.$nextTick(()=>{
+                        this.$refs.unitDataList.doLayout();
+                    })
+                },
+                deep: true
+            }
+        },
         methods: {
             save: function () {
             },
@@ -938,12 +950,21 @@
 
             }
             ,
+            clear(){
+                this.district = "";
+                this.formData.district = ""
+            },
+            clear(){
+                this.district = "";
+                this.formData.district = ""
+            },
             cityChange: function (name) {
                 // 一级市发生改变
                 if (name) {
                     let cityData_active = this.regionData.find((value) => value.name == name);
                     this.districtData = cityData_active.children;
                     this.district = "";
+                    this.formData.district = ""
                     // this.town = "";
                 }
             },
@@ -1375,5 +1396,19 @@
         position: absolute;
         top: 0;
         left: 0;
+    }
+    .el-table__body-wrapper::-webkit-scrollbar {
+        width: 18px;
+        height: 18px;
+    }
+
+    .el-table__body-wrapper::-webkit-scrollbar-thumb {
+        background-color: #dddee0;
+        border-radius: 30px;
+        border: 6px solid #fff;
+    }
+    .el-scrollbar__wrap::-webkit-scrollbar{
+        width: 18px;
+        height: 18px;
     }
 </style>

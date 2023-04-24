@@ -132,7 +132,8 @@
                             :disabled="formData.roleId == 1 || roleId == 2 || roleId == 3"
                             :clearable="true"
                             filterable
-                            @change="cityChange(formData.city)">
+                            @change="cityChange(formData.city)"
+                            @clear="clear">
                         <el-option
                                 v-for="(item, index) in regionData"
                                 :key="index"
@@ -231,7 +232,8 @@
                             :disabled="formData.roleId == 1 || roleId == 2 || roleId == 3"
                             :clearable="true"
                             filterable
-                            @change="cityChange(formData.city)">
+                            @change="cityChange(formData.city)"
+                            @clear="clear">
                         <el-option
                                 v-for="(item, index) in regionData"
                                 :key="index"
@@ -257,7 +259,7 @@
                                 v-for="item in districtData"
                                 :key="item.name"
                                 :value="item.name"
-                        >{{ item.name }}
+                        >
                         </el-option
                         >
                     </el-select>
@@ -413,18 +415,12 @@
                             trigger: "blur",
                         },
                         {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
-                        {
-                            pattern: /^(?![A-Za-z]+$)(?![A-Z\\d]+$)(?![A-Z\\W]+$)(?![a-z\\d]+$)(?![a-z\\W]+$)(?![\\d\\W]+$)\\S{8,18}$/,
-                            message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'
-                        }
+                        {pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
                     ],
                     newPassword: [
                         {required: false, message: '不能为空', trigger: "blur",},
                         {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
-                        {
-                            pattern: /^(?![A-Za-z]+$)(?![A-Z\\d]+$)(?![A-Z\\W]+$)(?![a-z\\d]+$)(?![a-z\\W]+$)(?![\\d\\W]+$)\\S{8,18}$/,
-                            message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'
-                        }
+                        {pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
                     ],
                     roleId: [
                         {
@@ -486,18 +482,12 @@
                             trigger: "blur",
                         },
                         {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
-                        {
-                            pattern: /^(?![A-Za-z]+$)(?![A-Z\\d]+$)(?![A-Z\\W]+$)(?![a-z\\d]+$)(?![a-z\\W]+$)(?![\\d\\W]+$)\\S{8,18}$/,
-                            message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'
-                        }
+                        {pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
                     ],
                     newPassword: [
                         {required: true, message: '不能为空', trigger: "blur",},
                         {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
-                        {
-                            pattern: /^(?![A-Za-z]+$)(?![A-Z\\d]+$)(?![A-Z\\W]+$)(?![a-z\\d]+$)(?![a-z\\W]+$)(?![\\d\\W]+$)\\S{8,18}$/,
-                            message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'
-                        }
+                        {pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
                     ],
                     roleId: [
                         {
@@ -597,12 +587,17 @@
                     this.regionData = res.data
                 })
             },
+            clear(){
+                this.district = "";
+                this.formData.district = ""
+            },
             cityChange: function (name) {
                 // 一级市发生改变
                 if (name) {
                     let cityData_active = this.regionData.find((value) => value.name == name);
                     this.districtData = cityData_active.children;
                     this.district = "";
+                    this.formData.district = ""
                     // this.town = "";
                 }
             },
