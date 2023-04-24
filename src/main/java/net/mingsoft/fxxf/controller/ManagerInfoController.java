@@ -10,6 +10,8 @@ import net.mingsoft.fxxf.bean.base.BaseResult;
 import net.mingsoft.fxxf.service.ManagerInfoService;
 import net.mingsoft.fxxf.bean.vo.ManagerInfoVo;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -50,6 +52,7 @@ public class ManagerInfoController {
         return BaseResult.success(page);
     }
 
+    @RequiresPermissions("manage:user")
     @ApiOperation(value = "用户列表", notes = "用户管理/用户列表")
     @GetMapping(value = "/userList", produces = "application/json;charset=UTF-8")
     @ApiImplicitParams(
@@ -68,6 +71,7 @@ public class ManagerInfoController {
         return BaseResult.success(page);
     }
 
+    @RequiresPermissions("manage:industryAssociation")
     @ApiOperation(value = "行业协会用户列表", notes = "用户管理/行业协会用户管理列表")
     @GetMapping(value = "/industryAssociationList", produces = "application/json;charset=UTF-8")
     @ApiImplicitParams(
@@ -86,6 +90,7 @@ public class ManagerInfoController {
         return BaseResult.success(page);
     }
 
+    @RequiresPermissions("manage:user")
     @ApiOperation(value = "新增用户", notes = "用户管理/新增后台用户")
     @PostMapping(value = "/addUser", produces = "application/json;charset=UTF-8")
     @DynamicParameters(
@@ -102,6 +107,7 @@ public class ManagerInfoController {
         return BaseResult.success(managerInfoService.addUser(managerInfo));
     }
 
+    @RequiresPermissions("manage:industryAssociation")
     @ApiOperation(value = "新增行业协会用户", notes = "用户管理/新增行业协会用户")
     @PostMapping(value = "/addIndustryAssociation", produces = "application/json;charset=UTF-8")
     @DynamicParameters(
@@ -118,6 +124,7 @@ public class ManagerInfoController {
         return BaseResult.success(managerInfoService.addUser(managerInfo));
     }
 
+    @RequiresPermissions("manage:userinfo")
     @ApiOperation(value = "修改个人资料", notes = "用户管理/修改后台用户个人资料")
     @PostMapping(value = "/updateById")
     @DynamicParameters(
@@ -131,6 +138,7 @@ public class ManagerInfoController {
         return BaseResult.success();
     }
 
+    @RequiresPermissions("manage:user")
     @ApiOperation(value = "删除用户", notes = "用户管理/删除用户")
     @PostMapping(value = "/del/{id}")
     @ApiImplicitParams({
@@ -157,6 +165,7 @@ public class ManagerInfoController {
         return BaseResult.success();
     }
 
+    @RequiresPermissions(value = {"manage:userinfo", "manage:enterprise", "manage:industryAssociation"}, logical = Logical.OR)
     @ApiOperation(value = "查询个人资料|企业用户|行业协会查看", notes = "用户管理/查询个人资料")
     @GetMapping("/userInfo")
     @ApiImplicitParams({
