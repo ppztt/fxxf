@@ -105,7 +105,7 @@
         a.update_time,
         a.add_contents4_cnt,
         a.creater,
-        u.account,
+        u.manager_name,
         a.create_type,
         a.audit_role_id
     </sql>
@@ -167,13 +167,10 @@
             FROM
             cc_applicants a
             <where>
-                type = 1 and status=1
+                a.type = 1 and a.status=1
                 <if test="roleId == 2 or roleId == 4 or roleId==3">
                     and city like concat('%', #{city},'%')
                 </if>
-                <!--<if test="roleId == 3">-->
-                    <!--and city like concat('%', #{city},'%') and district like concat('%',#{district},'%')-->
-                <!--</if>-->
                 <if test="startTime != null and startTime != ''">
                     and start_time &gt;= #{startTime}
                 </if>
@@ -185,9 +182,6 @@
             <choose>
                 <when test="roleId == 1">
                     city
-                </when>
-                <when test="roleId == 2 or roleId == 4">
-                    district
                 </when>
                 <otherwise>
                     district
@@ -215,14 +209,17 @@
             FROM
             cc_applicants a
             INNER JOIN cc_feedback f ON a.id = f.applicants_id
-            WHERE a.type = 1
+            WHERE a.type = 1 and a.status=1
+        <if test="startTime != null and startTime != ''">
+            and start_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and start_time &lt;= #{endTime}
+        </if>
             GROUP BY
             <choose>
                 <when test="roleId == 1">
                     city
-                </when>
-                <when test="roleId == 2 or roleId == 4">
-                    district
                 </when>
                 <otherwise>
                     district
@@ -292,13 +289,10 @@
             FROM
             cc_applicants a
             <where>
-                type = 2 and status=1
+                a.type = 2 and a.status=1
                 <if test="roleId == 2 or roleId == 4 or roleId == 3">
                     and city like concat('%', #{city},'%')
                 </if>
-                <!--<if test="roleId == 3">-->
-                    <!--and city like concat('%', #{city},'%') and district like concat('%',#{district},'%')-->
-                <!--</if>-->
                 <if test="startTime != null and startTime != ''">
                     and start_time &gt;= #{startTime}
                 </if>
@@ -343,7 +337,13 @@
             FROM
             cc_applicants a
             INNER JOIN cc_feedback f ON a.id = f.applicants_id
-            WHERE a.type = 2
+            WHERE a.type = 2 and a.status=1
+        <if test="startTime != null and startTime != ''">
+            and start_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and start_time &lt;= #{endTime}
+        </if>
             GROUP BY
             <choose>
                 <when test="roleId == 1">
@@ -385,34 +385,13 @@
         select
         distinct
         <include refid="Base_Column_List"></include>
-        , sr.sort
-
         from
         cc_applicants a
-        LEFT JOIN
-        (
-        SELECT name, sort
-        FROM sys_region
-        <where>
-            <choose>
-                <when test="roleId == 1">
-                    and pcode = 440000
-                </when>
-                <when test="roleId == 2 or roleId == 4">
-                    and pcode = (SELECT code FROM sys_region WHERE name= #{cityAccess})
-                </when>
-                <otherwise>
-                    and code = (SELECT code FROM sys_region WHERE name= #{districtAccess} and pcode=(SELECT code FROM sys_region WHERE name= #{cityAccess}))
-                </otherwise>
-            </choose>
-        </where>
-        ) AS sr ON sr.name = a.city
-        LEFT JOIN sys_user u on u.id=a.creater
+        LEFT JOIN manager u on u.id=a.creater
         <where>
             a.type=#{applicantsPageRequest.type}
             <if test="applicantsPageRequest.city != null and applicantsPageRequest.city != ''">
-                and a.city like concat('%', #{applicantsPageRequest.city},'%')
-
+                and a.city = #{applicantsPageRequest.city}
             </if>
             <if test="applicantsPageRequest.district != null and applicantsPageRequest.district != ''">
                 and a.district like concat('%', #{applicantsPageRequest.district},'%')
@@ -424,10 +403,10 @@
                 and a.status=#{applicantsPageRequest.status}
             </if>
             <if test="applicantsPageRequest.startTime != null and applicantsPageRequest.startTime != ''">
-                and DATE_FORMAT(a.start_time, '%Y-%m-%d') <![CDATA[ >= ]]> #{applicantsPageRequest.startTime}
+                and a.start_time <![CDATA[ >= ]]> #{applicantsPageRequest.startTime}
             </if>
             <if test="applicantsPageRequest.endTime != null and applicantsPageRequest.endTime != ''">
-                and DATE_FORMAT(a.start_time, '%Y-%m-%d')  <![CDATA[ <= ]]> #{applicantsPageRequest.endTime}
+                and a.start_time <![CDATA[ <= ]]> #{applicantsPageRequest.endTime}
             </if>
             <if test="applicantsPageRequest.search != null and applicantsPageRequest.search != ''">
                 and (
@@ -443,6 +422,7 @@
             <if test="applicantsPageRequest.details != null and applicantsPageRequest.details != ''">
                 and a.details=#{applicantsPageRequest.details}
             </if>
+
             <if test="roleId == 2 or roleId == 4">
                 and a.city like concat('%', #{cityAccess},'%')
             </if>
@@ -451,80 +431,7 @@
             </if>
         </where>
 
-        order by field(a.status,'4','6','5') desc,sr.sort , a.start_time desc
-    </select>
-
-
-    <select id="applicantsList" resultType="net.mingsoft.fxxf.bean.entity.Applicants">
-        select
-        distinct
-        <include refid="Base_Column_List"></include>
-        , sr.sort
-        from
-        cc_applicants a
-        LEFT JOIN
-        (
-        SELECT name, sort
-        FROM sys_region
-        <where>
-            <choose>
-                <when test="roleId == 1">
-                    and pcode = 440000
-                </when>
-                <when test="roleId == 2 or roleId == 4">
-                    and pcode = (SELECT code FROM sys_region WHERE name= #{cityAccess})
-                </when>
-                <otherwise>
-                    and code = (SELECT code FROM sys_region WHERE name= #{districtAccess} and pcode=(SELECT code FROM sys_region WHERE name= #{cityAccess}))
-                </otherwise>
-            </choose>
-        </where>
-        ) AS sr ON sr.name = a.city
-        LEFT JOIN sys_user u on u.id=a.creater
-        <where>
-            a.type=#{type}
-            <if test="city != null and city != ''">
-                and a.city like concat('%', #{city},'%')
-
-            </if>
-            <if test="district != null and district != ''">
-                and a.district like concat('%', #{district},'%')
-            </if>
-            <if test="town != null and town != ''">
-                and a.town=#{town}
-            </if>
-            <if test="status != null and status != ''">
-                and a.status=#{status}
-            </if>
-            <if test="startTime != null and startTime != ''">
-                and DATE_FORMAT(a.start_time, '%Y-%m-%d') <![CDATA[ >= ]]> #{startTime}
-            </if>
-            <if test="endTime != null and endTime != ''">
-                and DATE_FORMAT(a.start_time, '%Y-%m-%d')  <![CDATA[ <= ]]> #{endTime}
-            </if>
-            <if test="search != null and search != ''">
-                and (
-                a.reg_name like concat('%',#{search},'%') or
-                a.credit_code like concat('%',#{search},'%') or
-                a.contacts like concat('%',#{search},'%') or
-                a.contacts_tel like concat('%',#{search},'%')
-                )
-            </if>
-            <if test="management != null and management != ''">
-                and a.management=#{management}
-            </if>
-            <if test="details != null and details != ''">
-                and a.details=#{details}
-            </if>
-            <if test="roleId == 2 or roleId == 4">
-                and a.city like concat('%', #{cityAccess},'%')
-            </if>
-            <if test="roleId == 3">
-                and a.city like concat('%', #{cityAccess},'%') and a.district like concat('%', #{districtAccess},'%')
-            </if>
-        </where>
-
-        order by field(a.status,'4','6','5') desc,sr.sort , a.start_time desc
+        order by field(a.status,'4','6','5') desc, a.start_time desc
     </select>
 
     <select id="applicantsExport" resultType="net.mingsoft.fxxf.bean.entity.Applicants">
@@ -550,7 +457,7 @@
             </choose>
         </where>
         ) AS sr ON sr.name = a.city
-        LEFT JOIN sys_user u on u.id=a.creater
+        LEFT JOIN manager u on u.id=a.creater
         <where>
             a.type=#{type}
             <if test="status != null and status != ''">
