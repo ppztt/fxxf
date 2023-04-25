@@ -88,6 +88,7 @@ public class ManagerInfoServiceImpl extends ServiceImpl<ManagerInfoMapper, Manag
         String password = user.getManagerPassword();
         if (CharSequenceUtil.isNotBlank(password)) {
             checkUserInfo(password, null);
+            user.setManagerPassword(DigestUtils.sha256Hex(password));
         }
         user.setUsertype(dbUser.getUsertype());
         // 不为NULL的属性都将被更新

@@ -17,6 +17,7 @@ import net.mingsoft.fxxf.bean.vo.ApplicantsParamsVo;
 import net.mingsoft.fxxf.bean.vo.ExcelImportErrorMsgVo;
 import net.mingsoft.fxxf.bean.vo.OperatorStatisticsVo;
 import net.mingsoft.fxxf.service.ApplicantsService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -178,14 +179,14 @@ public class ApplicantsController {
         }
     }
 
-    //    @RequiresPermissions("wlythcn:upload")
+    @RequiresPermissions("wlythcn:upload")
     @PostMapping(value = "/import/{fileId}")
     @ApiOperation(value = "经营者列表-导入")
     public BaseResult<ArrayList<Applicants>> templateImport(@PathVariable("fileId") String fileId) {
         return applicantsService.templateImport(fileId);
     }
 
-    //    @RequiresPermissions("wlythcn:list")
+    @RequiresPermissions("wlythcn:list")
     @GetMapping(value = "/export")
     @ApiOperation(value = "经营者列表-导出", notes = "经营者列表-导出")
     @ApiImplicitParam(name = "status", value = "状态(1:在期； 0:摘牌)，为空则导出全部", example = "1")
@@ -197,7 +198,7 @@ public class ApplicantsController {
     }
 
 
-    //    @RequiresPermissions("wlythcn:jdtstj")
+    @RequiresPermissions("wlythcn:jdtstj")
     @PostMapping("/operatorStatistics/list")
     @ApiOperation(value = "经营者统计-列表", notes = "经营者统计-列表")
     public BaseResult<ArrayList<OperatorStatisticsVo>> operatorStatistics(@RequestBody ApplicantsStatisticsRequest applicantsStatisticsRequest) {
@@ -210,7 +211,7 @@ public class ApplicantsController {
         return BaseResult.fail();
     }
 
-    //    @RequiresPermissions("wlythcn:jdtstj")
+    @RequiresPermissions("wlythcn:jdtstj")
     @GetMapping("/operatorStatistics/export")
     @ApiOperation(value = "经营者统计-导出", notes = "经营者统计-导出")
     public void operatorStatisticsExport(@RequestParam(value = "type") Integer type,
