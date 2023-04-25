@@ -332,4 +332,33 @@
         GROUP BY sr.name, sr.sort
         ORDER BY sr.sort
     </select>
+
+
+    <select id="feedbackRegionStatisticByRole" resultType="net.mingsoft.fxxf.bean.entity.FeedbackStat">
+        SELECT
+            ${roleRegIdentify} AS city,
+            SUM(IF( cf.status = 0, 1, 0 )) AS unprocessed,
+            count( DISTINCT cf.applicants_id ) AS complaintCompanyNum,
+            count( cf.id ) AS complaintTotal,
+            SUM(IF( result = '督促告诫', 1, 0 )) AS warning,
+            SUM(IF( result = '摘牌', 1, 0 )) AS disqualification,
+            SUM(IF( result = '投诉问题不存在', 1, 0 )) AS non_existent_complaints,
+            SUM(IF( result = '其他', 1, 0 )) AS other
+        FROM
+            cc_feedback AS cf
+                LEFT JOIN cc_applicants ca ON cf.applicants_id = ca.id
+        WHERE 1=1
+        <if test="feedback.startTime != '' and feedback.startTime != null
+                and feedback.endTime != '' and feedback.endTime != null">
+            AND cf.create_time BETWEEN #{feedback.startTime}
+            AND date_add(#{feedback.endTime}, INTERVAL 1 DAY )
+        </if>
+        <if test="feedback.roleId != 1 and feedback.city != '' and feedback.city != null">
+            AND city like concat('%', #{feedback.city},'%')
+        </if>
+        <if test="feedback.type != '' and feedback.type != null">
+            AND cf.type = #{feedback.type}
+        </if>
+        GROUP BY ${roleRegIdentify}
+    </select>
 </mapper>

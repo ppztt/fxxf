@@ -1,30 +1,26 @@
 package net.mingsoft.fxxf.bean.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.mingsoft.utils.ExcelCell;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-/**
- * @ClassName: FeedbackExtend
- * @Description TODO
- * @Author Ligy
- * @Date 2020/2/10 15:22
- **/
-@ApiModel(value = "FeedbackExtend", description = "留言反馈统计实体类")
-@Getter
-@Setter
-public class FeedbackStat implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+@ApiModel(value = "FeedbackExtend", description = "留言反馈统计实体类")
+@Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class FeedbackStat implements Serializable {
 
     /**
      * id
@@ -108,9 +104,8 @@ public class FeedbackStat implements Serializable {
     /**
      * 归属地市
      */
-    @ExcelCell(index = 0)
-    @TableField(exist = false)
     @ApiModelProperty(value = "地市")
+    @ExcelCell(index = 0)
     private String city;
 
     @ApiModelProperty(value = "区县")
@@ -166,4 +161,7 @@ public class FeedbackStat implements Serializable {
 
     @ApiModelProperty(value = "角色id")
     private Integer roleId;
+
+    @ApiModelProperty(value = "排序")
+    private Integer sorted;
 }
