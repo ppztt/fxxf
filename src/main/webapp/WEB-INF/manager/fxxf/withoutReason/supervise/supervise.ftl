@@ -62,10 +62,12 @@
                     width="150"
                     align=left">
                 <template #default="{ row }">
+                    <@shiro.hasPermission name="fxxfcn:jdts">
                     <div class="action_btn blue_text" @click="goCheck(row)">
                         <i class="el-icon-s-tools"></i>
                         <span style="color:#409EFF">查看处理</span>
                     </div>
+                    </@shiro.hasPermission>
                 </template>
             </el-table-column>
         </el-table>
