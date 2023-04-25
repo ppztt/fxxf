@@ -11,12 +11,13 @@
 <div id="app" class="statistics">
     <el-row>
         <el-col span="5">
-            <el-input v-model="keyword" clearable placeholder="请输入关键字"></el-input>
+            <el-input v-model="keyword" clearable placeholder="请输入关键字" @clear="getList"></el-input>
 
         </el-col>
         <el-col span="19">
             <div class="button-Box">
                 <el-button class="item-Box"  type="primary" icon="el-icon-search" @click="getOperatorStatisticList">查询</el-button>
+                <@shiro.hasPermission name="sbclgl:upload">
                     <el-upload
                             ref="upload"
                             action
@@ -25,10 +26,13 @@
                     >
                         <el-button class="upDateItemBox" type="primary"  icon="el-icon-top">上传</el-button>
                     </el-upload>
-                <el-button class="item-Box" :type="judgmentButton" :disabled="judgmentDisable"
-                           :plain="judgmentDisable" icon="el-icon-close" @click="deleteOperatorStatisticList">
-                    删除
-                </el-button>
+                </@shiro.hasPermission>
+                <@shiro.hasPermission name="sbclgl:del">
+                    <el-button class="item-Box" :type="judgmentButton" :disabled="judgmentDisable"
+                               :plain="judgmentDisable" icon="el-icon-close" @click="deleteOperatorStatisticList">
+                        删除
+                    </el-button>
+                </@shiro.hasPermission>
             </div>
         </el-col>
     </el-row>
@@ -73,7 +77,9 @@
                 label="操作"
                 show-overflow-tooltip>
             <template #default="{ row }">
+                <@shiro.hasPermission name="sbclgl:del">
                 <span @click="deleteSingleOperatorStatisticList(row)" style="color: red; cursor: pointer">X删除</span>
+                </@shiro.hasPermission>
             </template>
         </el-table-column>
     </el-table>

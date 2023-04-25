@@ -18,6 +18,7 @@
                         placeholder="请输入关键字"
                         v-model="search"
                         :clearable="true"
+                        @clear="clearQuery"
                 ></el-input>
             </el-col>
             <el-col offset="1" span="3">
@@ -62,10 +63,12 @@
                     width="150"
                     align=left">
                 <template #default="{ row }">
-                    <div class="action_btn blue_text" @click="goCheck(row)">
-                        <i class="el-icon-s-tools"></i>
-                        <span style="color:#409EFF">查看处理</span>
-                    </div>
+                    <@shiro.hasPermission name="fxxfcn:jdts">
+                      <div class="action_btn blue_text" @click="goCheck(row)">
+                          <i class="el-icon-s-tools"></i>
+                              <span style="color:#409EFF">查看处理</span>
+                      </div>
+                    </@shiro.hasPermission>
                 </template>
             </el-table-column>
         </el-table>
@@ -135,6 +138,10 @@
             //跳转页面
             goCheck(row) {
                 this.action = ms.manager + `/route/reasonDetail.do?applicantsId=`+row.applicantsId
+            },
+            //清空重新获取数据
+            clearQuery(){
+                this.getMesNumList()
             }
 
         },
