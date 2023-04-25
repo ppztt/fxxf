@@ -35,6 +35,7 @@
                             查询
                         </el-button>
                     </el-col>
+                    <@shiro.hasPermission name="manage:user">
                     <el-col>
                         <el-button
                                 size="medium"
@@ -44,6 +45,7 @@
                             新增
                         </el-button>
                     </el-col>
+                    </@shiro.hasPermission>
                 </el-row>
             </el-col>
         </el-row>
@@ -68,10 +70,14 @@
                     label="操作">
                 <template slot-scope="{row}">
                     <div class="actions" :id="row.id">
+                        <@shiro.hasPermission name="manage:userinfo">
                         <el-button class="action_btn blue_text" icon="el-icon-edit" @click="modifyUser(row.id)">修改
                         </el-button>
+                        </@shiro.hasPermission>
+                        <@shiro.hasPermission name="manage:user">
                         <el-button class="action_btn red_text" icon="el-icon-close" @click="deleteBack(row.id)">删除
                         </el-button>
+                        </@shiro.hasPermission>
                     </div>
                 </template>
             </el-table-column>

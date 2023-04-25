@@ -68,10 +68,14 @@
                     label="操作">
                 <template slot-scope="{row}">
                     <div class="actions" :id="row.id">
+                        <@shiro.hasPermission name="qyyhgl:detail">
                         <el-button class="action_btn blue_text" icon="el-icon-search" @click="modifyUser(row.id)">查看
                         </el-button>
+                        </@shiro.hasPermission>
+                        <@shiro.hasPermission name="qyyhgl:resetPwd">
                         <el-button class="action_btn blue_text" icon="el-icon-edit" @click="modifyPW(row.id)">重置密码
                         </el-button>
+                        </@shiro.hasPermission>
                     </div>
                 </template>
             </el-table-column>

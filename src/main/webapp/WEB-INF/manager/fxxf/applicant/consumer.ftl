@@ -20,7 +20,7 @@
             </el-col>
             <el-col span="20">
                 <el-select ref="city" v-model="city" placeholder="市" :clearable="true" filterable
-                           @change="cityChange(city)"  @clear="clear">
+                           @change="cityChange(city)" @clear="clear">
                     <el-option v-for="item in regionData" :value="item.name" :key="item.code" :label="item.name">
                     </el-option>
                 </el-select>
@@ -50,14 +50,16 @@
                 </el-select>
             </el-col>
             <el-col span="6">
-                <el-date-picker format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="startTime" placeholder="开始时间" @on-change="
+                <el-date-picker format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="startTime" placeholder="开始时间"
+                                @on-change="
         (value) => {
           startTime = value;
         }
       "></el-date-picker>
             </el-col>
             <el-col span="6">
-                <el-date-picker format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="endTime" placeholder="结束时间" @on-change="
+                <el-date-picker format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="endTime" placeholder="结束时间"
+                                @on-change="
         (value) => {
           endTime = value;
         }
@@ -70,13 +72,13 @@
             </el-col>
         </el-row>
         <div class="list-header-btns">
-            <div class="item">
-                <el-button size="medium" class="blue_btn2" @click="isShowEnteringModal = true" icon="el-icon-edit"
-                >
-                    <!-- <img class="left" src="@/assets/images/1_17.png" alt /> -->
-                    录入
-                </el-button>
-            </div>
+            <@shiro.hasPermission name="jyzlb:input">
+                <div class="item">
+                    <el-button size="medium" class="blue_btn2" @click="isShowEnteringModal = true" icon="el-icon-edit">
+                        录入
+                    </el-button>
+                </div>
+            </@shiro.hasPermission>
             <#-- 录入弹出框 -->
             <el-dialog
                     ref="formData"
@@ -358,49 +360,56 @@
                     </el-col>
                 </el-row>
             </el-dialog>
-            <div class="item">
-                <el-upload class="upload" :show-file-list="false"
-                           accept="xlsm"
-                           :before-upload="beforeUploadAction"
-                           :on-success="uploadSucAction"
-                           :on-error="uploadErrAction"
-                           :action="'/applicants/preImport.do?type='+type">
-                    <el-button size="medium" class="green_btn" type="primary" :disabled="!canImport"
-                               icon="el-icon-bottom"
-                               :title="!canImport ? '没有权限导入' : ''">
-                        导入
+            <@shiro.hasPermission name="wlythcn:upload">
+                <div class="item">
+                    <el-upload class="upload" :show-file-list="false"
+                               accept="xlsm"
+                               :before-upload="beforeUploadAction"
+                               :on-success="uploadSucAction"
+                               :on-error="uploadErrAction"
+                               :action="'/applicants/preImport.do?type='+type">
+                        <el-button size="medium" class="green_btn" type="primary" :disabled="!canImport"
+                                   icon="el-icon-bottom"
+                                   :title="!canImport ? '没有权限导入' : ''">
+                            导入
+                        </el-button>
+                    </el-upload>
+                </div>
+            </@shiro.hasPermission>
+            <@shiro.hasPermission name="wlythcn:list">
+                <div class="item">
+                    <el-dropdown @command="exportData">
+                        <el-button size="medium" size="medium" class="dgreen_btn" icon="el-icon-top">
+                            <!-- <img class="left" src="@/assets/images/1_20.png" alt /> -->
+                            导出
+                            <!-- <img class="right" src="@/assets/images/1_15.png" alt /> -->
+                        </el-button>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item :command="''">导出全部</el-dropdown-item>
+                            <el-dropdown-item :command="1" divided>导出在期</el-dropdown-item>
+                            <el-dropdown-item :command="0" divided>导出摘牌</el-dropdown-item>
+                            <el-dropdown-item :command="2" divided>导出过期</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </div>
+            </@shiro.hasPermission>
+            <@shiro.hasPermission name="jyzlb:download">
+                <div class="item">
+                    <el-button size="medium" class="red_btn" @click="downLoadTemplate" icon="el-icon-download">
+                        <!-- <img class="left" src="@/assets/images/1_17.png" alt /> -->
+                        模板下载
                     </el-button>
-                </el-upload>
-            </div>
-            <div class="item">
-                <el-dropdown @command="exportData">
-                    <el-button size="medium" size="medium" class="dgreen_btn" icon="el-icon-top">
-                        <!-- <img class="left" src="@/assets/images/1_20.png" alt /> -->
-                        导出
-                        <!-- <img class="right" src="@/assets/images/1_15.png" alt /> -->
+                </div>
+            </@shiro.hasPermission>
+            <@shiro.hasPermission name="jyzlb:del">
+                <div class="item" style="margin-left: 30px;">
+                    <el-button size="medium" :class="{ red_btn : ids.ids.length!=0 }" icon="el-icon-close"
+                               :disabled="ids.ids.length == 0"
+                               @click="deleteMoreConsumer">
+                        删除
                     </el-button>
-                    <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item :command="''">导出全部</el-dropdown-item>
-                        <el-dropdown-item :command="1" divided>导出在期</el-dropdown-item>
-                        <el-dropdown-item :command="0" divided>导出摘牌</el-dropdown-item>
-                        <el-dropdown-item :command="2" divided>导出过期</el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
-            </div>
-            <div class="item">
-                <el-button size="medium" class="red_btn" @click="downLoadTemplate" icon="el-icon-download">
-                    <!-- <img class="left" src="@/assets/images/1_17.png" alt /> -->
-                    模板下载
-                </el-button>
-            </div>
-
-            <div class="item" style="margin-left: 30px;">
-                <el-button size="medium" :class="{ red_btn : ids.ids.length!=0 }" icon="el-icon-close"
-                           :disabled="ids.ids.length == 0"
-                           @click="deleteMoreConsumer">
-                    删除
-                </el-button>
-            </div>
+                </div>
+            </@shiro.hasPermission>
         </div>
     </el-header>
     <el-main class="ms-container">
@@ -426,7 +435,7 @@
                     width="200"
                     align="left">
                 <template slot-scope="{row}">
-                    <img class="new" v-show="row.isNew" src="${base}/static/images/PendingTrial.png" alt="" /><span>{{ row.regName }}</span>
+                    <img class="new" v-show="row.isNew" src="${base}/static/images/PendingTrial.png" alt=""/><span>{{ row.regName }}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -524,23 +533,31 @@
                     align="left">
                 <template slot-scope="{row}">
                     <div class="actions" :id="row.id">
+                        <@shiro.hasPermission name="jyzlb:detail">
                         <el-button class="action_btn blue_text" icon="el-icon-search" @click="openNew(1,row)">
                             查看
                         </el-button>
+                        </@shiro.hasPermission>
+                        <@shiro.hasPermission name="jyzlb:edit">
                         <el-button class="action_btn orange_text" icon="el-icon-edit" @click="openNew(0,row)">
                             编辑
                         </el-button>
+                        </@shiro.hasPermission>
+                        <@shiro.hasPermission name="jyzlb:audit">
                         <el-button class="action_btn blue_text" icon="el-icon-circle-check" @click="openNew(3,row)">
                             审核
                         </el-button>
+                        </@shiro.hasPermission>
                         <el-button class="action_btn green_text" v-if="row.status == 1" icon="el-icon-s-promotion"
                                    @click="openNew(2,row)">
                             摘牌
                         </el-button>
+                        <@shiro.hasPermission name="jyzlb:del">
                         <el-button type="text" class="action_btn red_text" icon="el-icon-close"
                                    @click="deleteConsumer(row.id)">
                             删除
                         </el-button>
+                        </@shiro.hasPermission>
                     </div>
                 </template>
             </el-table-column>
@@ -897,9 +914,9 @@
             ids: {ids: []}
         },
         watch: {
-            "unitDataList":{
-                handler(){
-                    this.$nextTick(()=>{
+            "unitDataList": {
+                handler() {
+                    this.$nextTick(() => {
                         this.$refs.unitDataList.doLayout();
                     })
                 },
@@ -947,7 +964,7 @@
 
             }
             ,
-            clear(){
+            clear() {
                 this.district = "";
                 this.formData.district = ""
             },
@@ -988,7 +1005,7 @@
             uploadConfirm() {
                 // 确认上传
                 ms.http
-                    .post('/applicants/import/'+this.uploadId+'.do')
+                    .post('/applicants/import/' + this.uploadId + '.do')
                     .then((res) => {
                         if (res.code == 200) {
                             this.$message({
@@ -1005,7 +1022,7 @@
                 if (even.code == 200 && even.data.length > 0 && !even.data[0].errorMsg) {
                     this.uploadId = even.data[0].fileId;
                     this.uploadConfirm();
-                }else if(even.code == 500){
+                } else if (even.code == 500) {
                     this.$message.error(even.data[0].errorMsg)
                 }
             },
@@ -1161,7 +1178,7 @@
                     type: 'error',
                     center: true
                 }).then(() => {
-                    ms.http.post('/applicants/remove/' + id + '.do').then(()=>{
+                    ms.http.post('/applicants/remove/' + id + '.do').then(() => {
                         this.$message({
                             type: 'success',
                             message: '删除成功!'
@@ -1386,13 +1403,15 @@
         overflow-x: auto !important;
         flex-wrap: inherit !important;
     }
-    .new{
+
+    .new {
         width: 30px;
         height: 20px;
         position: absolute;
         top: 0;
         left: 0;
     }
+
     .el-table__body-wrapper::-webkit-scrollbar {
         width: 18px;
         height: 18px;
@@ -1403,7 +1422,8 @@
         border-radius: 30px;
         border: 6px solid #fff;
     }
-    .el-scrollbar__wrap::-webkit-scrollbar{
+
+    .el-scrollbar__wrap::-webkit-scrollbar {
         width: 18px;
         height: 18px;
     }

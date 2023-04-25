@@ -31,6 +31,7 @@ import net.mingsoft.fxxf.service.RecordService;
 import net.mingsoft.fxxf.service.impl.MyFeedbackService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
@@ -78,7 +79,7 @@ public class FeedbackController {
     /**
      *  查询企业投诉数量和已处理数量统计数据
      */
-    // @RequiresPermissions("wlythcn:jdts")
+    @RequiresPermissions("wlythcn:jdts")
     @GetMapping("/countByApplicantList")
     @ApiOperation(value = "监督投诉-列表", notes = "监督投诉-列表")
     public BaseResult<BasePageResult<FeedbackComplaintVo>> countByApplicantList(FeedBackCompanyPageRequest applicantBasePageRequest) {
@@ -95,7 +96,7 @@ public class FeedbackController {
     /**
      * 企业投诉反馈列表
      */
-    // @RequiresPermissions("fxxfcn:jdts")
+    @RequiresPermissions("fxxfcn:jdts")
     @GetMapping("/companyDetails")
     @ApiOperation(value = "企业监督投诉明细列表", notes = "企业监督投诉明细列表")
     public BaseResult<BasePageResult<FeedbackCompanyDetailsVo>> companyDetails(FeedbackPageRequest feedbackPageRequest) {
@@ -125,7 +126,7 @@ public class FeedbackController {
     /**
      * 根据 id 查询监督投诉
      */
-    // @RequiresPermissions("wlythcn:jdts")
+    @RequiresPermissions("wlythcn:jdts")
     @GetMapping("/getFeedbackById/{id}")
     @ApiOperation(value = "监督投诉-企业详情处理", notes = "监督投诉-企业详情处理")
     @ApiImplicitParams(
@@ -169,7 +170,7 @@ public class FeedbackController {
     /**
      * 处理留言反馈并保存操作记录, 监督投诉-处理投诉
      */
-    // @RequiresPermissions("wlythcn:jdts:process")
+    @RequiresPermissions("wlythcn:jdts:process")
     @PostMapping("/handleFeedback/{id}")
     @ApiOperation(value = "监督投诉-处理投诉", notes = "监督投诉-处理投诉")
     public BaseResult<Integer> handleFeedback(@Validated FeedbackHandleRequest feedbackHandleRequest) {
@@ -181,7 +182,7 @@ public class FeedbackController {
     /**
      * 监督投诉统计
      */
-    // @RequiresPermissions("wlythcn:jdtstj")
+    @RequiresPermissions("wlythcn:jdtstj")
     @GetMapping("/statistic")
     @ApiOperation(value = "监督投诉统计-报表", notes = "监督投诉统计/监督投诉统计报表查询")
     public BaseResult<BasePageResult<FeedbackStat>> statistic(FeedbackStatisticRequest feedbackStatisticRequest) {
@@ -190,7 +191,7 @@ public class FeedbackController {
         return BaseResult.success(basePageResult);
     }
 
-    // @RequiresPermissions("wlythcn:jdtstj")
+    @RequiresPermissions("wlythcn:jdtstj")
     @GetMapping(value = "/exportStatistic")
     @ApiOperation(value = "监督投诉统计-导出Excel", notes = "监督投诉统计/监督投诉统计导出Excel")
     public void exportStatistic(FeedbackStatisticRequest feedbackStatisticRequest, HttpServletResponse response) {
