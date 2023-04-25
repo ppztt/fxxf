@@ -39,12 +39,12 @@ public interface ApplicantsService extends IService<Applicants> {
     /**
      * 经营者列表-编辑保存
      */
-    BaseResult updateApplicants(ApplicantsParamsVo applicantsParamVo);
+    BaseResult<String> updateApplicants(ApplicantsParamsVo applicantsParamVo);
 
     /**
      * 经营者列表-根据单位id更新状态及原因
      */
-    BaseResult updateApplicantsStatus(ApplicantsStatusUpdateRequest applicantsStatusUpdateRequest);
+    BaseResult<String> updateApplicantsStatus(ApplicantsStatusUpdateRequest applicantsStatusUpdateRequest);
 
     /**
      * 经营者列表-模板下载

@@ -12,6 +12,7 @@ import net.mingsoft.fxxf.bean.request.ApplicantsPageRequest;
 import net.mingsoft.fxxf.bean.request.ApplicantsStatisticsRequest;
 import net.mingsoft.fxxf.bean.request.ApplicantsStatusUpdateRequest;
 import net.mingsoft.fxxf.bean.request.EnterpriseNewApplyRequest;
+import net.mingsoft.fxxf.bean.vo.ApplicantsFindVo;
 import net.mingsoft.fxxf.bean.vo.ApplicantsParamsVo;
 import net.mingsoft.fxxf.bean.vo.ExcelImportErrorMsgVo;
 import net.mingsoft.fxxf.bean.vo.OperatorStatisticsVo;
@@ -32,7 +33,6 @@ import java.util.Objects;
  * 申报单位相关接口
  *
  * @author: huangjunjian
- * @date: 2023-04-12
  */
 @Api(tags = {"申报单位相关接口"})
 @RestController
@@ -79,9 +79,9 @@ public class ApplicantsController {
 
     @GetMapping("/find")
     @ApiOperation(value = "经营者列表-根据id和经营者注册名称查询是否重复", notes = "经营者列表-根据id和经营者注册名称查询是否重复")
-    public BaseResult findApplicantsByRegName(@RequestParam(value = "id") Integer id,
-                                              @RequestParam(value = "creditCode") String creditCode,
-                                              @RequestParam(value = "type") String type) {
+    public BaseResult<ApplicantsFindVo> findApplicantsByRegName(@RequestParam(value = "id") Integer id,
+                                                                @RequestParam(value = "creditCode") String creditCode,
+                                                                @RequestParam(value = "type") String type) {
         try {
             return BaseResult.success(applicantsService.findApplicantsByRegName(id, creditCode, type));
         } catch (Exception e) {
@@ -95,7 +95,7 @@ public class ApplicantsController {
      */
     @PostMapping("/update")
     @ApiOperation(value = "经营者列表-编辑保存")
-    public BaseResult updateApplicants(@RequestBody ApplicantsParamsVo applicants) {
+    public BaseResult<String> updateApplicants(@RequestBody ApplicantsParamsVo applicants) {
         try {
             return applicantsService.updateApplicants(applicants);
         } catch (Exception e) {
@@ -140,7 +140,7 @@ public class ApplicantsController {
      */
     @PostMapping("/updateApplicantsStatus")
     @ApiOperation(value = "根据经营者id更新状态及原因", notes = "根据经营者id更新状态及原因")
-    public BaseResult updateApplicantsStatus(@RequestBody ApplicantsStatusUpdateRequest applicantsStatusUpdateRequest) {
+    public BaseResult<String> updateApplicantsStatus(@RequestBody ApplicantsStatusUpdateRequest applicantsStatusUpdateRequest) {
         try {
             return applicantsService.updateApplicantsStatus(applicantsStatusUpdateRequest);
         } catch (Exception e) {
