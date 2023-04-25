@@ -60,7 +60,9 @@
                     </el-col>
                 </el-row>
                 <el-form-item>
+                    <@shiro.hasPermission name="manage:userinfo">
                     <el-button type="primary" class="blue_btn" @click="sub">提交</el-button>
+                    </@shiro.hasPermission>
                 </el-form-item>
 
             </el-form>

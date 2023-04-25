@@ -71,6 +71,7 @@
             </el-col>
         </el-row>
         <div class="list-header-btns">
+            <@shiro.hasPermission name="jyzlb:input">
             <div class="item">
                 <el-button size="medium" class="blue_btn2" @click="isShowEnteringModal = true" icon="el-icon-edit"
                 >
@@ -78,6 +79,7 @@
                     录入
                 </el-button>
             </div>
+            </@shiro.hasPermission>
             <#-- 录入弹出框 -->
             <el-dialog
                     :visible.sync="isShowEnteringModal"
@@ -359,6 +361,7 @@
                     </el-col>
                 </el-row>
             </el-dialog>
+            <@shiro.hasPermission name="wlythcn:upload">
             <div class="item">
                 <el-upload class="upload" :show-file-list="false"
                            accept="xlsm"
@@ -373,6 +376,8 @@
                     </el-button>
                 </el-upload>
             </div>
+            </@shiro.hasPermission>
+            <@shiro.hasPermission name="wlythcn:list">
             <div class="item">
                 <el-dropdown @command="exportData">
                     <el-button size="medium" size="medium" class="dgreen_btn" icon="el-icon-top">
@@ -386,13 +391,16 @@
                     </el-dropdown-menu>
                 </el-dropdown>
             </div>
+            </@shiro.hasPermission>
+            <@shiro.hasPermission name="jyzlb:download">
             <div class="item">
                 <el-button size="medium" class="red_btn" @click="downLoadTemplate" icon="el-icon-download">
                     <!-- <img class="left" src="@/assets/images/1_17.png" alt /> -->
                     模板下载
                 </el-button>
             </div>
-
+            </@shiro.hasPermission>
+            <@shiro.hasPermission name="jyzlb:del">
             <div class="item" style="margin-left: 30px;">
                 <el-button size="medium" :class="{ red_btn : ids.ids.length!=0 }" icon="el-icon-close"
                            :disabled="ids.ids.length == 0"
@@ -400,6 +408,7 @@
                     删除
                 </el-button>
             </div>
+            </@shiro.hasPermission>
         </div>
     </el-header>
     <el-main class="ms-container">
@@ -523,23 +532,31 @@
                     align="left">
                 <template slot-scope="{row}">
                     <div class="actions" :id="row.id">
+                        <@shiro.hasPermission name="jyzlb:detail">
                         <el-button class="action_btn blue_text" icon="el-icon-search" @click="openNew(1,row)">
                             查看
                         </el-button>
+                        </@shiro.hasPermission>
+                        <@shiro.hasPermission name="jyzlb:edit">
                         <el-button class="action_btn orange_text" icon="el-icon-edit" @click="openNew(0,row)">
                             编辑
                         </el-button>
+                        </@shiro.hasPermission>
+                        <@shiro.hasPermission name="jyzlb:audit">
                         <el-button class="action_btn blue_text" icon="el-icon-circle-check" @click="openNew(3,row)">
                             审核
                         </el-button>
+                        </@shiro.hasPermission>
                         <el-button class="action_btn green_text" v-if="row.status == 1" icon="el-icon-s-promotion"
                                    @click="openNew(2,row)">
                             摘牌
                         </el-button>
+                        <@shiro.hasPermission name="jyzlb:del">
                         <el-button type="text" class="action_btn red_text" icon="el-icon-close"
                                    @click="deleteConsumer(row.id)">
                             删除
                         </el-button>
+                        </@shiro.hasPermission>
                     </div>
                 </template>
             </el-table-column>
