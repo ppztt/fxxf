@@ -95,6 +95,7 @@ public class ShiroConfig {
 		filterChainDefinitionMap.put(MSProperties.manager.path + "/checkLogin.do", "anon");
 		filterChainDefinitionMap.put(MSProperties.manager.path + "/changepass.do", "anon");
 		filterChainDefinitionMap.put(MSProperties.manager.path + "/updatePasswordForce.do", "anon");
+		filterChainDefinitionMap.put(MSProperties.manager.path + "/index/**", "anon");
 		// 其余接口一律拦截
 		// 主要这行代码必须放在所有权限设置的最后，不然会导致所有 url 都被拦截
 		filterChainDefinitionMap.put(MSProperties.manager.path + "/**", "user");
