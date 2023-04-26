@@ -200,12 +200,14 @@
                                         v-model="formData.startTime"
                                         type="date"
                                         value-format="yyyy-MM-dd"
+                                        :picker-options="pickerBeginDate"
                                         placeholder="开始有效期">
                                 </el-date-picker>
                                 ~
                                 <el-date-picker
                                         v-model="formData.endTime"
                                         type="date"
+                                        :picker-options="pickerEndDate"
                                         value-format="yyyy-MM-dd"
                                         placeholder="结束有效期">
                                 </el-date-picker>
@@ -542,89 +544,111 @@
     // window.parent.exec_success_callback();
     var indexVue = new Vue({
         el: "#index",
-        data: {
-            // 放心消费 1  无理由 2
-            type: '1',
-            // 详情后的名字，根据query参数来切换
-            textList: [
-                "编辑",
-                "查看",
-                "摘牌",
-                "审核",
-            ],
-            // 用户信息
-            userInfo: {
-                // 页面跳转
-                action: "",
-                account: "测试",
-                address: null,
-                city: "",
-                createTime: "2023-01-10 03:59:30",
-                creditCode: null,
-                district: "",
-                email: "",
-                id: 177,
-                management: null,
-                newPassword: null,
-                password: "52f24ccfeef7e6a0f4a17fbc45647361ebb06a839ec6172064a2167299e33d1d",
-                phone: "13922108999",
-                principal: null,
-                principalTel: null,
-                province: null,
-                realname: "魏",
-                roleId: 1,
-                roleName: null,
-                storeName: null,
-                town: null,
-                updateTime: "2023-01-10 03:59:30",
-                usertype: 1,
-                zipcode: ""
-            },
-            // 类型代号：查看，编辑.....
-            detailType: '',
-            // 对应的信息id
-            consumerId: -1,
-            // 表单数据
-            regionData: [], //地区数据 一级市数据
-            districtDataArr: [],
-            formData: {
-                regName: "",
-                storeName: "",
-                platform: "",
-                onlineName: "",
-                city: "",
-                district: "",
-                address: "",
-                addrs: [
-                    {
-                        city: "",
-                        district: "",
-                        address: "",
+        data(){
+            return{
+                // 放心消费 1  无理由 2
+                type: '1',
+                // 开始结束日期限制
+                pickerBeginDate: {
+                    disabledDate: (time) => {
+                        if (this.endTime) {
+                            return (
+                                time.getTime() >= new Date(this.endTime).getTime()
+                            );
+                        }
                     }
+                },
+                //结束日期限制
+                pickerEndDate: {
+                    disabledDate: (time) => {
+                        if (this.startTime) {
+                            return (
+                                time.getTime() <= new Date(this.startTime).getTime()
+                            );
+                        }
+                    }
+                },
+                // 详情后的名字，根据query参数来切换
+                textList: [
+                    "编辑",
+                    "查看",
+                    "摘牌",
+                    "审核",
                 ],
-                creditCode: "",
-                management: "",
-                details: "",
-                principal: "",
-                principalTel: "",
-                contents1: "",
-                contents2: "",
-                contents3: "",
-                applicationDate: "",
-                delReason: "",
-                delOther: "",
-            },
-            activeManageType: [
-                // 当前经营类别数据
-            ],
-            addrs: {},
-            // 经营类别
-            manageType: {
-                commodities: [],
-                services: [],
-            },
-            districtData: [], //某市县数据
-        },
+                // 用户信息
+                userInfo: {
+                    // 页面跳转
+                    action: "",
+                    account: "测试",
+                    address: null,
+                    city: "",
+                    createTime: "2023-01-10 03:59:30",
+                    creditCode: null,
+                    district: "",
+                    email: "",
+                    id: 177,
+                    management: null,
+                    newPassword: null,
+                    password: "52f24ccfeef7e6a0f4a17fbc45647361ebb06a839ec6172064a2167299e33d1d",
+                    phone: "13922108999",
+                    principal: null,
+                    principalTel: null,
+                    province: null,
+                    realname: "魏",
+                    roleId: 1,
+                    roleName: null,
+                    storeName: null,
+                    town: null,
+                    updateTime: "2023-01-10 03:59:30",
+                    usertype: 1,
+                    zipcode: ""
+                },
+                // 类型代号：查看，编辑.....
+                detailType: '',
+                // 对应的信息id
+                consumerId: -1,
+                // 表单数据
+                regionData: [], //地区数据 一级市数据
+                districtDataArr: [],
+                formData: {
+                    regName: "",
+                    storeName: "",
+                    platform: "",
+                    onlineName: "",
+                    city: "",
+                    district: "",
+                    address: "",
+                    addrs: [
+                        {
+                            city: "",
+                            district: "",
+                            address: "",
+                        }
+                    ],
+                    creditCode: "",
+                    management: "",
+                    details: "",
+                    principal: "",
+                    principalTel: "",
+                    contents1: "",
+                    contents2: "",
+                    contents3: "",
+                    applicationDate: "",
+                    delReason: "",
+                    delOther: "",
+                },
+                activeManageType: [
+                    // 当前经营类别数据
+                ],
+                addrs: {},
+                // 经营类别
+                manageType: {
+                    commodities: [],
+                    services: [],
+                },
+                districtData: [], //某市县数据
+            }
+        } ,
         methods: {
             // 返回上一级页面
             returnBack() {
@@ -632,7 +656,7 @@
             },
             // 获取该商家数据
             getList() {
-                ms.http.get("/applicants/" + this.consumerId + '.do').then((res) => {
+                ms.http.get("/xwh/applicants/" + this.consumerId + '.do').then((res) => {
                     this.formData = res.data
                     let cityArr = this.formData.city.split(",");
                     let districtArr = this.formData.district.split(",");
@@ -651,7 +675,7 @@
             },
             // 获取地区信息
             getRegionData() {
-                ms.http.get('/gd-regin.do').then((res) => {
+                ms.http.get('/xwh/gd-regin.do').then((res) => {
                     this.regionData = res.data
                 })
             },
@@ -708,7 +732,7 @@
             // 编辑保存按钮
             perEditUnitTnfo() {
                 let adds = JSON.stringify(this.formData.addrs)
-                ms.http.get('/applicants/find.do',
+                ms.http.get('/xwh/applicants/find.do',
                     {
                         creditCode: this.formData.creditCode,
                         id: this.formData.id,
@@ -716,7 +740,7 @@
                     }).then((res) => {
                     let isReapt = res.data.isRepeatRegName
                     if (!isReapt) {
-                        ms.http.post('/applicants/update.do', {...this.formData, addrs: adds},
+                        ms.http.post('/xwh/applicants/update.do', {...this.formData, addrs: adds},
                             {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
                             if (res.code == 200) {
                                 this.returnBack()
@@ -729,7 +753,7 @@
             },
             // 获取类别信息
             getManagerType() {
-                ms.http.get('/type/listGoodsAndServiceType.do').then((res) => {
+                ms.http.get('/xwh/type/listGoodsAndServiceType.do').then((res) => {
                     this.manageType = res.data
                     this.managementChange(this.formData.management)
                 })
@@ -756,7 +780,7 @@
                     notes: this.formData.ccContent,
                     type: this.type
                 }
-                ms.http.get('/applicants/audit.do', query).then(async (res) => {
+                ms.http.get('/xwh/applicants/audit.do', query).then(async (res) => {
                     if (res.code == 200) {
                         this.returnBack()
                         this.currentTopic("审核成功")
@@ -778,7 +802,7 @@
                     delReason: this.formData.delOther,
                     status
                 })
-                ms.http.post('/applicants/updateApplicantsStatus.do', params,
+                ms.http.post('/xwh/applicants/updateApplicantsStatus.do', params,
                     {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
 
                 })

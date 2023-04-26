@@ -28,7 +28,7 @@
 
             <el-col span="2">
                 <el-row class="el-button_groud" type="flex">
-                    <el-col span="23">
+                    <el-col span="12">
                         <el-button
                                 size="mini"
                                 class="blue_btn btns_type" icon="el-icon-search" @click="getUserList">
@@ -36,7 +36,7 @@
                         </el-button>
                     </el-col >
                     <@shiro.hasPermission name="manage:industryAssociation">
-                    <el-col span="23" offset="1">
+                    <el-col span="12" offset="1">
                         <el-button
                                 size="mini"
                                 class="blue_btn btns_type"
@@ -456,7 +456,7 @@
 
             getUserList() {
                 this.loading = true
-                ms.http.get('/user/industryAssociationList.do', {
+                ms.http.get('/xwh/user/industryAssociationList.do', {
                     current: this.current,
                     keyword: this.keyword,
                     size: this.size
@@ -492,7 +492,7 @@
                 this.getUserList()
             },
             getRegionData() {
-                ms.http.get('/gd-regin.do').then((res) => {
+                ms.http.get('/xwh/gd-regin.do').then((res) => {
                     this.regionData = res.data
                 })
             },
@@ -516,7 +516,7 @@
             // 修改用户信息
             modifyUser(id) {
                 this.modify = true;
-                ms.http.get('/user/userInfo.do', {id}).then((res) => {
+                ms.http.get('/xwh/user/userInfo.do', {id}).then((res) => {
                     if (res.code === '200') {
                         let data = res.data
                         this.formData.id = data.id
@@ -549,7 +549,7 @@
                         if (valid) {
                             if (msg == "modify") {
                                 let params = JSON.stringify(this.formData)
-                                ms.http.post('/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
+                                ms.http.post('/xwh/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
                                     if (res.code == '200') {
                                         this.$message({
                                             message: '修改成功',
@@ -565,7 +565,7 @@
                             } else {
                                 if (this.formData.password == this.formData.newPassword) {
                                     let params = JSON.stringify(this.formData)
-                                    ms.http.post('/user/addIndustryAssociation.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
+                                    ms.http.post('/xwh/user/addIndustryAssociation.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
                                         if (res.code == '200') {
                                             this.$message({
                                                 message: '新增用户成功',
@@ -596,7 +596,7 @@
                     type: 'error',
                     center: true
                 }).then(() => {
-                    ms.http.post('/user/del/' + id + '.do').then(() => {
+                    ms.http.post('/xwh/user/del/' + id + '.do').then(() => {
                         this.$message({
                             type: 'success',
                             message: '删除成功!'

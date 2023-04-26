@@ -7,6 +7,7 @@
     <script src="${base}/static/plugins/ms/2.0/ms-manager.umd.js"></script>
     <script src="${base}/static/plugins/sockjs/1.4.0/sockjs.min.js"></script>
     <script src="${base}/static/plugins/stomp/2.3.3/stomp.min.js"></script>
+    <link rel="icon" href="${base}/static/images/fxxf.png">
     <!-- 此部分是铭飞平台MStroe的客户端（MStore不在铭飞开源产品范围），如果不需要使用MStore可以删除掉 -->
     <script src="https://cdn.mingsoft.net/platform/ms-store.umd.min.js"></script>
     <style>
@@ -434,7 +435,7 @@
                 this.callbackFun = fun;
             },
             getMessage() {
-                ms.http.get('/feedback/msg.do').then(res =>{
+                ms.http.get('/xwh/index/feedback/msg.do').then(res =>{
                     if(res.code == 200){
                         this.message = res.data
                         this.messageCount = Number(res.data.type1NoHandlerCnt) + Number(res.data.type2NoHandlerCnt)

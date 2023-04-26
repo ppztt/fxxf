@@ -453,7 +453,7 @@
             methods: {
                 getUserList() {
                     this.loading = true
-                    ms.http.get('/user/enterpriseList.do', {
+                    ms.http.get('/xwh/user/enterpriseList.do', {
                         current: this.current,
                         keyword: this.keyword,
                         size: this.size
@@ -505,7 +505,7 @@
                 }
                 ,
                 getRegionData() {
-                    ms.http.get('/gd-regin.do').then((res) => {
+                    ms.http.get('/xwh/gd-regin.do').then((res) => {
                         this.regionData = res.data
                     })
                 }
@@ -532,7 +532,7 @@
                 // 查看用户信息
                 modifyUser(id) {
                     this.modify = true;
-                    ms.http.get('/user/userInfo.do', {id}).then((res) => {
+                    ms.http.get('/xwh/user/userInfo.do', {id}).then((res) => {
                         if (res.code === '200') {
                             let data = res.data
                             this.formData.id = data.id
@@ -572,7 +572,7 @@
                 modifyPW(id) {
                     this.modifyPw = true
                     this.userId = id
-                    ms.http.get('/user/userInfo.do', {id}).then((res) => {
+                    ms.http.get('/xwh/user/userInfo.do', {id}).then((res) => {
                         this.formData = res.data
                     })
                 },
@@ -583,7 +583,7 @@
                             if (valid) {
                                 this.formData.newPassword = this.reviseForm.newPassword
                                 let params = JSON.stringify(this.formData)
-                                ms.http.post('/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
+                                ms.http.post('/xwh/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
                                     if(res.code == 200){
                                         this.$message({
                                             message: '修改成功',
@@ -608,7 +608,7 @@
                 sub(msg) {
                     if (msg == "modify") {
                         let params = JSON.stringify(this.formData)
-                        ms.http.post('/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
+                        ms.http.post('/xwh/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
                             if (res.code == '200') {
                                 this.$message({
                                     message: '修改成功',
@@ -625,7 +625,7 @@
                     } else {
                         if (this.formData.password == this.formData.newPassword) {
                             let params = JSON.stringify(this.formData)
-                            ms.http.post('/user/addUser.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
+                            ms.http.post('/xwh/user/addUser.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
                                 if (res.code == '200') {
                                     this.$message({
                                         message: '新增用户成功',
@@ -653,7 +653,7 @@
                         type: 'error',
                         center: true
                     }).then(() => {
-                        ms.http.post('/user/del/' + id + '.do').then(() => {
+                        ms.http.post('/xwh/user/del/' + id + '.do').then(() => {
                             this.$message({
                                 type: 'success',
                                 message: '删除成功!'

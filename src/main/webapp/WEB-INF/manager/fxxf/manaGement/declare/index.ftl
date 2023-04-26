@@ -30,8 +30,8 @@
                     </el-upload>
                 </@shiro.hasPermission>
                 <@shiro.hasPermission name="sbclgl:del">
-                    <el-button :class="judgmentButton"  :disabled="judgmentDisable" size="mini"
-                               :plain="judgmentDisable" icon="el-icon-delete" @click="deleteOperatorStatisticList">
+                    <el-button type="danger" :disabled="judgmentDisable" size="mini"
+                               style="margin-left: 10px" icon="el-icon-delete" @click="deleteOperatorStatisticList">
                         删除
                     </el-button>
                 </@shiro.hasPermission>
@@ -137,7 +137,7 @@
         methods: {
             //获取数据
             getList() {
-                ms.http.get('/attachment/info.do?current=' + this.current + '&keyword=' + this.keyword + '&size=' + this.size).then(res => {
+                ms.http.get('/xwh/attachment/info.do?current=' + this.current + '&keyword=' + this.keyword + '&size=' + this.size).then(res => {
                     if (res.code != 200) return
                     this.dataList = res.data.records
                     this.total = Number(res.data.total)
@@ -160,7 +160,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    ms.http.post('/attachment/del.do', JSON.stringify(idArr), {headers: {'Content-Type': 'application/json'}}).then(res => {
+                    ms.http.post('/xwh/attachment/del.do', JSON.stringify(idArr), {headers: {'Content-Type': 'application/json'}}).then(res => {
                         if (res.code == 200) {
                             this.loadingShow = true
                             this.getList()
@@ -181,7 +181,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    ms.http.post('/attachment/del.do', JSON.stringify(idArr), {headers: {'Content-Type': 'application/json'}}).then(res => {
+                    ms.http.post('/xwh/attachment/del.do', JSON.stringify(idArr), {headers: {'Content-Type': 'application/json'}}).then(res => {
                         if (res.code == 200) {
                             this.getList()
                         }
@@ -208,7 +208,7 @@
             uploadFile(item) {
                 let formData = new FormData()
                 formData.append('files', item.file);
-                ms.http.post('/attachment/uploadFile.do', formData, {headers: {"Content-Type": "multipart/form-data"}}).then(res => {
+                ms.http.post('/xwh/attachment/uploadFile.do', formData, {headers: {"Content-Type": "multipart/form-data"}}).then(res => {
                     if (res.code == 200) {
                         this.loadingShow = true
                         this.getList()
@@ -231,7 +231,7 @@
         },
         created: function () {
             this.getList()
-            // ms.http.post('/attachment/countById/85.do').then(res => {
+            // ms.http.post('/xwh/attachment/countById/85.do').then(res => {
             //     console.log(res)
             // })
         },

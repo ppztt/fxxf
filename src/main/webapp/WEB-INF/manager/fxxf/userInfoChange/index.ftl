@@ -164,13 +164,13 @@
         methods: {
             // 获取地区信息
             getRegionData() {
-                ms.http.get('/gd-regin.do').then((res) => {
+                ms.http.get('/xwh/gd-regin.do').then((res) => {
                     this.regionData = res.data
                 })
             },
             getUserList(){
                 let id = sessionStorage.getItem('userId')
-                ms.http.get('/user/userInfo.do',{id}).then((res)=>{
+                ms.http.get('/xwh/user/userInfo.do',{id}).then((res)=>{
                     if(res.code == 200){
                         this.userData = {...this.userData,...res.data, id}
                         console.log(this.userData)
@@ -182,7 +182,7 @@
                 this.$nextTick(()=>{
                     this.$refs['form'].validate((valid)=>{
                         if(valid){
-                            ms.http.post('/user/updateById.do',params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res)=>{
+                            ms.http.post('/xwh/user/updateById.do',params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res)=>{
                                 console.log(res)
                             })
                         }

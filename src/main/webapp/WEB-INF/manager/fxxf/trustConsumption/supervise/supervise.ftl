@@ -22,8 +22,8 @@
                         @clear="clearQuery"
                 ></el-input>
             </el-col>
-            <el-col offset="1" span="3">
-                <el-button @click="inquire" type="primary" class="blue_btn" size="mini" icon="el-icon-search">
+            <el-col span="3">
+                <el-button @click="inquire" type="primary" class="blue_btn" size="mini" icon="el-icon-search" style="margin-left: 10px">
                     查询
                 </el-button>
             </el-col>

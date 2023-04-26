@@ -97,7 +97,7 @@
             save: function() {
                 var that = this;
                 //用户-关注接口
-                ms.http.post("/people/attention/collectionLog/save.do", that.collectionFrorm).then(function (data) {
+                ms.http.post("/xwh/people/attention/collectionLog/save.do", that.collectionFrorm).then(function (data) {
                     if (data.result) {
                         that.$message.success("点赞成功!");
                     }
@@ -108,7 +108,7 @@
             likeTotal: function (){
                 var that = this;
                 //用户-关注接口
-                ms.http.post("/attention/collection/list", that.collectionFrorm).then(function (data) {
+                ms.http.post("/xwh/attention/collection/list", that.collectionFrorm).then(function (data) {
                     that.Total = data.data.rows[0].dataCount
                 })
             }

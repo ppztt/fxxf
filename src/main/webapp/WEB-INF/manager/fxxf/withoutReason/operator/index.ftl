@@ -32,10 +32,20 @@
                                 size="mini"
                                 style="width: 320px"
                         ></el-date-picker>
-                        <el-button style="margin-left: 50px" type="primary" icon="el-icon-search" @click="getOperatorStatisticList" size="mini">查询</el-button>
-                        <@shiro.hasPermission name="wlythcn:jdtstj">
-                            <el-button style="margin-left: 100px" type="primary" icon="el-icon-top" @click="derive" size="mini">导出</el-button>
-                        </@shiro.hasPermission>
+                        <el-row>
+                            <el-col span="10" offset="1" >
+                                <el-button type="primary" icon="el-icon-search"
+                                           @click="getOperatorStatisticList" size="mini">查询
+                                </el-button>
+                            </el-col>
+                            <el-col span="10" offset="3" >
+                                <@shiro.hasPermission name="wlythcn:jdtstj">
+                                    <el-button type="primary" icon="el-icon-top"
+                                               @click="derive" size="mini">导出
+                                    </el-button>
+                                </@shiro.hasPermission>
+                            </el-col>
+                        </el-row>
                     </div>
                 </el-col>
             </el-row>
@@ -129,7 +139,7 @@
                     startTime = ''
                     endTime = ''
                 }
-                ms.http.post('/applicants/operatorStatistics/list.do',JSON.stringify({"type": 2,"startTime":startTime,"endTime":endTime}),{headers:{'Content-Type': 'application/json'}}).then(res=>{
+                ms.http.post('/xwh/applicants/operatorStatistics/list.do',JSON.stringify({"type": 2,"startTime":startTime,"endTime":endTime}),{headers:{'Content-Type': 'application/json'}}).then(res=>{
                     if(res.code!=200)return
                     this.dataList = res.data
                     this.loadingShow = false
