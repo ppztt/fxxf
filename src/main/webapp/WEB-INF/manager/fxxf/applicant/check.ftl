@@ -522,14 +522,14 @@
                 </div>
             </el-form>
             <div class="btn">
-                <el-button size="small" v-if="detailType=='0'" class="blue_btn " @click="perEditUnitTnfo">保存
+                <el-button size="mini" v-if="detailType=='0'" type="primary"  @click="perEditUnitTnfo">保存
                 </el-button>
-                <el-button size="small" v-if="detailType=='3'" class="blue_btn " @click="auditUnitTnfo()">审核通过
+                <el-button size="mini" v-if="detailType=='3'" type="primary" @click="auditUnitTnfo()">审核通过
                 </el-button>
-                <el-button size="small" v-if="detailType=='3'" class="blue_btn " @click="auditUnitTnfo('7')">
+                <el-button size="mini" v-if="detailType=='3'" type="primary" @click="auditUnitTnfo('7')">
                     审核不通过
                 </el-button>
-                <el-button size="small" v-if="detailType=='2'" class="blue_btn ">提交</el-button>
+                <el-button size="mini" v-if="detailType=='2'" type="primary">提交</el-button>
                 <el-button type="primary" icon="iconfont icon-fanhui" size="mini" @click="returnBack">返回</el-button>
             </div>
         </el-main>
