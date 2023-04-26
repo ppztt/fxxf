@@ -27,44 +27,16 @@
 
     <select id="feedbackList" resultType="net.mingsoft.fxxf.bean.vo.FeedbackComplaintVo" parameterType="map">
         SELECT
-        a.reg_name regName,
-        a.applicants_id applicantsId,
-        a.is_new isNew,
-        b.count,
-        b.handleCnt,
-        a.applicants_id,
-        a.is_new,
-        a.create_time
-        FROM
-        (
-        SELECT
-        reg_name,
-        applicants_id,
-        is_new,
-        create_time
-        FROM
-        cc_feedback
-        ORDER BY
-        is_new DESC
-        )a
-        INNER JOIN
-        (
-        SELECT
-        DISTINCT reg_name,
-        applicants_id,
+        cf.reg_name regName,
+        cf.applicants_id applicantsId,
         count( 1 ) count,
-        count( CASE WHEN `status` = 1 THEN 1 END ) handleCnt
+        count( CASE WHEN cf.status = 1 THEN 1 END ) handleCnt,
+        SUM(is_new) isNew
         FROM
-        cc_feedback
+        cc_feedback cf
+        INNER JOIN cc_applicants c ON cf.applicants_id = c.id
         <where>
-          type=#{map.type}
-        </where>
-        GROUP BY
-        reg_name, applicants_id
-        )b on a.reg_name=b.reg_name
-        INNER JOIN cc_applicants c
-        on a.applicants_id=c.id
-        <where>
+            and cf.type=#{map.type}
             and c.type=#{map.type}
             <if test="map.roleId != 1">
                 and c.city like concat('%', #{map.city},'%')
@@ -73,11 +45,13 @@
                 and c.district like concat('%', #{map.district},'%')
             </if>
             <if test="map.search != null and map.search != ''">
-                and a.reg_name like "%"#{map.search}"%"
+                and cf.reg_name like "%"#{map.search}"%"
             </if>
         </where>
-        GROUP BY a.reg_name, a.applicants_id, a.is_new, b.count, b.handleCnt, a.create_time
-        ORDER BY a.is_new desc,a.create_time desc
+        GROUP BY
+        cf.reg_name,cf.applicants_id
+
+        ORDER BY isNew DESC,handleCnt DESC,count DESC
     </select>
 
     <select id="getMsgCnt" resultType="net.mingsoft.fxxf.bean.vo.FeedbackMsgVo">
