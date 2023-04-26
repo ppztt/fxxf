@@ -31,7 +31,7 @@ import java.util.*;
  */
 @Api(tags = {"用户端留言反馈相关接口"})
 @RestController
-@RequestMapping("/${ms.manager.path}/feedback")
+@RequestMapping("/${ms.manager.path}/index/feedback")
 @Slf4j
 public class IndexFeedbackController {
 
