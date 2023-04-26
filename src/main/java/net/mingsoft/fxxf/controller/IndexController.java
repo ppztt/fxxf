@@ -39,7 +39,7 @@ import java.net.URLEncoder;
  **/
 @Api(tags = "首页管理")
 @RestController
-@RequestMapping("/index")
+@RequestMapping("/${ms.manager.path}/index")
 public class IndexController {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());

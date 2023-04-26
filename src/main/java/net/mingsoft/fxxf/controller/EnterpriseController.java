@@ -29,7 +29,7 @@ import java.util.Objects;
 
 @Api(tags = {"企业端"})
 @RestController
-@RequestMapping("/enterprise")
+@RequestMapping("/${ms.manager.path}/enterprise")
 @Slf4j
 public class EnterpriseController {
 

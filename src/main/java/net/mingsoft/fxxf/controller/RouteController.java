@@ -20,13 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 @Scope("request")
 public class RouteController {
 
-    //    /**
-//     * 监督投诉统计菜单跳转
-//     */
-//    @GetMapping("/feedback/statistic")
-//    public String index() {
-//        return "/fxxf/feedback/index";
-//    }
     @GetMapping("/consumer")
     public String consumer(HttpServletRequest request, ModelMap model) {
 
@@ -71,10 +64,7 @@ public class RouteController {
     }
 
     /**
-     * /**
      * 放心消费承诺监督投诉页面
-     *
-     * @return
      */
     @GetMapping("/feedbackIndex")
     public String feedbackIndex(HttpServletRequest request, ModelMap model) {
@@ -92,10 +82,7 @@ public class RouteController {
     }
 
     /**
-     * /**
      * 放心消费承诺监督投诉统计
-     *
-     * @return
      */
     @GetMapping("/statisticsIndex")
     public String statisticsIndex(HttpServletRequest request, ModelMap model) {
@@ -103,10 +90,7 @@ public class RouteController {
     }
 
     /**
-     * /**
      * 放心消费承诺经营者统计
-     *
-     * @return
      */
     @GetMapping("/operatorIndex")
     public String operatorIndex(HttpServletRequest request, ModelMap model) {
@@ -114,10 +98,7 @@ public class RouteController {
     }
 
     /**
-     * /**
      * 商品和服务类别统计
-     *
-     * @return
      */
     @GetMapping("/managementIndex")
     public String backstage(HttpServletRequest request, ModelMap model) {
@@ -125,10 +106,7 @@ public class RouteController {
     }
 
     /**
-     * /**
      * 申报材料管理
-     *
-     * @return
      */
     @GetMapping("/declareMaterial")
     public String declareMaterial(HttpServletRequest request, ModelMap model) {
@@ -137,10 +115,7 @@ public class RouteController {
 
 
     /**
-     * /**
      * 无理由退货承诺监督投诉页面
-     *
-     * @return
      */
     @GetMapping("/reasonSupervision")
     public String reasonSupervision(HttpServletRequest request, ModelMap model) {
@@ -158,10 +133,7 @@ public class RouteController {
     }
 
     /**
-     * /**
      * 无理由退货承诺监督投诉统计
-     *
-     * @return
      */
     @GetMapping("/reasonStatistic")
     public String reasonStatistic(HttpServletRequest request, ModelMap model) {
@@ -169,10 +141,7 @@ public class RouteController {
     }
 
     /**
-     * /**
      * 无理由退货承诺经营者统计
-     *
-     * @return
      */
     @GetMapping("/reasonOperator")
     public String reasonOperator(HttpServletRequest request, ModelMap model) {

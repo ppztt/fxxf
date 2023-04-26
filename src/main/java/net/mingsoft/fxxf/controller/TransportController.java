@@ -32,7 +32,7 @@ import static net.mingsoft.fxxf.controller.EnterpriseController.newUnitApplicant
 
 @Api(tags = {"数据传输入库接口"})
 @RestController
-@RequestMapping("/transport")
+@RequestMapping("/${ms.manager.path}/transport")
 @Slf4j
 public class TransportController {
 

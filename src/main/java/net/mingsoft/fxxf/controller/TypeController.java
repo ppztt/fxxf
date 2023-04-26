@@ -26,7 +26,7 @@ import java.util.List;
  * @since 2020-01-17
  */
 @RestController
-@RequestMapping("/type")
+@RequestMapping("/${ms.manager.path}/type")
 @Api(tags = { "类型"})
 public class TypeController {
 

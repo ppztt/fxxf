@@ -28,7 +28,7 @@ import java.util.Optional;
 @RestController
 @Slf4j
 @Api(tags = "用户信息管理")
-@RequestMapping("/user")
+@RequestMapping("/${ms.manager.path}/user")
 public class ManagerInfoController {
 
     @Resource
