@@ -18,4 +18,8 @@ public interface FeedbackStatMapper {
     List<FeedbackStat> statListByAdminRole(@Param("feedback") FeedbackStat feedback, Page page);
 
     List<FeedbackStat> statListByCityRole(@Param("feedback") FeedbackStat feedback, Page page);
+
+
+    //
+    List<FeedbackStat> feedbackRegionStatisticByRole(@Param("feedback") FeedbackStat feedback,@Param("roleRegIdentify") String roleRegIdentify);
 }

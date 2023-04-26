@@ -452,7 +452,8 @@
                     and pcode = (SELECT code FROM sys_region WHERE name= #{cityAccess})
                 </when>
                 <otherwise>
-                    and code = (SELECT code FROM sys_region WHERE name= #{districtAccess} and pcode=(SELECT code FROM sys_region WHERE name= #{cityAccess}))
+                    and code = (SELECT code FROM sys_region WHERE name= #{districtAccess} and pcode=
+                    (SELECT code FROM sys_region WHERE name= #{cityAccess}))
                 </otherwise>
             </choose>
         </where>
@@ -471,6 +472,28 @@
             </if>
         </where>
         order by field(a.status,'4','6','5') desc,sr.sort , a.start_time desc
+    </select>
+
+    <select id="applicantsTotalTakeOffStatistics"
+            resultType="net.mingsoft.fxxf.bean.dto.ApplicantsStatisticsDto">
+        SELECT
+         ${applicantsStatisticsDto.roleRegIdentify},
+            COUNT(1) AS companyTotal,
+            SUM(IF( ca.status = 0 , 1, 0 )) AS takeOff
+        FROM
+            cc_applicants ca
+        WHERE 1=1
+        <if test="applicantsStatisticsDto.startTime != '' and applicantsStatisticsDto.startTime != null
+                and applicantsStatisticsDto.endTime != '' and applicantsStatisticsDto.endTime != null">
+            AND create_time BETWEEN #{applicantsStatisticsDto.startTime} AND date_add(#{applicantsStatisticsDto.endTime}, INTERVAL 1 DAY)
+        </if>
+        <if test="applicantsStatisticsDto.roleId != 1 and applicantsStatisticsDto.city != '' and applicantsStatisticsDto.city != null">
+            AND city like concat('%', #{applicantsStatisticsDto.city},'%')
+        </if>
+        <if test="applicantsStatisticsDto.type != '' and applicantsStatisticsDto.type != null">
+            AND type = #{applicantsStatisticsDto.type}
+        </if>
+        GROUP BY ${applicantsStatisticsDto.roleRegIdentify}
     </select>
 
 </mapper>

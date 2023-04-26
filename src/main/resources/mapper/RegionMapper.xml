@@ -4,25 +4,33 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="net.mingsoft.fxxf.bean.entity.Region">
-        <id column="id" property="id" />
-        <result column="code" property="code" />
-        <result column="name" property="name" />
-        <result column="short_name" property="shortName" />
-        <result column="pcode" property="pcode" />
-        <result column="lng" property="lng" />
-        <result column="lat" property="lat" />
-        <result column="sort" property="sort" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
-        <result column="memo" property="memo" />
-        <result column="status" property="status" />
-        <result column="tenant_code" property="tenantCode" />
-        <result column="level" property="level" />
+        <id column="id" property="id"/>
+        <result column="code" property="code"/>
+        <result column="name" property="name"/>
+        <result column="short_name" property="shortName"/>
+        <result column="pcode" property="pcode"/>
+        <result column="lng" property="lng"/>
+        <result column="lat" property="lat"/>
+        <result column="sort" property="sort"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="memo" property="memo"/>
+        <result column="status" property="status"/>
+        <result column="tenant_code" property="tenantCode"/>
+        <result column="level" property="level"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, code, name, short_name, pcode, lng, lat, sort, create_time, update_time, memo, status, tenant_code, level
     </sql>
+
+    <select id="underRegListInfoByCurName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT name, sort
+        FROM sys_region
+        WHERE pcode = (SELECT code
+                       FROM sys_region
+                       WHERE FIND_IN_SET(name, #{regionName}))
+    </select>
 
 </mapper>

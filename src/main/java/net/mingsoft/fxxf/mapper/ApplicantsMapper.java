@@ -3,6 +3,7 @@ package net.mingsoft.fxxf.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import net.mingsoft.fxxf.bean.dto.ApplicantsStatisticsDto;
 import net.mingsoft.fxxf.bean.entity.Applicants;
 import net.mingsoft.fxxf.bean.request.ApplicantsPageRequest;
 import net.mingsoft.fxxf.bean.vo.OperatorStatisticsVo;
@@ -38,6 +39,9 @@ public interface ApplicantsMapper extends BaseMapper<Applicants> {
                                            @Param("districtAccess") String districtAccess);
 
     ArrayList<RegionVo> getGdRegion();
+
+
+    ArrayList<ApplicantsStatisticsDto> applicantsTotalTakeOffStatistics(@Param("applicantsStatisticsDto") ApplicantsStatisticsDto applicantsStatisticsDto);
 
     ArrayList<Applicants> companyList(String keyword);
 

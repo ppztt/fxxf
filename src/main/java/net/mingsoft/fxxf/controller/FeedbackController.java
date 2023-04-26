@@ -192,6 +192,17 @@ public class FeedbackController {
     }
 
     @RequiresPermissions("wlythcn:jdtstj")
+    @GetMapping("/statisticChange")
+    @ApiOperation(value = "监督投诉统计-报表", notes = "监督投诉统计/监督投诉统计报表查询")
+    public BaseResult<BasePageResult<FeedbackStat>> statisticChange(FeedbackStatisticRequest feedbackStatisticRequest) {
+        BasePageResult<FeedbackStat> basePageResult = new BasePageResult<>();
+        basePageResult.setRecords(feedbackService.statisticChange(feedbackStatisticRequest));
+        return BaseResult.success(basePageResult);
+    }
+
+
+
+    // @RequiresPermissions("wlythcn:jdtstj")
     @GetMapping(value = "/exportStatistic")
     @ApiOperation(value = "监督投诉统计-导出Excel", notes = "监督投诉统计/监督投诉统计导出Excel")
     public void exportStatistic(FeedbackStatisticRequest feedbackStatisticRequest, HttpServletResponse response) {

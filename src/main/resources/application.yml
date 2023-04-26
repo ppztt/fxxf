@@ -108,8 +108,8 @@ pub:
   ecode:
     expire: 5
 
-unitTemplateFilePath: classpath:templateFile/放心消费承诺单位导入模板（备注：请启用宏）v1.xlsm
-storeTemplateFilePath: classpath:templateFile/无理由退货承诺实体店导入模板（备注：请启用宏）v1.xlsm
+unitTemplateFilePath: templateFile/放心消费承诺单位导入模板（备注：请启用宏）v1.xlsm
+storeTemplateFilePath: templateFile/无理由退货承诺实体店导入模板（备注：请启用宏）v1.xlsm
 importFileTmp: importFileTmp/
 
 

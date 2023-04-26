@@ -15,6 +15,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import net.mingsoft.basic.entity.ManagerEntity;
 import net.mingsoft.basic.exception.BusinessException;
 import net.mingsoft.fxxf.bean.base.BasePageResult;
@@ -70,6 +71,7 @@ import java.util.stream.Collectors;
  * 申报单位 服务实现类
  */
 @Service
+@Slf4j
 public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applicants> implements ApplicantsService {
 
     private final String[] unitImportTitle = new String[]{"经营者注册名称", "统一社会信用代码", "门店名称", "经营场所-所在市", "经营场所-所在区县",
@@ -282,7 +284,8 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
     public void downTemplateFile(Integer type, HttpServletRequest request, HttpServletResponse response) {
         String bizTemplateFile = ApplicantsTypeEnum.UNIT.getCode().equals(type) ? unitTemplateFilePath : storeTemplateFilePath;
         try {
-            TemplateExportParams params = new TemplateExportParams(ResourceUtils.getFile(bizTemplateFile).getPath());
+            log.info("下载模板文件路径：{}", bizTemplateFile);
+            TemplateExportParams params = new TemplateExportParams(bizTemplateFile);
             // 输出全部的sheet
             params.setScanAllsheet(true);
             Workbook workbook = ExcelExportUtil.exportExcel(params, new HashMap<>());

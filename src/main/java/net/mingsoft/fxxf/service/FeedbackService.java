@@ -39,4 +39,5 @@ public interface FeedbackService extends IService<Feedback> {
     ArrayList<Applicants> companyList(String keyword);
 
 
+    List<FeedbackStat> statisticChange(FeedbackStatisticRequest feedbackStatisticRequest);
 }
