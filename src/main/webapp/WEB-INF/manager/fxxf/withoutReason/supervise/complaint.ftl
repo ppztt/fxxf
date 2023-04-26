@@ -316,13 +316,12 @@
     })
 </script>
 <style>
-    html {
-        overflow: scroll;
-    }
+
 
     <#--1-->
     .edit-check-delist {
-        background: white;
+        height: calc(100vh);
+        background-color: white;
     }
 
     .frame {
@@ -405,6 +404,6 @@
     #backSupervise {
         position: absolute;
         top: 10px;
-        right: 10px;
+        right: 20px;
     }
 </style>
