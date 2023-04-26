@@ -57,7 +57,7 @@
                 <el-date-picker size="mini" format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="endTime" placeholder="结束时间" :picker-options="pickerEndDate" @change="changeEndTime"></el-date-picker>
             </el-col>
             <el-col>
-                <el-button size="mini"  type="primary" icon="el-icon-search" @click="getUnitList">
+                <el-button size="mini" type="primary" icon="el-icon-search" @click="getUnitList" style="margin-left: -20px">
                     查询
                 </el-button>
             </el-col>
@@ -409,7 +409,7 @@
             </@shiro.hasPermission>
             <@shiro.hasPermission name="jyzlb:del">
             <div class="item" style="margin-left: 30px;">
-                <el-button size="mini" :class="{ red_btn : ids.ids.length!=0 }" icon="el-icon-delete"
+                <el-button size="mini" type="danger" icon="el-icon-delete"
                            :disabled="ids.ids.length == 0"
                            @click="deleteMoreConsumer">
                     删除
@@ -1069,7 +1069,7 @@
             uploadConfirm() {
                 // 确认上传
                 ms.http
-                    .post('/applicants/import/'+this.uploadId+'.do')
+                    .post('/xwh/applicants/import/'+this.uploadId+'.do')
                     .then((res) => {
                         if (res.code == 200) {
                             this.$message({
@@ -1107,7 +1107,7 @@
             },
             downLoadTemplate: function () {
                 // 模板下载
-                let url = '/applicants/downTemplateFile/' + this.type + '.do'
+                let url = '/xwh/applicants/downTemplateFile/' + this.type + '.do'
                 this.downFile(url)
                 this.$message({
                     showClose: true,
@@ -1121,8 +1121,8 @@
                     showClose: true,
                     message: "正在导出"
                 })
-                ms.http.get('/applicants/export.do',{status: command,type: this.type}).then(async (res)=>{
-                    let url = '/applicants/export.do?status=' + command + '&type=' + this.type
+                ms.http.get('/xwh/applicants/export.do',{status: command,type: this.type}).then(async (res)=>{
+                    let url = '/xwh/applicants/export.do?status=' + command + '&type=' + this.type
                     if (res != "") {
                         this.downFile(url)
                         await this.$message({
@@ -1152,7 +1152,7 @@
             getUnitList: function () {
                 // 获取放心消费承诺单位列表
                 this.loading = true;
-                ms.http.post("/applicants/listPage.do", JSON.stringify({
+                ms.http.post("/xwh/applicants/listPage.do", JSON.stringify({
                     search: this.search,
                     city: this.city,
                     district: this.district,
@@ -1181,12 +1181,12 @@
             },
             // 获取地区信息
             getRegionData() {
-                ms.http.get('/gd-regin.do').then((res) => {
+                ms.http.get('/xwh/gd-regin.do').then((res) => {
                     this.regionData = res.data
                 })
             },
             getManagerType(){
-                ms.http.get('/type/listGoodsAndServiceType.do').then((res)=>{
+                ms.http.get('/xwh/type/listGoodsAndServiceType.do').then((res)=>{
                     this.manageType = res.data
                 })
             },
@@ -1220,7 +1220,7 @@
             setApply(type) {
                 // let addrs = JSON.stringify(this.formData.addrs)
                 let params = JSON.stringify(this.formData)
-                ms.http.post('/applicants/apply/input.do', {params},
+                ms.http.post('/xwh/applicants/apply/input.do', {params},
                     {headers: {'Content-type': 'application/json;charset=UTF-8'}}).then((res) => {
 
                 })
@@ -1267,7 +1267,7 @@
                     type: 'error',
                     center: true
                 }).then(() => {
-                    ms.http.post('/applicants/remove/' + id + '.do')
+                    ms.http.post('/xwh/applicants/remove/' + id + '.do')
                     this.$message({
                         type: 'success',
                         message: '删除成功!'
@@ -1296,7 +1296,7 @@
                     type: 'error',
                     center: true
                 }).then(() => {
-                    ms.http.post('/applicants/remove.do', ids)
+                    ms.http.post('/xwh/applicants/remove.do', ids)
                     this.$message({
                         type: 'success',
                         message: '删除成功!'
@@ -1371,7 +1371,10 @@
     }
 
     .list-header-btns .item {
-        margin-right: 6px;
+        margin-right: -15px;
+        width: 98px;
+        height: 45px;
+        line-height: 45px;
     }
 
     .ivu-dropdown {

@@ -7375,7 +7375,7 @@ type StyleObjectPart = {
                             if (query) {
                                 that.loading = true; //获取所有成员列表
 
-                                ms.http.post("/platform-proxy/platform/api/people/getByMail.do", {
+                                ms.http.post("/xwh/platform-proxy/platform/api/people/getByMail.do", {
                                     peopleMail: query + "@qq.com"
                                 }).then(function (res) {
                                     var data = res.data;
@@ -8024,7 +8024,7 @@ type StyleObjectPart = {
                         },
                         dictList: function dictList() {
                             var that = this;
-                            ms.http.get('/store-proxy' + '/mdiy/dict/list.do', {
+                            ms.http.get('/xwh/store-proxy' + '/mdiy/dict/list.do', {
                                 dictType: that.dictType,
                                 pageSize: 99999
                             }).then(function (res) {

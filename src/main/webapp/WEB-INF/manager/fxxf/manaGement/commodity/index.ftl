@@ -11,7 +11,7 @@
 <el-main id="app" class="statistics">
     <el-row>
         <#--        工具栏-->
-        <el-col :span="22">
+        <el-col :span="16">
             <el-row>
                 <el-col :span="24">
                     <div class="date-range">
@@ -58,7 +58,7 @@
             </el-row>
         </el-col>
 
-        <el-col :span="2">
+        <el-col span="2">
             <el-row class="button_groud" type="flex">
                 <el-col span="24">
                     <el-button type="primary" icon="el-icon-search" @click="getOperatorStatisticList" size="mini">查询</el-button>
@@ -148,7 +148,7 @@
                     startTime = ''
                     endTime = ''
                 }
-                ms.http.get("/typestat/list?city=" + this.city + "&district=" + this.region + "&startTime=" + startTime + "&endTime=" + endTime).then(res => {
+                ms.http.get("/xwh/typestat/list?city=" + this.city + "&district=" + this.region + "&startTime=" + startTime + "&endTime=" + endTime).then(res => {
                     if (res.code != 200) return
                     this.dataList = res.data
                     this.loadingShow = false
@@ -156,7 +156,7 @@
             },
             //获取地区数据
             getArea() {
-                ms.http.get("/gd-regin.do").then(res => {
+                ms.http.get("/xwh/gd-regin.do").then(res => {
                     this.area = res.data
                 })
             },

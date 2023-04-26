@@ -564,7 +564,7 @@
         methods: {
             getUserList() {
                 this.loading = true
-                ms.http.get('/user/userList.do', {
+                ms.http.get('/xwh/user/userList.do', {
                     current: this.current,
                     keyword: this.keyword,
                     size: this.size
@@ -601,7 +601,7 @@
                 this.getUserList()
             },
             getRegionData() {
-                ms.http.get('/gd-regin.do').then((res) => {
+                ms.http.get('/xwh/gd-regin.do').then((res) => {
                     this.regionData = res.data
                 })
             },
@@ -630,7 +630,7 @@
             // 修改用户信息
             modifyUser(id) {
                 this.modify = true;
-                ms.http.get('/user/userInfo.do', {id}).then((res) => {
+                ms.http.get('/xwh/user/userInfo.do', {id}).then((res) => {
                     if (res.code === '200') {
                         let data = res.data
                         this.formData.id = data.id
@@ -664,7 +664,7 @@
                         if (valid) {
                             if (msg == "modify") {
                                 let params = JSON.stringify(this.formData)
-                                ms.http.post('/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
+                                ms.http.post('/xwh/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
                                     if (res.code == '200') {
                                         this.$message({
                                             message: '修改成功',
@@ -681,7 +681,7 @@
                             } else {
                                 if (this.formData.password == this.formData.newPassword) {
                                     let params = JSON.stringify(this.formData)
-                                    ms.http.post('/user/addUser.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
+                                    ms.http.post('/xwh/user/addUser.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
                                         if (res.code == '200') {
                                             this.$message({
                                                 message: '新增用户成功',
@@ -714,7 +714,7 @@
                     type: 'error',
                     center: true
                 }).then(() => {
-                    ms.http.post('/user/del/' + id + '.do').then(() => {
+                    ms.http.post('/xwh/user/del/' + id + '.do').then(() => {
                         this.$message({
                             type: 'success',
                             message: '删除成功!'

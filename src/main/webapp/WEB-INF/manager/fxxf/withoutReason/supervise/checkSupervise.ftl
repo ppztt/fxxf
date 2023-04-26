@@ -33,7 +33,7 @@
                                 :picker-options="pickerEndDate"
                                 style="width: 320px"
                         ></el-date-picker>
-                        <el-button style="margin-left: 40px" type="primary" icon="el-icon-search" @click="inquire" size="mini">
+                        <el-button style="margin-left: 10px" type="primary" icon="el-icon-search" @click="inquire" size="mini">
                             查询
                         </el-button>
                     </div>
