@@ -416,7 +416,7 @@
             </@shiro.hasPermission>
             <@shiro.hasPermission name="jyzlb:del">
                 <div class="item" style="margin-left: 30px;">
-                    <el-button size="mini" :class="{ red_btn : ids.ids.length!=0 }" icon="el-icon-close"
+                    <el-button size="mini" :class="{ red_btn : ids.ids.length!=0 }" icon="el-icon-delete"
                                :disabled="ids.ids.length == 0"
                                @click="deleteMoreConsumer">
                         删除
@@ -566,7 +566,7 @@
                             摘牌
                         </el-button>
                         <@shiro.hasPermission name="jyzlb:del">
-                            <el-button type="text" class="action_btn red_text" icon="el-icon-close"
+                            <el-button type="text" class="action_btn red_text" icon="el-icon-delete"
                                        @click="deleteConsumer(row.id)">
                                 删除
                             </el-button>
@@ -1314,6 +1314,7 @@
             let that = this
             window.returnBack = function () {
                 that.action = ""
+                that.getUnitList();
             }
             window.currentTopic = this.currentTopic
         }
@@ -1324,14 +1325,13 @@
         height: calc(100vh - 78px);
     }
 
-    .
-    #index .ms-iframe-style {
+    .ms-iframe-style {
         position: absolute;
         top: 0;
         width: 100%;
         height: 100%;
         border: 0;
-        z-index: 5;
+        z-index: 100;
     }
 
     .blue_btn {

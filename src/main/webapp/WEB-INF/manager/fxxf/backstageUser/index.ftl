@@ -75,7 +75,7 @@
                         </el-button>
                         </@shiro.hasPermission>
                         <@shiro.hasPermission name="manage:user">
-                        <el-button class="action_btn red_text" icon="el-icon-close" @click="deleteBack(row.id)">删除
+                        <el-button class="action_btn red_text" icon="el-icon-delete" @click="deleteBack(row.id)">删除
                         </el-button>
                         </@shiro.hasPermission>
                     </div>
