@@ -11,7 +11,7 @@
 </head>
 <body>
 <#include 'reset-password.ftl'/>
-<div id="app" class="edit-check-delist">
+<el-main id="app" class="edit-check-delist">
     <div class="form-list">
         <el-form
                 ref="formValidate"
@@ -203,13 +203,13 @@
             </div>
         </el-form>
         <#--    返回按钮-->
-        <el-button id="backSupervise" type="primary" size="medium" @click="checkSupervise">返回</el-button>
+        <el-button id="backSupervise" type="primary" size="mini" @click="checkSupervise">返回</el-button>
 <#--        图片预览框-->
         <el-dialog width="70%"  :visible.sync="dialogImageVisible">
             <img style="object-fit: cover;width: 100%" v-show="imageURL" :src="imageURL" alt="image" />
         </el-dialog>
     </div>
-</div>
+</el-main>
 </body>
 
 </html>
@@ -316,13 +316,12 @@
     })
 </script>
 <style>
-    html {
-        overflow: scroll;
-    }
+
 
     <#--1-->
     .edit-check-delist {
-        padding: 10px;
+        height: calc(100vh);
+        background-color: white;
     }
 
     .frame {
@@ -404,8 +403,7 @@
     /*返回按钮*/
     #backSupervise {
         position: absolute;
-        top: 0;
-        right: 10px;
-        margin: 2px;
+        top: 10px;
+        right: 20px;
     }
 </style>
