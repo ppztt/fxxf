@@ -19,27 +19,27 @@
             <el-col span="6">
                 <el-input
                         style="margin-left: 5px"
-                        size="medium"
+                        size="mini"
                         v-model="keyword"
                         placeholder="请输入关键字"
                         :clearable="true"
                 ></el-input>
             </el-col>
 
-            <el-col span="4">
+            <el-col span="2">
                 <el-row class="el-button_groud">
-                    <el-col>
+                    <el-col span="23">
                         <el-button
-                                size="medium"
+                                size="mini"
                                 class="blue_btn btns_type" icon="el-icon-search" @click="getUserList">
                             查询
                         </el-button>
                     </el-col>
                     <@shiro.hasPermission name="manage:user">
-                    <el-col>
+                    <el-col span="23" offset="1">
                         <el-button
-                                size="medium"
-                                class="green_btn btns_type"
+                                size="mini"
+                                class="blue_btn btns_type"
                                 icon="el-icon-plus"
                                 @click="showEditUser()">
                             新增
@@ -105,6 +105,7 @@
                     label-width="90px">
                 <el-form-item label="用户名" prop="account">
                     <el-input
+                            size="mini"
                             v-model="formData.account"
                             placeholder="请输入用户名"
                             :disabled="userId != 'none'"
@@ -112,12 +113,13 @@
                 </el-form-item>
                 <el-form-item label="真实姓名" prop="realname">
                     <el-input
+                            size="mini"
                             v-model="formData.realname"
                             placeholder="请输入真实姓名"
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="所属角色" prop="roleId">
-                    <el-select v-model="formData.roleId" placeholder="请选择所属角色">
+                    <el-select size="mini" v-model="formData.roleId" placeholder="请选择所属角色">
                         <el-option
                                 :disabled="roleId == 2 && (item.id === 1 || item.id === 2)"
                                 v-for="(item, index) in roleList"
@@ -133,6 +135,7 @@
                         prop="city"
                         v-if="formData.roleId != 1">
                     <el-select
+                            size="mini"
                             v-model="formData.city"
                             placeholder="请选择所属市"
                             :disabled="formData.roleId == 1 || roleId == 2 || roleId == 3"
@@ -155,6 +158,7 @@
                         prop="district"
                         v-if="formData.roleId == 3 ">
                     <el-select
+                            size="mini"
                             v-model="formData.district"
                             placeholder="请选择所属区县"
                             :disabled="formData.roleId == 1"
@@ -171,10 +175,11 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="联系电话" prop="phone">
-                    <el-input v-model="formData.phone" placeholder="请输入联系电话"></el-input>
+                    <el-input size="mini" v-model="formData.phone" placeholder="请输入联系电话"></el-input>
                 </el-form-item>
                 <el-form-item label="登录密码" prop="password">
                     <el-input
+                            size="mini"
                             type="password"
                             :password="true"
                             v-model="formData.password"
@@ -183,6 +188,7 @@
                 </el-form-item>
                 <el-form-item label="确认密码" prop="newPassword">
                     <el-input
+                            size="mini"
                             type="password"
                             :password="true"
                             v-model="formData.newPassword"
@@ -191,8 +197,8 @@
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button size="small" type="primary" @click="sub('modify')">提交</el-button>
-                <el-button size="small" @click="reset">重置</el-button>
+                <el-button size="mini" type="primary" @click="sub('modify')">提交</el-button>
+                <el-button size="mini" @click="reset">重置</el-button>
             </span>
         </el-dialog>
         <el-dialog title="新增后台用户"
@@ -206,18 +212,20 @@
                     label-width="90px">
                 <el-form-item label="用户名" prop="account">
                     <el-input
+                            size="mini"
                             v-model="formData.account"
                             placeholder="请输入用户名"
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="真实姓名" prop="realname">
                     <el-input
+                            size="mini"
                             v-model="formData.realname"
                             placeholder="请输入真实姓名"
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="所属角色" prop="roleId">
-                    <el-select v-model="formData.roleId" placeholder="请选择所属角色">
+                    <el-select size="mini" v-model="formData.roleId" placeholder="请选择所属角色">
                         <el-option
                                 :disabled="roleId == 2 && (item.id === 1 || item.id === 2)"
                                 v-for="(item, index) in roleList"
@@ -233,6 +241,7 @@
                         prop="city"
                         v-if="formData.roleId == 2 || formData.roleId == 3">
                     <el-select
+                            size="mini"
                             v-model="formData.city"
                             placeholder="请选择所属市"
                             :disabled="formData.roleId == 1 || roleId == 2 || roleId == 3"
@@ -255,6 +264,7 @@
                         prop="district"
                         v-if="formData.roleId == 3 ">
                     <el-select
+                            size="mini"
                             v-model="formData.district"
                             placeholder="请选择所属区县"
                             :disabled="formData.roleId == 1"
@@ -271,10 +281,11 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="联系电话" prop="phone">
-                    <el-input v-model="formData.phone" placeholder="请输入联系电话"></el-input>
+                    <el-input size="mini" v-model="formData.phone" placeholder="请输入联系电话"></el-input>
                 </el-form-item>
                 <el-form-item label="登录密码" prop="password">
                     <el-input
+                            size="mini"
                             type="password"
                             :password="true"
                             v-model="formData.password"
@@ -283,6 +294,7 @@
                 </el-form-item>
                 <el-form-item label="确认密码" prop="newPassword">
                     <el-input
+                            size="mini"
                             type="password"
                             :password="true"
                             v-model="formData.newPassword"
@@ -291,8 +303,8 @@
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button size="small" type="primary" @click="sub('newAdd')">提交</el-button>
-                <el-button size="small" @click="reset()">重置</el-button>
+                <el-button size="mini" type="primary" @click="sub('newAdd')">提交</el-button>
+                <el-button size="mini" @click="reset()">重置</el-button>
             </span>
         </el-dialog>
     </el-main>
@@ -784,13 +796,13 @@
     }
 
     .blue_btn {
-        background: #5d7cc9 !important;
+        background: #409eff !important;
         color: #fff !important;
         border: 0;
     }
 
     .blue_btn:hover {
-        background: #899ed1 !important;
+        background: #409eff !important;
         color: #fff !important;
         border: 0;
         outline: none;
@@ -821,7 +833,7 @@
     }
 
     .blue_text {
-        color: #7b93d2;
+        color: #409eff;
     }
 
     .actions .action_btn {
@@ -835,12 +847,21 @@
     }
 
     .btns_type {
-        width: 90%;
-        margin-left: 10% !important;
+        width: 100%;
+        margin-left: 10px !important;
+    }
+    .el-col-2{
+        line-height: 36px;
     }
 
     .el-form-item__error {
         position: relative !important;
         margin-bottom: -15px !important;
+    }
+    .el-pagination {
+        text-align: right;
+    }
+    .el-input{
+        line-height: 36px;
     }
 </style>

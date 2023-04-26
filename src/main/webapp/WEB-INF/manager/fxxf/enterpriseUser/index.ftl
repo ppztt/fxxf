@@ -17,33 +17,23 @@
         <el-row class="tools" ref="tools" type="flex">
             <!-- 工具栏 -->
             <el-col span="6">
-                <el-input
+                <el-input size="mini"
                         style="margin-left: 5px"
-                        size="medium"
                         v-model="keyword"
                         placeholder="请输入关键字"
                         :clearable="true"
                 ></el-input>
             </el-col>
 
-            <el-col span="2">
+            <el-col span="1">
                 <el-row class="el-button_groud">
-                    <el-col>
+                    <el-col span="23" offset="4">
                         <el-button
-                                size="medium"
-                                class="blue_btn btns_type" icon="el-icon-search" @click="getUserList">
+                                size="mini"
+                                type="primary" icon="el-icon-search" @click="getUserList">
                             查询
                         </el-button>
                     </el-col>
-                    <#--                    <el-col>-->
-                    <#--                        <el-button-->
-                    <#--                                size="medium"-->
-                    <#--                                class="green_btn btns_type"-->
-                    <#--                                icon="el-icon-plus"-->
-                    <#--                                @click="showEditUser()">-->
-                    <#--                            新增-->
-                    <#--                        </el-button>-->
-                    <#--                    </el-col>-->
                 </el-row>
             </el-col>
         </el-row>
@@ -101,21 +91,21 @@
                     :model="formData"
                     label-width="150px">
                 <el-form-item label="经营者注册名称" prop="realname">
-                    <el-input
+                    <el-input size="mini"
                             v-model="formData.realname"
                             placeholder="请输入经营者注册名称"
                             disabled
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="统一社会信用代码" prop="creditCode">
-                    <el-input
+                    <el-input size="mini"
                             disabled
                             v-model="formData.creditCode"
                             placeholder="请输入统一社会信用代码"
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="门店名称" prop="storeName">
-                    <el-input
+                    <el-input size="mini"
                             disabled
                             v-model="formData.storeName"
                             placeholder="请输入门店名称">
@@ -124,7 +114,7 @@
                 <el-form-item
                         label="经营场所-所在市"
                         prop="city">
-                    <el-input
+                    <el-input size="mini"
                             v-model="formData.city"
                             placeholder="请选择所属市"
                             disabled>
@@ -134,31 +124,31 @@
                 <el-form-item
                         label="经营场所-所在区县"
                         prop="district">
-                    <el-input
+                    <el-input size="mini"
                             v-model="formData.district"
                             placeholder="请输入经营场所-所在区县"
                             disabled>
                     </el-input>
                 </el-form-item>
                 <el-form-item label="经营场所-详细地址" prop="address">
-                    <el-input v-model="formData.address" placeholder="请输入经营场所-详细地址" disabled></el-input>
+                    <el-input size="mini" v-model="formData.address" placeholder="请输入经营场所-详细地址" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="经营类别" prop="management">
-                    <el-input
+                    <el-input size="mini"
                             v-model="formData.management"
                             placeholder="请输入经营类别"
                             disabled
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="负责人姓名" prop="principal">
-                    <el-input
+                    <el-input size="mini"
                             v-model="formData.principal"
                             placeholder="请输入负责人姓名"
                             disabled
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="负责人电话" prop="principalTel">
-                    <el-input
+                    <el-input size="mini"
                             v-model="formData.principalTel"
                             placeholder="请输入负责人电话"
                             disabled
@@ -178,13 +168,13 @@
                     :model="formData"
                     label-width="90px">
                 <el-form-item label="用户名" prop="account">
-                    <el-input
+                    <el-input size="mini"
                             v-model="formData.account"
                             placeholder="请输入用户名"
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="真实姓名" prop="realname">
-                    <el-input
+                    <el-input size="mini"
                             v-model="formData.realname"
                             placeholder="请输入真实姓名"
                     ></el-input>
@@ -243,10 +233,10 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="联系电话" prop="phone">
-                    <el-input v-model="formData.phone" placeholder="请输入联系电话"></el-input>
+                    <el-input size="mini" v-model="formData.phone" placeholder="请输入联系电话"></el-input>
                 </el-form-item>
                 <el-form-item label="登录密码" prop="password">
-                    <el-input
+                    <el-input size="mini"
                             type="password"
                             :password="true"
                             v-model="formData.password"
@@ -254,7 +244,7 @@
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="确认密码" prop="newPassword">
-                    <el-input
+                    <el-input size="mini"
                             type="password"
                             :password="true"
                             v-model="formData.newPassword"
@@ -277,27 +267,27 @@
                     :rules="reviseFormValidate"
                     label-width="120px">
                 <el-form-item label="旧密码" prop="oldPassword">
-                    <el-input
+                    <el-input size="mini"
                             v-model="reviseForm.oldPassword"
                             placeholder="请输入旧密码"
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="设置新密码" prop="newPassword">
-                    <el-input
+                    <el-input size="mini"
                             v-model="reviseForm.newPassword"
                             placeholder="请输入新密码"
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="确认新密码" prop="reNewPassword">
-                    <el-input
+                    <el-input size="mini"
                             v-model="reviseForm.reNewPassword"
                             placeholder="请输入确认密码"
                     ></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button size="small" type="primary" @click="modifyPassword()">提交</el-button>
-                <el-button size="small" @click="modifyPw = false">取消</el-button>
+                <el-button size="mini" type="primary" @click="modifyPassword()">提交</el-button>
+                <el-button size="mini" @click="modifyPw = false">取消</el-button>
             </span>
         </el-dialog>
     </el-main>
@@ -784,7 +774,7 @@
     }
 
     .blue_text {
-        color: #7b93d2;
+        color: #409eff;
     }
 
     .actions .action_btn {
@@ -800,5 +790,14 @@
     .btns_type {
         width: 90%;
         margin-left: 10% !important;
+    }
+    .el-pagination {
+        text-align: right;
+    }
+    .el-button_groud{
+        line-height: 36px;
+    }
+    .el-input{
+        line-height: 36px;
     }
 </style>
