@@ -16,7 +16,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import net.mingsoft.MSApplication;
 import net.mingsoft.basic.entity.ManagerEntity;
 import net.mingsoft.basic.exception.BusinessException;
 import net.mingsoft.fxxf.bean.base.BasePageResult;
@@ -46,7 +45,6 @@ import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.system.ApplicationHome;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -284,16 +282,18 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
      */
     @Override
     public void downTemplateFile(Integer type, HttpServletRequest request, HttpServletResponse response) {
-        String rootPath = new ApplicationHome(MSApplication.class).getSource().getParentFile().toString();
-        String templateFilePath = ApplicantsTypeEnum.UNIT.getCode().equals(type) ? unitTemplateFilePath : storeTemplateFilePath;
-        String configFilePath = rootPath + templateFilePath;
-        log.debug("经营者列表-模板下载路径：{}", configFilePath);
-
-        TemplateExportParams params = new TemplateExportParams(configFilePath);
-        params.setScanAllsheet(true);
-        Workbook workbook = ExcelExportUtil.exportExcel(params, new HashMap<>());
-        String fileName = "线下无理由退货承诺店导入模板（备注：请启用宏）.xlsm";
-        ExcelUtil.downLoadExcel(fileName, request, response, workbook);
+        String bizTemplateFile = ApplicantsTypeEnum.UNIT.getCode().equals(type) ? unitTemplateFilePath : storeTemplateFilePath;
+        try {
+            log.info("下载模板文件路径：{}", bizTemplateFile);
+            TemplateExportParams params = new TemplateExportParams(bizTemplateFile);
+            // 输出全部的sheet
+            params.setScanAllsheet(true);
+            Workbook workbook = ExcelExportUtil.exportExcel(params, new HashMap<>());
+            String fileName = "线下无理由退货承诺店导入模板（备注：请启用宏）.xlsm";
+            ExcelUtil.downLoadExcel(fileName, request, response, workbook);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
