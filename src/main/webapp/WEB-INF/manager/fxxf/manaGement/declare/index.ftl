@@ -8,15 +8,17 @@
 </head>
 <body>
 <#include 'reset-password.ftl'/>
-<div id="app" class="statistics">
+<el-main id="app" class="statistics">
     <el-row>
         <el-col span="5">
-            <el-input v-model="keyword" clearable placeholder="请输入关键字" @clear="getList"></el-input>
+            <el-input v-model="keyword" clearable placeholder="请输入关键字" @clear="getList" size="mini"></el-input>
 
         </el-col>
         <el-col span="19">
             <div class="button-Box">
-                <el-button class="item-Box"  type="primary" icon="el-icon-search" @click="getOperatorStatisticList">查询</el-button>
+                <el-button class="item-Box" type="primary" icon="el-icon-search" @click="getOperatorStatisticList"
+                           size="mini">查询
+                </el-button>
                 <@shiro.hasPermission name="sbclgl:upload">
                     <el-upload
                             ref="upload"
@@ -24,12 +26,12 @@
                             :http-request="uploadFile"
                             :show-file-list="false"
                     >
-                        <el-button class="upDateItemBox" type="primary"  icon="el-icon-top">上传</el-button>
+                        <el-button class="upDateItemBox" type="primary" icon="el-icon-top" size="mini">上传</el-button>
                     </el-upload>
                 </@shiro.hasPermission>
                 <@shiro.hasPermission name="sbclgl:del">
-                    <el-button class="item-Box" :type="judgmentButton" :disabled="judgmentDisable"
-                               :plain="judgmentDisable" icon="el-icon-close" @click="deleteOperatorStatisticList">
+                    <el-button :class="judgmentButton"  :disabled="judgmentDisable" size="mini"
+                               :plain="judgmentDisable" icon="el-icon-delete" @click="deleteOperatorStatisticList">
                         删除
                     </el-button>
                 </@shiro.hasPermission>
@@ -41,6 +43,7 @@
             element-loading-text="加载中，请稍后..."
             v-loading="loadingShow"
             class="table"
+            border
             ref="multipleTable"
             :data="dataList"
             tooltip-effect="dark"
@@ -78,25 +81,28 @@
                 show-overflow-tooltip>
             <template #default="{ row }">
                 <@shiro.hasPermission name="sbclgl:del">
-                <span @click="deleteSingleOperatorStatisticList(row)" style="color: red; cursor: pointer">X删除</span>
+                    <i class="el-icon-delete" style="color: #f05858;"></i>
+                    <span @click="deleteSingleOperatorStatisticList(row)"
+                          style="color: #f05858; cursor: pointer">删除</span>
                 </@shiro.hasPermission>
             </template>
         </el-table-column>
     </el-table>
 
     <div class="pagination-box">
-        <span style="white-space:nowrap">共{{total}}条信息 共{{Totalpage}}页</span>
         <el-pagination
                 @current-change="handleCurrentChange"
                 :current-page.sync="current"
+                @size-change="sizeChange"
                 background="false"
                 :page-size="size"
+                :page-sizes="[10, 20, 30, 40]"
                 :pager-count="pages"
-                layout="prev, pager, next, jumper"
+                layout="total, sizes, prev, pager, next, jumper"
                 :total="total">
         </el-pagination>
     </div>
-</div>
+</el-main>
 </body>
 
 </html>
@@ -118,26 +124,20 @@
             loadingShow: true,
         },
         computed: {
-            //计算总共有多少页return Math.ceil(total / pageSize);
-            Totalpage() {
-                return Math.ceil(this.total / this.size)
-            },
             //判断是否可以删除
             judgmentButton() {
-                return !this.chooseList.length > 0 ? 'info' : 'danger'
+                return !this.chooseList.length > 0 ? 'item-Box' : 'red-btn'
             },
             //判断是否禁用
             judgmentDisable() {
                 return !this.chooseList.length > 0
             }
         },
-        watch: {
-
-        },
+        watch: {},
         methods: {
             //获取数据
             getList() {
-                ms.http.get('/attachment/info.do?current=' + this.current + '&keyword=' + this.keyword + '&size=10').then(res => {
+                ms.http.get('/attachment/info.do?current=' + this.current + '&keyword=' + this.keyword + '&size=' + this.size).then(res => {
                     if (res.code != 200) return
                     this.dataList = res.data.records
                     this.total = Number(res.data.total)
@@ -224,6 +224,10 @@
                     }
                 })
             },
+            sizeChange(v) {
+                this.size = v
+                this.getList()
+            }
         },
         created: function () {
             this.getList()
@@ -239,39 +243,40 @@
 <style>
 
     .statistics {
-        padding: 10px;
+        height: calc(100vh);
+        background-color: white;
     }
 
     .table {
         margin-top: 10px;
+        height: calc(100vh - 135px);
     }
 
     .button-Box {
         display: inline-flex;
     }
-    .item-Box{
-        display: inline-block;
-        width: 150px;
+
+    .item-Box {
+        /*display: inline-block;*/
+        /*width: 150px;*/
         margin-left: 10px;
+    }
+    .red-btn{
+        margin-left: 10px;
+        border: 0;
+        color: #fff !important;
+        background: #e55644 !important;
     }
 
     .pagination-box {
         display: flex;
+        justify-content: flex-end;
         align-items: center;
-        margin-top: 8px;
+        margin-top: 10px;
     }
 
     .upDateItemBox {
-        background-color: #2db7f5;
-        width: 150px;
         margin-left: 10px;
-    }
-
-    .upDateItemBox:hover {
-        background-color: #55c2f5;
-    }
-    .el-pagination {
-        margin: 0 auto;
     }
 
 </style>

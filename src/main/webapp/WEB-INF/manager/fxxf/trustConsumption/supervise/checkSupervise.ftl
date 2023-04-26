@@ -8,7 +8,7 @@
 </head>
 <body>
 <#--<#include 'reset-password.ftl'/>-->
-<div id="app" class="mes_num_list">
+<el-main id="app" class="mes_num_list">
     <el-row>
         <#--        工具栏-->
         <el-col :span="20">
@@ -19,17 +19,23 @@
                         <el-date-picker
                                 v-model="startTime"
                                 type="date"
+                                size="mini"
                                 placeholder="开始日期"
+                                :picker-options="pickerBeginDate"
                                 style="width: 320px"
                         ></el-date-picker>
                         <span class="date-separator">-</span>
                         <el-date-picker
                                 v-model="endTime"
                                 type="date"
+                                size="mini"
                                 placeholder="结束日期"
+                                :picker-options="pickerEndDate"
                                 style="width: 320px"
                         ></el-date-picker>
-                        <el-button style="margin-left: 40px" type="primary" icon="el-icon-search" @click="inquire">查询</el-button>
+                        <el-button style="margin-left: 40px" type="primary" icon="el-icon-search" @click="inquire" size="mini">
+                            查询
+                        </el-button>
                     </div>
                 </el-col>
             </el-row>
@@ -40,11 +46,11 @@
     <el-table
             class="table"
             :data="dataList"
-            element-loading-text = "加载中，请稍后..."
+            element-loading-text="加载中，请稍后..."
             v-loading="loadingShow"
+            :height="tableHeight"
             border
-            style="width: 100%"
-            :max-height="tableHeight">
+            style="width: 100%">
         <el-table-column
                 label="问题类型"
                 align=left">
@@ -82,53 +88,72 @@
                 align=left">
             <template #default="{ row }">
 
-                <div style="cursor: pointer;" @click="goComplaint(row)"><i class="el-icon-s-tools"></i><span
-                            style="color:#409EFF">&nbsp处理</span></div>
+                <div style="cursor: pointer;" @click="goComplaint(row)"><i style="color:#409EFF;margin-right: 5px" class="el-icon-search"></i><span
+                            style="color:#409EFF">处理</span></div>
             </template>
         </el-table-column>
     </el-table>
     <#--    分页-->
     <div class="pagination-box">
-        <span style="white-space:nowrap">共{{total}}条信息 共{{Totalpage}}页</span>
         <el-pagination
                 @current-change="handleCurrentChange"
                 :current-page.sync="current"
+                @size-change="sizeChange"
                 background="false"
                 :page-size="size"
+                :page-sizes="[10, 20, 30, 40]"
                 :pager-count="pages"
-                layout="prev, pager, next, jumper"
+                layout="total, sizes, prev, pager, next, jumper"
                 :total="total">
         </el-pagination>
     </div>
     <#--    返回按钮-->
-    <el-button id="backSupervise" type="primary" size="medium" @click="backSupervise">返回</el-button>
+    <el-button id="backSupervise" type="primary" size="mini" @click="backSupervise">返回</el-button>
     <#--    投诉页面-->
     <iframe v-if="action" :src="action" id="complaint"></iframe>
-</div>
+</el-main>
 </body>
 
 </html>
 <script>
     var indexVue = new Vue({
         el: "#app",
-        data: {
-            dataList: [],//数据
-            action: '',//跳转页面
-            startTime: '',//开始日期
-            endTime: '',//结束日期
-            tableHeight: 530, //表格高度,
-            total:0,
-            size:10,
-            current:0,
-            pages:4,
-            id:0,
-            loadingShow: true,
+        data() {
+            return {
+                dataList: [],//数据
+                action: '',//跳转页面
+                startTime: '',//开始日期
+                endTime: '',//结束日期
+                tableHeight: 'calc(100vh - 135px)', //表格高度,
+                total: 0,
+                size: 10,
+                current: 1,
+                pages: 4,
+                id: 0,
+                loadingShow: true,
+                // 开始结束日期限制
+                pickerBeginDate: {
+                    disabledDate: (time) => {
+                        if (this.endTime) {
+                            return (
+                                time.getTime() >= new Date(this.endTime).getTime()
+                            );
+                        }
+                    }
+                },
+                // 结束日期限制
+                pickerEndDate: {
+                    disabledDate: (time) => {
+                        if (this.startTime) {
+                            return (
+                                time.getTime() <= new Date(this.startTime).getTime()
+                            );
+                        }
+                    }
+                }
+            }
         },
         computed: {
-            //计算总共有多少页return Math.ceil(total / pageSize);
-            Totalpage(){
-                return Math.ceil(this.total/this.size)
-            }
         },
         watch: {},
         methods: {
@@ -141,26 +166,26 @@
             //跳转页面
             goComplaint(row) {
                 this.id = row.id
-                this.action = ms.manager + "/route/feedbackHandle.do?id="+this.id
+                this.action = ms.manager + "/route/feedbackHandle.do?id=" + this.id
             },
-            getList(startTime,endTime){
+            getList(startTime, endTime) {
                 //切分上个页面传过来的id
                 const url = window.location.href;
                 const regex = /applicantsId=(\d+)/;
                 const match = url.match(regex);
                 const applicantsId = match ? match[1] : null;
                 //请求数据
-                if(startTime===undefined&&endTime===undefined){
-                    startTime=''
-                    endTime=''
+                if (startTime === undefined && endTime === undefined) {
+                    startTime = ''
+                    endTime = ''
                 }
-                    ms.http.get(ms.manager + '/feedback/companyDetails.do?applicantsId='+applicantsId+'&current='+this.current+'&size=10&startTime='+startTime+'&endTime='+endTime).then((res) => {
-                        if(res.code!=200)return
-                        const {records,total} = res.data
-                        this.dataList = records
-                        this.total = Number(total)
-                        this.loadingShow = false
-                    })
+                ms.http.get(ms.manager + '/feedback/companyDetails.do?applicantsId=' + applicantsId + '&current=' + this.current + '&startTime=' + startTime + '&endTime=' + endTime+'&size='+this.size).then((res) => {
+                    if (res.code != 200) return
+                    const {records, total} = res.data
+                    this.dataList = records
+                    this.total = Number(total)
+                    this.loadingShow = false
+                })
             },
             //下一页
             handleCurrentChange(val) {
@@ -169,7 +194,7 @@
                 this.getList()
             },
             //查询
-            inquire(){
+            inquire() {
                 this.loadingShow = true
                 //处理日期格式
                 let startTime = '';
@@ -180,7 +205,11 @@
                 if (this.endTime) {
                     endTime = this.endTime.getFullYear() + '-' + ('0' + (this.endTime.getMonth() + 1)).slice(-2) + '-' + ('0' + this.endTime.getDate()).slice(-2)
                 }
-                this.getList(startTime,endTime)
+                this.getList(startTime, endTime)
+            },
+            sizeChange(v) {
+                this.size = v
+                this.getList()
             }
         },
         created: function () {
@@ -209,8 +238,8 @@
 
     /*头部工具条*/
     .mes_num_list {
-        padding: 10px;
-        width: 100%;
+        height: calc(100vh);
+        background-color: white;
     }
 
     .date-time {
@@ -244,13 +273,11 @@
     /*    分页*/
     .pagination-box {
         display: flex;
+        justify-content: flex-end;
         align-items: center;
-        margin-top: 8px;
+        margin-top: 10px;
     }
 
-    .el-pagination {
-        margin: 0 auto;
-    }
     .new {
         position: absolute;
         top: 0;
@@ -263,8 +290,7 @@
     /*返回按钮*/
     #backSupervise {
         position: fixed;
-        top: 0;
-        right: 10px;
-        margin: 10px;
+        top: 20px;
+        right: 20px;
     }
 </style>
