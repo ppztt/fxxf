@@ -24,7 +24,7 @@ import java.util.ArrayList;
 @RestController
 @Slf4j
 @Api(tags = "商品服务类型统计")
-@RequestMapping("/typestat")
+@RequestMapping("/${ms.manager.path}/typestat")
 public class GoodsAndServicesStatController {
 
     @Autowired

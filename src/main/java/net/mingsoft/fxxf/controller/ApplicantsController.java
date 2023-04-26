@@ -36,7 +36,7 @@ import java.util.Objects;
  */
 @Api(tags = {"申报单位相关接口"})
 @RestController
-@RequestMapping("/applicants")
+@RequestMapping("/${ms.manager.path}/applicants")
 @Slf4j
 public class ApplicantsController {
 

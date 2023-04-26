@@ -35,7 +35,7 @@ import java.util.List;
  */
 @Api(tags = "资料管理")
 @RestController
-@RequestMapping("/attachment")
+@RequestMapping("/${ms.manager.path}/attachment")
 public class AttachmentController {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());

@@ -35,7 +35,7 @@ import java.util.List;
 @Slf4j
 @Api(tags = "注册")
 @RestController
-@RequestMapping("/register")
+@RequestMapping("/${ms.manager.path}/register")
 @Validated
 public class RegisterController {
 

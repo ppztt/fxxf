@@ -9,6 +9,7 @@ import net.mingsoft.utils.BeanUtil;
 import net.mingsoft.utils.ResponseBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.List;
  **/
 @Api(tags = "地区信息")
 @RestController
+@RequestMapping("/${ms.manager.path}")
 public class RegionController {
 
     @Autowired
