@@ -10,7 +10,7 @@
 <div id="form" v-loading="loading" v-cloak>
     <el-main class="ms-container">
         <div class="box">
-            <el-form ref="form" :model="userData" :rules="ruleValidate" label-width="120px" label-position="left" size="medium">
+            <el-form ref="form" :model="userData" :rules="ruleValidate" label-width="120px" label-position="left" size="mini">
                 <el-row>
                     <el-col :span="24">
                     <el-form-item label="用户名：" prop="account">
@@ -21,14 +21,14 @@
                 <el-row>
                     <el-col :span="24">
                     <el-form-item label="真实姓名：" prop="realname">
-                        <el-input type="text" v-model="userData.realname" />
+                        <el-input size="mini" type="text" v-model="userData.realname" />
                     </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row>
                     <el-col :span="24">
                     <el-form-item label="电子邮件：" prop="email">
-                        <el-input type="text" v-model="userData.email" />
+                        <el-input size="mini" type="text" v-model="userData.email" />
                     </el-form-item>
                     </el-col>
                 </el-row>
@@ -48,20 +48,20 @@
                 <el-row>
                     <el-col :span="24">
                     <el-form-item label="邮政编码：" prop="zipcode">
-                        <el-input type="text" v-model="userData.zipcode" />
+                        <el-input size="mini" type="text" v-model="userData.zipcode" />
                     </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row>
                     <el-col :span="24">
                     <el-form-item label="联系电话：" prop="phone">
-                        <el-input type="text" v-model="userData.phone" />
+                        <el-input size="mini" type="text" v-model="userData.phone" />
                     </el-form-item>
                     </el-col>
                 </el-row>
                 <el-form-item>
                     <@shiro.hasPermission name="manage:userinfo">
-                    <el-button type="primary" class="blue_btn" @click="sub">提交</el-button>
+                    <el-button size="mini" type="primary" class="blue_btn" @click="sub">提交</el-button>
                     </@shiro.hasPermission>
                 </el-form-item>
 
@@ -198,12 +198,15 @@
 
 </script>
 <style>
+    .ms-container{
+        height: 100vh !important;
+    }
     .box{
         width: 30%;
         /*min-width: 400px;*/
     }
     .blue_btn {
-        background: #5d7cc9 !important;
+        background: #409eff !important;
         color: #fff !important;
         border: 0;
         position: relative;
@@ -212,7 +215,7 @@
     }
 
     .blue_btn:hover {
-        background: #899ed1 !important;
+        background: #409eff !important;
         color: #fff !important;
         border: 0;
         outline: none;
