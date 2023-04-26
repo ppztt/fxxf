@@ -8,14 +8,16 @@
 </head>
 <body>
 <#include 'reset-password.ftl'/>
-<div id="app" class="statistics">
+<el-main id="app" class="statistics">
     <el-row>
         <#--        工具栏-->
         <el-col :span="22">
             <el-row>
                 <el-col :span="24">
                     <div class="date-range">
-                        <el-select style="width: 320px" @change="selectCity(city)" @clear="clearCity" clearable v-model="city"
+                        <el-select style="width: 320px" @change="selectCity(city)" @clear="clearCity" clearable
+                                   size="mini"
+                                   v-model="city"
                                    placeholder="市">
                             <el-option
                                     v-for="item in area"
@@ -24,7 +26,9 @@
                                     :value="item.name">
                             </el-option>
                         </el-select>
-                        <el-select style="width: 320px;margin: 0 10px" clearable :disabled="district.length>0?false:true"
+                        <el-select style="width: 320px;margin: 0 10px" clearable
+                                   size="mini"
+                                   :disabled="district.length>0?false:true"
                                    @change="selectCity(city)" v-model="region" placeholder="市/县/区/镇">
                             <el-option
                                     v-for="item in district"
@@ -37,13 +41,17 @@
                                 v-model="startTime"
                                 type="date"
                                 placeholder="开始日期"
+                                size="mini"
                                 style="width: 320px"
+                                :picker-options="pickerBeginDate"
                         ></el-date-picker>
                         <el-date-picker
                                 style="margin: 0 10px;width: 320px"
                                 v-model="endTime"
                                 type="date"
                                 placeholder="结束日期"
+                                size="mini"
+                                :picker-options="pickerEndDate"
                         ></el-date-picker>
                     </div>
                 </el-col>
@@ -53,7 +61,7 @@
         <el-col :span="2">
             <el-row class="button_groud" type="flex">
                 <el-col span="24">
-                    <el-button type="primary" icon="el-icon-search" @click="getOperatorStatisticList">查询</el-button>
+                    <el-button type="primary" icon="el-icon-search" @click="getOperatorStatisticList" size="mini">查询</el-button>
                 </el-col>
             </el-row>
         </el-col>
@@ -92,22 +100,44 @@
         >
         </el-table-column>
     </el-table>
-</div>
+</el-main>
 </body>
 
 </html>
 <script>
     var indexVue = new Vue({
         el: "#app",
-        data: {
-            dataList: [],//数据
-            area: [],//广东省地区
-            city: '',//选择的市
-            district: [],//区/县
-            region: '',//选择的区/县
-            startTime: '',//开始日期
-            endTime: '',//结束日期
-            loadingShow: true,
+        data() {
+            return {
+                dataList: [],//数据
+                area: [],//广东省地区
+                city: '',//选择的市
+                district: [],//区/县
+                region: '',//选择的区/县
+                startTime: '',//开始日期
+                endTime: '',//结束日期
+                loadingShow: true,
+                // 开始结束日期限制
+                pickerBeginDate: {
+                    disabledDate: (time) => {
+                        if (this.endTime) {
+                            return (
+                                time.getTime() >= new Date(this.endTime).getTime()
+                            );
+                        }
+                    }
+                },
+                // 结束日期限制
+                pickerEndDate: {
+                    disabledDate: (time) => {
+                        if (this.startTime) {
+                            return (
+                                time.getTime() <= new Date(this.startTime).getTime()
+                            );
+                        }
+                    }
+                }
+            }
         },
         computed: {},
         watch: {},
@@ -125,7 +155,7 @@
                 })
             },
             //获取地区数据
-            getArea(){
+            getArea() {
                 ms.http.get("/gd-regin.do").then(res => {
                     this.area = res.data
                 })
@@ -165,7 +195,7 @@
                     this.region = ''
                 }
                 this.getList(startTime, endTime)
-            }
+            },
         },
         created: function () {
             this.getList()
@@ -178,11 +208,12 @@
 </script>
 <style>
     html {
-        overflow: scroll;
+        /*overflow: overlay;*/
     }
 
     .statistics {
-        padding: 10px;
+        height: calc(100vh);
+        background-color: white;
     }
 
     .table {

@@ -17,17 +17,17 @@
         <el-row class="tools" ref="tools" type="flex" justify="center" align="middle">
             <!-- 工具栏 -->
             <el-col span="24">
-                <el-input placeholder="请输入关键字" v-model="search" :clearable="true"></el-input>
+                <el-input size="mini" placeholder="请输入关键字" v-model="search" :clearable="true"></el-input>
             </el-col>
             <el-col span="20">
-                <el-select ref="city" v-model="city" placeholder="市" :clearable="true" filterable
+                <el-select size="mini" ref="city" v-model="city" placeholder="市" :clearable="true" filterable
                            @change="cityChange(city)" @clear="clear">
                     <el-option v-for="item in regionData" :value="item.name" :key="item.code" :label="item.name">
                     </el-option>
                 </el-select>
             </el-col>
             <el-col span="20">
-                <el-select ref="district" v-model="district" placeholder="市/县/区/镇" :clearable="true" filterable
+                <el-select size="mini" ref="district" v-model="district" placeholder="市/县/区/镇" :clearable="true" filterable
                            @change="districtChange(district)"
                            :disabled="!city ||districtData.length == 0">
                     <el-option v-for="item in districtData" :value="item.code" :key="item.code"
@@ -37,35 +37,27 @@
             </el-col>
 
             <el-col span="20">
-                <el-select placeholder="经营类别" :clearable="true" v-model="management">
+                <el-select size="mini" placeholder="经营类别" :clearable="true" v-model="management">
                     <el-option :value="'商品类'" :key="'商品类'">商品类</el-option>
                     <el-option :value="'服务类'" :key="'服务类'">服务类</el-option>
                     <el-option :value="'商品及服务类'" :key="'商品及服务类'">商品及服务类</el-option>
                 </el-select>
             </el-col>
             <el-col span="20">
-                <el-select v-model="status" :data="statusData" :clearable="true" placeholder="状态">
+                <el-select size="mini" v-model="status" :data="statusData" :clearable="true" placeholder="状态">
                     <el-option v-for="item in statusInfo" :label="item.value" :key="item.id" :value="item.id">
                         {{item.value}}
                     </el-option>
                 </el-select>
             </el-col>
             <el-col span="6">
-                <el-date-picker format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="startTime" placeholder="开始时间" @on-change="
-        (value) => {
-          startTime = value;
-        }
-      "></el-date-picker>
+                <el-date-picker size="mini" format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="startTime" placeholder="开始时间" :picker-options="pickerBeginDate" @change="changeStartTime"></el-date-picker>
             </el-col>
             <el-col span="6">
-                <el-date-picker format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="endTime" placeholder="结束时间" @on-change="
-        (value) => {
-          endTime = value;
-        }
-      "></el-date-picker>
+                <el-date-picker size="mini" format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="endTime" placeholder="结束时间" :picker-options="pickerEndDate" @change="changeEndTime"></el-date-picker>
             </el-col>
             <el-col>
-                <el-button size="medium" size="medium" class="blue_btn" icon="el-icon-search" @click="getUnitList">
+                <el-button size="mini"  type="primary" icon="el-icon-search" @click="getUnitList">
                     查询
                 </el-button>
             </el-col>
@@ -73,7 +65,7 @@
         <div class="list-header-btns">
             <@shiro.hasPermission name="jyzlb:input">
             <div class="item">
-                <el-button size="medium" class="blue_btn2" @click="isShowEnteringModal = true" icon="el-icon-edit"
+                <el-button size="mini" type="primary" @click="isShowEnteringModal = true" icon="el-icon-edit"
                 >
                     <!-- <img class="left" src="@/assets/images/1_17.png" alt /> -->
                     录入
@@ -86,6 +78,7 @@
                     title="放心消费承诺经营者 - 录入"
                     width="800"
                     :rules="formrules"
+                    @close="closeEnteringModal"
             >
                 <el-row>
                     <el-col offset="1" span="22">
@@ -100,6 +93,7 @@
                                 <el-col span="24">
                                     <el-form-item label="经营者注册名称" prop="regName">
                                         <el-input
+                                                size="mini"
                                                 v-model="formData.regName"
                                                 placeholder="请输入经营者注册名称"
                                         ></el-input>
@@ -111,6 +105,7 @@
                                 >
                                     <el-form-item label="统一社会信用代码" prop="creditCode">
                                         <el-input
+                                                size="mini"
                                                 v-model="formData.creditCode"
                                                 placeholder="请输入统一社会信用代码"
                                         ></el-input>
@@ -123,6 +118,7 @@
                                 <el-col span="11">
                                     <el-form-item label="网店名称" prop="onlineName">
                                         <el-input
+                                                size="mini"
                                                 v-model="formData.onlineName"
                                                 placeholder="请输入网店名称"
                                         ></el-input>
@@ -132,6 +128,7 @@
                                 <el-col span="11">
                                     <el-form-item label="所属平台" prop="platform">
                                         <el-input
+                                                size="mini"
                                                 v-model="formData.platform"
                                                 placeholder="请输入所属平台"
                                         ></el-input>
@@ -143,6 +140,7 @@
                                 <el-col span="11">
                                     <el-form-item label="门店名称" prop="storeName">
                                         <el-input
+                                                size="mini"
                                                 v-model="formData.storeName"
                                                 placeholder="请输入门店名称"
                                         ></el-input>
@@ -154,6 +152,7 @@
                                 <el-row :key="index" v-for="(addr, index) in formData.addrs">
                                     <el-col span="5">
                                         <el-select
+                                                size="mini"
                                                 :ref="'city'+index"
                                                 v-model="addr.city"
                                                 placeholder="市"
@@ -172,6 +171,7 @@
                                     </el-col>
                                     <el-col span="5">
                                         <el-select
+                                                size="mini"
                                                 :ref="`district${index}`"
                                                 v-model="addr.district"
                                                 @change="districtChange(district)"
@@ -185,15 +185,17 @@
                                         </el-select>
                                     </el-col>
                                     <el-col span="8">
-                                        <el-input v-model="addr.address" placeholder="请输入经营场所地址"></el-input>
+                                        <el-input size="mini" v-model="addr.address" placeholder="请输入经营场所地址"></el-input>
                                     </el-col>
                                     <el-col span="1">
                                         <el-button
+                                                size="mini"
                                                 v-if="index === 0"
                                                 icon="el-icon-plus"
                                                 @click="addAddress"
                                                 circle></el-button>
                                         <el-button
+                                                size="mini"
                                                 v-else
                                                 icon="el-icon-minus"
                                                 circle
@@ -213,6 +215,7 @@
                                 <el-col span="11">
                                     <el-form-item label="经营类别" prop="management">
                                         <el-select
+                                                size="mini"
                                                 ref="management"
                                                 placeholder="类别"
                                                 :clearable="true"
@@ -228,6 +231,7 @@
                                 <el-col span="11">
                                     <el-form-item label="详细类别" prop="details">
                                         <el-select
+                                                size="mini"
                                                 placeholder="详细类别"
                                                 v-model="formData.details"
                                                 multiple="true">
@@ -250,6 +254,7 @@
                                 <el-col span="11">
                                     <el-form-item label="负责人姓名" prop="principal">
                                         <el-input
+                                                size="mini"
                                                 v-model="formData.principal"
                                                 placeholder="请输入负责人姓名"
                                         ></el-input>
@@ -259,6 +264,7 @@
                                 <el-col span="11">
                                     <el-form-item label="负责人电话" prop="principalTel">
                                         <el-input
+                                                size="mini"
                                                 type="tel"
                                                 v-model="formData.principalTel"
                                                 placeholder="请输入负责人电话"
@@ -274,6 +280,7 @@
                                             <el-col :span="24">
                                                 <el-form-item prop="applicationDate">
                                                     <el-date-picker
+                                                            size="mini"
                                                             value-format="yyyy-MM-dd"
                                                             v-model="formData.applicationDate"
                                                             type="date"
@@ -291,7 +298,7 @@
                             <el-row v-if="modalType === 1">
                                 <el-col span="24">
                                     <el-form-item label="品质保证" prop="contents1">
-                                        <el-input v-model="formData.contents1" type="textarea"
+                                        <el-input size="mini" v-model="formData.contents1" type="textarea"
                                                   placeholder="请输入文字"></el-input>
                                     </el-form-item>
                                 </el-col>
@@ -300,7 +307,7 @@
                             <el-row v-if="modalType === 1">
                                 <el-col span="24">
                                     <el-form-item label="诚信保证" prop="contents2">
-                                        <el-input v-model="formData.contents2" type="textarea"
+                                        <el-input size="mini" v-model="formData.contents2" type="textarea"
                                                   placeholder="请输入文字"></el-input>
                                     </el-form-item>
                                 </el-col>
@@ -309,7 +316,7 @@
                             <el-row v-if="modalType === 1">
                                 <el-col span="24">
                                     <el-form-item label="维权保证" prop="contents3">
-                                        <el-input v-model="formData.contents3" type="textarea"
+                                        <el-input size="mini" v-model="formData.contents3" type="textarea"
                                                   placeholder="请输入文字"></el-input>
                                     </el-form-item>
                                 </el-col>
@@ -318,7 +325,7 @@
                             <el-row v-if="modalType === 2">
                                 <el-col span="24">
                                     <el-form-item label="适用商品" prop="contents1">
-                                        <el-input v-model="formData.contents1" type="textarea"
+                                        <el-input size="mini" v-model="formData.contents1" type="textarea"
                                                   placeholder="请输入适用商品"></el-input>
                                     </el-form-item>
                                 </el-col>
@@ -326,7 +333,7 @@
                             <el-row v-if="modalType === 2">
                                 <el-col span="24">
                                     <el-form-item label="退货期限（天）" prop="contents2">
-                                        <el-input v-model="formData.contents2" type="textarea"
+                                        <el-input size="mini" v-model="formData.contents2" type="textarea"
                                                   placeholder="请输入退货期限"></el-input>
                                     </el-form-item>
                                 </el-col>
@@ -334,7 +341,7 @@
                             <el-row v-if="modalType === 2">
                                 <el-col span="24">
                                     <el-form-item label="退货约定" prop="contents3">
-                                        <el-input v-model="formData.contents3" type="textarea"
+                                        <el-input size="mini" v-model="formData.contents3" type="textarea"
                                                   placeholder="请输入退货约定具体信息"></el-input>
                                     </el-form-item>
                                 </el-col>
@@ -344,13 +351,13 @@
                                 其他承诺事项及具体内容
                             </div>
                             <el-form-item label="内容" v-if="modalType === 1" prop="contents4">
-                                <el-input v-model="formData.contents4" type="textarea"
+                                <el-input size="mini" v-model="formData.contents4" type="textarea"
                                           placeholder="请输入内容"></el-input>
                             </el-form-item>
 
                             <div class="submit-btns">
                                 <el-button
-                                        size="medium"
+                                        size="mini"
                                         type="primary"
                                         @click="handleSubmit('formApply', modalType)">
                                     提交
@@ -369,7 +376,7 @@
                            :on-success="uploadSucAction"
                            :on-error="uploadErrAction"
                            :action="'/applicants/preImport.do?type='+type">
-                    <el-button size="medium" class="green_btn" type="primary" :disabled="!canImport"
+                    <el-button size="mini" type="primary" :disabled="!canImport"
                                icon="el-icon-bottom"
                                :title="!canImport ? '没有权限导入' : ''">
                         导入
@@ -380,7 +387,7 @@
             <@shiro.hasPermission name="wlythcn:list">
             <div class="item">
                 <el-dropdown @command="exportData">
-                    <el-button size="medium" size="medium" class="dgreen_btn" icon="el-icon-top">
+                    <el-button size="mini" type="primary" icon="el-icon-top">
                         导出
                     </el-button>
                     <el-dropdown-menu slot="dropdown">
@@ -394,7 +401,7 @@
             </@shiro.hasPermission>
             <@shiro.hasPermission name="jyzlb:download">
             <div class="item">
-                <el-button size="medium" class="red_btn" @click="downLoadTemplate" icon="el-icon-download">
+                <el-button size="mini" type="primary" @click="downLoadTemplate" icon="el-icon-download">
                     <!-- <img class="left" src="@/assets/images/1_17.png" alt /> -->
                     模板下载
                 </el-button>
@@ -402,7 +409,7 @@
             </@shiro.hasPermission>
             <@shiro.hasPermission name="jyzlb:del">
             <div class="item" style="margin-left: 30px;">
-                <el-button size="medium" :class="{ red_btn : ids.ids.length!=0 }" icon="el-icon-close"
+                <el-button size="mini" :class="{ red_btn : ids.ids.length!=0 }" icon="el-icon-delete"
                            :disabled="ids.ids.length == 0"
                            @click="deleteMoreConsumer">
                     删除
@@ -417,7 +424,9 @@
                 :data="unitDataList"
                 ref="unitDataList"
                 border
-                height="700"
+                height="100"
+                style="width:100%"
+                class="tableHeight"
                 @select="addIDs"
                 @select-all="addIDs">
             <el-table-column
@@ -538,21 +547,21 @@
                         </el-button>
                         </@shiro.hasPermission>
                         <@shiro.hasPermission name="jyzlb:edit">
-                        <el-button class="action_btn orange_text" icon="el-icon-edit" @click="openNew(0,row)">
+                        <el-button class="action_btn blue_text" icon="el-icon-edit" @click="openNew(0,row)">
                             编辑
                         </el-button>
                         </@shiro.hasPermission>
                         <@shiro.hasPermission name="jyzlb:audit">
-                        <el-button class="action_btn blue_text" icon="el-icon-circle-check" @click="openNew(3,row)">
+                        <el-button class="action_btn blue_text" icon="el-icon-circle-check" @click="openNew(3,row)" v-if="row.status == 4">
                             审核
                         </el-button>
                         </@shiro.hasPermission>
-                        <el-button class="action_btn green_text" v-if="row.status == 1" icon="el-icon-s-promotion"
+                        <el-button class="action_btn blue_text" v-if="row.status == 1" icon="el-icon-s-promotion"
                                    @click="openNew(2,row)">
                             摘牌
                         </el-button>
                         <@shiro.hasPermission name="jyzlb:del">
-                        <el-button type="text" class="action_btn red_text" icon="el-icon-close"
+                        <el-button type="text" class="action_btn red_text" icon="el-icon-delete"
                                    @click="deleteConsumer(row.id)">
                             删除
                         </el-button>
@@ -580,345 +589,366 @@
 <script>
     var indexVue = new Vue({
         el: '#index',
-        data: {
-            loading: true,
-            // 用户信息临时
-            userInfo: {
-                // 页面跳转
+        data(){
+            return {
+                loading: true,
+                // 开始结束日期限制
+                pickerBeginDate: {
+                    disabledDate: (time) => {
+                        if (this.endTime) {
+                            return (
+                                time.getTime() >= new Date(this.endTime).getTime()
+                            );
+                        }
+                    }
+                },
+                //结束日期限制
+                pickerEndDate: {
+                    disabledDate: (time) => {
+                        if (this.startTime) {
+                            return (
+                                time.getTime() <= new Date(this.startTime).getTime()
+                            );
+                        }
+                    }
+                },
+                // 用户信息临时
+                userInfo: {
+                    // 页面跳转
+                    action: "",
+                    account: "测试",
+                    address: null,
+                    city: "",
+                    createTime: "2023-01-10 03:59:30",
+                    creditCode: null,
+                    district: "",
+                    email: "",
+                    id: 177,
+                    management: null,
+                    newPassword: null,
+                    password: "52f24ccfeef7e6a0f4a17fbc45647361ebb06a839ec6172064a2167299e33d1d",
+                    phone: "13922108999",
+                    principal: null,
+                    principalTel: null,
+                    province: null,
+                    realname: "魏",
+                    roleId: 1,
+                    roleName: null,
+                    storeName: null,
+                    town: null,
+                    updateTime: "2023-01-10 03:59:30",
+                    usertype: 1,
+                    zipcode: ""
+                },
                 action: "",
-                account: "测试",
-                address: null,
-                city: "",
-                createTime: "2023-01-10 03:59:30",
-                creditCode: null,
-                district: "",
-                email: "",
-                id: 177,
-                management: null,
-                newPassword: null,
-                password: "52f24ccfeef7e6a0f4a17fbc45647361ebb06a839ec6172064a2167299e33d1d",
-                phone: "13922108999",
-                principal: null,
-                principalTel: null,
-                province: null,
-                realname: "魏",
-                roleId: 1,
-                roleName: null,
-                storeName: null,
-                town: null,
-                updateTime: "2023-01-10 03:59:30",
-                usertype: 1,
-                zipcode: ""
-            },
-            action: "",
-            modalType: 2,
-            isShowEnteringModal: false,
-            // 弹出框数据
-            formData: {
-                regName: "",
-                storeName: "",
-                platform: "",
-                onlineName: "",
-                city: "",
-                district: "",
-                address: "",
-                addrs: [
+                modalType: 2,
+                isShowEnteringModal: false,
+                // 弹出框数据
+                formData: {
+                    regName: "",
+                    storeName: "",
+                    platform: "",
+                    onlineName: "",
+                    city: "",
+                    district: "",
+                    address: "",
+                    addrs: [
+                        {
+                            city: "",
+                            district: "",
+                            address: "",
+                        },
+                    ],
+                    creditCode: "",
+                    management: "",
+                    details: "",
+                    principal: "",
+                    principalTel: "",
+                    contents1: "",
+                    contents2: "",
+                    contents3: "",
+                    applicationDate: "",
+                },
+                formrules: {
+                    regName: [{required: true, message: '经营者注册名称不能为空', trigger: 'blur'}],
+                    creditCode: [{required: true, message: '统一社会信用代码不能为空，且为18位', trigger: 'blur'},
+                        {min: 18, trigger: 'blur'}],
+                    onlineName: [{required: true, message: '网店名称不能为空', trigger: 'blur'}],
+                    platform: [{required: true, message: '所属平台不能为空', trigger: 'blur'}],
+                    storeName: [{required: true, message: '门店名称不能为空', trigger: 'blur'}],
+                    addrs: [{required: true, message: '经营场所不能为空', trigger: 'blur'}],
+                    management: [{required: true, message: '经营类别不能为空', trigger: 'blur'}],
+                    details: [{required: true, message: '详细类别不能为空', trigger: 'blur'}],
+                    principal: [{required: true, message: '负责人姓名不能为空', trigger: 'blur'}],
+                    contents1: [{required: true, message: '适用商品不能为空', trigger: 'blur'}],
+                    contents2: [{required: true, message: '退货期限不能为空', trigger: 'blur'}],
+                    contents3: [{required: true, message: '退货约定不能为空', trigger: 'blur'}],
+                    principalTel:[{required: true, message: '手机号码不能为空', trigger: 'blur'},
+                        {pattern: /^1[3|5|7|8|9]\d{9}$/, message: "请输入正确的手机号", trigger: "blur"}]
+                },
+                districtDataArr: [],
+                textList: {
+                    edit: "编辑",
+                    check: "查看",
+                    delist: "摘牌",
+                    audit: "审核",
+                },
+                activeManageType: [
+                    // 当前经营类别数据
+                ],
+                // 经营类别
+                manageType: {
+                    commodities: [],
+                    services: [],
+                },
+                auditColumns: [
                     {
-                        city: "",
-                        district: "",
-                        address: "",
+                        title: "审核单位",
+                        key: "name",
+                    },
+                    {
+                        title: "审核意见",
+                        key: "contents",
+                    },
+                    {
+                        title: "审核状态",
+                        key: "status",
+                    },
+                    {
+                        title: "审核时间",
+                        key: "createTime",
                     },
                 ],
-                creditCode: "",
+                statusInfo: [
+                    {id: "1", value: "在期"},
+                    {id: "0", value: "摘牌"},
+                    {id: "2", value: "过期"},
+                    {id: "4", value: "待审核"},
+                    {id: "5", value: "县级审核通过"},
+                    {id: "6", value: "和业协会审核通过"},
+                    {id: "7", value: "审核不通过"},
+                    {id: "8", value: "行业审核不通过"}
+                ],
                 management: "",
+                isShowComfirm: false, //显示弹窗
+                comfirmContent: "", //弹窗内容
+                uploadId: null,
+                // ----
+                // 搜索关键字
+                search: "",
+                startTime: "", // 开始时间
+                endTime: "", // 结束时间
+                // 城市级联工具
+                city: "", //市
+                district: "", //县
+                town: "", //镇
+                regionSelect: [], //地区选中
+                regionData: [], //地区数据 一级市数据
+                // cityData: [], //市数据
+                districtData: [], //某市县数据
+                townData: [], //某县镇数据
+                status: "",
+                statusData: [],
+                // 表格
+                tableHeight: null, //表格高度
+                current: 1, //当前页
+                size: 10, //每页页数
+                total: 0, //总数
+                columns: [
+                    {
+                        type: "selection",
+                        width: 60,
+                        align: "left",
+                        fixed: "left",
+                    },
+                    {
+                        title: "经营者注册名称",
+                        key: "regName",
+                        slot: "regName",
+                        fixed: "left",
+                        minWidth: 200,
+                        align: "left",
+                    },
+                    {
+                        title: "申请来源",
+                        key: "createType",
+                        minWidth: 200,
+                        align: "left",
+                    },
+                    {
+                        title: "创建人",
+                        key: "account",
+                        minWidth: 200,
+                        align: "left",
+                    },
+                    {
+                        title: "门店名称",
+                        key: "storeName",
+                        minWidth: 200,
+                        align: "left",
+                    },
+                    {
+                        title: "经营场所地址",
+                        key: "address",
+                        minWidth: 200,
+                        align: "left",
+                        <#--render: (h, obj) => {-->
+                        <#--    // console.log(h, obj);-->
+                        <#--    let cityArr = obj.row.city.split(",");-->
+                        <#--    let districtArr = obj.row.district.split(",");-->
+                        <#--    let addressArr = obj.row.address.split(",");-->
+                        <#--    let addrs = cityArr.map((item, index) => {-->
+                        <#--        let city = item;-->
+                        <#--        let district = districtArr[index];-->
+                        <#--        let address = addressArr[index];-->
+                        <#--        return `${city}-${district}-${address}`;-->
+                        <#--    });-->
+
+                        <#--    return (-->
+                        <#--        <div>-->
+                        <#--            <Poptip word-wrap width="300" transfer={true}>-->
+                        <#--                <p style="cursor:pointer">-->
+                        <#--                    {obj.row.address-->
+                        <#--                        ? obj.row.address.length > 10-->
+                        <#--                            ? `${obj.row.address.slice(0, 10)}...`-->
+                        <#--                            : obj.row.address-->
+                        <#--                        : ""}-->
+                        <#--                </p>-->
+
+                        <#--                <div slot="content">-->
+                        <#--                    {addrs.map((item, index) => {-->
+                        <#--                        return (-->
+                        <#--                            <p>-->
+                        <#--                                地址{index + 1}：{item}-->
+                        <#--                            </p>-->
+                        <#--                        );-->
+                        <#--                    })}-->
+                        <#--                </div>-->
+                        <#--            </Poptip>-->
+                        <#--        </div>-->
+                        <#--    );-->
+                        <#--},-->
+                    },
+                    {
+                        title: "状态",
+                        key: "status",
+                        slot: "status",
+                        minWidth: 80,
+                        align: "left",
+                    },
+                    {
+                        title: "有效期",
+                        slot: "validity",
+                        minWidth: 170,
+                        align: "left",
+                    },
+                    {
+                        title: "创建时间",
+                        key: "createTime",
+                        minWidth: 200,
+                        align: "left",
+                    },
+                    {
+                        title: "通过时间",
+                        key: "startTime",
+                        minWidth: 100,
+                        align: "left",
+                    },
+                    {
+                        title: "统一社会信用代码",
+                        key: "creditCode",
+                        minWidth: 200,
+                        align: "left",
+                    },
+                    {
+                        title: "经营类别",
+                        key: "management",
+                        minWidth: 130,
+                        align: "left",
+                    },
+                    {
+                        title: "详细类别",
+                        key: "details",
+                        minWidth: 210,
+                        align: "left",
+                        <#--render: (h, obj) => {-->
+                        <#--    // console.log(h, obj)-->
+                        <#--    return (-->
+                        <#--        <div>-->
+                        <#--            <Poptip-->
+                        <#--                word-wrap-->
+                        <#--                width="300"-->
+                        <#--                transfer={true}-->
+                        <#--                content={obj.row.details}-->
+                        <#--            >-->
+                        <#--                <p style="cursor:pointer">-->
+                        <#--                    {obj.row.details-->
+                        <#--                        ? obj.row.details.length > 10-->
+                        <#--                            ? `${obj.row.details.slice(0, 10)}...`-->
+                        <#--                            : obj.row.details-->
+                        <#--                        : ""}-->
+                        <#--                </p>-->
+                        <#--            </Poptip>-->
+                        <#--        </div>-->
+                        <#--    );-->
+                        <#--},-->
+                    },
+                    {
+                        title: "负责人",
+                        key: "principal",
+                        minWidth: 120,
+                        align: "left",
+                    },
+                    {
+                        title: "手机号码",
+                        key: "principalTel",
+                        minWidth: 140,
+                        align: "left",
+                    },
+
+                    {
+                        title: "操作",
+                        key: "action",
+                        slot: "action",
+                        fixed: "right",
+                        minWidth: 350,
+                        align: "left",
+                    },
+                ],
+                unitDataList: [],
+                // --------
+                isShowRemove: false,
+                removeType: "one", //删除方式 all one
+                idActive: null, //当前id
+                selectDataList: [], //删除列表
+                isShowEnteringModal: false,
+                allowFiles: [".xlsx", ".xls", ".xlsm"],
+                conditions: [],
+                conditionList: [],
+                dataList: [], //消费者列表
+                selectionList: [],//消费者列表选中
+                total: 0, //总记录数量
+                pageSize: 10, //页面数量
+                currentPage: 1, //初始页
+                manager: ms.manager,
+                // 详细类别
+                manageType: {},
+                // 被选中的类别的详细类别
+                activeManageType: [],
+                loading: true,//加载状态
+                emptyText: '',//提示文字
+                // 级联选
+                canImport: true,
+                // 消费者 1 无承诺 2
+                type: "2",
                 details: "",
-                principal: "",
-                principalTel: "",
-                contents1: "",
-                contents2: "",
-                contents3: "",
-                applicationDate: "",
-            },
-            formrules: {
-                regName: [{required: true, message: '经营者注册名称不能为空', trigger: 'blur'}],
-                creditCode: [{required: true, message: '统一社会信用代码不能为空，且为18位', trigger: 'blur'},
-                    {min: 18, trigger: 'blur'}],
-                onlineName: [{required: true, message: '网店名称不能为空', trigger: 'blur'}],
-                platform: [{required: true, message: '所属平台不能为空', trigger: 'blur'}],
-                storeName: [{required: true, message: '门店名称不能为空', trigger: 'blur'}],
-                addrs: [{required: true, message: '经营场所不能为空', trigger: 'blur'}],
-                management: [{required: true, message: '经营类别不能为空', trigger: 'blur'}],
-                details: [{required: true, message: '详细类别不能为空', trigger: 'blur'}],
-                principal: [{required: true, message: '负责人姓名不能为空', trigger: 'blur'}],
-                contents1: [{required: true, message: '适用商品不能为空', trigger: 'blur'}],
-                contents2: [{required: true, message: '退货期限不能为空', trigger: 'blur'}],
-                contents3: [{required: true, message: '退货约定不能为空', trigger: 'blur'}],
-                principalTel:[{required: true, message: '手机号码不能为空', trigger: 'blur'},
-                    {pattern: /^1[3|5|7|8|9]\d{9}$/, message: "请输入正确的手机号", trigger: "blur"}]
-            },
-            districtDataArr: [],
-            textList: {
-                edit: "编辑",
-                check: "查看",
-                delist: "摘牌",
-                audit: "审核",
-            },
-            activeManageType: [
-                // 当前经营类别数据
-            ],
-            // 经营类别
-            manageType: {
-                commodities: [],
-                services: [],
-            },
-            auditColumns: [
-                {
-                    title: "审核单位",
-                    key: "name",
-                },
-                {
-                    title: "审核意见",
-                    key: "contents",
-                },
-                {
-                    title: "审核状态",
-                    key: "status",
-                },
-                {
-                    title: "审核时间",
-                    key: "createTime",
-                },
-            ],
-            statusInfo: [
-                {id: "1", value: "在期"},
-                {id: "0", value: "摘牌"},
-                {id: "2", value: "过期"},
-                {id: "4", value: "待审核"},
-                {id: "5", value: "县级审核通过"},
-                {id: "6", value: "和业协会审核通过"},
-                {id: "7", value: "审核不通过"},
-                {id: "8", value: "行业审核不通过"}
-            ],
-            management: "",
-            isShowComfirm: false, //显示弹窗
-            comfirmContent: "", //弹窗内容
-            uploadId: null,
-            // ----
-            // 搜索关键字
-            search: "",
-            startTime: "", // 开始时间
-            endTime: "", // 结束时间
-            // 城市级联工具
-            city: "", //市
-            district: "", //县
-            town: "", //镇
-            regionSelect: [], //地区选中
-            regionData: [], //地区数据 一级市数据
-            // cityData: [], //市数据
-            districtData: [], //某市县数据
-            townData: [], //某县镇数据
-            status: "",
-            statusData: [],
-            // 表格
-            tableHeight: null, //表格高度
-            current: 1, //当前页
-            size: 10, //每页页数
-            total: 0, //总数
-            columns: [
-                {
-                    type: "selection",
-                    width: 60,
-                    align: "left",
-                    fixed: "left",
-                },
-                {
-                    title: "经营者注册名称",
-                    key: "regName",
-                    slot: "regName",
-                    fixed: "left",
-                    minWidth: 200,
-                    align: "left",
-                },
-                {
-                    title: "申请来源",
-                    key: "createType",
-                    minWidth: 200,
-                    align: "left",
-                },
-                {
-                    title: "创建人",
-                    key: "account",
-                    minWidth: 200,
-                    align: "left",
-                },
-                {
-                    title: "门店名称",
-                    key: "storeName",
-                    minWidth: 200,
-                    align: "left",
-                },
-                {
-                    title: "经营场所地址",
-                    key: "address",
-                    minWidth: 200,
-                    align: "left",
-                    <#--render: (h, obj) => {-->
-                    <#--    // console.log(h, obj);-->
-                    <#--    let cityArr = obj.row.city.split(",");-->
-                    <#--    let districtArr = obj.row.district.split(",");-->
-                    <#--    let addressArr = obj.row.address.split(",");-->
-                    <#--    let addrs = cityArr.map((item, index) => {-->
-                    <#--        let city = item;-->
-                    <#--        let district = districtArr[index];-->
-                    <#--        let address = addressArr[index];-->
-                    <#--        return `${city}-${district}-${address}`;-->
-                    <#--    });-->
-
-                    <#--    return (-->
-                    <#--        <div>-->
-                    <#--            <Poptip word-wrap width="300" transfer={true}>-->
-                    <#--                <p style="cursor:pointer">-->
-                    <#--                    {obj.row.address-->
-                    <#--                        ? obj.row.address.length > 10-->
-                    <#--                            ? `${obj.row.address.slice(0, 10)}...`-->
-                    <#--                            : obj.row.address-->
-                    <#--                        : ""}-->
-                    <#--                </p>-->
-
-                    <#--                <div slot="content">-->
-                    <#--                    {addrs.map((item, index) => {-->
-                    <#--                        return (-->
-                    <#--                            <p>-->
-                    <#--                                地址{index + 1}：{item}-->
-                    <#--                            </p>-->
-                    <#--                        );-->
-                    <#--                    })}-->
-                    <#--                </div>-->
-                    <#--            </Poptip>-->
-                    <#--        </div>-->
-                    <#--    );-->
-                    <#--},-->
-                },
-                {
-                    title: "状态",
-                    key: "status",
-                    slot: "status",
-                    minWidth: 80,
-                    align: "left",
-                },
-                {
-                    title: "有效期",
-                    slot: "validity",
-                    minWidth: 170,
-                    align: "left",
-                },
-                {
-                    title: "创建时间",
-                    key: "createTime",
-                    minWidth: 200,
-                    align: "left",
-                },
-                {
-                    title: "通过时间",
-                    key: "startTime",
-                    minWidth: 100,
-                    align: "left",
-                },
-                {
-                    title: "统一社会信用代码",
-                    key: "creditCode",
-                    minWidth: 200,
-                    align: "left",
-                },
-                {
-                    title: "经营类别",
-                    key: "management",
-                    minWidth: 130,
-                    align: "left",
-                },
-                {
-                    title: "详细类别",
-                    key: "details",
-                    minWidth: 210,
-                    align: "left",
-                    <#--render: (h, obj) => {-->
-                    <#--    // console.log(h, obj)-->
-                    <#--    return (-->
-                    <#--        <div>-->
-                    <#--            <Poptip-->
-                    <#--                word-wrap-->
-                    <#--                width="300"-->
-                    <#--                transfer={true}-->
-                    <#--                content={obj.row.details}-->
-                    <#--            >-->
-                    <#--                <p style="cursor:pointer">-->
-                    <#--                    {obj.row.details-->
-                    <#--                        ? obj.row.details.length > 10-->
-                    <#--                            ? `${obj.row.details.slice(0, 10)}...`-->
-                    <#--                            : obj.row.details-->
-                    <#--                        : ""}-->
-                    <#--                </p>-->
-                    <#--            </Poptip>-->
-                    <#--        </div>-->
-                    <#--    );-->
-                    <#--},-->
-                },
-                {
-                    title: "负责人",
-                    key: "principal",
-                    minWidth: 120,
-                    align: "left",
-                },
-                {
-                    title: "手机号码",
-                    key: "principalTel",
-                    minWidth: 140,
-                    align: "left",
-                },
-
-                {
-                    title: "操作",
-                    key: "action",
-                    slot: "action",
-                    fixed: "right",
-                    minWidth: 350,
-                    align: "left",
-                },
-            ],
-            unitDataList: [],
-            // --------
-            isShowRemove: false,
-            removeType: "one", //删除方式 all one
-            idActive: null, //当前id
-            selectDataList: [], //删除列表
-            isShowEnteringModal: false,
-            allowFiles: [".xlsx", ".xls", ".xlsm"],
-            conditions: [],
-            conditionList: [],
-            dataList: [], //消费者列表
-            selectionList: [],//消费者列表选中
-            total: 0, //总记录数量
-            pageSize: 10, //页面数量
-            currentPage: 1, //初始页
-            manager: ms.manager,
-            // 详细类别
-            manageType: {},
-            // 被选中的类别的详细类别
-            activeManageType: [],
-            loading: true,//加载状态
-            emptyText: '',//提示文字
-            // 级联选
-            canImport: true,
-            // 消费者 1 无承诺 2
-            type: "2",
-            details: "",
-            // 被删除的id
-            ids: {ids: []}
+                // 被删除的id
+                ids: {ids: []}
+            }
         },
         watch: {
             "unitDataList":{
                 handler(){
-                    console.log(1)
                     this.$nextTick(()=>{
                         this.$refs.unitDataList.doLayout();
                     })
@@ -959,14 +989,41 @@
                 this.debounce(this.getUnitList(), 1000)
             }
             ,
-            handleSelectionChange: function () {
-
+            // 关闭弹出框
+            closeEnteringModal() {
+                this.formData = {
+                    regName: "",
+                    storeName: "",
+                    platform: "",
+                    onlineName: "",
+                    city: "",
+                    district: "",
+                    address: "",
+                    addrs: [
+                        {
+                            city: "",
+                            district: "",
+                            address: "",
+                        },
+                    ],
+                    creditCode: "",
+                    management: "",
+                    details: "",
+                    principal: "",
+                    principalTel: "",
+                    contents1: "",
+                    contents2: "",
+                    contents3: "",
+                    applicationDate: "",
+                }
             }
             ,
-            isChecked: function () {
-
-            }
-            ,
+            changeStartTime(value) {
+                this.startTime = value;
+            },
+            changeEndTime(value) {
+                this.endTime = value;
+            },
             clear(){
                 this.district = "";
                 this.formData.district = ""
@@ -1036,18 +1093,44 @@
             uploadErrAction() {
                 this.$message.error("导入失败");
             },
+            downFile(url) {
+                let that = this
+                let iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.style.zIndex = "-999"
+                iframe.addEventListener('load', function () {
+                    // 文件下载完成
+                    iframe.src = ""
+                });
+                document.body.appendChild(iframe);
+                iframe.src = url;
+            },
             downLoadTemplate: function () {
-                // 下载数据 //状态(1:在期； 0:摘牌 ；2过期)
-                window.open('/applicants/downTemplateFile/'+this.type+'.do');
+                // 模板下载
+                let url = '/applicants/downTemplateFile/' + this.type + '.do'
+                this.downFile(url)
+                this.$message({
+                    showClose: true,
+                    message: '下载成功',
+                    type: "success"
+                })
             },
             exportData(command) {
                 // 导出数据
-                ms.http.get('/applicants/export.do',{status: command,type: this.type}).then((res)=>{
-                    window.open('/applicants/export.do?status='+command+'&type='+this.type)
-                    this.$message({
-                        message: '导出成功',
-                        type: "success"
-                    })
+                this.$message({
+                    showClose: true,
+                    message: "正在导出"
+                })
+                ms.http.get('/applicants/export.do',{status: command,type: this.type}).then(async (res)=>{
+                    let url = '/applicants/export.do?status=' + command + '&type=' + this.type
+                    if (res != "") {
+                        this.downFile(url)
+                        await this.$message({
+                            showClose: true,
+                            message: '导出成功',
+                            type: "success"
+                        })
+                    }
                 })
             },
             regionReset() {
@@ -1243,6 +1326,7 @@
             let that = this
             window.returnBack = function () {
                 that.action = ""
+                that.getUnitList();
             }
             window.currentTopic = this.currentTopic
         }
@@ -1252,7 +1336,9 @@
     #index .ms-container {
         height: calc(100vh - 78px);
     }
-
+    .ms-header{
+        padding: 10px;
+    }
     #index .ms-iframe-style {
         position: absolute;
         top: 0;
@@ -1293,7 +1379,7 @@
     }
 
     .blue_text {
-        color: #7b93d2;
+        color: #409eff;
     }
 
     .green_text {
@@ -1427,5 +1513,11 @@
     .el-scrollbar__wrap::-webkit-scrollbar{
         width: 18px;
         height: 18px;
+    }
+    .el-pagination {
+        text-align: right;
+    }
+    .ms-container{
+        display: flex !important;
     }
 </style>
