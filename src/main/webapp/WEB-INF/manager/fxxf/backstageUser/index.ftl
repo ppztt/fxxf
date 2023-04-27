@@ -451,54 +451,26 @@
                 },
                 newAddRules: {
                     account: [
-                        {
-                            required: true,
-                            message: "用户名不能为空",
-                            trigger: "blur",
-                        },
+                        {required: true, message: "用户名不能为空", trigger: "blur",},
                     ],
                     realname: [
-                        {
-                            required: true,
-                            message: "真实姓名不能为空",
-                            trigger: "blur",
-                        },
+                        {required: true, message: "真实姓名不能为空", trigger: "blur",},
                     ],
                     industryName: [
-                        {
-                            required: true,
-                            message: "行业协会名称不能为空",
-                            trigger: "blur",
-                        },
+                        {required: true, message: "行业协会名称不能为空", trigger: "blur",},
                     ],
                     city: [
-                        {
-                            required: true,
-                            message: "所属市不能为空",
-                            trigger: "change",
-                        },
+                        {required: true, message: "所属市不能为空", trigger: "change",},
                     ],
                     district: [
-                        {
-                            required: true,
-                            message: "所属区县不能为空",
-                            trigger: "change",
-                        },
+                        {required: true, message: "所属区县不能为空", trigger: "change",},
                     ],
                     phone: [
-                        {
-                            required: true,
-                            message: "联系电话不能为空",
-                            trigger: "blur",
-                        },
+                        {required: true, message: "联系电话不能为空", trigger: "blur",},
                         {pattern: /^1[3|5|7|8|9]\d{9}$/, message: "请输入正确的手机号", trigger: "blur"}
                     ],
                     password: [
-                        {
-                            required: true,
-                            message: '密码不能为空',
-                            trigger: "blur",
-                        },
+                        {required: true, message: '密码不能为空', trigger: "blur",},
                         {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
                         {pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
                     ],
@@ -508,12 +480,7 @@
                         {pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
                     ],
                     roleId: [
-                        {
-                            required: true,
-                            type: "number",
-                            message: "所属组不能为空",
-                            trigger: "change",
-                        },
+                        {required: true, type: "number", message: "所属组不能为空", trigger: "change",},
                     ],
                 },
                 columns: [
