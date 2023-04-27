@@ -160,12 +160,12 @@
                 iframe.src = url;
             },
             derive() {
-                let url = '/applicants/operatorStatistics/export.do?type=2'
+                let url = ms.manager + '/applicants/operatorStatistics/export.do?type=2'
                 this.$message({
                     showClose: true,
                     message: "正在导出"
                 })
-                ms.http.get('/applicants/operatorStatistics/export.do?type=2').then(async(res)=>{
+                ms.http.get(ms.manager+'/applicants/operatorStatistics/export.do?type=2').then(async(res)=>{
                     if(res != ""){
                         this.downFile(url)
                         await this.$message({
