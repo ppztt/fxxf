@@ -161,7 +161,40 @@
             },
             //导出接口
             derive() {
-                window.open(ms.manager + '/feedback/exportStatistic.do?type=2')
+                let url = ms.manager + '/feedback/exportStatistic.do?type=2'
+                this.$message({
+                    showClose: true,
+                    message: "正在导出"
+                })
+                ms.http.get(ms.manager + '/feedback/exportStatistic.do?type=2').then(async(res)=>{
+                    if(res != ""){
+                        this.downFile(url)
+                        await this.$message({
+                            showClose: true,
+                            message: '导出成功',
+                            type: "success"
+                        })
+                    }else {
+                        await this.$message({
+                            showClose: true,
+                            message: '导出失败',
+                            type: "error"
+                        })
+                    }
+                })
+            },
+            downFile(url) {
+                let that = this
+                let iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.style.zIndex = "-999"
+                iframe.addEventListener('load', function () {
+                    // 文件下载完成
+                    iframe.src = ""
+                });
+
+                document.body.appendChild(iframe);
+                iframe.src = url;
             },
             //查询
             getOperatorStatisticList() {
