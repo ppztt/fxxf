@@ -1,6 +1,7 @@
 package net.mingsoft.fxxf.controller;
 
 
+import cn.hutool.core.io.FileUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -109,6 +111,7 @@ public class AttachmentController {
                     retMsg = "附件上传成功，文件名称：【" + fileName + "】";
                 }
                 try {
+                    FileUtil.mkdir(new File(saveAttachmentPath));
                     String storage = saveAttachmentPath + fileName;
                     fos = new FileOutputStream(storage);
                     in = file.getInputStream();
