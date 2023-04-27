@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import net.mingsoft.base.entity.ResultData;
 import net.mingsoft.basic.util.BasicUtil;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 /**
  * @author 1y
@@ -40,6 +43,19 @@ public class SelfGlobalExceptionResolver extends GlobalExceptionResolver {
         LOG.debug("handleException");
         response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         return render(request, response, ResultData.build().code(HttpStatus.INTERNAL_SERVER_ERROR).msg("请求失败"), e);
+    }
+
+    @Override
+    @ExceptionHandler(BindException.class)
+    public ModelAndView handleValidExceptionHandler(HttpServletRequest request, HttpServletResponse response, BindException e) {
+        LOG.debug("handleValidExceptionHandler");
+        StringBuilder message = new StringBuilder();
+        List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
+        for (FieldError error : fieldErrors) {
+            message.append("字段").append(error.getField()).append(" 参数值有误").append(",");
+        }
+        message = new StringBuilder(message.substring(0, message.length() - 1));
+        return render(request, response, ResultData.build().code(HttpStatus.NOT_ACCEPTABLE).msg(message.toString()), e);
     }
 
     private ModelAndView render(HttpServletRequest request, HttpServletResponse response, ResultData resultData, Exception e) {
