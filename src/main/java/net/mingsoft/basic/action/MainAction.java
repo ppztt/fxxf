@@ -14,7 +14,6 @@ package net.mingsoft.basic.action;
 
 
 import cn.hutool.core.util.ReUtil;
-import cn.hutool.crypto.SecureUtil;
 import cn.hutool.system.oshi.CpuInfo;
 import cn.hutool.system.oshi.OshiUtil;
 import com.alibaba.fastjson.JSONObject;
@@ -24,11 +23,9 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import net.mingsoft.base.entity.BaseEntity;
 import net.mingsoft.base.entity.ResultData;
-import net.mingsoft.basic.annotation.LogAnn;
 import net.mingsoft.basic.bean.ManagerModifyPwdBean;
 import net.mingsoft.basic.biz.IManagerBiz;
 import net.mingsoft.basic.biz.IModelBiz;
-import net.mingsoft.basic.constant.e.BusinessTypeEnum;
 import net.mingsoft.basic.entity.ManagerEntity;
 import net.mingsoft.basic.entity.ModelEntity;
 import net.mingsoft.basic.util.BasicUtil;
@@ -154,12 +151,11 @@ public class MainAction extends BaseAction {
 	 * @param response
 	 *            响应
 	 */
-	@ApiOperation(value = "修改登录密码，若不填写密码则表示不修改")
+	@ApiOperation(value = "修改登录密码")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "oldManagerPassword", value = "旧密码", required = true,paramType="query"),
 			@ApiImplicitParam(name = "newManagerPassword", value = "新密码", required = true,paramType="query"),
 	})
-	@LogAnn(title = "修改登录密码",businessType= BusinessTypeEnum.UPDATE)
 	@PostMapping("/updatePassword")
 	@ResponseBody
 	public ResultData updatePassword(@ModelAttribute @ApiIgnore ManagerModifyPwdBean managerModifyPwdBean, HttpServletResponse response, HttpServletRequest request) {
@@ -215,12 +211,11 @@ public class MainAction extends BaseAction {
 		return ResultData.build().success();
 	}
 
-	@ApiOperation(value = "修改登录密码，若不填写密码则表示不修改")
+	@ApiOperation(value = "超时修改登录密码")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "oldManagerPassword", value = "旧密码", required = true,paramType="query"),
 			@ApiImplicitParam(name = "newManagerPassword", value = "新密码", required = true,paramType="query"),
 	})
-	@LogAnn(title = "超时修改登录密码",businessType= BusinessTypeEnum.UPDATE)
 	@PostMapping("/updatePasswordForce")
 	@ResponseBody
 	public ResultData updatePasswordForce(@ModelAttribute @ApiIgnore ManagerModifyPwdBean managerModifyPwdBean, HttpServletResponse response, HttpServletRequest request) {
