@@ -27,8 +27,8 @@
             </el-col>
 
             <el-col span="2">
-                <el-row class="el-button_groud" type="flex">
-                    <el-col span="12">
+                <el-row class="el-button_groud">
+                    <el-col span="23">
                         <el-button
                                 size="mini"
                                 class="blue_btn btns_type" icon="el-icon-search" @click="getUserList">
@@ -36,7 +36,7 @@
                         </el-button>
                     </el-col >
                     <@shiro.hasPermission name="manage:industryAssociation">
-                    <el-col span="12" offset="1">
+                    <el-col span="23" offset="1">
                         <el-button
                                 size="mini"
                                 class="blue_btn btns_type"
@@ -391,7 +391,7 @@
                     password: [
                         {required: true, message: '不能为空', trigger: "blur",},
                         {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
-                        {pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
+                        {pattern: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?\d)(?=.*?[^\w\s]).{8,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
                     ],
                     newPassword: [
                         {required: true, message: '不能为空', trigger: "blur",},
