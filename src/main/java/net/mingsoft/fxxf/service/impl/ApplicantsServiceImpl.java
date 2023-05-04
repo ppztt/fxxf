@@ -689,7 +689,10 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
         if (ApplicantsTypeEnum.UNIT.getCode().equals(type)) {
             ArrayList<OperatorStatisticsVo> unitStatisticsVos = applicantsMapper.unitOperatorStatistics(
                     startTime, endTime, roleId, city, extensionInfo.getDistrict());
-
+            // unitStatisticsVos为空时会报错
+            if (CollectionUtils.isEmpty(unitStatisticsVos)) {
+                unitStatisticsVos.add(new OperatorStatisticsVo());
+            }
             ExcelUtil.exportExcel(BeanUtil.copyToList(unitStatisticsVos, UnitOperatorStatisticsVo.class)
                     , "", "", UnitOperatorStatisticsVo.class, fileName, request, response);
         }
@@ -697,7 +700,9 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
         if (ApplicantsTypeEnum.STORE.getCode().equals(type)) {
             ArrayList<OperatorStatisticsVo> storeStatisticsVos = applicantsMapper.storeOperatorStatistics(
                     startTime, endTime, roleId, city, extensionInfo.getDistrict());
-
+            if (CollectionUtils.isEmpty(storeStatisticsVos)) {
+                storeStatisticsVos.add(new OperatorStatisticsVo());
+            }
             ExcelUtil.exportExcel(BeanUtil.copyToList(storeStatisticsVos, StoreOperatorStatisticsVo.class),
                     "", "", StoreOperatorStatisticsVo.class, fileName, request, response);
         }
