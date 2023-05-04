@@ -84,12 +84,12 @@
                     <el-row>
                         <el-col span="9">
                             <el-form-item label="经营者注册名称：" prop="regName">
-                                <el-input v-model="formData.regName" placeholder="请输入经营者注册名称："></el-input>
+                                <el-input size="mini" v-model="formData.regName" placeholder="请输入经营者注册名称："></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col span="9">
                             <el-form-item label="门店名称：" prop="storeName">
-                                <el-input v-model="formData.storeName" placeholder="请输入门店名称："></el-input>
+                                <el-input size="mini" v-model="formData.storeName" placeholder="请输入门店名称："></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -98,7 +98,7 @@
                             <el-form-item label="经营场所地区：" prop="formData.addrs">
                                 <el-row :key="index" v-for="(addr, index) in formData.addrs">
                                     <el-col span="5">
-                                        <el-select
+                                        <el-select size="mini"
                                                 :ref="'city'+index"
                                                 v-model="addr.city"
                                                 placeholder="市"
@@ -116,7 +116,7 @@
                                         </el-select>
                                     </el-col>
                                     <el-col span="5">
-                                        <el-select
+                                        <el-select size="mini"
                                                 :ref="`district${index}`"
                                                 v-model="addr.district"
                                                 placeholder="市/县/区/镇"
@@ -132,16 +132,18 @@
                                         </el-select>
                                     </el-col>
                                     <el-col span="8">
-                                        <el-input v-model="addr.address" placeholder="请输入经营场所地址"></el-input>
+                                        <el-input size="mini" v-model="addr.address" placeholder="请输入经营场所地址"></el-input>
                                     </el-col>
                                     <el-col span="1">
                                         <el-button
+                                                size="mini"
                                                 v-if="index === 0"
                                                 icon="el-icon-plus"
                                                 @click="addAddress"
                                                 style="margin-left: 20px"
                                                 circle></el-button>
                                         <el-button
+                                                size="mini"
                                                 v-else
                                                 style="margin-left: 20px"
                                                 icon="el-icon-minus"
@@ -162,18 +164,18 @@
                     <el-row>
                         <el-col span="9">
                             <el-form-item label="统一社会信用代码：" prop="creditCode">
-                                <el-input v-model="formData.creditCode"
+                                <el-input size="mini" v-model="formData.creditCode"
                                           placeholder="请输入统一社会信用代码："></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col span="6">
                             <el-form-item label="负责人：" prop="principal">
-                                <el-input v-model="formData.principal" placeholder="姓名"></el-input>
+                                <el-input size="mini" v-model="formData.principal" placeholder="姓名"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col span="6">
                             <el-form-item prop="principalTel">
-                                <el-input v-model="formData.principalTel" placeholder="手机号码"></el-input>
+                                <el-input size="mini" v-model="formData.principalTel" placeholder="手机号码"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -182,7 +184,7 @@
                             <el-form-item label="经营类别：">
                                 <el-col :span="8">
                                     <el-form-item>
-                                        <el-select
+                                        <el-select size="mini"
                                                 ref="management"
                                                 placeholder="类别"
                                                 :clearable="true"
@@ -203,7 +205,7 @@
                                 </el-col>
                                 <el-col :offset="1" :span="15">
                                     <el-form-item>
-                                        <el-select
+                                        <el-select size="mini"
                                                 ref="details"
                                                 class="multiSelect"
                                                 :clearable="true"
@@ -225,7 +227,7 @@
                     <el-row>
                         <el-col span="24">
                             <el-form-item label="企业申请日期：" prop="createTime">
-                                <el-date-picker
+                                <el-date-picker size="mini"
                                         v-model="formData.createTime"
                                         type="datetime"
                                         value-format="yyyy-MM-dd HH:mm:ss"
@@ -259,17 +261,17 @@
                     <el-row>
                         <el-col span="8">
                             <el-form-item label="适用商品：" prop="contents1">
-                                <el-input type="textarea" v-model="formData.contents1" placeholder="请输入适用商品">{{ formData.contents1 }}</el-input>
+                                <el-input size="mini" type="textarea" v-model="formData.contents1" placeholder="请输入适用商品">{{ formData.contents1 }}</el-input>
                             </el-form-item>
                         </el-col>
                         <el-col span="8">
                             <el-form-item label="退货约定：" prop="contents3">
-                                <el-input type="textarea" v-model="formData.contents3" placeholder="请输入退货约定">{{ formData.contents3 }}</el-input>
+                                <el-input size="mini" type="textarea" v-model="formData.contents3" placeholder="请输入退货约定">{{ formData.contents3 }}</el-input>
                             </el-form-item>
                         </el-col>
                         <el-col span="8">
                             <el-form-item label="退货期限：" prop="contents2">
-                                商品购买往后<el-input type="number" v-model="formData.contents2" style="width: 75px !important; margin-right: 10px;">{{ formData.contents2 }}</el-input>天
+                                商品购买往后<el-input size="mini" type="number" v-model="formData.contents2" style="width: 75px !important; margin-right: 10px;">{{ formData.contents2 }}</el-input>天
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -291,7 +293,7 @@
                     <el-row>
                         <el-col span="24">
                             <el-form-item label="" prop="contents4">
-                                <el-input
+                                <el-input size="mini"
                                         type="textarea"
                                         :rows="2"
                                         placeholder="请输入其他承诺事项及具体内容"
@@ -315,7 +317,7 @@
                     <el-row>
                         <el-col span="24">
                             <el-form-item label="日期：" prop="applicationDate">
-                                <el-date-picker
+                                <el-date-picker size="mini"
                                         v-model="formData.createTime"
                                         type="date"
                                         value-format="yyyy-MM-dd HH-mm-ss"
@@ -343,7 +345,7 @@
                             </el-form-item>
                             <el-form-item label="意见内容：" prop="ccContent"
                                           v-if="detailType == '0' || detailType == '3'">
-                                <el-input
+                                <el-input size="mini"
                                         placeholder="请填写意见内容"
                                         v-model="formData.ccContent"
                                         v-if="detailType == '0' || detailType == '3'"
@@ -388,7 +390,7 @@
                     <el-row>
                         <el-col span="11">
                             <el-form-item label="具体摘牌信息：" prop="delReason">
-                                <el-input
+                                <el-input size="mini"
                                         placeholder="请输入具体摘牌信息"
                                         v-model="formData.delReason"
                                         type="textarea"
@@ -397,7 +399,7 @@
                         </el-col>
                         <el-col span="11">
                             <el-form-item label="其他必要信息：" prop="delOther">
-                                <el-input
+                                <el-input size="mini"
                                         placeholder="请输入其他必要信息"
                                         v-model="formData.delOther"
                                         type="textarea"
