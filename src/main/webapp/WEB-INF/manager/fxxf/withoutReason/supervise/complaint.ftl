@@ -290,10 +290,43 @@
                 this.imageURL = ms.manager + '/feedback/downloadAttachment.do?fileName='+item.fileName+'&filePath='+path
                 this.dialogImageVisible = true
             },
+            downFile(url) {
+                let that = this
+                let iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.style.zIndex = "-999"
+                iframe.addEventListener('load', function () {
+                    // 文件下载完成
+                    iframe.src = ""
+                });
+
+                document.body.appendChild(iframe);
+                iframe.src = url;
+            },
             //下载
             downloadData(item) {
                 const path = encodeURIComponent(item.path)
-                window.open(ms.manager + '/feedback/downloadAttachment.do?fileName='+item.fileName+'&filePath='+path);
+                const url = ms.manager + '/feedback/downloadAttachment.do?fileName='+item.fileName+'&filePath='+path
+                this.$message({
+                    showClose: true,
+                    message: "正在导出"
+                })
+                ms.http.get(ms.manager + '/feedback/downloadAttachment.do?fileName='+item.fileName+'&filePath='+path).then(async(res)=>{
+                    if(res != ""){
+                        this.downFile(url)
+                        await this.$message({
+                            showClose: true,
+                            message: '导出成功',
+                            type: "success"
+                        })
+                    }else {
+                        await this.$message({
+                            showClose: true,
+                            message: '导出失败',
+                            type: "error"
+                        })
+                    }
+                })
             },
             //提交
             handleSubmit(name){
