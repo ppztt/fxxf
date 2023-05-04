@@ -27,8 +27,8 @@
             </el-col>
 
             <el-col span="2">
-                <el-row class="el-button_groud" type="flex">
-                    <el-col span="12">
+                <el-row class="el-button_groud">
+                    <el-col span="23">
                         <el-button
                                 size="mini"
                                 class="blue_btn btns_type" icon="el-icon-search" @click="getUserList">
@@ -36,7 +36,7 @@
                         </el-button>
                     </el-col >
                     <@shiro.hasPermission name="manage:industryAssociation">
-                    <el-col span="12" offset="1">
+                    <el-col span="23" offset="1">
                         <el-button
                                 size="mini"
                                 class="blue_btn btns_type"
