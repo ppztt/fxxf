@@ -1142,6 +1142,8 @@
                                 type: "success"
                             })
                         }
+                    }).catch(err =>{
+                        this.$message.error('导出失败')
                     })
                 } catch (err) {
                     this.$message.error('导出失败')
