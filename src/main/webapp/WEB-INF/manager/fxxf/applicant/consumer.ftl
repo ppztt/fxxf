@@ -63,7 +63,8 @@
                                 @change="changeEndTime"></el-date-picker>
             </el-col>
             <el-col>
-                <el-button size="mini" type="primary" icon="el-icon-search" @click="getUnitList" style="margin-left: -20px">
+                <el-button size="mini" type="primary" icon="el-icon-search" @click="getUnitList"
+                           style="margin-left: -20px">
                     查询
                 </el-button>
             </el-col>
@@ -1078,47 +1079,73 @@
                 this.$message.error("导入失败");
             },
 
-            downFile(url) {
-                let that = this
+            downFile(url, timeout = 60000) {
                 let iframe = document.createElement('iframe');
                 iframe.style.display = 'none';
                 iframe.style.zIndex = "-999"
-                iframe.addEventListener('load', function () {
-                    // 文件下载完成
-                    iframe.src = ""
-                });
-
-                document.body.appendChild(iframe);
                 iframe.src = url;
+                document.body.appendChild(iframe);
+                setTimeout(() => {
+                    document.body.removeChild(iframe);
+                }, timeout)
             },
-
             downLoadTemplate: function () {
                 // 模板下载
-                let url = '/xwh/applicants/downTemplateFile/' + this.type + '.do'
-                this.downFile(url)
-                this.$message({
-                    showClose: true,
-                    message: '下载成功',
-                    type: "success"
-                })
+                let t = false
+                let timeout = 60000
+                try {
+                    let url = '/xwh/applicants/downTemplateFile/' + this.type + '.do'
+                    this.downFile(url, timeout)
+                    setTimeout(() => {
+                        t = true
+                    }, timeout)
+                    ms.http.get('/xwh/applicants/downTemplateFile/' + this.type + '.do',{},{timeout}).then(
+                        (res) => {
+                            if (t) {
+                                this.$message.error('下载失败')
+                            } else {
+                                this.$message({
+                                    showClose: true,
+                                    message: '下载成功',
+                                    type: "success"
+                                })
+                            }
+                        })
+                } catch (err) {
+                    this.$message.error("下载失败")
+                }
             },
             exportData(command) {
+                let timeout = 180000
+                let t = false
                 // 导出数据
                 this.$message({
                     showClose: true,
                     message: "正在导出"
                 })
-                ms.http.get('/xwh/applicants/export.do', {status: command, type: this.type}).then(async (res) => {
+                try {
                     let url = '/xwh/applicants/export.do?status=' + command + '&type=' + this.type
-                    if (res != "") {
-                        this.downFile(url)
-                        await this.$message({
-                            showClose: true,
-                            message: '导出成功',
-                            type: "success"
-                        })
-                    }
-                })
+                    this.downFile(url, timeout)
+                    setTimeout(() => {
+                        t = true
+                    }, timeout)
+                    ms.http.get('/xwh/applicants/export.do', {
+                        status: command,
+                        type: this.type
+                    }, {timeout}).then((res) => {
+                        if (t) {
+                            this.$message.error('导出失败')
+                        } else {
+                            this.$message({
+                                showClose: true,
+                                message: '导出成功',
+                                type: "success"
+                            })
+                        }
+                    })
+                } catch (err) {
+                    this.$message.error('导出失败')
+                }
             },
             regionReset() {
                 // 地区重设

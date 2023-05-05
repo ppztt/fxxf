@@ -602,13 +602,14 @@
                         let data = res.data
                         this.formData.id = data.id
                         this.formData = {...this.formData, ...data}
+                        console.log(this.formData)
                     }
                 })
             },
             // 重置修改的用户信息
             reset() {
                 this.formData = {
-                    account: "", //用户名
+                    ...this.formData, //用户名
                     realname: "", //真实姓名
                     industryName: "", // 行业协会名称
                     // industryUserName: "", // 行业协会用户名

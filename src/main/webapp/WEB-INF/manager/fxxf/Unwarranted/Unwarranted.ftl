@@ -27,7 +27,8 @@
                 </el-select>
             </el-col>
             <el-col span="20">
-                <el-select size="mini" ref="district" v-model="district" placeholder="市/县/区/镇" :clearable="true" filterable
+                <el-select size="mini" ref="district" v-model="district" placeholder="市/县/区/镇" :clearable="true"
+                           filterable
                            @change="districtChange(district)"
                            :disabled="!city ||districtData.length == 0">
                     <el-option v-for="item in districtData" :value="item.code" :key="item.code"
@@ -51,26 +52,31 @@
                 </el-select>
             </el-col>
             <el-col span="6">
-                <el-date-picker size="mini" format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="startTime" placeholder="开始时间" :picker-options="pickerBeginDate" @change="changeStartTime"></el-date-picker>
+                <el-date-picker size="mini" format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="startTime"
+                                placeholder="开始时间" :picker-options="pickerBeginDate"
+                                @change="changeStartTime"></el-date-picker>
             </el-col>
             <el-col span="6">
-                <el-date-picker size="mini" format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="endTime" placeholder="结束时间" :picker-options="pickerEndDate" @change="changeEndTime"></el-date-picker>
+                <el-date-picker size="mini" format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="endTime"
+                                placeholder="结束时间" :picker-options="pickerEndDate"
+                                @change="changeEndTime"></el-date-picker>
             </el-col>
             <el-col>
-                <el-button size="mini" type="primary" icon="el-icon-search" @click="getUnitList" style="margin-left: -20px">
+                <el-button size="mini" type="primary" icon="el-icon-search" @click="getUnitList"
+                           style="margin-left: -20px">
                     查询
                 </el-button>
             </el-col>
         </el-row>
         <div class="list-header-btns">
             <@shiro.hasPermission name="jyzlb:input">
-            <div class="item">
-                <el-button size="mini" type="primary" @click="isShowEnteringModal = true" icon="el-icon-edit"
-                >
-                    <!-- <img class="left" src="@/assets/images/1_17.png" alt /> -->
-                    录入
-                </el-button>
-            </div>
+                <div class="item">
+                    <el-button size="mini" type="primary" @click="isShowEnteringModal = true" icon="el-icon-edit"
+                    >
+                        <!-- <img class="left" src="@/assets/images/1_17.png" alt /> -->
+                        录入
+                    </el-button>
+                </div>
             </@shiro.hasPermission>
             <#-- 录入弹出框 -->
             <el-dialog
@@ -185,7 +191,8 @@
                                         </el-select>
                                     </el-col>
                                     <el-col span="8">
-                                        <el-input size="mini" v-model="addr.address" placeholder="请输入经营场所地址"></el-input>
+                                        <el-input size="mini" v-model="addr.address"
+                                                  placeholder="请输入经营场所地址"></el-input>
                                     </el-col>
                                     <el-col span="1">
                                         <el-button
@@ -369,52 +376,52 @@
                 </el-row>
             </el-dialog>
             <@shiro.hasPermission name="wlythcn:upload">
-            <div class="item">
-                <el-upload class="upload" :show-file-list="false"
-                           accept="xlsm"
-                           :before-upload="beforeUploadAction"
-                           :on-success="uploadSucAction"
-                           :on-error="uploadErrAction"
-                           :action="'/applicants/preImport.do?type='+type">
-                    <el-button size="mini" type="primary" :disabled="!canImport"
-                               icon="el-icon-bottom"
-                               :title="!canImport ? '没有权限导入' : ''">
-                        导入
-                    </el-button>
-                </el-upload>
-            </div>
+                <div class="item">
+                    <el-upload class="upload" :show-file-list="false"
+                               accept="xlsm"
+                               :before-upload="beforeUploadAction"
+                               :on-success="uploadSucAction"
+                               :on-error="uploadErrAction"
+                               :action="'/applicants/preImport.do?type='+type">
+                        <el-button size="mini" type="primary" :disabled="!canImport"
+                                   icon="el-icon-bottom"
+                                   :title="!canImport ? '没有权限导入' : ''">
+                            导入
+                        </el-button>
+                    </el-upload>
+                </div>
             </@shiro.hasPermission>
             <@shiro.hasPermission name="wlythcn:list">
-            <div class="item">
-                <el-dropdown @command="exportData">
-                    <el-button size="mini" type="primary" icon="el-icon-top">
-                        导出
-                    </el-button>
-                    <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item :command="''">导出全部</el-dropdown-item>
-                        <el-dropdown-item :command="1" divided>导出在期</el-dropdown-item>
-                        <el-dropdown-item :command="0" divided>导出摘牌</el-dropdown-item>
-                        <el-dropdown-item :command="2" divided>导出过期</el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
-            </div>
+                <div class="item">
+                    <el-dropdown @command="exportData">
+                        <el-button size="mini" type="primary" icon="el-icon-top">
+                            导出
+                        </el-button>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item :command="''">导出全部</el-dropdown-item>
+                            <el-dropdown-item :command="1" divided>导出在期</el-dropdown-item>
+                            <el-dropdown-item :command="0" divided>导出摘牌</el-dropdown-item>
+                            <el-dropdown-item :command="2" divided>导出过期</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </div>
             </@shiro.hasPermission>
             <@shiro.hasPermission name="jyzlb:download">
-            <div class="item">
-                <el-button size="mini" type="primary" @click="downLoadTemplate" icon="el-icon-download">
-                    <!-- <img class="left" src="@/assets/images/1_17.png" alt /> -->
-                    模板下载
-                </el-button>
-            </div>
+                <div class="item">
+                    <el-button size="mini" type="primary" @click="downLoadTemplate" icon="el-icon-download">
+                        <!-- <img class="left" src="@/assets/images/1_17.png" alt /> -->
+                        模板下载
+                    </el-button>
+                </div>
             </@shiro.hasPermission>
             <@shiro.hasPermission name="jyzlb:del">
-            <div class="item" style="margin-left: 30px;">
-                <el-button size="mini" type="danger" icon="el-icon-delete"
-                           :disabled="ids.ids.length == 0"
-                           @click="deleteMoreConsumer">
-                    删除
-                </el-button>
-            </div>
+                <div class="item" style="margin-left: 30px;">
+                    <el-button size="mini" type="danger" icon="el-icon-delete"
+                               :disabled="ids.ids.length == 0"
+                               @click="deleteMoreConsumer">
+                        删除
+                    </el-button>
+                </div>
             </@shiro.hasPermission>
         </div>
     </el-header>
@@ -442,7 +449,7 @@
                     width="200"
                     align="left">
                 <template slot-scope="{row}">
-                    <img class="new" v-show="row.isNew" src="${base}/static/images/PendingTrial.png" alt="" /><span>{{ row.regName }}</span>
+                    <img class="new" v-show="row.isNew" src="${base}/static/images/PendingTrial.png" alt=""/><span>{{ row.regName }}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -542,29 +549,30 @@
                 <template slot-scope="{row}">
                     <div class="actions" :id="row.id">
                         <@shiro.hasPermission name="jyzlb:detail">
-                        <el-button class="action_btn blue_text" icon="el-icon-search" @click="openNew(1,row)">
-                            查看
-                        </el-button>
+                            <el-button class="action_btn blue_text" icon="el-icon-search" @click="openNew(1,row)">
+                                查看
+                            </el-button>
                         </@shiro.hasPermission>
                         <@shiro.hasPermission name="jyzlb:edit">
-                        <el-button class="action_btn blue_text" icon="el-icon-edit" @click="openNew(0,row)">
-                            编辑
-                        </el-button>
+                            <el-button class="action_btn blue_text" icon="el-icon-edit" @click="openNew(0,row)">
+                                编辑
+                            </el-button>
                         </@shiro.hasPermission>
                         <@shiro.hasPermission name="jyzlb:audit">
-                        <el-button class="action_btn blue_text" icon="el-icon-circle-check" @click="openNew(3,row)" v-if="row.status == 4">
-                            审核
-                        </el-button>
+                            <el-button class="action_btn blue_text" icon="el-icon-circle-check" @click="openNew(3,row)"
+                                       v-if="row.status == 4">
+                                审核
+                            </el-button>
                         </@shiro.hasPermission>
                         <el-button class="action_btn blue_text" v-if="row.status == 1" icon="el-icon-s-promotion"
                                    @click="openNew(2,row)">
                             摘牌
                         </el-button>
                         <@shiro.hasPermission name="jyzlb:del">
-                        <el-button type="text" class="action_btn red_text" icon="el-icon-delete"
-                                   @click="deleteConsumer(row.id)">
-                            删除
-                        </el-button>
+                            <el-button type="text" class="action_btn red_text" icon="el-icon-delete"
+                                       @click="deleteConsumer(row.id)">
+                                删除
+                            </el-button>
                         </@shiro.hasPermission>
                     </div>
                 </template>
@@ -589,7 +597,7 @@
 <script>
     var indexVue = new Vue({
         el: '#index',
-        data(){
+        data() {
             return {
                 loading: true,
                 // 开始结束日期限制
@@ -683,7 +691,7 @@
                     contents1: [{required: true, message: '适用商品不能为空', trigger: 'blur'}],
                     contents2: [{required: true, message: '退货期限不能为空', trigger: 'blur'}],
                     contents3: [{required: true, message: '退货约定不能为空', trigger: 'blur'}],
-                    principalTel:[{required: true, message: '手机号码不能为空', trigger: 'blur'},
+                    principalTel: [{required: true, message: '手机号码不能为空', trigger: 'blur'},
                         {pattern: /^1[3|5|7|8|9]\d{9}$/, message: "请输入正确的手机号", trigger: "blur"}]
                 },
                 districtDataArr: [],
@@ -947,9 +955,9 @@
             }
         },
         watch: {
-            "unitDataList":{
-                handler(){
-                    this.$nextTick(()=>{
+            "unitDataList": {
+                handler() {
+                    this.$nextTick(() => {
                         this.$refs.unitDataList.doLayout();
                     })
                 },
@@ -1024,11 +1032,11 @@
             changeEndTime(value) {
                 this.endTime = value;
             },
-            clear(){
+            clear() {
                 this.district = "";
                 this.formData.district = ""
             },
-            clear(){
+            clear() {
                 this.district = "";
                 this.formData.district = ""
             },
@@ -1069,7 +1077,7 @@
             uploadConfirm() {
                 // 确认上传
                 ms.http
-                    .post('/xwh/applicants/import/'+this.uploadId+'.do')
+                    .post('/xwh/applicants/import/' + this.uploadId + '.do')
                     .then((res) => {
                         if (res.code == 200) {
                             this.$message({
@@ -1086,52 +1094,81 @@
                 if (even.code == 200 && even.data.length > 0 && !even.data[0].errorMsg) {
                     this.uploadId = even.data[0].fileId;
                     this.uploadConfirm();
-                }else if(even.code == 500){
+                } else if (even.code == 500) {
                     this.$message.error(even.data[0].errorMsg)
                 }
             },
             uploadErrAction() {
                 this.$message.error("导入失败");
             },
-            downFile(url) {
-                let that = this
+
+            downFile(url, timeout = 60000) {
                 let iframe = document.createElement('iframe');
                 iframe.style.display = 'none';
                 iframe.style.zIndex = "-999"
-                iframe.addEventListener('load', function () {
-                    // 文件下载完成
-                    iframe.src = ""
-                });
-                document.body.appendChild(iframe);
                 iframe.src = url;
+                document.body.appendChild(iframe);
+                setTimeout(()=>{
+                    document.body.removeChild(iframe);
+                },timeout)
             },
             downLoadTemplate: function () {
                 // 模板下载
-                let url = '/xwh/applicants/downTemplateFile/' + this.type + '.do'
-                this.downFile(url)
-                this.$message({
-                    showClose: true,
-                    message: '下载成功',
-                    type: "success"
-                })
+                let t = false
+                let timeout = 60000
+                try {
+                    let url = '/xwh/applicants/downTemplateFile/' + this.type + '.do'
+                    this.downFile(url, timeout)
+                    setTimeout(() => {
+                        t = true
+                    }, timeout)
+                    ms.http.get('/xwh/applicants/downTemplateFile/' + this.type + '.do',{},{timeout}).then(
+                        (res) => {
+                            if (t) {
+                                this.$message.error('下载失败')
+                            } else {
+                                this.$message({
+                                    showClose: true,
+                                    message: '下载成功',
+                                    type: "success"
+                                })
+                            }
+                        })
+                } catch (err) {
+                    this.$message.error("下载失败")
+                }
             },
             exportData(command) {
+                let timeout = 180000
+                let t = false
                 // 导出数据
                 this.$message({
                     showClose: true,
                     message: "正在导出"
                 })
-                ms.http.get('/xwh/applicants/export.do',{status: command,type: this.type}).then(async (res)=>{
+                try {
                     let url = '/xwh/applicants/export.do?status=' + command + '&type=' + this.type
-                    if (res != "") {
-                        this.downFile(url)
-                        await this.$message({
-                            showClose: true,
-                            message: '导出成功',
-                            type: "success"
-                        })
-                    }
-                })
+                    this.downFile(url, timeout)
+                    setTimeout(() => {
+                        t = true
+                    }, timeout)
+                    ms.http.get('/xwh/applicants/export.do', {
+                        status: command,
+                        type: this.type
+                    }, {timeout}).then((res) => {
+                        if (t) {
+                            this.$message.error('导出失败')
+                        } else {
+                            this.$message({
+                                showClose: true,
+                                message: '导出成功',
+                                type: "success"
+                            })
+                        }
+                    })
+                } catch (err) {
+                    this.$message.error('导出失败')
+                }
             },
             regionReset() {
                 // 地区重设
@@ -1185,8 +1222,8 @@
                     this.regionData = res.data
                 })
             },
-            getManagerType(){
-                ms.http.get('/xwh/type/listGoodsAndServiceType.do').then((res)=>{
+            getManagerType() {
+                ms.http.get('/xwh/type/listGoodsAndServiceType.do').then((res) => {
                     this.manageType = res.data
                 })
             },
@@ -1310,7 +1347,7 @@
                 });
             },
             // 从上一级页面返回新页面时的成功的提示
-            currentTopic(msg){
+            currentTopic(msg) {
                 this.$message({
                     message: msg,
                     type: "success"
@@ -1336,9 +1373,11 @@
     #index .ms-container {
         height: calc(100vh - 78px);
     }
-    .ms-header{
+
+    .ms-header {
         padding: 10px;
     }
+
     #index .ms-iframe-style {
         position: absolute;
         top: 0;
@@ -1492,17 +1531,20 @@
     .submit-btns button:not(:last-child) {
         margin-right: 10px;
     }
+
     .el-select__tags {
         overflow-x: auto !important;
         flex-wrap: inherit !important;
     }
-    .new{
+
+    .new {
         width: 30px;
         height: 20px;
         position: absolute;
         top: 0;
         left: 0;
     }
+
     .el-table__body-wrapper::-webkit-scrollbar {
         width: 18px;
         height: 18px;
@@ -1513,14 +1555,17 @@
         border-radius: 30px;
         border: 6px solid #fff;
     }
-    .el-scrollbar__wrap::-webkit-scrollbar{
+
+    .el-scrollbar__wrap::-webkit-scrollbar {
         width: 18px;
         height: 18px;
     }
+
     .el-pagination {
         text-align: right;
     }
-    .ms-container{
+
+    .ms-container {
         display: flex !important;
     }
 </style>
