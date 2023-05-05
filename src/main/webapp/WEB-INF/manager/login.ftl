@@ -41,7 +41,7 @@
                             <el-form-item prop="managerName">
                      <span class="input input--hoshi">
                           <input v-model="form.managerName" class="input__field input__field--hoshi" type="text" id="input-name" />
-                          <label class="input__label input__label--hoshi input__label--hoshi-color-1" for="input-name">
+                          <label class="input__label input__label--hoshi input__label--hoshi-color-1 bug" for="input-name">
                               <span class="input__label-content input__label-content--hoshi">账号</span>
                           </label>
                       </span>
@@ -54,7 +54,7 @@
                             <el-form-item prop="managerPassword">
                   <span class="input input--hoshi">
                           <input v-model="form.managerPassword" class="input__field input__field--hoshi" type="password" id="input-password" />
-                          <label class="input__label input__label--hoshi input__label--hoshi-color-1" for="input-password">
+                          <label class="input__label input__label--hoshi input__label--hoshi-color-1 bug" for="input-password">
                               <span class="input__label-content input__label-content--hoshi">密码</span>
                           </label>
                       </span>
@@ -69,7 +69,7 @@
                                 <el-form-item prop="rand_code">
                      <span class="input input--hoshi">
                           <input v-model="form.rand_code" class="input__field input__field--hoshi" type="text" id="input-rand-code" />
-                          <label class="input__label input__label--hoshi input__label--hoshi-color-1" for="input-rand-code">
+                          <label class="input__label input__label--hoshi input__label--hoshi-color-1 bug" for="input-rand-code">
                               <span class="input__label-content input__label-content--hoshi">验证码</span>
                           </label>
                       </span>
@@ -626,5 +626,11 @@
         width: 100%;
         height: calc(100% - 10px);
         border-bottom: 1px solid #B9C1CA;
+    }
+    .bug{
+        line-height: 30px !important;
+    }
+    .input__label-content{
+        height: 60px;
     }
 </style>

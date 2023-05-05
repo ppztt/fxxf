@@ -587,7 +587,7 @@
                 style="float: right">
         </el-pagination>
     </el-main>
-    <iframe :src="action" class="ms-iframe-style" v-show="action" id="check" ref="check"></iframe>
+    <iframe :src="action" class="ms-iframe-style" v-show="action" id="check" ref="check" v-cloak></iframe>
 </div>
 </body>
 
