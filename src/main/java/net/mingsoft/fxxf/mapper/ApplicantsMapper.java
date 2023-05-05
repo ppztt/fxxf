@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import net.mingsoft.fxxf.bean.dto.ApplicantsStatisticsDto;
 import net.mingsoft.fxxf.bean.entity.Applicants;
 import net.mingsoft.fxxf.bean.request.ApplicantsPageRequest;
+import net.mingsoft.fxxf.bean.vo.HandleResultStatisticsVo;
 import net.mingsoft.fxxf.bean.vo.OperatorStatisticsVo;
 import net.mingsoft.fxxf.bean.vo.RegionVo;
 import org.apache.ibatis.annotations.Param;
@@ -13,6 +14,7 @@ import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -61,4 +63,7 @@ public interface ApplicantsMapper extends BaseMapper<Applicants> {
             @Param("city") String city,
             @Param("district") String district);
 
+    List<OperatorStatisticsVo> statisticApplicantsCount(String areaField, String city, int statisticType, String startTime, String endTime);
+
+    List<HandleResultStatisticsVo> statisticResultCount(String areaField, String city, int statisticType, String startTime, String endTime);
 }

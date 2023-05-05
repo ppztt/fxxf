@@ -202,13 +202,7 @@ public class ApplicantsController {
     @PostMapping("/operatorStatistics/list")
     @ApiOperation(value = "经营者统计-列表", notes = "经营者统计-列表")
     public BaseResult<ArrayList<OperatorStatisticsVo>> operatorStatistics(@RequestBody ApplicantsStatisticsRequest applicantsStatisticsRequest) {
-
-        try {
-            return applicantsService.operatorStatistics(applicantsStatisticsRequest);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return BaseResult.fail();
+        return applicantsService.operatorStatistics(applicantsStatisticsRequest);
     }
 
     @RequiresPermissions("wlythcn:jdtstj")
