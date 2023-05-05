@@ -71,15 +71,21 @@
                     <!-- 主题切换 -->
                     <ms-switch-theme :theme.sync="theme"></ms-switch-theme>
                     <!-- 设置 -->
-                    <ms-manager-icon :manager="managerInfo">
-                        <template slot="reset-password">
-                            <el-menu-item
-                                    style="display: flex;align-items: center" @click.native='openModal'>
-                                <i class="el-icon-key"></i>
-                                <span slot="title">修改密码</span>
-                            </el-menu-item>
-                        </template>
-                    </ms-manager-icon>
+                    <div style="position: relative">
+                        <div class="userIcon">
+                            <i class="el-icon-s-custom"></i>
+                        </div>
+                        <ms-manager-icon :manager="managerInfo">
+                            <template slot="reset-password">
+                                <el-menu-item
+                                        style="display: flex;align-items: center" @click.native='openModal'>
+                                    <i class="el-icon-key"></i>
+                                    <span slot="title">修改密码</span>
+                                </el-menu-item>
+                            </template>
+                        </ms-manager-icon>
+                    </div>
+
                     <!--mstore按钮-->
                     <!--                    <ms-store ref="storec" client="${client}"></ms-store>-->
                 </div>
@@ -111,7 +117,8 @@
             </div>
             <p>当前系统共有{{ Number(message.type1Count) + Number(message.type2Count) }}条监督投诉，情况如下：</p>
             <p>放心消费类型共有 {{ message.type1Count }} 条，其中 {{ message.type1NoHandlerCnt }} 条未处理；</p>
-            <p>无理由退货承诺类型共有 {{ message.type2Count }} 条，其中 {{ message.type2NoHandlerCnt }} 条未处理，请您尽快处理。</p>
+            <p>无理由退货承诺类型共有 {{ message.type2Count }} 条，其中 {{ message.type2NoHandlerCnt }}
+                条未处理，请您尽快处理。</p>
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="messageShow = false" size="medium">确 定</el-button>
                 </span>
@@ -125,6 +132,7 @@
     var indexVue = new Vue({
         el: "#app",
         data: {
+            activeIndex: 0,
             code: '',
             menuList: [], //菜单接口数据
             asideMenuList: [], //侧边菜单
@@ -435,8 +443,8 @@
                 this.callbackFun = fun;
             },
             getMessage() {
-                ms.http.get('/xwh/index/feedback/msg.do').then(res =>{
-                    if(res.code == 200){
+                ms.http.get('/xwh/index/feedback/msg.do').then(res => {
+                    if (res.code == 200) {
                         this.message = res.data
                         this.messageCount = Number(res.data.type1NoHandlerCnt) + Number(res.data.type2NoHandlerCnt)
                     }
@@ -844,8 +852,28 @@
         display: inline-block;
         font-size: 20px;
     }
+
     .ms-loading {
-        background:url('/static/images/loading2.gif') no-repeat center;
+        background: url('/static/images/loading2.gif') no-repeat center;
         background-size: 10%;
     }
+
+    .manager-head {
+        display: none !important;
+    }
+
+    .userIcon {
+        position: absolute;
+        top: 50%;
+        left: 2px;
+        z-index: 2;
+        transform: translateY(-50%);
+    }
+    .userIcon i{
+        font-size: 20px;
+    }
+    .manager-icon span{
+        margin-left: 8px;
+    }
+
 </style>
