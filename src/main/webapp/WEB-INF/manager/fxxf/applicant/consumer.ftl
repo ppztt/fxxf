@@ -10,8 +10,7 @@
     <script src="https://cdn.mingsoft.net/platform/ms-store.umd.min.js"></script>
 </head>
 <body>
-<div id="index" class="ms-index">
-    <ms-search ref="search" :condition-data="conditionList" :conditions="conditions"></ms-search>
+<div id="index" class="ms-index" v-cloak>
     <el-header class="ms-header" height="120px">
         <el-row class="tools" ref="tools" type="flex" justify="center" align="middle">
             <!-- 工具栏 -->
@@ -1346,6 +1345,7 @@
                 that.getUnitList();
             }
             window.currentTopic = this.currentTopic
+
         }
     })
 </script>
@@ -1353,7 +1353,9 @@
     #index .ms-container {
         height: calc(100vh - 78px);
     }
-
+    [v-cloak] {
+        display: none;
+    }
     .ms-iframe-style {
         position: absolute;
         top: 0;
