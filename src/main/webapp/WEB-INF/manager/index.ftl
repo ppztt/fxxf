@@ -844,4 +844,8 @@
         display: inline-block;
         font-size: 20px;
     }
+    .ms-loading {
+        background:url('/static/images/loading2.gif') no-repeat center;
+        background-size: 10%;
+    }
 </style>

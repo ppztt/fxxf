@@ -28,7 +28,7 @@
 				</el-tree>
 			</el-scrollbar>
 		</div>
-		<iframe :src="action" class="ms-iframe-style" style="background:url('${base}/static/images/loading.gif') no-repeat center;">
+		<iframe :src="action" class="ms-iframe-style" v-loading.fullscreen.lock="fullscreenLoading">
 		</iframe>
 	</el-container>
 </div>
@@ -38,6 +38,7 @@
 	var indexVue = new Vue({
 		el: "#index",
 		data: {
+			fullscreenLoading: false,
 			action: "",
 			//跳转页面
 			defaultProps: {
@@ -50,13 +51,23 @@
 		},
 		methods: {
 			handleNodeClick: function (data) {
+				this.fullscreenLoading = true;
 				if (data.categoryType == '1') {
 					this.action = ms.manager + "/cms/content/main.do?categoryId=" + data.id+"&leaf="+data.leaf;
+					this.$nextTick(()=>{
+						this.fullscreenLoading = false;
+					})
 				} else if (data.categoryType == '2') {
 					this.action = ms.manager + "/cms/content/form.do?categoryId=" + data.id + "&type=2";
+					this.$nextTick(()=>{
+						this.fullscreenLoading = false;
+					})
 					//id=0时为最顶级节点全部节点
 				} else if (data.id == 0){
 					this.action = ms.manager + "/cms/content/main.do?leaf=false";
+					this.$nextTick(()=>{
+						this.fullscreenLoading = false;
+					})
 				}
 			},
 			treeList: function () {
@@ -97,8 +108,13 @@
 			}
 		},
 		mounted: function () {
+			this.fullscreenLoading = true;
 			this.action = ms.manager + "/cms/content/main.do";
+			this.$nextTick(()=>{
+				this.fullscreenLoading = false;
+			})
 			this.treeList();
+
 		}
 	});
 </script>
