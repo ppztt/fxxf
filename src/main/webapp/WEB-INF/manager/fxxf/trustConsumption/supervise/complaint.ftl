@@ -308,22 +308,22 @@
             downloadData(item) {
                 const path = encodeURIComponent(item.path)
                 const url = ms.manager + '/feedback/downloadAttachment.do?fileName='+item.fileName+'&filePath='+path
-                this.$message({
-                    showClose: true,
-                    message: "正在导出"
-                })
+                // this.$message({
+                //     showClose: true,
+                //     message: "正在下载"
+                // })
                 ms.http.get(ms.manager + '/feedback/downloadAttachment.do?fileName='+item.fileName+'&filePath='+path).then(async(res)=>{
                     if(res != ""){
                         this.downFile(url)
                         await this.$message({
                             showClose: true,
-                            message: '导出成功',
+                            message: '下载成功',
                             type: "success"
                         })
                     }else {
                         await this.$message({
                             showClose: true,
-                            message: '导出失败',
+                            message: '下载失败',
                             type: "error"
                         })
                     }
