@@ -63,7 +63,17 @@ public interface ApplicantsMapper extends BaseMapper<Applicants> {
             @Param("city") String city,
             @Param("district") String district);
 
-    List<OperatorStatisticsVo> statisticApplicantsCount(String areaField, String city, int statisticType, String startTime, String endTime);
+    List<OperatorStatisticsVo> statisticApplicantsCount(
+            @Param("areaField")String areaField,
+            @Param("city")String city,
+            @Param("statisticType")int statisticType,
+            @Param("startTime") String startTime,
+            @Param("endTime") String endTime);
 
-    List<HandleResultStatisticsVo> statisticResultCount(String areaField, String city, int statisticType, String startTime, String endTime);
+    List<HandleResultStatisticsVo> statisticResultCount(
+            @Param("areaField")String areaField,
+            @Param("city")String city,
+            @Param("statisticType")int statisticType,
+            @Param("startTime")String startTime,
+            @Param("endTime")String endTime);
 }
