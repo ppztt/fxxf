@@ -121,6 +121,7 @@ public class ManagerInfoController {
             return BaseResult.fail(Optional.ofNullable(msg.getFieldError()).map(FieldError::getDefaultMessage).orElse("参数有误"));
         }
         managerInfo.setUsertype(3);
+        managerInfo.setRoleIds(4);
         return BaseResult.success(managerInfoService.addUser(managerInfo));
     }
 

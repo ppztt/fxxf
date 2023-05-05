@@ -496,4 +496,61 @@
         GROUP BY ${applicantsStatisticsDto.roleRegIdentify}
     </select>
 
+    <select id="statisticApplicantsCount" resultType="net.mingsoft.fxxf.bean.vo.OperatorStatisticsVo">
+        SELECT if(#{areaField}='city',city, district) area,
+        count(*) applicantsCnt,
+        <choose>
+            <when test="statisticType == 1">
+                count( CASE WHEN cont_commitment = '是' THEN '是' END ) commitmentCnt,
+                count( CASE WHEN add_contents4_cnt IS NOT NULL OR add_contents4_cnt != '' THEN '是' END ) addContents1Cnt
+            </when>
+            <when test="statisticType == 2">
+                count( CASE WHEN contents2 &gt; 7 THEN '是' END ) contents2Cnt
+            </when>
+        </choose>
+        FROM
+        cc_applicants
+        <where>
+            `status` = 1 AND type = #{statisticType}
+            <if test="areaField == 'district'">
+                and city like concat('%',#{city},'%')
+            </if>
+            <if test="startTime != null and startTime != ''">
+                and start_time &gt;= #{startTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                and start_time &lt;= #{endTime}
+            </if>
+        </where>
+        GROUP BY
+        area
+    </select>
+
+    <select id="statisticResultCount" resultType="net.mingsoft.fxxf.bean.vo.HandleResultStatisticsVo">
+        SELECT
+        a.reg_name regName,
+        if(#{areaField}='city',a.city, a.district) area,
+        count( CASE WHEN f.result = '督促告诫' THEN 1 END ) beSupervisedCnt,
+        count( CASE WHEN f.result = '摘牌' THEN 1 END ) delCnt,
+        count( CASE WHEN result = '其他' THEN 1 END ) otherCnt
+        FROM
+        cc_applicants a
+        INNER JOIN cc_feedback f ON a.id = f.applicants_id
+        <where>
+            a.type = #{statisticType}
+            AND a.`status` = 1
+            <if test="areaField == 'district'">
+                and city like concat('%',#{city},'%')
+            </if>
+            <if test="startTime != null and startTime != ''">
+                and start_time &gt;= #{startTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                and start_time &lt;= #{endTime}
+            </if>
+        </where>
+        GROUP BY
+        regName,area
+    </select>
+
 </mapper>
