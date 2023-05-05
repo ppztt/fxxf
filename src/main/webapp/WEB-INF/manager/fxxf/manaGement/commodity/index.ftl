@@ -79,11 +79,14 @@
         <el-table-column
                 label="类别"
                 align="center"
-                width="880px">
+                min-width="200"
+        >
             <template #default="{ row }">
-                <div>
-                    <span class="category">{{row.servicetype}}</span>
-                    <span class="category">{{row.typename}}</span>
+<#--                    <span class="category">{{row.servicetype}}</span>-->
+<#--                    <span class="category">{{row.typename}}</span>-->
+                <div class="category">
+                    <span style="flex: 1;margin-right: 16px">{{row.servicetype}}</span>
+                    <span style="flex: 1;margin-right: 16px">{{row.typename}}</span>
                 </div>
             </template>
         </el-table-column>
@@ -136,7 +139,7 @@
                             );
                         }
                     }
-                }
+                },
             }
         },
         computed: {},
@@ -221,8 +224,11 @@
     }
 
     .category {
-        width: 400px;
-        display: inline-block;
+        /*width: 400px;*/
+        /*display: inline-block;*/
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .datetime {
