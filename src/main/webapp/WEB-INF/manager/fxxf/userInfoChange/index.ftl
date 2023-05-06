@@ -32,10 +32,10 @@
                     </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row>
+                <el-row v-if="userData.city != '' || userData.district != ''">
                     <el-col :span="24">
-                    <el-form-item label="归属地市：" prop="city">
-                        <el-select v-model="userData.city" placeholder="市">
+                    <el-form-item label="归属地市：" prop="city" >
+                        <el-select v-model="userData.city" placeholder="市" :disabled="userData.city != ''">
                             <el-option
                                     v-for="(item,index) in regionData"
                                     :key="index"

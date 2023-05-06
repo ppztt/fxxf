@@ -164,6 +164,7 @@
                                                 placeholder="市"
                                                 :clearable="true"
                                                 filterable
+                                                :disabled="userInfo.roleId == 2 || userInfo.roleId == 3 "
                                                 @change="cityChange(addr.city)"
                                                 @clear="clear">
                                             <el-option
@@ -181,7 +182,7 @@
                                                 :ref="`district${index}`"
                                                 v-model="addr.district"
                                                 @change="districtChange(district)"
-                                                :disabled="!addr.city ||districtData.length == 0">
+                                                :disabled="!addr.city ||districtData.length == 0 || userInfo.roleId == 3">
                                             <el-option
                                                     v-for="item in districtData"
                                                     :value="item.name"
@@ -681,7 +682,7 @@
                 formrules: {
                     regName: [{required: true, message: '经营者注册名称不能为空', trigger: 'blur'}],
                     creditCode: [{required: true, message: '统一社会信用代码不能为空，且为18位', trigger: 'blur'},
-                        {min: 18, trigger: 'blur'}],
+                        {min: 18, message: '统一社会信用代码应为18位', trigger: 'blur'}],
                     onlineName: [{required: true, message: '网店名称不能为空', trigger: 'blur'}],
                     platform: [{required: true, message: '所属平台不能为空', trigger: 'blur'}],
                     storeName: [{required: true, message: '门店名称不能为空', trigger: 'blur'}],
@@ -1109,9 +1110,9 @@
                 iframe.style.zIndex = "-999"
                 iframe.src = url;
                 document.body.appendChild(iframe);
-                setTimeout(()=>{
+                setTimeout(() => {
                     document.body.removeChild(iframe);
-                },timeout)
+                }, timeout)
             },
             downLoadTemplate: function () {
                 // 模板下载
@@ -1123,7 +1124,7 @@
                     setTimeout(() => {
                         t = true
                     }, timeout)
-                    ms.http.get('/xwh/applicants/downTemplateFile/' + this.type + '.do',{},{timeout}).then(
+                    ms.http.get('/xwh/applicants/downTemplateFile/' + this.type + '.do', {}, {timeout}).then(
                         (res) => {
                             if (t) {
                                 this.$message.error('下载失败')
@@ -1166,7 +1167,7 @@
                                 type: "success"
                             })
                         }
-                    }).catch(err =>{
+                    }).catch(err => {
                         this.$message.error('导出失败')
                     })
                 } catch (err) {
@@ -1223,6 +1224,7 @@
             getRegionData() {
                 ms.http.get('/xwh/gd-regin.do').then((res) => {
                     this.regionData = res.data
+                    this.getUserInfo()
                 })
             },
             getManagerType() {
@@ -1258,11 +1260,18 @@
             },
             // 录入功能
             setApply(type) {
-                // let addrs = JSON.stringify(this.formData.addrs)
                 let params = JSON.stringify(this.formData)
                 ms.http.post('/xwh/applicants/apply/input.do', {params},
                     {headers: {'Content-type': 'application/json;charset=UTF-8'}}).then((res) => {
-
+                    if (res.code == 200) {
+                        this.$message({
+                            type: "success",
+                            message: "录入成功"
+                        })
+                        this.isShowEnteringModal = false
+                    } else {
+                        this.$message.error("录入失败")
+                    }
                 })
 
             },
@@ -1356,7 +1365,23 @@
                     type: "success"
                 })
             },
-
+            // 获取用户信息
+            getUserInfo() {
+                let id = sessionStorage.getItem('userId')
+                ms.http.get('/xwh/user/userInfo.do', {id}).then((res) => {
+                    if (res.code == 200) {
+                        this.userInfo = {...res.data, id}
+                        console.log(this.userInfo)
+                        this.formData.addrs[0] = {
+                            ...this.formData.addrs[0],
+                            city: this.userInfo.city,
+                            district: this.userInfo.district
+                        }
+                        this.cityChange(this.userInfo.city)
+                        this.districtChange(this.userInfo.district)
+                    }
+                })
+            }
         },
         mounted: function () {
             this.getRegionData();
@@ -1380,9 +1405,11 @@
     .ms-header {
         padding: 10px;
     }
+
     [v-cloak] {
         display: none;
     }
+
     #index .ms-iframe-style {
         position: absolute;
         top: 0;
