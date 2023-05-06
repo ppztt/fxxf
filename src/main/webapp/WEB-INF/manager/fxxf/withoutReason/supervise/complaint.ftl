@@ -312,20 +312,20 @@
                 //     message: "正在下载"
                 // })
                 ms.http.get(ms.manager + '/feedback/downloadAttachment.do?fileName='+item.fileName+'&filePath='+path).then(async(res)=>{
-                    if(res != ""){
+                    if(res.code==500){
+                        await this.$message({
+                            showClose: true,
+                            message: '下载失败',
+                            type: "error"
+                        })
+                        return
+                    }
                         this.downFile(url)
                         await this.$message({
                             showClose: true,
                             message: '下载成功',
                             type: "success"
                         })
-                    }else {
-                        await this.$message({
-                            showClose: true,
-                            message: '下载失败',
-                            type: "error"
-                        })
-                    }
                 })
             },
             //提交
