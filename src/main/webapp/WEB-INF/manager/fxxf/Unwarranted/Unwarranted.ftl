@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 </head>
 <body>
-<div id="index" class="ms-index">
+<div id="index" class="ms-index" v-cloak>
     <ms-search ref="search" @search="search" :condition-data="conditionList" :conditions="conditions"></ms-search>
     <el-header class="ms-header" height="120px">
         <el-row class="tools" ref="tools" type="flex" justify="center" align="middle">
@@ -589,7 +589,7 @@
                 :total="total">
         </el-pagination>
     </el-main>
-    <iframe :src="action" class="ms-iframe-style" v-show="action" id="check" ref="check"></iframe>
+    <iframe :src="action" class="ms-iframe-style" v-show="action" id="check" ref="check" v-cloak></iframe>
 </div>
 </body>
 
@@ -599,6 +599,7 @@
         el: '#index',
         data() {
             return {
+                dis: false,
                 loading: true,
                 // 开始结束日期限制
                 pickerBeginDate: {
@@ -1379,7 +1380,9 @@
     .ms-header {
         padding: 10px;
     }
-
+    [v-cloak] {
+        display: none;
+    }
     #index .ms-iframe-style {
         position: absolute;
         top: 0;

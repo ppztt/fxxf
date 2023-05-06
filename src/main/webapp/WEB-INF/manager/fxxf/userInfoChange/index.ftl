@@ -184,6 +184,15 @@
                         if(valid){
                             ms.http.post('/xwh/user/updateById.do',params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res)=>{
                                 console.log(res)
+                                if(res.code == 200){
+                                    this.$message({
+                                        type: "success",
+                                        message:"修改成功"
+                                    })
+                                }else{
+                                    let msg = res.msg ? res.msg : "修改失败"
+                                    this.$message.error(msg)
+                                }
                             })
                         }
                     })
