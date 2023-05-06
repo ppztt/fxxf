@@ -104,6 +104,10 @@ public class ManagerInfoController {
             return BaseResult.fail(Optional.ofNullable(msg.getFieldError()).map(FieldError::getDefaultMessage).orElse("参数有误"));
         }
         managerInfo.setUsertype(1);
+        // 省级工作人员为超级管理员
+        if (managerInfo.getRoleIds() == 1) {
+            managerInfo.setManagerAdmin("super");
+        }
         return BaseResult.success(managerInfoService.addUser(managerInfo));
     }
 
@@ -121,6 +125,7 @@ public class ManagerInfoController {
             return BaseResult.fail(Optional.ofNullable(msg.getFieldError()).map(FieldError::getDefaultMessage).orElse("参数有误"));
         }
         managerInfo.setUsertype(3);
+        managerInfo.setRoleIds(4);
         return BaseResult.success(managerInfoService.addUser(managerInfo));
     }
 

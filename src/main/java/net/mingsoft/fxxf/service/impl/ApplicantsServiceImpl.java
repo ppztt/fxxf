@@ -8,6 +8,7 @@ import cn.afterturn.easypoi.excel.entity.TemplateExportParams;
 import cn.afterturn.easypoi.excel.entity.result.ExcelImportResult;
 import cn.afterturn.easypoi.exception.excel.ExcelImportException;
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -22,6 +23,7 @@ import net.mingsoft.fxxf.bean.base.BasePageResult;
 import net.mingsoft.fxxf.bean.base.BaseResult;
 import net.mingsoft.fxxf.bean.entity.Applicants;
 import net.mingsoft.fxxf.bean.entity.AuditLog;
+import net.mingsoft.fxxf.bean.entity.Region;
 import net.mingsoft.fxxf.bean.enums.ApplicantsTypeEnum;
 import net.mingsoft.fxxf.bean.enums.CreateTypeEnum;
 import net.mingsoft.fxxf.bean.request.ApplicantsPageRequest;
@@ -31,6 +33,7 @@ import net.mingsoft.fxxf.bean.request.EnterpriseNewApplyRequest;
 import net.mingsoft.fxxf.bean.vo.*;
 import net.mingsoft.fxxf.mapper.ApplicantsMapper;
 import net.mingsoft.fxxf.mapper.AuditLogMapper;
+import net.mingsoft.fxxf.mapper.RegionMapper;
 import net.mingsoft.fxxf.service.ApplicantsService;
 import net.mingsoft.fxxf.service.AuditLogService;
 import net.mingsoft.fxxf.service.ManagerInfoService;
@@ -66,6 +69,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+
 
 /**
  * 申报单位 服务实现类
@@ -124,6 +128,9 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
 
     @Autowired
     private ApplicantsUnitExcelVerifyHandlerImpl unitVerifyHandler;
+
+    @Autowired
+    private RegionMapper regionMapper;
 
     @Override
     public List<RegionVo> getGdRegion() {
@@ -645,20 +652,11 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
         if (extensionInfo == null) {
             return BaseResult.fail("当前登录用户扩展信息为空，请前往补充");
         }
-
-        // roleId == 1 ，说明是管理员，可以查看全部，否则根据地市去查
-        ArrayList<OperatorStatisticsVo> operatorStatisticsVos = new ArrayList<>();
-        if (ApplicantsTypeEnum.UNIT.getCode().equals(applicantsStatisticsRequest.getType())) {
-            operatorStatisticsVos = applicantsMapper.unitOperatorStatistics(
-                    applicantsStatisticsRequest.getStartTime(), applicantsStatisticsRequest.getEndTime(),
-                    user.getRoleId(), extensionInfo.getCity(), extensionInfo.getDistrict());
-        } else if (ApplicantsTypeEnum.STORE.getCode().equals(applicantsStatisticsRequest.getType())) {
-            operatorStatisticsVos = applicantsMapper.storeOperatorStatistics(
-                    applicantsStatisticsRequest.getStartTime(), applicantsStatisticsRequest.getEndTime()
-                    , user.getRoleId(), extensionInfo.getCity(), extensionInfo.getDistrict());
-        }
-
-        return BaseResult.success(operatorStatisticsVos);
+        ArrayList<OperatorStatisticsVo> operatorStatisticsVosList = statistic(applicantsStatisticsRequest.getType(),
+                applicantsStatisticsRequest.getStartTime(),
+                applicantsStatisticsRequest.getEndTime(),
+                user.getRoleId(), extensionInfo.getCity());
+        return BaseResult.success(operatorStatisticsVosList);
     }
 
     @Override
@@ -685,20 +683,17 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
             fileName = city + "_" + extensionInfo.getDistrict() + fileName;
         }
 
-        // roleId == 1 ，说明是管理员，可以查看全部，否则根据地市去查
+        ArrayList<OperatorStatisticsVo> operatorStatisticsVos = statistic(type, startTime, endTime, roleId, extensionInfo.getCity());
+        // unitStatisticsVos为空时会导出报错
+        if (CollectionUtils.isEmpty(operatorStatisticsVos)) {
+            operatorStatisticsVos.add(new OperatorStatisticsVo());
+        }
         if (ApplicantsTypeEnum.UNIT.getCode().equals(type)) {
-            ArrayList<OperatorStatisticsVo> unitStatisticsVos = applicantsMapper.unitOperatorStatistics(
-                    startTime, endTime, roleId, city, extensionInfo.getDistrict());
-
-            ExcelUtil.exportExcel(BeanUtil.copyToList(unitStatisticsVos, UnitOperatorStatisticsVo.class)
+            ExcelUtil.exportExcel(BeanUtil.copyToList(operatorStatisticsVos, UnitOperatorStatisticsVo.class)
                     , "", "", UnitOperatorStatisticsVo.class, fileName, request, response);
         }
-
         if (ApplicantsTypeEnum.STORE.getCode().equals(type)) {
-            ArrayList<OperatorStatisticsVo> storeStatisticsVos = applicantsMapper.storeOperatorStatistics(
-                    startTime, endTime, roleId, city, extensionInfo.getDistrict());
-
-            ExcelUtil.exportExcel(BeanUtil.copyToList(storeStatisticsVos, StoreOperatorStatisticsVo.class),
+            ExcelUtil.exportExcel(BeanUtil.copyToList(operatorStatisticsVos, StoreOperatorStatisticsVo.class),
                     "", "", StoreOperatorStatisticsVo.class, fileName, request, response);
         }
     }
@@ -1259,6 +1254,82 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
 
     public List<Applicants> findApplicantsByIdRegName(Integer id, String creditCode, String type) {
         return list(new QueryWrapper<Applicants>().eq("credit_code", creditCode).eq("type", type).eq("status", 1).notIn("id", id));
+    }
+
+    private ArrayList<OperatorStatisticsVo> statistic(int statisticType, String startTime, String endTime, int roleId, String city) {
+        // 根据角色获取按地区统计的字段: city/district
+        String areaField = roleId == 1 ? "city" : "district";
+        // 按地区统计承诺单位总数、增加其他承诺的单位数量、连续承诺单位数量
+        List<OperatorStatisticsVo> operatorStatisticsVosList = statisticApplicantsCount(areaField, city, statisticType,
+                startTime, endTime);
+        // 按单位统计处理结果为摘牌、监督告诫、其他的次数
+        List<HandleResultStatisticsVo> resultStatisticList = applicantsMapper.statisticResultCount(areaField, city, statisticType,
+                startTime, endTime);
+        calc(operatorStatisticsVosList, resultStatisticList);
+        return new ArrayList<>(operatorStatisticsVosList);
+    }
+
+    private List<OperatorStatisticsVo> statisticApplicantsCount(String areaField, String city, int statisticType, String startTime, String endTime) {
+        List<OperatorStatisticsVo> result = new ArrayList<>();
+        List<OperatorStatisticsVo> operatorStatisticsVos = applicantsMapper.statisticApplicantsCount(areaField, city, statisticType, startTime, endTime);
+        String area = "city".equals(areaField) ? "广东省" : city;
+        List<Region> regions = regionMapper.underRegListInfoByCurName(area);
+        regions.sort(Comparator.comparing(Region::getSort));
+        for (Region region : regions) {
+            OperatorStatisticsVo statisticsVo = new OperatorStatisticsVo();
+            int applicantsCnt = 0;
+            int addContents1Cnt = 0;
+            int commitmentCnt = 0;
+            int contents2Cnt = 0;
+            for (OperatorStatisticsVo operatorStatisticsVo : operatorStatisticsVos) {
+                if (CharSequenceUtil.contains(operatorStatisticsVo.getArea(), region.getName())) {
+                    applicantsCnt += operatorStatisticsVo.getApplicantsCnt();
+                    if (ApplicantsTypeEnum.UNIT.getCode().equals(statisticType)) {
+                        addContents1Cnt += operatorStatisticsVo.getAddContents1Cnt();
+                        commitmentCnt += operatorStatisticsVo.getCommitmentCnt();
+                    }
+                    if (ApplicantsTypeEnum.STORE.getCode().equals(statisticType)) {
+                        contents2Cnt += operatorStatisticsVo.getContents2Cnt();
+                    }
+                }
+            }
+            statisticsVo.setArea(region.getName());
+            statisticsVo.setApplicantsCnt(applicantsCnt);
+            statisticsVo.setAddContents1Cnt(addContents1Cnt);
+            statisticsVo.setCommitmentCnt(commitmentCnt);
+            statisticsVo.setContents2Cnt(contents2Cnt);
+            result.add(statisticsVo);
+        }
+        return result;
+    }
+
+    private void calc(List<OperatorStatisticsVo> operatorStatisticsVosList, List<HandleResultStatisticsVo> resultStatisticList) {
+        for (OperatorStatisticsVo operatorStatisticsVo : operatorStatisticsVosList) {
+            String area = operatorStatisticsVo.getArea();
+            int beSupervisedCnt = 0;
+            int delCnt = 0;
+            int nullCnt = operatorStatisticsVo.getApplicantsCnt();
+            for (HandleResultStatisticsVo handleResultStatisticsVo : resultStatisticList) {
+                String voArea = handleResultStatisticsVo.getArea();
+                if (CharSequenceUtil.contains(voArea, area)) {
+                    if (handleResultStatisticsVo.getBeSupervisedCnt() > 0) {
+                        // 即使getBeSupervisedCnt的数量大于1，也只统计1次
+                        beSupervisedCnt += 1;
+                    }
+                    if (handleResultStatisticsVo.getDelCnt() > 0) {
+                        delCnt += 1;
+                    }
+                    // 零有效投诉单位数量 = 承诺单位总数 - 被监督告诫单位数量 - 被摘牌单位数量 - 处理结果为其他的单位数量
+                    if (handleResultStatisticsVo.getBeSupervisedCnt() > 0 || handleResultStatisticsVo.getOtherCnt() > 0 ||
+                            handleResultStatisticsVo.getDelCnt() > 0) {
+                        nullCnt -= 1;
+                    }
+                }
+            }
+            operatorStatisticsVo.setBeSupervisedCnt(beSupervisedCnt);
+            operatorStatisticsVo.setDelCnt(delCnt);
+            operatorStatisticsVo.setNullCnt(nullCnt);
+        }
     }
 
 
