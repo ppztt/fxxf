@@ -170,7 +170,7 @@
                                                     :value="item.name"
                                                     :key="item.code"
                                                     :label="item.name"
-                                            >{{ item.name }}
+                                            >
                                             </el-option>
                                         </el-select>
                                     </el-col>
@@ -185,7 +185,7 @@
                                                     v-for="item in districtData"
                                                     :value="item.name"
                                                     :key="item.code"
-                                                    :label="item.name">{{ item.name }}
+                                                    :label="item.name">
                                             </el-option>
                                         </el-select>
                                     </el-col>
@@ -661,8 +661,8 @@
                     address: "",
                     addrs: [
                         {
-                            city: "",
-                            district: "",
+                            city: '',
+                            district: '',
                             address: "",
                         },
                     ],
@@ -679,7 +679,7 @@
                 formrules: {
                     regName: [{required: true, message: '经营者注册名称不能为空', trigger: 'blur'}],
                     creditCode: [{required: true, message: '统一社会信用代码不能为空，且为18位', trigger: 'blur'},
-                        {min: 18,message: '统一社会信用代码应为18位', trigger: 'blur'}],
+                        {min: 18, message: '统一社会信用代码应为18位', trigger: 'blur'}],
                     onlineName: [{required: true, message: '网店名称不能为空', trigger: 'blur'}],
                     platform: [{required: true, message: '所属平台不能为空', trigger: 'blur'}],
                     storeName: [{required: true, message: '门店名称不能为空', trigger: 'blur'}],
@@ -796,42 +796,6 @@
                         key: "address",
                         minWidth: 200,
                         align: "left",
-                        <#--render: (h, obj) => {-->
-                        <#--    // console.log(h, obj);-->
-                        <#--    let cityArr = obj.row.city.split(",");-->
-                        <#--    let districtArr = obj.row.district.split(",");-->
-                        <#--    let addressArr = obj.row.address.split(",");-->
-                        <#--    let addrs = cityArr.map((item, index) => {-->
-                        <#--        let city = item;-->
-                        <#--        let district = districtArr[index];-->
-                        <#--        let address = addressArr[index];-->
-                        <#--        return `${city}-${district}-${address}`;-->
-                        <#--    });-->
-
-                        <#--    return (-->
-                        <#--        <div>-->
-                        <#--            <Poptip word-wrap width="300" transfer={true}>-->
-                        <#--                <p style="cursor:pointer">-->
-                        <#--                    {obj.row.address-->
-                        <#--                        ? obj.row.address.length > 10-->
-                        <#--                            ? `${obj.row.address.slice(0, 10)}...`-->
-                        <#--                            : obj.row.address-->
-                        <#--                        : ""}-->
-                        <#--                </p>-->
-
-                        <#--                <div slot="content">-->
-                        <#--                    {addrs.map((item, index) => {-->
-                        <#--                        return (-->
-                        <#--                            <p>-->
-                        <#--                                地址{index + 1}：{item}-->
-                        <#--                            </p>-->
-                        <#--                        );-->
-                        <#--                    })}-->
-                        <#--                </div>-->
-                        <#--            </Poptip>-->
-                        <#--        </div>-->
-                        <#--    );-->
-                        <#--},-->
                     },
                     {
                         title: "状态",
@@ -875,27 +839,6 @@
                         key: "details",
                         minWidth: 210,
                         align: "left",
-                        <#--render: (h, obj) => {-->
-                        <#--    // console.log(h, obj)-->
-                        <#--    return (-->
-                        <#--        <div>-->
-                        <#--            <Poptip-->
-                        <#--                word-wrap-->
-                        <#--                width="300"-->
-                        <#--                transfer={true}-->
-                        <#--                content={obj.row.details}-->
-                        <#--            >-->
-                        <#--                <p style="cursor:pointer">-->
-                        <#--                    {obj.row.details-->
-                        <#--                        ? obj.row.details.length > 10-->
-                        <#--                            ? `${obj.row.details.slice(0, 10)}...`-->
-                        <#--                            : obj.row.details-->
-                        <#--                        : ""}-->
-                        <#--                </p>-->
-                        <#--            </Poptip>-->
-                        <#--        </div>-->
-                        <#--    );-->
-                        <#--},-->
                     },
                     {
                         title: "负责人",
@@ -951,11 +894,6 @@
                 isDown: false
             }
         },
-        watch:{
-            formData: function (n, o){
-                console.log(n, o)
-            }
-        },
         methods: {
             // 关闭弹出框
             closeEnteringModal() {
@@ -969,8 +907,8 @@
                     address: "",
                     addrs: [
                         {
-                            city: this.userInfo.city,
-                            district: this.userInfo.district,
+                            city: this.userInfo.city || '',
+                            district: this.userInfo.district || '',
                             address: "",
                         },
                     ],
@@ -1001,7 +939,6 @@
                         fun()
                     }, wait)
                 }
-
             },
             sizeChange: function (v) {
                 this.size = v;
@@ -1092,7 +1029,7 @@
                     setTimeout(() => {
                         t = true
                     }, timeout)
-                    ms.http.get('/xwh/applicants/downTemplateFile/' + this.type + '.do',{},{timeout}).then(
+                    ms.http.get('/xwh/applicants/downTemplateFile/' + this.type + '.do', {}, {timeout}).then(
                         (res) => {
                             if (t) {
                                 this.$message.error('下载失败')
@@ -1135,7 +1072,7 @@
                                 type: "success"
                             })
                         }
-                    }).catch(err =>{
+                    }).catch(err => {
                         this.$message.error('导出失败')
                     })
                 } catch (err) {
@@ -1232,15 +1169,15 @@
                 let params = JSON.stringify(this.formData)
                 ms.http.post('/xwh/applicants/apply/input.do', {params},
                     {headers: {'Content-type': 'application/json;charset=UTF-8'}}).then((res) => {
-                        if(res.code == 200){
-                            this.$message({
-                                type: "success",
-                                message: "录入成功"
-                            })
-                            this.isShowEnteringModal = false
-                        }else{
-                            this.$message.error("录入失败")
-                        }
+                    if (res.code == 200) {
+                        this.$message({
+                            type: "success",
+                            message: "录入成功"
+                        })
+                        this.isShowEnteringModal = false
+                    } else {
+                        this.$message.error("录入失败")
+                    }
                 })
 
             },
@@ -1336,13 +1273,18 @@
                 })
             },
             // 获取用户信息
-            getUserInfo(){
+            getUserInfo() {
                 let id = sessionStorage.getItem('userId')
-                ms.http.get('/xwh/user/userInfo.do',{id}).then((res)=>{
-                    if(res.code == 200){
+                ms.http.get('/xwh/user/userInfo.do', {id}).then((res) => {
+                    if (res.code == 200) {
                         this.userInfo = {...res.data, id}
-                        console.log(this.userInfo)
-                        this.formData.addrs[0] = {...this.formData.addrs[0],city: this.userInfo.city,district: this.userInfo.district}
+                        if(this.userInfo.roleId == 2){
+                            this.formData.addrs[0].city = this.userInfo.city
+                        }
+                        if(this.userInfo.roleId == 3){
+                            this.formData.addrs[0].city = this.userInfo.city
+                            this.formData.addrs[0].district = this.userInfo.district
+                        }
                         this.cityChange(this.userInfo.city)
                         this.districtChange(this.userInfo.district)
                     }
@@ -1369,9 +1311,11 @@
     #index .ms-container {
         height: calc(100vh - 78px);
     }
+
     [v-cloak] {
         display: none;
     }
+
     .ms-iframe-style {
         position: absolute;
         top: 0;

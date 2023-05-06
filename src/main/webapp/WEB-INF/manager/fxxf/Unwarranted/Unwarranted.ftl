@@ -1371,11 +1371,12 @@
                 ms.http.get('/xwh/user/userInfo.do', {id}).then((res) => {
                     if (res.code == 200) {
                         this.userInfo = {...res.data, id}
-                        console.log(this.userInfo)
-                        this.formData.addrs[0] = {
-                            ...this.formData.addrs[0],
-                            city: this.userInfo.city,
-                            district: this.userInfo.district
+                        if(this.userInfo.roleId == 2){
+                            this.formData.addrs[0].city = this.userInfo.city
+                        }
+                        if(this.userInfo.roleId == 3){
+                            this.formData.addrs[0].city = this.userInfo.city
+                            this.formData.addrs[0].district = this.userInfo.district
                         }
                         this.cityChange(this.userInfo.city)
                         this.districtChange(this.userInfo.district)
