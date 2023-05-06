@@ -173,7 +173,6 @@
                 ms.http.get('/xwh/user/userInfo.do',{id}).then((res)=>{
                     if(res.code == 200){
                         this.userData = {...this.userData,...res.data, id}
-                        console.log(this.userData)
                     }
                 })
             },
@@ -183,7 +182,6 @@
                     this.$refs['form'].validate((valid)=>{
                         if(valid){
                             ms.http.post('/xwh/user/updateById.do',params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res)=>{
-                                console.log(res)
                                 if(res.code == 200){
                                     this.$message({
                                         type: "success",

@@ -200,8 +200,8 @@
             },
             parentMenuList: function (n, o) {
                 var that = this
-                if (that.markList.length == 0) {
-                    console.log(11111)
+                if (that.markList.length == 0 || that.markList.length != that.parentMenuList.length) {
+                    this.markList = []
                     this.parentMenuList.forEach((item) => {
                         let menu = {
                             title: item.modelTitle,

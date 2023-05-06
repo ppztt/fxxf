@@ -602,7 +602,6 @@
                         let data = res.data
                         this.formData.id = data.id
                         this.formData = {...this.formData, ...data}
-                        console.log(this.formData)
                     }
                 })
             },
@@ -628,7 +627,6 @@
             sub(msg) {
                 this.$nextTick(() => {
                     this.$refs["formData"].validate(valid => {
-                        console.log(valid)
                         if (valid) {
                             if (msg == "modify") {
                                 let params = JSON.stringify(this.formData)
