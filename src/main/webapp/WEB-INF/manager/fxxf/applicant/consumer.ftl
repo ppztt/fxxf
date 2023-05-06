@@ -1292,7 +1292,7 @@
             }
 
         },
-        mounted: async function () {
+        mounted: function () {
             this.getRegionData();
             this.getManagerType();
             this.getUnitList();
