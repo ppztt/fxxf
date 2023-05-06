@@ -222,7 +222,7 @@
                 that.action = ""
             }
             window.message = function (){
-                this.getList()
+                that.getList()
                 that.$message.success('反馈成功');
             }
         },
