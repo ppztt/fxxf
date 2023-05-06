@@ -438,7 +438,6 @@
             },
             //获取contentCategoryId数据源
             contentCategoryIdOptionsGet: function () {
-                console.log(1)
                 var that = this;
                 ms.http.get(ms.manager + "/cms/category/list.do", {
                     pageSize: 9999
@@ -452,7 +451,6 @@
             //获取contentType数据源
             contentTypeOptionsGet: function () {
                 var that = this;
-                console.log(2)
                 ms.http.get(ms.base + '/mdiy/dict/list.do', {
                     dictType: '文章属性',
                     pageSize: 99999
@@ -468,14 +466,12 @@
             this.contentCategoryIdOptionsGet();
             this.contentTypeOptionsGet();
             this.form.categoryId = ms.util.getParameter("categoryId");
-            console.log(this.form.categoryId)
             this.leaf = ms.util.getParameter("leaf")==null?true:JSON.parse(ms.util.getParameter("leaf"));
             if (history.hasOwnProperty("state")) {
                 this.form = history.state.form;
                 this.currentPage = history.state.page.pageNo;
                 this.pageSize = history.state.page.pageSize;
             }
-            console.log(this.dataList)
         }
     });
 </script>

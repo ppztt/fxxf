@@ -97,7 +97,7 @@
                    center
                    :visible.sync="modify"
                    width="30%"
-                   @open="setRef('modifyForm')">
+                   >
             <el-form
                     ref="modify"
                     :model="formData"
@@ -199,7 +199,7 @@
                             size="mini"
                             v-model="formData.city"
                             placeholder="请选择所属市"
-                            :disabled="formData.roleId == 1 || roleId == 2 || roleId == 3"
+                            :disabled="formData.roleId == 1 || roleId == 2 || roleId == 3 || userInfo.city != ''"
                             :clearable="true"
                             filterable
                             @change="cityChange(formData.city)">
@@ -250,6 +250,7 @@
         el: '#form',
         data: function () {
             return {
+                userInfo:{},
                 from: 'industry',
                 userId: '',
                 loading: false,
@@ -447,7 +448,6 @@
         components: {},
         computed: {},
         methods: {
-
             getUserList() {
                 this.loading = true
                 ms.http.get('/xwh/user/industryAssociationList.do', {
@@ -467,7 +467,7 @@
                     realname: "", // 行业协会名称
                     // industryUserName: "", // 行业协会用户名
                     email: "", //邮箱
-                    city: "", //市
+                    city: this.userInfo.city, //市
                     district: "", // 区县
                     zipcode: "", //邮政编码
                     phone: "", //手机
@@ -487,7 +487,10 @@
             },
             getRegionData() {
                 ms.http.get('/xwh/gd-regin.do').then((res) => {
-                    this.regionData = res.data
+                    if(res.code == 200){
+                        this.regionData = res.data
+                        this.getUserInfo()
+                    }
                 })
             },
             cityChange: function (name) {
@@ -526,7 +529,7 @@
                     realname: "", // 行业协会名称
                     // industryUserName: "", // 行业协会用户名
                     email: "", //邮箱
-                    city: "", //市
+                    city: this.userInfo.city, //市
                     district: "", // 区县
                     zipcode: "", //邮政编码
                     phone: "", //手机
@@ -603,6 +606,23 @@
                         message: '已取消删除'
                     });
                 });
+            },
+            // 获取用户信息
+            getUserInfo() {
+                let id = sessionStorage.getItem('userId')
+                ms.http.get('/xwh/user/userInfo.do', {id}).then((res) => {
+                    if (res.code == 200) {
+                        this.userInfo = {...res.data, id}
+                        console.log(this.userInfo)
+                        this.formData = {
+                            ...this.formData,
+                            city: this.userInfo.city,
+                            district: this.userInfo.district
+                        }
+                        // this.cityChange(this.userInfo.city)
+                        // this.districtChange(this.userInfo.district)
+                    }
+                })
             }
         },
         mounted() {

@@ -633,5 +633,9 @@
     }
     .input__label-content{
         height: 60px;
+        top: 5px;
+    }
+    .input--filled .input__label-content{
+        top: 5px !important;
     }
 </style>

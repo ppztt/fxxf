@@ -162,6 +162,7 @@
                                                 placeholder="市"
                                                 :clearable="true"
                                                 filterable
+                                                :disabled="userInfo.roleId == 2 || userInfo.roleId == 3 "
                                                 @change="cityChange(addr.city)"
                                                 @clear="clear">
                                             <el-option
@@ -179,7 +180,7 @@
                                                 :ref="`district${index}`"
                                                 v-model="addr.district"
                                                 @change="districtChange(district)"
-                                                :disabled="!addr.city ||districtData.length == 0">
+                                                :disabled="!addr.city ||districtData.length == 0 || userInfo.roleId == 3 ">
                                             <el-option
                                                     v-for="item in districtData"
                                                     :value="item.name"
@@ -678,7 +679,7 @@
                 formrules: {
                     regName: [{required: true, message: '经营者注册名称不能为空', trigger: 'blur'}],
                     creditCode: [{required: true, message: '统一社会信用代码不能为空，且为18位', trigger: 'blur'},
-                        {min: 18, trigger: 'blur'}],
+                        {min: 18,message: '统一社会信用代码应为18位', trigger: 'blur'}],
                     onlineName: [{required: true, message: '网店名称不能为空', trigger: 'blur'}],
                     platform: [{required: true, message: '所属平台不能为空', trigger: 'blur'}],
                     storeName: [{required: true, message: '门店名称不能为空', trigger: 'blur'}],
@@ -950,9 +951,12 @@
                 isDown: false
             }
         },
+        watch:{
+            formData: function (n, o){
+                console.log(n, o)
+            }
+        },
         methods: {
-            save: function () {
-            },
             // 关闭弹出框
             closeEnteringModal() {
                 this.formData = {
@@ -960,13 +964,13 @@
                     storeName: "",
                     platform: "",
                     onlineName: "",
-                    city: "",
-                    district: "",
+                    city: this.userInfo.city,
+                    district: this.userInfo.district,
                     address: "",
                     addrs: [
                         {
-                            city: "",
-                            district: "",
+                            city: this.userInfo.city,
+                            district: this.userInfo.district,
                             address: "",
                         },
                     ],
@@ -1004,9 +1008,6 @@
                 this.debounce(this.getUnitList(), 1000)
             }
             ,
-            handleSelectionChange: function () {
-
-            },
             changeStartTime(value) {
                 this.startTime = value;
             },
@@ -1035,13 +1036,6 @@
                     // this.town = "";
                 }
             },
-            selectChange: function () {
-            }
-            ,
-            isShowEnteringModal: function () {
-
-            }
-            ,
             beforeUploadAction(file) {
                 if (this.allowFiles.indexOf(file.name.substring(file.name.lastIndexOf("."))) === -1) {
                     this.$message.error({
@@ -1198,6 +1192,7 @@
             getRegionData() {
                 ms.http.get('/xwh/gd-regin.do').then((res) => {
                     this.regionData = res.data
+                    this.getUserInfo();
                 })
             },
             getManagerType() {
@@ -1233,11 +1228,19 @@
             },
             // 录入功能
             setApply(type) {
-                // let addrs = JSON.stringify(this.formData.addrs)
+
                 let params = JSON.stringify(this.formData)
                 ms.http.post('/xwh/applicants/apply/input.do', {params},
                     {headers: {'Content-type': 'application/json;charset=UTF-8'}}).then((res) => {
-
+                        if(res.code == 200){
+                            this.$message({
+                                type: "success",
+                                message: "录入成功"
+                            })
+                            this.isShowEnteringModal = false
+                        }else{
+                            this.$message.error("录入失败")
+                        }
                 })
 
             },
@@ -1332,6 +1335,19 @@
                     type: "success"
                 })
             },
+            // 获取用户信息
+            getUserInfo(){
+                let id = sessionStorage.getItem('userId')
+                ms.http.get('/xwh/user/userInfo.do',{id}).then((res)=>{
+                    if(res.code == 200){
+                        this.userInfo = {...res.data, id}
+                        console.log(this.userInfo)
+                        this.formData.addrs[0] = {...this.formData.addrs[0],city: this.userInfo.city,district: this.userInfo.district}
+                        this.cityChange(this.userInfo.city)
+                        this.districtChange(this.userInfo.district)
+                    }
+                })
+            }
 
         },
         mounted: function () {

@@ -62,7 +62,7 @@ html *, body * {
 .ms-tr {
     text-align: right;
 }
-.ms-loading {background:url('/static/images/loading.gif') no-repeat center;}
+.ms-loading {background:url('/static/images/loading2.gif') no-repeat center;}
 /*表单提示*/
 .ms-form-tip,.ms-form-tip-err {
     color: #909399;
