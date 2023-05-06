@@ -163,8 +163,8 @@
                                                 :clearable="true"
                                                 filterable
                                                 :disabled="userInfo.roleId == 2 || userInfo.roleId == 3 "
-                                                @change="cityChange(addr.city)"
-                                                @clear="clear">
+                                                @change="cityChange(addr.city, index)"
+                                                @clear="clear(index)">
                                             <el-option
                                                     v-for="item in regionData"
                                                     :value="item.name"
@@ -177,9 +177,8 @@
                                     <el-col span="5">
                                         <el-select
                                                 size="mini"
-                                                :ref="`district${index}`"
                                                 v-model="addr.district"
-                                                @change="districtChange(district)"
+                                                @change="districtChange(addr.district, index)"
                                                 :disabled="!addr.city ||districtData.length == 0 || userInfo.roleId == 3 ">
                                             <el-option
                                                     v-for="item in districtData"
@@ -659,13 +658,7 @@
                     city: "",
                     district: "",
                     address: "",
-                    addrs: [
-                        {
-                            city: '',
-                            district: '',
-                            address: "",
-                        },
-                    ],
+                    addrs: [],
                     creditCode: "",
                     management: "",
                     details: "",
@@ -905,13 +898,7 @@
                     city: this.userInfo.city,
                     district: this.userInfo.district,
                     address: "",
-                    addrs: [
-                        {
-                            city: this.userInfo.city || '',
-                            district: this.userInfo.district || '',
-                            address: "",
-                        },
-                    ],
+                    addrs: [],
                     creditCode: "",
                     management: "",
                     details: "",
@@ -922,6 +909,11 @@
                     contents3: "",
                     applicationDate: "",
                 }
+                this.formData.addrs.push({
+                    city: this.userInfo.city,
+                    district: this.userInfo.district,
+                    address: ""
+                })
             }
             ,
             currentChange: function (v) {
@@ -951,11 +943,12 @@
             changeEndTime(value) {
                 this.endTime = value;
             },
-            clear() {
+            clear(index) {
                 this.district = "";
                 this.formData.district = ""
+                this.formData.addrs[index].district = ""
             },
-            cityChange: function (name) {
+            cityChange: function (name, index) {
                 // 一级市发生改变
                 if (name) {
                     let cityData_active = this.regionData.find((value) => value.name == name);
@@ -1278,13 +1271,11 @@
                 ms.http.get('/xwh/user/userInfo.do', {id}).then((res) => {
                     if (res.code == 200) {
                         this.userInfo = {...res.data, id}
-                        if(this.userInfo.roleId == 2){
-                            this.formData.addrs[0].city = this.userInfo.city
-                        }
-                        if(this.userInfo.roleId == 3){
-                            this.formData.addrs[0].city = this.userInfo.city
-                            this.formData.addrs[0].district = this.userInfo.district
-                        }
+                        this.formData.addrs.push({
+                            city:  this.userInfo.city,
+                            district: this.userInfo.district,
+                            address: ""
+                        })
                         this.cityChange(this.userInfo.city)
                         this.districtChange(this.userInfo.district)
                     }

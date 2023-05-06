@@ -165,29 +165,28 @@
                                                 :clearable="true"
                                                 filterable
                                                 :disabled="userInfo.roleId == 2 || userInfo.roleId == 3 "
-                                                @change="cityChange(addr.city)"
-                                                @clear="clear">
+                                                @change="cityChange(addr.city, index)"
+                                                @clear="clear(index)">
                                             <el-option
                                                     v-for="item in regionData"
                                                     :value="item.name"
                                                     :key="item.code"
                                                     :label="item.name"
-                                            >{{ item.name }}
+                                            >
                                             </el-option>
                                         </el-select>
                                     </el-col>
                                     <el-col span="5">
                                         <el-select
                                                 size="mini"
-                                                :ref="`district${index}`"
                                                 v-model="addr.district"
-                                                @change="districtChange(district)"
+                                                @change="districtChange(addr.district, index)"
                                                 :disabled="!addr.city ||districtData.length == 0 || userInfo.roleId == 3">
                                             <el-option
                                                     v-for="item in districtData"
                                                     :value="item.name"
                                                     :key="item.code"
-                                                    :label="item.name">{{ item.name }}
+                                                    :label="item.name">
                                             </el-option>
                                         </el-select>
                                     </el-col>
@@ -662,13 +661,7 @@
                     city: "",
                     district: "",
                     address: "",
-                    addrs: [
-                        {
-                            city: "",
-                            district: "",
-                            address: "",
-                        },
-                    ],
+                    addrs: [],
                     creditCode: "",
                     management: "",
                     details: "",
@@ -802,42 +795,6 @@
                         key: "address",
                         minWidth: 200,
                         align: "left",
-                        <#--render: (h, obj) => {-->
-                        <#--    // console.log(h, obj);-->
-                        <#--    let cityArr = obj.row.city.split(",");-->
-                        <#--    let districtArr = obj.row.district.split(",");-->
-                        <#--    let addressArr = obj.row.address.split(",");-->
-                        <#--    let addrs = cityArr.map((item, index) => {-->
-                        <#--        let city = item;-->
-                        <#--        let district = districtArr[index];-->
-                        <#--        let address = addressArr[index];-->
-                        <#--        return `${city}-${district}-${address}`;-->
-                        <#--    });-->
-
-                        <#--    return (-->
-                        <#--        <div>-->
-                        <#--            <Poptip word-wrap width="300" transfer={true}>-->
-                        <#--                <p style="cursor:pointer">-->
-                        <#--                    {obj.row.address-->
-                        <#--                        ? obj.row.address.length > 10-->
-                        <#--                            ? `${obj.row.address.slice(0, 10)}...`-->
-                        <#--                            : obj.row.address-->
-                        <#--                        : ""}-->
-                        <#--                </p>-->
-
-                        <#--                <div slot="content">-->
-                        <#--                    {addrs.map((item, index) => {-->
-                        <#--                        return (-->
-                        <#--                            <p>-->
-                        <#--                                地址{index + 1}：{item}-->
-                        <#--                            </p>-->
-                        <#--                        );-->
-                        <#--                    })}-->
-                        <#--                </div>-->
-                        <#--            </Poptip>-->
-                        <#--        </div>-->
-                        <#--    );-->
-                        <#--},-->
                     },
                     {
                         title: "状态",
@@ -881,27 +838,6 @@
                         key: "details",
                         minWidth: 210,
                         align: "left",
-                        <#--render: (h, obj) => {-->
-                        <#--    // console.log(h, obj)-->
-                        <#--    return (-->
-                        <#--        <div>-->
-                        <#--            <Poptip-->
-                        <#--                word-wrap-->
-                        <#--                width="300"-->
-                        <#--                transfer={true}-->
-                        <#--                content={obj.row.details}-->
-                        <#--            >-->
-                        <#--                <p style="cursor:pointer">-->
-                        <#--                    {obj.row.details-->
-                        <#--                        ? obj.row.details.length > 10-->
-                        <#--                            ? `${obj.row.details.slice(0, 10)}...`-->
-                        <#--                            : obj.row.details-->
-                        <#--                        : ""}-->
-                        <#--                </p>-->
-                        <#--            </Poptip>-->
-                        <#--        </div>-->
-                        <#--    );-->
-                        <#--},-->
                     },
                     {
                         title: "负责人",
@@ -1009,13 +945,7 @@
                     city: "",
                     district: "",
                     address: "",
-                    addrs: [
-                        {
-                            city: "",
-                            district: "",
-                            address: "",
-                        },
-                    ],
+                    addrs: [],
                     creditCode: "",
                     management: "",
                     details: "",
@@ -1026,6 +956,11 @@
                     contents3: "",
                     applicationDate: "",
                 }
+                this.formData.addrs.push({
+                    city: this.userInfo.city,
+                    district: this.userInfo.district,
+                    address: ""
+                })
             }
             ,
             changeStartTime(value) {
@@ -1034,28 +969,25 @@
             changeEndTime(value) {
                 this.endTime = value;
             },
-            clear() {
+            clear(index) {
                 this.district = "";
                 this.formData.district = ""
+                this.formData.addrs[index].district = ""
             },
-            clear() {
-                this.district = "";
-                this.formData.district = ""
-            },
-            cityChange: function (name) {
+            cityChange: function (name, index) {
                 // 一级市发生改变
+                console.log(name, index)
                 if (name) {
                     let cityData_active = this.regionData.find((value) => value.name == name);
                     this.districtData = cityData_active.children;
                     this.district = "";
                     this.formData.district = ""
-                    // this.town = "";
                 }
             },
-            districtChange: function (name) {
+            districtChange: function (name, index) {
+                console.log(name)
                 // 二级地 县等发生改变
                 if (name) {
-                    let districtData_active = this.districtData.find((value => value.name == name));
                     // this.townData = districtData_active.children;
                     // this.town = "";
                 }
@@ -1371,13 +1303,11 @@
                 ms.http.get('/xwh/user/userInfo.do', {id}).then((res) => {
                     if (res.code == 200) {
                         this.userInfo = {...res.data, id}
-                        if(this.userInfo.roleId == 2){
-                            this.formData.addrs[0].city = this.userInfo.city
-                        }
-                        if(this.userInfo.roleId == 3){
-                            this.formData.addrs[0].city = this.userInfo.city
-                            this.formData.addrs[0].district = this.userInfo.district
-                        }
+                        this.formData.addrs.push({
+                            city:  this.userInfo.city,
+                            district: this.userInfo.district,
+                            address: ""
+                        })
                         this.cityChange(this.userInfo.city)
                         this.districtChange(this.userInfo.district)
                     }
