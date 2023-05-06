@@ -363,7 +363,7 @@
     <#--1-->
     .edit-check-delist {
         height: calc(100vh);
-        background-color: white;
+        /*background-color: white;*/
     }
 
     .frame {
