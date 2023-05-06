@@ -21,7 +21,7 @@
             </el-col>
             <el-col span="20">
                 <el-select size="mini" ref="city" v-model="city" placeholder="市" :clearable="true" filterable
-                           @change="cityChange(city)" @clear="clear">
+                           @change="cityChange(city, 0)" @clear="clear" :disabled="userInfo.roleId == 2 || userInfo.roleId == 3">
                     <el-option v-for="item in regionData" :value="item.name" :key="item.code" :label="item.name">
                     </el-option>
                 </el-select>
@@ -30,8 +30,8 @@
                 <el-select size="mini" ref="district" v-model="district" placeholder="市/县/区/镇" :clearable="true"
                            filterable
                            @change="districtChange(district)"
-                           :disabled="!city ||districtData.length == 0">
-                    <el-option v-for="item in districtData" :value="item.code" :key="item.code"
+                           :disabled="!city ||districtData.length == 0 || userInfo.roleId == 3">
+                    <el-option v-for="item in districtData" :value="item.name" :key="item.code"
                                :label="item.name">
                     </el-option>
                 </el-select>
@@ -969,14 +969,13 @@
             changeEndTime(value) {
                 this.endTime = value;
             },
-            clear(index) {
+            clear(index = 0) {
                 this.district = "";
                 this.formData.district = ""
                 this.formData.addrs[index].district = ""
             },
             cityChange: function (name, index) {
                 // 一级市发生改变
-                console.log(name, index)
                 if (name) {
                     let cityData_active = this.regionData.find((value) => value.name == name);
                     this.districtData = cityData_active.children;
@@ -985,7 +984,6 @@
                 }
             },
             districtChange: function (name, index) {
-                console.log(name)
                 // 二级地 县等发生改变
                 if (name) {
                     // this.townData = districtData_active.children;
@@ -1308,6 +1306,8 @@
                             district: this.userInfo.district,
                             address: ""
                         })
+                        this.district = this.userInfo.district
+                        this.city = this.userInfo.city
                         this.cityChange(this.userInfo.city)
                         this.districtChange(this.userInfo.district)
                     }
