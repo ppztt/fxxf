@@ -221,6 +221,10 @@
             window.returnBack = function () {
                 that.action = ""
             }
+            window.message = function (){
+                this.getList()
+                that.$message.success('反馈成功');
+            }
         },
     })
 </script>

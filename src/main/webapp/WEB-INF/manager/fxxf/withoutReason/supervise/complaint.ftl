@@ -270,20 +270,20 @@
                 })
             },
             //提交
-            resultMesInfo(){
-                //切分上个页面传过来的id
+            async resultMesInfo() {
                 const url = window.location.href;
                 const regex = /id=(\d+)/;
                 const match = url.match(regex);
                 const id = match ? match[1] : null;
                 const {processingSituation,result} = this.formValidate
-                ms.http.post(ms.manager + '/feedback/handleFeedback/' + id + '.do?id='+id+'&processingSituation='+processingSituation+'&result='+result).then((res) => {
-                    if(res.code==200) {
-                        this.getList()
-                    }
-
-                })
+                try {
+                    const response = await ms.http.post(ms.manager + '/feedback/handleFeedback/' + id + '.do?id='+id+'&processingSituation='+processingSituation+'&result='+result)
+                    // 在这里处理响应结果
+                } catch (error) {
+                    console.error(error)
+                }
             },
+
             //预览
             showImage(item) {
                 const path = encodeURIComponent(item.path)
@@ -329,16 +329,25 @@
                 })
             },
             //提交
-            handleSubmit(name){
-                this.$refs[name].validate(async (valid) => {
+            async handleSubmit(name) {
+                try {
+                    const valid = await this.$refs[name].validate()
                     if (valid) {
-                        this.resultMesInfo()
-                        this.$message.success('反馈成功');
+                        await this.resultMesInfo()
+                        // this.$message.success('反馈成功');
+                        window.parent.message()
+                        window.parent.document.getElementById('complaint').style.display = "none"
+                        // //清除跳转页面
+                        window.parent.returnBack()
                     } else {
-                        this.$message.error('填写有误');
+                        this.$message.error('填写有误')
                     }
-                });
+                } catch (error) {
+                    console.error(error)
+                }
             }
+
+
         },
         created: function () {
             this.getList()
