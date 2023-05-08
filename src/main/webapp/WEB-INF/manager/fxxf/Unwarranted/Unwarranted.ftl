@@ -29,7 +29,7 @@
             <el-col span="20">
                 <el-select size="mini" ref="district" v-model="district" placeholder="市/县/区/镇" :clearable="true"
                            filterable
-                           @change="districtChange(district)"
+                           @change="districtChange(district,0)"
                            :disabled="!city ||districtData.length == 0 || userInfo.roleId == 3">
                     <el-option v-for="item in districtData" :value="item.name" :key="item.code"
                                :label="item.name">
@@ -979,7 +979,7 @@
                 if (name) {
                     let cityData_active = this.regionData.find((value) => value.name == name);
                     this.districtData = cityData_active.children;
-                    this.district = "";
+                    this.district =this.userInfo.district || "";
                     this.formData.district = ""
                 }
             },
