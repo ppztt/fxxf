@@ -526,9 +526,6 @@
                 ],
             }
         },
-        watch: {},
-        components: {},
-        computed: {},
         methods: {
             getUserList() {
                 this.loading = true

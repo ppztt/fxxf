@@ -382,7 +382,7 @@
                                :before-upload="beforeUploadAction"
                                :on-success="uploadSucAction"
                                :on-error="uploadErrAction"
-                               :action="'/applicants/preImport.do?type='+type">
+                               :action="'/xwh/applicants/preImport.do?type='+type">
                         <el-button size="mini" type="primary" :disabled="!canImport"
                                    icon="el-icon-bottom"
                                    :title="!canImport ? '没有权限导入' : ''">
@@ -990,13 +990,6 @@
                     // this.town = "";
                 }
             },
-            selectChange: function () {
-            }
-            ,
-            isShowEnteringModal: function () {
-
-            }
-            ,
             beforeUploadAction(file) {
                 if (this.allowFiles.indexOf(file.name.substring(file.name.lastIndexOf("."))) === -1) {
                     this.$message.error({
