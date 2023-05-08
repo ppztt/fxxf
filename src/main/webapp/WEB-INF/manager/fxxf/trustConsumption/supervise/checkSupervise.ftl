@@ -162,6 +162,7 @@
                 window.parent.document.getElementById('mes_num_list').style.display = "none"
                 //清除跳转页面
                 window.parent.returnBack()
+                window.parent.getList()
             },
             //跳转页面
             goComplaint(row) {
