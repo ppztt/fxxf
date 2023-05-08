@@ -420,12 +420,6 @@
         }
         .files-a {
             margin-right: 12px;
-            /*display: inline-block;*/
-            /*overflow: hidden;*/
-            /*text-overflow: ellipsis;*/
-            /*white-space: nowrap;*/
-            /*max-width: 640px;*/
-            color: #2e8cf1;
         }
         .files-span {
             display: inline-block;
