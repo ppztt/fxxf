@@ -380,7 +380,7 @@
                                :before-upload="beforeUploadAction"
                                :on-success="uploadSucAction"
                                :on-error="uploadErrAction"
-                               :action="'/applicants/preImport.do?type='+type">
+                               :action="'/xwh/applicants/preImport.do?type='+type">
                         <el-button size="mini" type="primary" :disabled="!canImport"
                                    icon="el-icon-bottom"
                                    :title="!canImport ? '没有权限导入' : ''">
@@ -664,9 +664,9 @@
                     details: "",
                     principal: "",
                     principalTel: "",
-                    contents1: "",
-                    contents2: "",
-                    contents3: "",
+                    contents1: "不提供假冒伪劣商品，不提供“三无”产品，不提供不合格商品，不提供来源不明商品，不提供过期商品，不提供缺陷商品，不提供侵犯知识产权商品。",
+                    contents2: "不作虚假宣传，不搞低价诱导；恪守服务承诺，履行合同约定；明码实价，明白消费；守法经营，诚信待客。",
+                    contents3: "履行保护消费者权益第一责任，提供便捷售后服务，高效处理消费纠纷，承担先行赔付和首问责任。",
                     applicationDate: "",
                 },
                 formrules: {
