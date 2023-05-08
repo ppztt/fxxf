@@ -271,7 +271,7 @@
                         </el-col>
                         <el-col span="8">
                             <el-form-item label="退货期限：" prop="contents2">
-                                商品购买往后<el-input size="mini" type="number" v-model="formData.contents2" style="width: 75px !important; margin-right: 10px;">{{ formData.contents2 }}</el-input>天
+                                商品购买往后<el-input @input="changeDate" size="mini" type="number" v-model="formData.contents2" style="width: 75px !important; margin-right: 10px;">{{ formData.contents2 }}</el-input>天
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -524,6 +524,9 @@
             getList() {
                 ms.http.get("/xwh/applicants/" + this.consumerId + '.do').then((res) => {
                     this.formData = res.data
+                    this.formData.contents2 = this.formData.contents2
+                        ? Number(this.formData.contents2.replace(/天|日|月|年/g, ""))
+                        : 0;
                     let cityArr = this.formData.city.split(",");
                     let districtArr = this.formData.district.split(",");
                     let addressArr = this.formData.address.split(",");
@@ -536,7 +539,6 @@
                         });
                     });
                     this.getManagerType();
-
                 })
             },
             // 获取地区信息
@@ -670,6 +672,12 @@
                 ms.http.post('/xwh/applicants/updateApplicantsStatus.do', params,
                     {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
                 })
+            },
+            changeDate(value){
+                if(Number(value) < 0){
+                    this.formData.contents2 = 0
+                }
+                this.formData.contents2 = Number(value) + ""
             }
         },
         mounted: function () {
