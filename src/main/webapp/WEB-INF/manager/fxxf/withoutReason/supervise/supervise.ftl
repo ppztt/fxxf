@@ -157,6 +157,9 @@
             window.returnBack = function (){
                 that.action = ""
             }
+            window.getList = function (){
+                that.getMesNumList()
+            }
         },
     })
 </script>

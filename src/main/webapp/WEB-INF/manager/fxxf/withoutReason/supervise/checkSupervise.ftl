@@ -162,6 +162,7 @@
                 window.parent.document.getElementById('mes_num_list').style.display = "none"
                 //清除跳转页面
                 window.parent.returnBack()
+                window.parent.getList()
             },
             //跳转页面
             goComplaint(row) {
@@ -220,6 +221,10 @@
             let that = this
             window.returnBack = function () {
                 that.action = ""
+            }
+            window.message = function (){
+                that.getList()
+                that.$message.success('反馈成功');
             }
         },
     })
