@@ -15,7 +15,7 @@
         <el-row class="tools" ref="tools" type="flex" justify="center" align="middle">
             <!-- 工具栏 -->
             <el-col span="24">
-                <el-input size="mini" placeholder="请输入关键字" v-model="search" :clearable="true"></el-input>
+                <el-input size="mini" placeholder="请输入关键字" v-model="searchMsg" :clearable="true"></el-input>
             </el-col>
             <el-col span="20">
                 <el-select size="mini" ref="city" v-model="city" placeholder="市" :clearable="true" filterable
@@ -62,7 +62,7 @@
                                 @change="changeEndTime"></el-date-picker>
             </el-col>
             <el-col>
-                <el-button size="mini" type="primary" icon="el-icon-search" @click="getUnitList"
+                <el-button size="mini" type="primary" icon="el-icon-search" @click="searchInfo"
                            style="margin-left: -20px">
                     查询
                 </el-button>
@@ -732,7 +732,7 @@
                 uploadId: null,
                 // ----
                 // 搜索关键字
-                search: "",
+                searchMsg: "",
                 startTime: "", // 开始时间
                 endTime: "", // 结束时间
                 // 城市级联工具
@@ -884,7 +884,8 @@
                 details: "",
                 // 被删除的id
                 ids: {ids: []},
-                isDown: false
+                isDown: false,
+                searchMessage:{}
             }
         },
         methods: {
@@ -914,11 +915,14 @@
                     district: this.userInfo.district,
                     address: ""
                 })
-            }
-            ,
+            },
             currentChange: function (v) {
                 this.current = v;
-                this.debounce(this.getUnitList(), 1000)
+                let info = {
+                    ...this.searchMessage,
+                    size: this.size
+                }
+                this.debounce(this.getUnitList(info), 1000)
             },
             // 防抖
             debounce(fun, wait = 1500) {
@@ -934,7 +938,12 @@
             },
             sizeChange: function (v) {
                 this.size = v;
-                this.debounce(this.getUnitList(), 1000)
+                this.current = 1
+                let info = {
+                    ...this.searchMessage,
+                    size: this.size
+                }
+                this.debounce(this.getUnitList(info), 1000)
             }
             ,
             changeStartTime(value) {
@@ -984,7 +993,7 @@
                                 message: "导入成功",
                                 type: 'success'
                             });
-                            this.getUnitList();
+                            this.getUnitList(this.searchMessage);
                         }
                         this.isShowComfirm = false;
                     });
@@ -1001,7 +1010,6 @@
             uploadErrAction() {
                 this.$message.error("导入失败");
             },
-
             downFile(url, timeout = 60000) {
                 let iframe = document.createElement('iframe');
                 iframe.style.display = 'none';
@@ -1087,12 +1095,12 @@
                     }
                 }
             },
-            // 获取表格数据
-            getUnitList: function () {
-                // 获取放心消费承诺单位列表
+            // 查询数据
+            searchInfo() {
                 this.loading = true;
-                ms.http.post("/xwh/applicants/listPage.do", JSON.stringify({
-                    search: this.search,
+                this.current = 1
+                let info = {
+                    search: this.searchMsg,
                     city: this.city,
                     district: this.district,
                     status: this.status,
@@ -1104,7 +1112,28 @@
                     endTime: this.endTime,
                     town: this.town,
                     type: this.type
-                }), {headers: {'Content-type': 'application/json;charset=UTF-8'},})
+                }
+                this.searchMessage = info
+                this.getUnitList(info)
+            },
+            // 获取表格数据
+            getUnitList: function (info={
+                search: this.searchMsg,
+                city: this.city,
+                district: this.district,
+                status: this.status,
+                management: this.management,
+                startTime: this.startTime,
+                current: this.current,
+                size: this.size,
+                details: this.details,
+                endTime: this.endTime,
+                town: this.town,
+                type: this.type
+            }) {
+                // 获取放心消费承诺单位列表
+                this.loading = true;
+                ms.http.post("/xwh/applicants/listPage.do", JSON.stringify(info), {headers: {'Content-type': 'application/json;charset=UTF-8'},})
                     .then((res) => {
                         let data = res.data;
                         this.total = Number(data.total);
@@ -1220,7 +1249,7 @@
                             type: 'success',
                             message: '删除成功!'
                         });
-                        this.getUnitList()
+                        this.getUnitList(this.searchMessage)
                     })
                 }).catch(() => {
                     this.$message({
@@ -1250,7 +1279,7 @@
                         type: 'success',
                         message: '删除成功!'
                     });
-                    this.getUnitList()
+                    this.getUnitList(this.searchMessage)
                 }).catch(() => {
                     this.$message({
                         type: 'info',
@@ -1280,6 +1309,21 @@
                         this.city = this.userInfo.city
                         this.cityChange(this.userInfo.city)
                         this.districtChange(this.userInfo.district)
+                        this.getUnitList();
+                        this.searchMessage = {
+                            search: this.searchMsg,
+                            city: this.city,
+                            district: this.district,
+                            status: this.status,
+                            management: this.management,
+                            startTime: this.startTime,
+                            current: this.current,
+                            size: this.size,
+                            details: this.details,
+                            endTime: this.endTime,
+                            town: this.town,
+                            type: this.type
+                        }
                     }
                 })
             }
@@ -1288,7 +1332,7 @@
         mounted: function () {
             this.getRegionData();
             this.getManagerType();
-            this.getUnitList();
+
             // this.action = ms.manager + "/xwh/consumer/check.do";
             let that = this
             window.returnBack = function () {
@@ -1296,7 +1340,6 @@
                 that.getUnitList();
             }
             window.currentTopic = this.currentTopic
-
         }
     })
 </script>
