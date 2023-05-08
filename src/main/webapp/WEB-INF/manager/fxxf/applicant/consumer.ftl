@@ -19,7 +19,7 @@
             </el-col>
             <el-col span="20">
                 <el-select size="mini" ref="city" v-model="city" placeholder="市" :clearable="true" filterable
-                           @change="cityChange(city)" @clear="clear">
+                           @change="cityChange(city, 0)" @clear="clear" :disabled="userInfo.roleId == 2 || userInfo.roleId == 3">
                     <el-option v-for="item in regionData" :value="item.name" :key="item.code" :label="item.name">
                     </el-option>
                 </el-select>
@@ -27,9 +27,9 @@
             <el-col span="20">
                 <el-select size="mini" ref="district" v-model="district" placeholder="市/县/区/镇" :clearable="true"
                            filterable
-                           @change="districtChange(district)"
-                           :disabled="!city ||districtData.length == 0">
-                    <el-option v-for="item in districtData" :value="item.code" :key="item.code"
+                           @change="districtChange(district, 0)"
+                           :disabled="!city || districtData.length == 0 || userInfo.roleId == 3">
+                    <el-option v-for="item in districtData" :value="item.name" :key="item.code"
                                :label="item.name">
                     </el-option>
                 </el-select>
@@ -163,8 +163,8 @@
                                                 :clearable="true"
                                                 filterable
                                                 :disabled="userInfo.roleId == 2 || userInfo.roleId == 3 "
-                                                @change="cityChange(addr.city)"
-                                                @clear="clear">
+                                                @change="cityChange(addr.city, index)"
+                                                @clear="clear(index)">
                                             <el-option
                                                     v-for="item in regionData"
                                                     :value="item.name"
@@ -177,9 +177,8 @@
                                     <el-col span="5">
                                         <el-select
                                                 size="mini"
-                                                :ref="`district${index}`"
                                                 v-model="addr.district"
-                                                @change="districtChange(district)"
+                                                @change="districtChange(addr.district, index)"
                                                 :disabled="!addr.city ||districtData.length == 0 || userInfo.roleId == 3 ">
                                             <el-option
                                                     v-for="item in districtData"
@@ -659,13 +658,7 @@
                     city: "",
                     district: "",
                     address: "",
-                    addrs: [
-                        {
-                            city: '',
-                            district: '',
-                            address: "",
-                        },
-                    ],
+                    addrs: [],
                     creditCode: "",
                     management: "",
                     details: "",
@@ -905,13 +898,7 @@
                     city: this.userInfo.city,
                     district: this.userInfo.district,
                     address: "",
-                    addrs: [
-                        {
-                            city: this.userInfo.city || '',
-                            district: this.userInfo.district || '',
-                            address: "",
-                        },
-                    ],
+                    addrs: [],
                     creditCode: "",
                     management: "",
                     details: "",
@@ -922,6 +909,11 @@
                     contents3: "",
                     applicationDate: "",
                 }
+                this.formData.addrs.push({
+                    city: this.userInfo.city,
+                    district: this.userInfo.district,
+                    address: ""
+                })
             }
             ,
             currentChange: function (v) {
@@ -951,21 +943,22 @@
             changeEndTime(value) {
                 this.endTime = value;
             },
-            clear() {
+            clear( index = 0) {
                 this.district = "";
                 this.formData.district = ""
+                this.formData.addrs[index].district = ""
             },
-            cityChange: function (name) {
+            cityChange: function (name, index) {
                 // 一级市发生改变
                 if (name) {
                     let cityData_active = this.regionData.find((value) => value.name == name);
                     this.districtData = cityData_active.children;
-                    this.district = "";
+                    this.district = this.userInfo.district || "";
                     this.formData.district = ""
                     // this.town = "";
                 }
             },
-            districtChange: function (name) {
+            districtChange: function (name, index) {
                 // 二级地 县等发生改变
                 if (name) {
                     let districtData_active = this.districtData.find((value => value.name == name));
@@ -1278,13 +1271,13 @@
                 ms.http.get('/xwh/user/userInfo.do', {id}).then((res) => {
                     if (res.code == 200) {
                         this.userInfo = {...res.data, id}
-                        if(this.userInfo.roleId == 2){
-                            this.formData.addrs[0].city = this.userInfo.city
-                        }
-                        if(this.userInfo.roleId == 3){
-                            this.formData.addrs[0].city = this.userInfo.city
-                            this.formData.addrs[0].district = this.userInfo.district
-                        }
+                        this.formData.addrs.push({
+                            city:  this.userInfo.city,
+                            district: this.userInfo.district,
+                            address: ""
+                        })
+                        this.district = this.userInfo.district
+                        this.city = this.userInfo.city
                         this.cityChange(this.userInfo.city)
                         this.districtChange(this.userInfo.district)
                     }

@@ -225,9 +225,9 @@
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="所属角色" prop="roleId">
-                    <el-select size="mini" v-model="formData.roleId" placeholder="请选择所属角色">
+                    <el-select size="mini" v-model="formData.roleId" placeholder="请选择所属角色" style="width: 100%">
                         <el-option
-                                :disabled="roleId == 2 && (item.id === 1 || item.id === 2)"
+                                :disabled="userInfo.roleId == 2 && (item.id === 1 || item.id === 2)"
                                 v-for="(item, index) in roleList"
                                 :value="item.id"
                                 :label="item.name"
@@ -318,6 +318,7 @@
         el: '#form',
         data: function () {
             return {
+                userInfo:{},
                 loading: false,
                 from: '',
                 userId: '',
@@ -569,7 +570,10 @@
             },
             getRegionData() {
                 ms.http.get('/xwh/gd-regin.do').then((res) => {
-                    this.regionData = res.data
+                    if(res.code == 200){
+                        this.regionData = res.data
+
+                    }
                 })
             },
             clear(){
@@ -693,11 +697,22 @@
                         message: '已取消删除'
                     });
                 });
+            },
+            // 获取用户信息
+            getUserInfo() {
+                let id = sessionStorage.getItem('userId')
+                ms.http.get('/xwh/user/userInfo.do', {id}).then((res) => {
+                    if (res.code == 200) {
+                        this.userInfo = {...res.data, id}
+                    }
+                })
             }
+
         },
         mounted() {
             this.getUserList()
             this.getRegionData()
+            this.getUserInfo()
         }
     });
 
