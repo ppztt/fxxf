@@ -512,8 +512,14 @@
                     align="left">
             </el-table-column>
             <el-table-column
-                    prop="creditCode"
+                    prop="startTime"
                     label="通过时间"
+                    width="200"
+                    align="left">
+            </el-table-column>
+            <el-table-column
+                    prop="creditCode"
+                    label="统一社会信用代码"
                     width="200"
                     align="left">
             </el-table-column>
@@ -560,8 +566,7 @@
                             </el-button>
                         </@shiro.hasPermission>
                         <@shiro.hasPermission name="jyzlb:audit">
-                            <el-button class="action_btn blue_text" icon="el-icon-circle-check" @click="openNew(3,row)"
-                                       v-if="row.status == 4">
+                            <el-button class="action_btn blue_text" icon="el-icon-circle-check" @click="openNew(3,row)">
                                 审核
                             </el-button>
                         </@shiro.hasPermission>
