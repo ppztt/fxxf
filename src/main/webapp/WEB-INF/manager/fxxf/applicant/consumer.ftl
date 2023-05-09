@@ -1257,6 +1257,8 @@
                                 message: '删除成功!'
                             });
                             this.getUnitList(this.searchMessage)
+                        }else{
+                            this.$message.error('删除失败')
                         }
                     })
                 }).catch(() => {
@@ -1290,6 +1292,8 @@
                                 message: '删除成功!'
                             });
                             this.getUnitList(this.searchMessage)
+                        }else{
+                            this.$message.error('删除失败')
                         }
                     })
                 }).catch(() => {
