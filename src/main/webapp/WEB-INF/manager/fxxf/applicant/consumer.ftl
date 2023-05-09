@@ -19,7 +19,8 @@
             </el-col>
             <el-col span="20">
                 <el-select size="mini" ref="city" v-model="city" placeholder="市" :clearable="true" filterable
-                           @change="cityChange(city, 0)" @clear="clear" :disabled="userInfo.roleId == 2 || userInfo.roleId == 3">
+                           @change="cityChange(city, 0)" @clear="clear"
+                           :disabled="userInfo.roleId == 2 || userInfo.roleId == 3">
                     <el-option v-for="item in regionData" :value="item.name" :key="item.code" :label="item.name">
                     </el-option>
                 </el-select>
@@ -890,7 +891,7 @@
                 // 被删除的id
                 ids: {ids: []},
                 isDown: false,
-                searchMessage:{}
+                searchMessage: {}
             }
         },
         methods: {
@@ -957,7 +958,7 @@
             changeEndTime(value) {
                 this.endTime = value;
             },
-            clear( index = 0) {
+            clear(index = 0) {
                 this.district = "";
                 this.formData.district = ""
                 this.formData.addrs[index].district = ""
@@ -1122,7 +1123,7 @@
                 this.getUnitList(info)
             },
             // 获取表格数据
-            getUnitList: function (info={
+            getUnitList: function (info = {
                 search: this.searchMsg,
                 city: this.city,
                 district: this.district,
@@ -1155,8 +1156,10 @@
             // 获取地区信息
             getRegionData() {
                 ms.http.get('/xwh/gd-regin.do').then((res) => {
-                    this.regionData = res.data
-                    this.getUserInfo();
+                    if(res.code == 200){
+                        this.regionData = res.data
+                        this.getUserInfo();
+                    }
                 })
             },
             getManagerType() {
@@ -1247,12 +1250,14 @@
                     type: 'error',
                     center: true
                 }).then(() => {
-                    ms.http.post('/xwh/applicants/remove/' + id + '.do').then(() => {
-                        this.$message({
-                            type: 'success',
-                            message: '删除成功!'
-                        });
-                        this.getUnitList(this.searchMessage)
+                    ms.http.post('/xwh/applicants/remove/' + id + '.do').then((res) => {
+                        if (res.code == 200) {
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                            this.getUnitList(this.searchMessage)
+                        }
                     })
                 }).catch(() => {
                     this.$message({
@@ -1277,12 +1282,16 @@
                     type: 'error',
                     center: true
                 }).then(() => {
-                    ms.http.post('/xwh/applicants/remove.do', ids)
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    });
-                    this.getUnitList(this.searchMessage)
+                    ms.http.post('/xwh/applicants/remove.do', ids, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res)=>{
+                        console.log(res)
+                        if (res.code == 200) {
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                            this.getUnitList(this.searchMessage)
+                        }
+                    })
                 }).catch(() => {
                     this.$message({
                         type: 'info',
@@ -1304,7 +1313,7 @@
                     if (res.code == 200) {
                         this.userInfo = {...res.data, id}
                         this.formData.addrs.push({
-                            city:  this.userInfo.city,
+                            city: this.userInfo.city,
                             district: this.userInfo.district,
                             address: ""
                         })
