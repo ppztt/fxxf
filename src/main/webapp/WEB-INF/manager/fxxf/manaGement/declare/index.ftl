@@ -147,6 +147,7 @@
             //查询
             getOperatorStatisticList() {
                 this.loadingShow = true
+                this.current = 1
                 this.getList()
             },
             //批量删除

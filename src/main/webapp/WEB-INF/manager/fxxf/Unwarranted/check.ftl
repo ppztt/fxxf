@@ -611,9 +611,11 @@
                             {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
                             if (res.code == 200) {
                                 this.returnBack()
-                                this.currentTopic("审核成功")
+                                this.currentTopic("保存成功")
                             }
                         })
+                    }else{
+                        this.$message.error('经营者注册名称重复,请确认单位名称后提交')
                     }
                 })
                 // let params = JSON.stringify(this.formData)

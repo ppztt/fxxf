@@ -727,9 +727,9 @@
                     {id: "2", value: "过期"},
                     {id: "4", value: "待审核"},
                     {id: "5", value: "县级审核通过"},
-                    {id: "6", value: "和业协会审核通过"},
+                    {id: "6", value: "行业协会审核通过"},
                     {id: "7", value: "审核不通过"},
-                    {id: "8", value: "行业审核不通过"}
+                    {id: "8", value: "行业协会审核不通过"}
                 ],
                 management: "",
                 isShowComfirm: false, //显示弹窗
@@ -1192,7 +1192,6 @@
             },
             // 录入功能
             setApply(type) {
-
                 let params = JSON.stringify(this.formData)
                 ms.http.post('/xwh/applicants/apply/input.do', {params},
                     {headers: {'Content-type': 'application/json;charset=UTF-8'}}).then((res) => {
@@ -1206,7 +1205,6 @@
                         this.$message.error("录入失败")
                     }
                 })
-
             },
             // 经营地址添加按钮
             addAddress() {

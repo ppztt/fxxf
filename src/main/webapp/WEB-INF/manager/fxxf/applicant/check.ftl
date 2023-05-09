@@ -749,6 +749,8 @@
                                 this.currentTopic("保存成功")
                             }
                         })
+                    }else{
+                        this.$message.error('经营者注册名称重复,请确认单位名称后提交')
                     }
                 })
                 // let params = JSON.stringify(this.formData)

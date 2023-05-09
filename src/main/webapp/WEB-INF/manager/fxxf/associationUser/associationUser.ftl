@@ -31,7 +31,7 @@
                     <el-col span="23">
                         <el-button
                                 size="mini"
-                                class="blue_btn btns_type" icon="el-icon-search" @click="getUserList">
+                                class="blue_btn btns_type" icon="el-icon-search" @click="searchInfo">
                             查询
                         </el-button>
                     </el-col >
@@ -445,6 +445,10 @@
             }
         },
         methods: {
+            searchInfo(){
+                this.current = 1
+                this.getUserList()
+            },
             getUserList() {
                 this.loading = true
                 ms.http.get('/xwh/user/industryAssociationList.do', {
