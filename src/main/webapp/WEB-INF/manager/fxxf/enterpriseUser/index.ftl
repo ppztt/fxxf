@@ -30,7 +30,7 @@
                     <el-col span="23" offset="4">
                         <el-button
                                 size="mini"
-                                type="primary" icon="el-icon-search" @click="getUserList">
+                                type="primary" icon="el-icon-search" @click="searchInfo">
                             查询
                         </el-button>
                     </el-col>
@@ -444,13 +444,11 @@
                     },
                 }
             },
-            watch: {}
-            ,
-            components: {}
-            ,
-            computed: {}
-            ,
             methods: {
+                searchInfo(){
+                    this.current = 1
+                    this.getUserList()
+                },
                 getUserList() {
                     this.loading = true
                     ms.http.get('/xwh/user/enterpriseList.do', {

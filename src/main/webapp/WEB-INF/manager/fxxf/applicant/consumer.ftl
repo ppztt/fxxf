@@ -1192,7 +1192,6 @@
             },
             // 录入功能
             setApply(type) {
-
                 let params = JSON.stringify(this.formData)
                 ms.http.post('/xwh/applicants/apply/input.do', {params},
                     {headers: {'Content-type': 'application/json;charset=UTF-8'}}).then((res) => {
@@ -1206,7 +1205,6 @@
                         this.$message.error("录入失败")
                     }
                 })
-
             },
             // 经营地址添加按钮
             addAddress() {
