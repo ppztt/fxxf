@@ -896,7 +896,7 @@
                 details: "",
                 // 被删除的id
                 ids: {ids: []},
-                searchMessage:{}
+                searchMessage: {}
             }
         },
         watch: {
@@ -1138,7 +1138,7 @@
                 this.getUnitList(info)
             },
             // 获取表格数据
-            getUnitList: function (info={
+            getUnitList: function (info = {
                 search: this.searchMsg,
                 city: this.city,
                 district: this.district,
@@ -1278,12 +1278,18 @@
                     type: 'error',
                     center: true
                 }).then(() => {
-                    ms.http.post('/xwh/applicants/remove/' + id + '.do')
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    });
-                    this.getUnitList(this.searchMessage)
+                    ms.http.post('/xwh/applicants/remove/' + id + '.do').then((res) => {
+                        if (res.code == 200) {
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                            this.getUnitList(this.searchMessage)
+                        }else{
+                            this.$message.error('删除失败')
+                        }
+                    })
+
                 }).catch(() => {
                     this.$message({
                         type: 'info',
@@ -1307,12 +1313,17 @@
                     type: 'error',
                     center: true
                 }).then(() => {
-                    ms.http.post('/xwh/applicants/remove.do', ids)
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    });
-                    this.getUnitList(this.searchMessage)
+                    ms.http.post('/xwh/applicants/remove.do', ids, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
+                        if (res.code == 200) {
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                            this.getUnitList(this.searchMessage)
+                        }else{
+                            this.$message.error('删除失败')
+                        }
+                    })
                 }).catch(() => {
                     this.$message({
                         type: 'info',
