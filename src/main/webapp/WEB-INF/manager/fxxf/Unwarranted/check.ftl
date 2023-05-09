@@ -412,9 +412,9 @@
             <div class="btn">
                 <el-button size="mini" v-if="detailType=='0'" type="primary" @click="perEditUnitTnfo">保存
                 </el-button>
-                <el-button size="mini" v-if="detailType=='3'" type="primary" @click="auditUnitTnfo()">审核通过
+                <el-button size="mini" v-if="detailType=='3'" type="primary" @click="auditUnitTnfo('1')">审核通过
                 </el-button>
-                <el-button size="mini" v-if="detailType=='3'" type="primary" @click="auditUnitTnfo('7')">
+                <el-button size="mini" v-if="detailType=='3'" type="primary" @click="auditUnitTnfo('2')">
                     审核不通过
                 </el-button>
                 <el-button size="mini" v-if="detailType=='2'" type="primary">提交</el-button>
@@ -645,7 +645,7 @@
                 let query = {
                     id: this.consumerId,
                     notes: this.formData.ccContent,
-                    type: this.type
+                    type: status
                 }
                 ms.http.get('/xwh/applicants/audit.do', query).then(async (res) => {
                     if (res.code == 200) {
