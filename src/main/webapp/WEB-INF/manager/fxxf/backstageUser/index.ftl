@@ -573,7 +573,6 @@
                 ms.http.get('/xwh/gd-regin.do').then((res) => {
                     if(res.code == 200){
                         this.regionData = res.data
-
                     }
                 })
             },
@@ -630,35 +629,19 @@
             },
             // 提交修改
             sub(msg) {
-                this.$nextTick(() => {
-                    this.$refs["formData"].validate(valid => {
-                        if (valid) {
-                            if (msg == "modify") {
-                                let params = JSON.stringify(this.formData)
-                                ms.http.post('/xwh/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
-                                    if (res.code == '200') {
-                                        this.$message({
-                                            message: '修改成功',
-                                            type: 'success'
-                                        })
-                                        this.modify = false
-                                        this.reset()
-                                        this.getUserList()
-                                    }
-                                    if (res.code == '500') {
-                                        this.$message.error(res.msg)
-                                    }
-                                })
-                            } else {
-                                if (this.formData.password == this.formData.newPassword) {
+                if(this.formData.password == this.formData.newPassword){
+                    this.$nextTick(() => {
+                        this.$refs["formData"].validate(valid => {
+                            if (valid) {
+                                if (msg == "modify") {
                                     let params = JSON.stringify(this.formData)
-                                    ms.http.post('/xwh/user/addUser.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
+                                    ms.http.post('/xwh/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
                                         if (res.code == '200') {
                                             this.$message({
-                                                message: '新增用户成功',
+                                                message: '修改成功',
                                                 type: 'success'
                                             })
-                                            this.newAdd = false
+                                            this.modify = false
                                             this.reset()
                                             this.getUserList()
                                         }
@@ -667,15 +650,34 @@
                                         }
                                     })
                                 } else {
-                                    this.$message.error("两次密码输入不一致")
+                                    if (this.formData.password == this.formData.newPassword) {
+                                        let params = JSON.stringify(this.formData)
+                                        ms.http.post('/xwh/user/addUser.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
+                                            if (res.code == '200') {
+                                                this.$message({
+                                                    message: '新增用户成功',
+                                                    type: 'success'
+                                                })
+                                                this.newAdd = false
+                                                this.reset()
+                                                this.getUserList()
+                                            }
+                                            if (res.code == '500') {
+                                                this.$message.error(res.msg)
+                                            }
+                                        })
+                                    } else {
+                                        this.$message.error("两次密码输入不一致")
+                                    }
                                 }
+                            } else {
+                                this.$message.error("请按规则正确填写信息")
                             }
-                        } else {
-                            this.$message.error("请按规则正确填写信息")
-                        }
+                        })
                     })
-                })
-
+                }else{
+                    this.$message.error('两次密码不一致')
+                }
             },
             // 删除用户信息
             deleteBack(id) {
