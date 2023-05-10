@@ -45,7 +45,7 @@
                      <span class="input input--hoshi">
                           <input v-model="resetPasswordForm.managerName" class="input__field input__field--hoshi"
                                  type="text" id="input-name" readonly disabled/>
-                          <label class="input__label input__label--hoshi input__label--hoshi-color-1" for="input-name">
+                          <label class="input__label input__label--hoshi input__label--hoshi-color-1 bug" for="input-name">
                               <span class="input__label-content input__label-content--hoshi">账号</span>
                           </label>
                       </span>
@@ -60,7 +60,7 @@
                           <input v-model="resetPasswordForm.oldManagerPassword" class="input__field input__field--hoshi"
                                  :type="showPassword ? 'password' : 'text'" id="oldManagerPassword"/>
                       <i class="el-icon-view showPass" @click="showPassword = !showPassword"></i>
-                          <label class="input__label input__label--hoshi input__label--hoshi-color-1"
+                          <label class="input__label input__label--hoshi input__label--hoshi-color-1 bug"
                                  for="oldManagerPassword">
                               <span class="input__label-content input__label-content--hoshi">旧密码</span>
                           </label>
@@ -76,7 +76,7 @@
                           <input v-model="resetPasswordForm.newManagerPassword" class="input__field input__field--hoshi"
                                  :type="showPassword ? 'password' : 'text'" id="newManagerPassword"/>
                       <i class="el-icon-view showPass"  @click="showPassword = !showPassword"></i>
-                          <label class="input__label input__label--hoshi input__label--hoshi-color-1"
+                          <label class="input__label input__label--hoshi input__label--hoshi-color-1 bug"
                                  for="newManagerPassword">
                               <span class="input__label-content input__label-content--hoshi">新密码</span>
                           </label>
@@ -93,7 +93,7 @@
                                  class="input__field input__field--hoshi" :type="showPassword ? 'password' : 'text'"
                                  id="newComfirmManagerPassword"/>
                       <i class="el-icon-view showPass" @click="showPassword = !showPassword"></i>
-                          <label class="input__label input__label--hoshi input__label--hoshi-color-1"
+                          <label class="input__label input__label--hoshi input__label--hoshi-color-1 bug"
                                  for="newComfirmManagerPassword">
                               <span class="input__label-content input__label-content--hoshi">确认新密码</span>
                           </label>
@@ -112,7 +112,6 @@
                         {{loading?'更新密码中':'更新密码'}}
                     </el-button>
                     <!--按钮结束-->
-
                 </div>
                 <!--小容器结束-->
             </div>
@@ -658,6 +657,16 @@
         right: 10px;
         top: 50%;
         cursor: pointer;
+    }
+    .bug{
+        line-height: 30px !important;
+    }
+    .input__label-content{
+        height: 60px;
+        top: 5px;
+    }
+    .input--filled .input__label-content{
+        top: 5px !important;
     }
 
 </style>
