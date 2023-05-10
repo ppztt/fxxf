@@ -575,7 +575,9 @@
                     this.modifyPw = true
                     this.userId = id
                     ms.http.get('/xwh/user/userInfo.do', {id}).then((res) => {
-                        this.formData = res.data
+                        if(res.code == 200){
+                            this.formData = res.data
+                        }
                     })
                 },
                 //
@@ -593,17 +595,14 @@
                                         })
                                     }
                                     if (res.code == 500) {
-                                        this.$message.error(res.msg)
+                                        this.$message.error(res.msg || "修改失败")
                                     }
                                 })
                             } else {
                                 this.$message.error('请将表单填写完整')
                             }
-
                         })
-
                     })
-
                 }
                 ,
                 // 提交修改
