@@ -36,9 +36,11 @@
                     <el-row>
                         <el-col span="20">
                             <el-form-item label="经营场所地区：" prop="addrs">
-                                <p style="display: inline-block">{{ formData.city }}</p>-
-                                <p style="display: inline-block">{{ formData.district }}</p>-
-                                <p style="display: inline-block">{{ formData.address }}</p>
+                                <div v-for="(arr,index) in formData.addrs" :key="index">
+                                    <p style="display: inline-block">{{ arr.city }}</p>-
+                                    <p style="display: inline-block">{{ arr.district }}</p>-
+                                    <p style="display: inline-block">{{ arr.address }}</p>
+                                </div>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -117,12 +119,14 @@
                     <el-row>
                         <el-col span="9">
                             <el-form-item label="经营者注册名称：" prop="regName">
-                                <el-input size="mini" v-model="formData.regName" placeholder="请输入经营者注册名称："></el-input>
+                                <el-input size="mini" v-model="formData.regName"
+                                          placeholder="请输入经营者注册名称："></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col span="9">
                             <el-form-item label="门店名称：" prop="storeName">
-                                <el-input size="mini" v-model="formData.storeName" placeholder="请输入门店名称："></el-input>
+                                <el-input size="mini" v-model="formData.storeName"
+                                          placeholder="请输入门店名称："></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -132,12 +136,13 @@
                                 <el-row :key="index" v-for="(addr, index) in formData.addrs">
                                     <el-col span="5">
                                         <el-select size="mini"
-                                                v-model="addr.city"
-                                                placeholder="市"
-                                                :clearable="true"
-                                                filterable
-                                                @change="cityChange(addr.city)"
-                                                @clear="clear">
+                                                   v-model="addr.city"
+                                                   placeholder="市"
+                                                   :clearable="true"
+                                                   filterable
+                                                   @change="cityChange(addr.city)"
+                                                   :disabled="userInfo.roleId == 2 || userInfo.roleId == 3 "
+                                                   @clear="clear">
                                             <el-option
                                                     v-for="item in regionData"
                                                     :value="item.name"
@@ -148,10 +153,11 @@
                                     </el-col>
                                     <el-col span="5">
                                         <el-select size="mini"
-                                                v-model="addr.district"
-                                                placeholder="市/县/区/镇"
-                                                :clearable="true"
-                                                filterable>
+                                                   v-model="addr.district"
+                                                   placeholder="市/县/区/镇"
+                                                   :clearable="true"
+                                                   filterable
+                                                   :disabled="!addr.city ||districtData.length == 0 || userInfo.roleId == 3 ">
                                             <el-option
                                                     v-for="item in districtData"
                                                     :value="item.name"
@@ -161,7 +167,8 @@
                                         </el-select>
                                     </el-col>
                                     <el-col span="8">
-                                        <el-input size="mini" v-model="addr.address" placeholder="请输入经营场所地址"></el-input>
+                                        <el-input size="mini" v-model="addr.address"
+                                                  placeholder="请输入经营场所地址"></el-input>
                                     </el-col>
                                     <el-col span="1">
                                         <el-button
@@ -177,12 +184,7 @@
                                                 style="margin-left: 20px"
                                                 icon="el-icon-minus"
                                                 circle
-                                                @click="
-            () => {
-              formData.addrs.splice(index, 1);
-              districtDataArr.splice(index, 1);
-            }
-          "
+                                                @click="deleteAddr(index)"
                                         ></el-button>
                                     </el-col>
                                 </el-row>
@@ -199,19 +201,19 @@
                         <el-col span="12">
                             <el-form-item label="有效期：" prop="validity">
                                 <el-date-picker size="mini"
-                                        v-model="formData.startTime"
-                                        type="date"
-                                        value-format="yyyy-MM-dd"
-                                        :picker-options="pickerBeginDate"
-                                        placeholder="开始有效期">
+                                                v-model="formData.startTime"
+                                                type="date"
+                                                value-format="yyyy-MM-dd"
+                                                :picker-options="pickerBeginDate"
+                                                placeholder="开始有效期">
                                 </el-date-picker>
                                 ~
                                 <el-date-picker size="mini"
-                                        v-model="formData.endTime"
-                                        type="date"
-                                        :picker-options="pickerEndDate"
-                                        value-format="yyyy-MM-dd"
-                                        placeholder="结束有效期">
+                                                v-model="formData.endTime"
+                                                type="date"
+                                                :picker-options="pickerEndDate"
+                                                value-format="yyyy-MM-dd"
+                                                placeholder="结束有效期">
                                 </el-date-picker>
                             </el-form-item>
                         </el-col>
@@ -222,11 +224,11 @@
                                 <el-col :span="8">
                                     <el-form-item>
                                         <el-select size="mini"
-                                                ref="management"
-                                                placeholder="类别"
-                                                :clearable="true"
-                                                v-model="formData.management"
-                                                @change="managementChange">
+                                                   ref="management"
+                                                   placeholder="类别"
+                                                   :clearable="true"
+                                                   v-model="formData.management"
+                                                   @change="managementChange">
                                             <el-option :value="'商品类'" :key="'商品类'">商品类
                                             </el-option>
                                             <el-option :value="'服务类'" :key="'服务类'">服务类
@@ -243,12 +245,12 @@
                                 <el-col :offset="1" :span="15">
                                     <el-form-item>
                                         <el-select size="mini"
-                                                ref="details"
-                                                class="multiSelect"
-                                                :clearable="true"
-                                                placeholder="详细类别"
-                                                v-model="formData.details"
-                                                multiple>
+                                                   ref="details"
+                                                   class="multiSelect"
+                                                   :clearable="true"
+                                                   placeholder="详细类别"
+                                                   v-model="formData.details"
+                                                   multiple>
                                             <el-option
                                                     v-for="item in activeManageType"
                                                     :value="item"
@@ -263,9 +265,9 @@
                         <el-col span="9">
                             <el-form-item label="所属平台：" prop="platform">
                                 <el-input size="mini"
-                                        placeholder="请填写所属平台"
-                                        v-model="formData.platform"
-                                        type="text"
+                                          placeholder="请填写所属平台"
+                                          v-model="formData.platform"
+                                          type="text"
                                 />
                             </el-form-item>
                         </el-col>
@@ -273,12 +275,14 @@
                     <el-row>
                         <el-col span="9">
                             <el-form-item label="网店名称：" prop="onlineName">
-                                <el-input size="mini" v-model="formData.onlineName" placeholder="请输入网店名称："></el-input>
+                                <el-input size="mini" v-model="formData.onlineName"
+                                          placeholder="请输入网店名称："></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col span="9">
                             <el-form-item label="连续承诺次数：" prop="commNum">
-                                <el-input size="mini" v-model="formData.commNum" placeholder="请输入连续承诺次数："></el-input>
+                                <el-input size="mini" v-model="formData.commNum"
+                                          placeholder="请输入连续承诺次数："></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -304,10 +308,10 @@
                         <el-col span="24">
                             <el-form-item label="企业申请日期：" prop="applicationDate">
                                 <el-date-picker size="mini"
-                                        value-format="yyyy-MM-dd"
-                                        v-model="formData.applicationDate"
-                                        type="date"
-                                        placeholder="请选择时间">
+                                                value-format="yyyy-MM-dd"
+                                                v-model="formData.applicationDate"
+                                                type="date"
+                                                placeholder="请选择时间">
                                 </el-date-picker>
                             </el-form-item>
                         </el-col>
@@ -344,30 +348,30 @@
                         <el-col span="8">
                             <el-form-item label="品质保证：" prop="contents1">
                                 <el-input size="mini"
-                                        type="textarea"
-                                        :rows="3"
-                                        placeholder="请输入品质保证"
-                                        v-model="formData.contents1">
+                                          type="textarea"
+                                          :rows="3"
+                                          placeholder="请输入品质保证"
+                                          v-model="formData.contents1">
                                 </el-input>
                             </el-form-item>
                         </el-col>
                         <el-col span="8">
                             <el-form-item label="诚信保证：" prop="contents2">
                                 <el-input size="mini"
-                                        type="textarea"
-                                        :rows="3"
-                                        placeholder="请输入诚信保证"
-                                        v-model="formData.contents2">
+                                          type="textarea"
+                                          :rows="3"
+                                          placeholder="请输入诚信保证"
+                                          v-model="formData.contents2">
                                 </el-input>
                             </el-form-item>
                         </el-col>
                         <el-col span="8">
                             <el-form-item label="维权保证：" prop="contents3">
                                 <el-input size="mini"
-                                        type="textarea"
-                                        :rows="3"
-                                        placeholder="请输入维权保证"
-                                        v-model="formData.contents3">
+                                          type="textarea"
+                                          :rows="3"
+                                          placeholder="请输入维权保证"
+                                          v-model="formData.contents3">
                                 </el-input>
                             </el-form-item>
                         </el-col>
@@ -410,10 +414,10 @@
                         <el-col span="24">
                             <el-form-item label="" prop="contents4">
                                 <el-input size="mini"
-                                        type="textarea"
-                                        :rows="2"
-                                        placeholder="请输入其他承诺事项及具体内容"
-                                        v-model="formData.contents4">
+                                          type="textarea"
+                                          :rows="2"
+                                          placeholder="请输入其他承诺事项及具体内容"
+                                          v-model="formData.contents4">
                                 </el-input>
                             </el-form-item>
                         </el-col>
@@ -434,11 +438,11 @@
                         <el-col span="24">
                             <el-form-item label="日期：" prop="applicationDate">
                                 <el-date-picker size="mini"
-                                        value-format="yyyy-MM-dd"
-                                        v-model="formData.applicationDate"
-                                        type="date"
-                                        placeholder="选择日期"
-                                        disabled>
+                                                value-format="yyyy-MM-dd"
+                                                v-model="formData.applicationDate"
+                                                type="date"
+                                                placeholder="选择日期"
+                                                disabled>
                                 </el-date-picker>
                             </el-form-item>
                         </el-col>
@@ -462,10 +466,10 @@
                             <el-form-item label="意见内容：" prop="ccContent"
                                           v-if="detailType == '0' || detailType == '3'">
                                 <el-input size="mini"
-                                        placeholder="请填写意见内容"
-                                        v-model="formData.ccContent"
-                                        v-if="detailType == '0' || detailType == '3'"
-                                        type="textarea"
+                                          placeholder="请填写意见内容"
+                                          v-model="formData.ccContent"
+                                          v-if="detailType == '0' || detailType == '3'"
+                                          type="textarea"
                                 />
                             </el-form-item>
                         </el-col>
@@ -507,18 +511,18 @@
                         <el-col span="11">
                             <el-form-item label="具体摘牌信息：" prop="delReason">
                                 <el-input size="mini"
-                                        placeholder="请输入具体摘牌信息"
-                                        v-model="formData.delReason"
-                                        type="textarea"
+                                          placeholder="请输入具体摘牌信息"
+                                          v-model="formData.delReason"
+                                          type="textarea"
                                 />
                             </el-form-item>
                         </el-col>
                         <el-col span="11">
                             <el-form-item label="其他必要信息：" prop="delOther">
                                 <el-input size="mini"
-                                        placeholder="请输入其他必要信息"
-                                        v-model="formData.delOther"
-                                        type="textarea"
+                                          placeholder="请输入其他必要信息"
+                                          v-model="formData.delOther"
+                                          type="textarea"
                                 />
                             </el-form-item>
                         </el-col>
@@ -526,7 +530,7 @@
                 </div>
             </el-form>
             <div class="btn">
-                <el-button size="mini" v-if="detailType=='0'" type="primary"  @click="perEditUnitTnfo">保存
+                <el-button size="mini" v-if="detailType=='0'" type="primary" @click="perEditUnitTnfo">保存
                 </el-button>
                 <el-button size="mini" v-if="detailType=='3'" type="primary" @click="auditUnitTnfo('1')">审核通过
                 </el-button>
@@ -546,8 +550,8 @@
     // window.parent.exec_success_callback();
     var indexVue = new Vue({
         el: "#index",
-        data(){
-            return{
+        data() {
+            return {
                 // 放心消费 1  无理由 2
                 type: '1',
                 // 开始结束日期限制
@@ -581,27 +585,27 @@
                 userInfo: {
                     // 页面跳转
                     action: "",
-                    account: "测试",
+                    account: "",
                     address: null,
                     city: "",
-                    createTime: "2023-01-10 03:59:30",
+                    createTime: "",
                     creditCode: null,
                     district: "",
                     email: "",
-                    id: 177,
+                    id: 0,
                     management: null,
                     newPassword: null,
-                    password: "52f24ccfeef7e6a0f4a17fbc45647361ebb06a839ec6172064a2167299e33d1d",
-                    phone: "13922108999",
+                    password: "",
+                    phone: "",
                     principal: null,
                     principalTel: null,
                     province: null,
-                    realname: "魏",
-                    roleId: 1,
+                    realname: "",
+                    roleId: 0,
                     roleName: null,
                     storeName: null,
                     town: null,
-                    updateTime: "2023-01-10 03:59:30",
+                    updateTime: "",
                     usertype: 1,
                     zipcode: ""
                 },
@@ -620,13 +624,7 @@
                     city: "",
                     district: "",
                     address: "",
-                    addrs: [
-                        {
-                            city: "",
-                            district: "",
-                            address: "",
-                        }
-                    ],
+                    addrs: [],
                     creditCode: "",
                     management: "",
                     details: "",
@@ -639,10 +637,8 @@
                     delReason: "",
                     delOther: "",
                 },
-                activeManageType: [
-                    // 当前经营类别数据
-                ],
-                addrs: {},
+                // 当前经营类别数据
+                activeManageType: [],
                 // 经营类别
                 manageType: {
                     commodities: [],
@@ -650,7 +646,7 @@
                 },
                 districtData: [], //某市县数据
             }
-        } ,
+        },
         methods: {
             // 返回上一级页面
             returnBack() {
@@ -659,6 +655,7 @@
             // 获取该商家数据
             getList() {
                 ms.http.get("/xwh/applicants/" + this.consumerId + '.do').then((res) => {
+                    console.log(res)
                     this.formData = res.data
                     let cityArr = this.formData.city.split(",");
                     let districtArr = this.formData.district.split(",");
@@ -672,20 +669,22 @@
                         });
                     });
                     this.getManagerType();
-
                 })
             },
             // 获取地区信息
             getRegionData() {
                 ms.http.get('/xwh/gd-regin.do').then((res) => {
-                    this.regionData = res.data
+                    console.log(res)
+                    if (res.code == 200) {
+                        this.regionData = res.data
+                        this.getUserInfo()
+                    }
                 })
             },
-            clear(){
+            clear() {
                 this.district = "";
                 this.formData.district = ""
             },
-
             cityChange: function (name) {
                 // 一级市发生改变
                 if (name) {
@@ -704,6 +703,11 @@
                     // this.town = "";
                 }
             },
+            deleteAddr(index) {
+                this.formData.addrs.splice(index, 1);
+                this.districtDataArr.splice(index, 1);
+                this.$forceUpdate();
+            },
             addAddress() {
                 let userInfo = this.userInfo
                 if (this.formData.addrs === undefined) {
@@ -720,7 +724,7 @@
             },
             resetRegion(cityName) {
                 if (cityName) {
-                    let data = this.regionData.find((value) => value.value == cityName,).children || [];
+                    let data = this.regionData.find((value) => value.name == cityName).children || [];
                     this.districtDataArr.push(data);
                     return data;
                     // if (this.formData.district) {
@@ -749,7 +753,7 @@
                                 this.currentTopic("保存成功")
                             }
                         })
-                    }else{
+                    } else {
                         this.$message.error('经营者注册名称重复,请确认单位名称后提交')
                     }
                 })
@@ -810,12 +814,23 @@
                     {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
 
                 })
+            },
+            // 获取用户信息
+            getUserInfo() {
+                let id = sessionStorage.getItem('userId')
+                ms.http.get('/xwh/user/userInfo.do', {id}).then((res) => {
+                    if (res.code == 200) {
+                        this.userInfo = {...res.data, id}
+                        this.cityChange(this.userInfo.city)
+                        this.districtChange(this.userInfo.district)
+                    }
+                })
             }
         },
         mounted: function () {
             this.detailType = window.location.href.split("?")[1].split("&")[0].split('=')[1]
             this.consumerId = Number(window.location.href.split("?")[1].split("&")[1].split('=')[1])
-            this. getRegionData()
+            this.getRegionData()
             this.getList();
         }
     });

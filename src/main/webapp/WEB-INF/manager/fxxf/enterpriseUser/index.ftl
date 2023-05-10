@@ -241,6 +241,7 @@
                             :password="true"
                             v-model="formData.password"
                             placeholder="请输入登录密码"
+                              show-password
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="确认密码" prop="newPassword">
@@ -249,6 +250,7 @@
                             :password="true"
                             v-model="formData.newPassword"
                             placeholder="请输入确认密码"
+                              show-password
                     ></el-input>
                 </el-form-item>
             </el-form>
@@ -270,19 +272,21 @@
                     <el-input size="mini"
                             v-model="reviseForm.oldPassword"
                             placeholder="请输入旧密码"
+                              show-password
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="设置新密码" prop="newPassword">
                     <el-input size="mini"
                             v-model="reviseForm.newPassword"
                             placeholder="请输入新密码"
+                              show-password
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="确认新密码" prop="reNewPassword">
                     <el-input size="mini"
                             v-model="reviseForm.reNewPassword"
                             placeholder="请输入确认密码"
-                    ></el-input>
+                              show-password></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -571,7 +575,9 @@
                     this.modifyPw = true
                     this.userId = id
                     ms.http.get('/xwh/user/userInfo.do', {id}).then((res) => {
-                        this.formData = res.data
+                        if(res.code == 200){
+                            this.formData = res.data
+                        }
                     })
                 },
                 //
@@ -589,37 +595,38 @@
                                         })
                                     }
                                     if (res.code == 500) {
-                                        this.$message.error(res.msg)
+                                        this.$message.error(res.msg || "修改失败")
                                     }
                                 })
                             } else {
                                 this.$message.error('请将表单填写完整')
                             }
-
                         })
-
                     })
-
                 }
                 ,
                 // 提交修改
                 sub(msg) {
                     if (msg == "modify") {
-                        let params = JSON.stringify(this.formData)
-                        ms.http.post('/xwh/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
-                            if (res.code == '200') {
-                                this.$message({
-                                    message: '修改成功',
-                                    type: 'success'
-                                })
-                                this.modify = false
-                                this.reset()
-                                this.getUserList()
-                            }
-                            if (res.code == '500') {
-                                this.$message.error(res.msg)
-                            }
-                        })
+                        if(this.formData.password == this.formData.newPassword){
+                            let params = JSON.stringify(this.formData)
+                            ms.http.post('/xwh/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
+                                if (res.code == '200') {
+                                    this.$message({
+                                        message: '修改成功',
+                                        type: 'success'
+                                    })
+                                    this.modify = false
+                                    this.reset()
+                                    this.getUserList()
+                                }
+                                if (res.code == '500') {
+                                    this.$message.error(res.msg)
+                                }
+                            })
+                        }else {
+                            this.$message.error("两次密码输入不一致")
+                        }
                     } else {
                         if (this.formData.password == this.formData.newPassword) {
                             let params = JSON.stringify(this.formData)

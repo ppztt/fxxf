@@ -165,12 +165,15 @@
                         if (res.code == 200) {
                             this.loadingShow = true
                             this.getList()
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                        }else{
+                            this.$message.error("删除失败")
                         }
                     })
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    });
+
                 }).catch(() => {
                 });
             },

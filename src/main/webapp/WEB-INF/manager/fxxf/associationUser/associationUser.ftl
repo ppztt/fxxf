@@ -150,6 +150,7 @@
                             :password="true"
                             v-model="formData.password"
                             placeholder="请输入登录密码"
+                            show-password
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="确认密码" prop="newPassword">
@@ -159,6 +160,7 @@
                             :password="true"
                             v-model="formData.newPassword"
                             placeholder="请再次输入密码"
+                            show-password
                     ></el-input>
                 </el-form-item>
             </el-form>
@@ -222,6 +224,7 @@
                             :password="true"
                             v-model="formData.password"
                             placeholder="请输入登录密码，为空则表示不修改"
+                            show-password
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="确认密码" prop="newPassword">
@@ -231,6 +234,7 @@
                             :password="true"
                             v-model="formData.newPassword"
                             placeholder="请确认密码，为空则表示不修改"
+                            show-password
                     ></el-input>
                 </el-form-item>
             </el-form>
@@ -546,20 +550,24 @@
                     this.$refs[msg].validate(valid => {
                         if (valid) {
                             if (msg == "modify") {
-                                let params = JSON.stringify(this.formData)
-                                ms.http.post('/xwh/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
-                                    if (res.code == '200') {
-                                        this.$message({
-                                            message: '修改成功',
-                                            type: 'success'
-                                        })
-                                        this.modify = false
-                                        this.reset()
-                                        this.getUserList()
-                                    } else {
-                                        this.$message.error(res.msg)
-                                    }
-                                })
+                                if(this.formData.password == this.formData.newPassword){
+                                    let params = JSON.stringify(this.formData)
+                                    ms.http.post('/xwh/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
+                                        if (res.code == '200') {
+                                            this.$message({
+                                                message: '修改成功',
+                                                type: 'success'
+                                            })
+                                            this.modify = false
+                                            this.reset()
+                                            this.getUserList()
+                                        } else {
+                                            this.$message.error(res.msg)
+                                        }
+                                    })
+                                }else {
+                                    this.$message.error("两次密码输入不一致")
+                                }
                             } else {
                                 if (this.formData.password == this.formData.newPassword) {
                                     let params = JSON.stringify(this.formData)
@@ -614,7 +622,6 @@
                 ms.http.get('/xwh/user/userInfo.do', {id}).then((res) => {
                     if (res.code == 200) {
                         this.userInfo = {...res.data, id}
-                        console.log(this.userInfo)
                         this.formData = {
                             ...this.formData,
                             city: this.userInfo.city,
