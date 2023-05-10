@@ -487,7 +487,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                 String suffixName = filename.substring(filename.lastIndexOf("."));
                 String newFileName = System.currentTimeMillis() + suffixName;
 
-                String path = ResourceUtils.getURL("classpath:").getPath() + importFileTmp;
+                String path = importFileTmp;
                 File filePath = new File(path);
                 if (!filePath.exists()) {
                     filePath.mkdir();
@@ -510,7 +510,6 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
 
             return BaseResult.fail(errorMsgVoList);
         } catch (ExcelImportException e) {
-
             log.error("经营者模板预导入templatePreImport接口ExcelImportException异常:{}", e);
             if (e.getMessage().contains("不是合法的Excel模板")) {
                 errorMsgVoList.add(new ExcelImportErrorMsgVo(1, "不是合法的模板"));
