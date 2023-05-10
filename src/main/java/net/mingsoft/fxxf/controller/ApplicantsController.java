@@ -168,7 +168,14 @@ public class ApplicantsController {
     }
 
     @GetMapping(value = "/audit")
-    @ApiOperation(value = "经营者审核")
+    @ApiOperation(value = "经营者审核", notes = "当前登录用户的角色id小于auditRoleId，并且当前状态在4（待审核）、 5（县级审核通过）、6（市级审核通过）之一，说明可以审核")
+    @ApiImplicitParams(
+            {
+                    @ApiImplicitParam(name = "type", value = "1：审核通过，2：审核不通过", example = "1", dataType = "int", required = true),
+                    @ApiImplicitParam(name = "id", value = "承诺单位id", dataType = "int", required = true),
+                    @ApiImplicitParam(name = "notes", value = "备注信息", required = true),
+            }
+    )
     public BaseResult audit(@RequestParam(value = "type") Integer type, @RequestParam(value = "id") Integer id,
                             @RequestParam(value = "notes", required = false) String notes) {
         try {
@@ -180,10 +187,10 @@ public class ApplicantsController {
     }
 
     @RequiresPermissions("wlythcn:upload")
-    @PostMapping(value = "/import/{fileId}")
+    @PostMapping(value = "/import/{type}/{fileId}")
     @ApiOperation(value = "经营者列表-导入")
-    public BaseResult<ArrayList<Applicants>> templateImport(@PathVariable("fileId") String fileId) {
-        return applicantsService.templateImport(fileId);
+    public BaseResult<ArrayList<Applicants>> templateImport(@PathVariable(value = "type") Integer type,@PathVariable("fileId") String fileId) {
+        return applicantsService.templateImport(type,fileId);
     }
 
     @RequiresPermissions("wlythcn:list")
