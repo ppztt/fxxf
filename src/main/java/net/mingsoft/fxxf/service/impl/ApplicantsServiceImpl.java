@@ -58,7 +58,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -310,11 +309,8 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
         String yyyyMMddPattern = "yyyy-MM-dd";
         DateFormat dateformat = new SimpleDateFormat(yyyyMMddPattern);
 
-        InputStream in = null;
         ArrayList<ExcelImportErrorMsgVo> errorMsgVoList = new ArrayList<>();
-        try {
-            in = file.getInputStream();
-
+        try (InputStream in = file.getInputStream()) {
             ImportParams importParams = new ImportParams();
             importParams.setStartRows(1);
             importParams.setNeedVerify(true);
@@ -514,21 +510,14 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
 
             return BaseResult.fail(errorMsgVoList);
         } catch (ExcelImportException e) {
-            e.printStackTrace();
+
+            log.error("经营者模板预导入templatePreImport接口ExcelImportException异常:{}", e);
             if (e.getMessage().contains("不是合法的Excel模板")) {
                 errorMsgVoList.add(new ExcelImportErrorMsgVo(1, "不是合法的模板"));
                 return BaseResult.fail(errorMsgVoList);
             }
         } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            log.error("经营者模板预导入templatePreImport接口其它异常:{}", e);
         }
 
         return BaseResult.fail();
