@@ -1037,7 +1037,7 @@
                             this.uploadId = even.data[0].fileId;
                             let errorMes = "";
                             even.data.forEach((item) => {
-                                errorMes = errorMes + '行:' + (item.rowNum || null) + '错误:' + item.errorMsg ;
+                                errorMes = errorMes + '行:' + (item.rowNum || null) + '错误:' + item.errorMsg + "\n" ;
                             });
                             this.$notify.error({
                                 title: '导入失败详细信息',
@@ -1071,7 +1071,7 @@
                     this.uploadId = even.data[0].fileId;
                     let errorMes = "";
                     even.data.forEach((item) => {
-                        errorMes = errorMes + '行:' + (item.rowNum || null) + '错误:' + item.errorMsg;
+                        errorMes = errorMes + '行:' + (item.rowNum || null) + '错误:' + item.errorMsg + "\n" ;
                     });
                     this.comfirmContent = errorMes;
                     this.dialogVisible = true;
@@ -1084,7 +1084,7 @@
                     this.uploadId = even.data[0].fileId;
                     let errorMes = "";
                     even.data.forEach((item) => {
-                        errorMes = errorMes + '行:' + (item.rowNum || null) + '错误:' + item.errorMsg ;
+                        errorMes = errorMes + '行:' + (item.rowNum || null) + '错误:' + item.errorMsg + "\n" ;
                     });
                     this.$notify.error({
                         title: '错误',
