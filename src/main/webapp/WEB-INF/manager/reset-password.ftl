@@ -53,11 +53,11 @@
             resetPasswordFormRule: {
                 oldManagerPassword: [
                     {required: true, message: '请输入旧密码', trigger: 'blur'},
-                    {min: 6, max: 30, message: '长度在 6 到 30 个字符', trigger: 'blur'}
+                    {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'}
                 ],
                 newManagerPassword: [
                     {required: true, message: '请输入新密码', trigger: 'blur'},
-                    {min: 8, max: 30, message: '长度在 8 到 30 个字符', trigger: 'blur'},
+                    {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
                     {
                         validator: function (rule, value, callback) {
                             if (resetPasswordVue.resetPasswordForm.oldManagerPassword === value) {
@@ -67,13 +67,11 @@
                             }
                         }
                     },
-                    {
-                        pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&,.*]).{8,30}$/, message: '请输入8-30位，由大小写字母、数字和特殊符号组合的密码'
-                    }
+                    {pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
                 ],
                 newComfirmManagerPassword: [
-                    {required: true, message: '请再次输入确认密码', trigger: 'blur'},
-                    {min: 8, max: 30, message: '长度在 8 到 30 个字符', trigger: 'blur'},
+                    {required: true, message: '不能为空', trigger: "blur",},
+                    {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
                     {
                         validator: function (rule, value, callback) {
                             if (resetPasswordVue.resetPasswordForm.newManagerPassword === value) {
@@ -83,9 +81,7 @@
                             }
                         }
                     },
-                    {
-                        pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&,.*]).{8,30}$/, message: '请输入8-30位，由大小写字母、数字和特殊符号组合的密码'
-                    }
+                    {pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
                 ]
             }
         },

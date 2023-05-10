@@ -181,8 +181,10 @@
                             rand_code:that.form.rand_code,
                             rememberMe:that.form.rememberMe
                         }).then(function (res) {
+                            console.log(res)
                             if(res.result){
                                 if (res.msg) {
+                                    console.log(res.msg);
                                     localStorage.setItem('managerName', that.form.managerName);
                                     localStorage.setItem('passChangeMaxDay', res.data);
                                     location.href = res.msg;
@@ -218,6 +220,7 @@
         created:function(){
             this.code();
             this.initial();
+
         }
     })
 </script>

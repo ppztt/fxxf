@@ -184,6 +184,7 @@
                             :password="true"
                             v-model="formData.password"
                             placeholder="请输入登录密码，为空则表示不修改"
+                            show-password
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="确认密码" prop="newPassword">
@@ -193,6 +194,7 @@
                             :password="true"
                             v-model="formData.newPassword"
                             placeholder="请确认密码，为空则表示不修改"
+                            show-password
                     ></el-input>
                 </el-form-item>
             </el-form>
@@ -290,6 +292,7 @@
                             :password="true"
                             v-model="formData.password"
                             placeholder="请输入登录密码"
+                            show-password
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="确认密码" prop="newPassword">
@@ -299,6 +302,7 @@
                             :password="true"
                             v-model="formData.newPassword"
                             placeholder="请输入确认密码"
+                            show-password
                     ></el-input>
                 </el-form-item>
             </el-form>
