@@ -60,6 +60,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
@@ -305,6 +307,9 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
 
     @Override
     public BaseResult templatePreImport(Integer type, MultipartFile file) {
+        String yyyyMMddPattern = "yyyy-MM-dd";
+        DateFormat dateformat = new SimpleDateFormat(yyyyMMddPattern);
+
         InputStream in = null;
         ArrayList<ExcelImportErrorMsgVo> errorMsgVoList = new ArrayList<>();
         try {
@@ -363,6 +368,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                     return BaseResult.fail("当前登录用户扩展信息为空，请前往补充");
                 }
 
+                // 地区数据校验
                 int roleId = user.getRoleId();
                 if (roleId == 3) {
                     String district = userExtensionInfo.getDistrict();
@@ -393,13 +399,22 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                     }
                 }
 
-                List<String> creditCodes = new ArrayList<>();
-                for (int i = 0; i < applicantsExcelImportVos.size(); i++) {
-                    creditCodes.add(applicantsExcelImportVos.get(i).getCreditCode());
+                // 日期校验
+                for (ApplicantsExcelImportVo applicantsExcelImportVo : applicantsExcelImportVos) {
+                    Date curApplicantDate = applicantsExcelImportVo.getApplicationDate();
+                    String strdate = dateformat.format(curApplicantDate);
+                    if (strdate.length() != yyyyMMddPattern.length()) {
+                        errorMsgVoList.add(new ExcelImportErrorMsgVo(String.format("经营者注册名称：%s，企业申请日期格式不对，应为yyyy-MM-dd",applicantsExcelImportVo.getRegName())));
+                        return BaseResult.fail(errorMsgVoList);
+                    }
                 }
+
+                // 统一社会信用代码校验
+                List<String> creditCodes = applicantsExcelImportVos.stream()
+                        .map(ApplicantsExcelImportVo::getCreditCode).collect(Collectors.toList());
+
                 String[] array = new String[creditCodes.size()];
                 array = creditCodes.toArray(array);
-
                 List<ArrayList<String>> same = ApplicantsImportUtil.findSame(array);
                 if (!CollectionUtils.isEmpty(same)) {
                     errorMsgVoList.add(new ExcelImportErrorMsgVo("当前导入文件中【统一社会信用代码】存在重复，行:" + same));
@@ -535,7 +550,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
     }
 
     @Override
-    public BaseResult templateImport(String fileId) {
+    public BaseResult templateImport(Integer type, String fileId) {
         File file = null;
         try {
             String path = ResourceUtils.getURL("classpath:").getPath() + importFileTmp;
@@ -567,7 +582,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
             if (!CollectionUtils.isEmpty(applicantsExcelVos)) {
 
                 // 批量更新写入
-                ArrayList<Applicants> applicantsList = ((ApplicantsServiceImpl) AopContext.currentProxy()).templateSyncDbWrite(applicantsExcelVos);
+                ArrayList<Applicants> applicantsList = ((ApplicantsServiceImpl) AopContext.currentProxy()).templateSyncDbWrite(type, applicantsExcelVos);
 
                 return BaseResult.success(applicantsList);
             }
@@ -788,27 +803,27 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
      * 放心消费单位写入
      */
     @Transactional(rollbackFor = Exception.class)
-    public ArrayList<Applicants> templateSyncDbWrite(List<ApplicantsExcelImportVo> applicantsExcelVos) {
+    public ArrayList<Applicants> templateSyncDbWrite(Integer type, List<ApplicantsExcelImportVo> applicantsExcelVos) {
 
         ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
 
         List<String> creditCodes = applicantsExcelVos.stream().map(ApplicantsExcelImportVo::getCreditCode).collect(Collectors.toList());
-        List<Applicants> applicantsByDbs = list(new QueryWrapper<Applicants>().eq("type", 1).in("credit_code", creditCodes));
+        List<Applicants> applicantsByDbs = list(new QueryWrapper<Applicants>().eq("type", type).in("credit_code", creditCodes));
 
         ArrayList<Applicants> applicantsList = new ArrayList<>();
         List<Applicants> applicantsListNeedUpdate = new ArrayList<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        if (applicantsExcelVos.size() > 0) {
+        if (!applicantsExcelVos.isEmpty()) {
             applicantsExcelVos.forEach(a -> {
                 // 第一次导入该单位时，默认连续承诺为“否”；
                 // 当第二次导入时，如果在期现在是替换数据，不改变上面连续承诺的两个字段（仍为否）；
                 // 如果第二次导入时第一次的有效期过期了，且导入时间在过期后一年以内，则新建这条承诺，且连续承诺字段修改为“是”，连续承诺次数记为“2”，之后导入递增；
                 // 当第二次导入时，之前的承诺申请被主动摘牌，或者是过期时间超过了一年，那连续承诺记为“否”
 
-                if (applicantsByDbs != null && applicantsByDbs.size() > 0) {
-                    List<Applicants> collect = applicantsByDbs.parallelStream().filter(app -> Objects.equals(app.getCreditCode().trim(), a.getCreditCode().trim())).collect(Collectors.toList());
-                    if (collect != null && collect.size() > 0) {
+                if (!CollectionUtils.isEmpty(applicantsByDbs)) {
+                    List<Applicants> collect = applicantsByDbs.parallelStream()
+                            .filter(app -> Objects.equals(app.getCreditCode().trim(), a.getCreditCode().trim())).collect(Collectors.toList());
+                    if (!CollectionUtils.isEmpty(collect)) {
                         Applicants applicantsByDb = collect.get(0);
                         if (StringUtils.isNotBlank(a.getContents4())) {
                             applicantsByDb.setAddContents4Cnt(1);
@@ -936,6 +951,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
             applicants.setApplicationDate(LocalDateTime.ofInstant(a.getApplicationDate().toInstant(), ZoneId.systemDefault()));
         }
         if (a.getIndustryDate() != null) {
+            // todo 日期格式提醒
             applicants.setIndustryDate(LocalDateTime.ofInstant(a.getIndustryDate().toInstant(), ZoneId.systemDefault()));
         }
         if (a.getCcDate() != null) {
@@ -975,7 +991,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
     }
 
     /*
-     * 审核
+     * 审核 状态(1:在期； 0:摘牌；2:过期; 4:待审核; 5:县级审核通过; 6:(行业协会审核通过)市级审核通过; 7:审核不通过 8:行业协会审核不通过)
      * return 0：正常流程；8：已被审核；2：无权审核
      * */
     private String updateApplicantsStatusByAudit(Integer type, Integer id, String notes) {
@@ -991,9 +1007,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
             return "待审核的角色不能为空";
         }
 
-            /*
-            状态(1:在期； 0:摘牌；2:过期; 4:待审核; 5:县级审核通过; 6:行业协会审核通过; 7:审核不通过 )
-            * */
+        // 状态(1:在期； 0:摘牌；2:过期; 4:待审核; 5:县级审核通过; 6:(行业协会审核通过)市级审核通过; 7:审核不通过 8:行业协会审核不通过)
         if (Objects.equals(applicants.getStatus(), 1)) {
             // 已通过审核
             return "已被审核通过";
@@ -1074,7 +1088,8 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                     } else {
                         // 更新审核状态
                         // 排除已经审核通过的
-                        if (Objects.equals(roleId, applicants.getAuditRoleId()) && (Objects.equals(applicants.getStatus(), 5) || Objects.equals(applicants.getStatus(), 6))) {
+                        if (Objects.equals(roleId, applicants.getAuditRoleId()) && (Objects.equals(applicants.getStatus(), 5) ||
+                                Objects.equals(applicants.getStatus(), 6))) {
                             if (type == 1) {
                                 if (roleId == 2) {
                                     //applicants.setStatus(6);
@@ -1162,6 +1177,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                         } else if (type == 2) {
                             applicants.setStatus(7);
                         }
+
                         applicants.setAuditRoleId(3);
                         access = true;
                     } else {
