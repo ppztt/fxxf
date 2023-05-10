@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public interface ApplicantsService extends IService<Applicants> {
      */
     void downTemplateFile(Integer type, HttpServletRequest request, HttpServletResponse response);
 
-    BaseResult templatePreImport(Integer type, MultipartFile file);
+    BaseResult templatePreImport(Integer type, MultipartFile file) throws IOException;
 
     BaseResult audit(Integer id, Integer type, String notes);
 

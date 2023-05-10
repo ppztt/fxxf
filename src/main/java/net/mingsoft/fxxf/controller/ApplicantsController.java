@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -158,7 +159,7 @@ public class ApplicantsController {
     @PostMapping(value = "/preImport")
     @ApiOperation(value = "经营者列表-预导入，检查导入的在期单位名称中是否存在与现有在期名单相同项")
     public BaseResult<ArrayList<ExcelImportErrorMsgVo>> templatePreImport(@RequestParam("type") Integer type,
-                                                                          @RequestParam("file") MultipartFile file) {
+                                                                          @RequestParam("file") MultipartFile file) throws IOException {
 
         if (!Objects.isNull(file) && !file.getOriginalFilename().endsWith(".xlsm")) {
             return BaseResult.fail("上传失败，请上传xlsm格式文件");
