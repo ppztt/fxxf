@@ -5,6 +5,7 @@
     <#include "/include/head-file.ftl"/>
     <link rel="stylesheet" type="text/css" href="${base}/static/plugins/TextInputEffects/css/normalize.css"/>
     <link rel="stylesheet" type="text/css" href="${base}/static/plugins/TextInputEffects/css/set1.css"/>
+    <link rel="icon" href="${base}/static/images/fxxf.png">
     <style>
         [v-cloak] {
             display: none;
