@@ -36,9 +36,11 @@
                     <el-row>
                         <el-col span="20">
                             <el-form-item label="经营场所地区：" prop="addrs">
-                                <p style="display: inline-block">{{ formData.city }}</p>-
-                                <p style="display: inline-block">{{ formData.district }}</p>-
-                                <p style="display: inline-block">{{ formData.address }}</p>
+                                <div v-for="(arr,index) in formData.addrs" :key="index">
+                                    <p style="display: inline-block">{{ arr.city }}</p>-
+                                    <p style="display: inline-block">{{ arr.district }}</p>-
+                                    <p style="display: inline-block">{{ arr.address }}</p>
+                                </div>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -105,6 +107,7 @@
                                                 :clearable="true"
                                                 filterable
                                                 @change="cityChange(addr.city)"
+                                                :disabled="userInfo.roleId == 2 || userInfo.roleId == 3 "
                                                 @clear="clear">
                                             <el-option
                                                     v-for="item in regionData"
@@ -121,6 +124,7 @@
                                                 v-model="addr.district"
                                                 placeholder="市/县/区/镇"
                                                 :clearable="true"
+                                                :disabled="!addr.city ||districtData.length == 0 || userInfo.roleId == 3 "
                                                 filterable>
                                             <el-option
                                                     v-for="item in districtData"
@@ -148,14 +152,7 @@
                                                 style="margin-left: 20px"
                                                 icon="el-icon-minus"
                                                 circle
-                                                @click="
-            () => {
-              formData.addrs.splice(index, 1);
-              districtDataArr.splice(index, 1);
-              $forceUpdate();
-            }
-          "
-                                        ></el-button>
+                                                @click="deleteAddr(index)"></el-button>
                                     </el-col>
                                 </el-row>
                             </el-form-item>
@@ -506,7 +503,6 @@
                 activeManageType: [
                     // 当前经营类别数据
                 ],
-                addrs: {},
                 // 经营类别
                 manageType: {
                     commodities: [],
@@ -544,7 +540,10 @@
             // 获取地区信息
             getRegionData() {
                 ms.http.get('/xwh/gd-regin.do').then((res) => {
-                    this.regionData = res.data
+                    if(res.code == 200){
+                        this.regionData = res.data
+                        this.getUserInfo()
+                    }
                 })
             },
             clear(){
@@ -569,6 +568,11 @@
                     // this.town = "";
                 }
             },
+            deleteAddr(index) {
+                this.formData.addrs.splice(index, 1);
+                this.districtDataArr.splice(index, 1);
+                this.$forceUpdate();
+            },
             addAddress() {
                 let userInfo = this.userInfo
                 if (this.formData.addrs === undefined) {
@@ -585,7 +589,7 @@
             },
             resetRegion(cityName) {
                 if (cityName) {
-                    let data = this.regionData.find((value) => value.value == cityName,).children || [];
+                    let data = this.regionData.find((value) => value.name == cityName,).children || [];
                     this.districtDataArr.push(data);
                     return data;
                     // if (this.formData.district) {
@@ -680,8 +684,19 @@
                     this.formData.contents2 = 0
                 }
                 this.formData.contents2 = Number(value) + ""
+            },
+            getUserInfo() {
+                let id = sessionStorage.getItem('userId')
+                ms.http.get('/xwh/user/userInfo.do', {id}).then((res) => {
+                    if (res.code == 200) {
+                        this.userInfo = {...res.data, id}
+                        this.cityChange(this.userInfo.city)
+                        this.districtChange(this.userInfo.district)
+                    }
+                })
             }
         },
+
         mounted: function () {
             this.detailType = window.location.href.split("?")[1].split("&")[0].split('=')[1]
             this.consumerId = Number(window.location.href.split("?")[1].split("&")[1].split('=')[1])
