@@ -1015,6 +1015,8 @@
                                 type: 'success'
                             });
                             this.getUnitList(this.searchMessage);
+                        }else{
+                            this.$message.error('导入失败')
                         }
                         this.isShowComfirm = false;
                     });
@@ -1382,6 +1384,7 @@
                 that.getUnitList();
             }
             window.currentTopic = this.currentTopic
+            console.log(ms)
         }
     })
 </script>

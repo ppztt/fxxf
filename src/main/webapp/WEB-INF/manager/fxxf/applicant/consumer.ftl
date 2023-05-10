@@ -1000,17 +1000,20 @@
                                 type: 'success'
                             });
                             this.getUnitList(this.searchMessage);
+                        }else{
+                            this.$message.error('导入失败')
                         }
                         this.isShowComfirm = false;
                     });
             },
             uploadSucAction(even) {
+                console.log(even)
                 // console.log("导入成功", even);
                 if (even.code == 200 && even.data.length > 0 && !even.data[0].errorMsg) {
                     this.uploadId = even.data[0].fileId;
                     this.uploadConfirm();
                 } else if (even.code == 500) {
-                    this.$message.error(even.data[0].errorMsg)
+                    this.$message.error(even.data[0].errorMsg || "导入失败")
                 }
             },
             uploadErrAction() {

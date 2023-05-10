@@ -67,7 +67,9 @@
         }), (function (e) {
           if (e.response) {
             let n;
-            if (401 == e.response.status ? n = "登录超时" : 400 == e.response.status ? n = "客户端错误" : 403 == e.response.status ? n = "您的权限不足" : 423 == e.response.status ? n = "账号被锁定！" : 500 == e.response.status ? n = "服务器异常" : 501 == e.response.status ? n = "您的操作被取消或不允许提交" : 423 == e.response.status && (n = "服务器正在开小差...."), n) {
+            if (401 == e.response.status ? n = "登录超时" : 400 == e.response.status ? n = "客户端错误" : 403 == e.response.status ? n = "您的权限不足"
+                : 423 == e.response.status ? n = "账号被锁定！" : 500 == e.response.status ? n = "服务器异常" : 501 == e.response.status ? n = "您的操作被取消或不允许提交"
+                    : 423 == e.response.status && (n = "服务器正在开小差...."), n) {
               if (!t) {
                 var t = document.createElement("div");
                 t.id = "tempVue", document.body.appendChild(t)
