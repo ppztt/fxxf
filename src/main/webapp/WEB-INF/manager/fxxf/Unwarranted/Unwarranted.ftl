@@ -1007,7 +1007,7 @@
             uploadConfirm() {
                 // 确认上传
                 ms.http
-                    .post('/xwh/applicants/import/' + this.uploadId + '.do')
+                    .post('/xwh/applicants/import/'+this.type+ "/" + this.uploadId + '.do')
                     .then((res) => {
                         if (res.code == 200) {
                             this.$message({

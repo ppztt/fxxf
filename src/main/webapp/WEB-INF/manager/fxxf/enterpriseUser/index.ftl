@@ -241,6 +241,7 @@
                             :password="true"
                             v-model="formData.password"
                             placeholder="请输入登录密码"
+                              show-password
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="确认密码" prop="newPassword">
@@ -249,6 +250,7 @@
                             :password="true"
                             v-model="formData.newPassword"
                             placeholder="请输入确认密码"
+                              show-password
                     ></el-input>
                 </el-form-item>
             </el-form>
@@ -270,19 +272,21 @@
                     <el-input size="mini"
                             v-model="reviseForm.oldPassword"
                             placeholder="请输入旧密码"
+                              show-password
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="设置新密码" prop="newPassword">
                     <el-input size="mini"
                             v-model="reviseForm.newPassword"
                             placeholder="请输入新密码"
+                              show-password
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="确认新密码" prop="reNewPassword">
                     <el-input size="mini"
                             v-model="reviseForm.reNewPassword"
                             placeholder="请输入确认密码"
-                    ></el-input>
+                              show-password></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">

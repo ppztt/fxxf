@@ -137,6 +137,7 @@
                                                 :clearable="true"
                                                 filterable
                                                 @change="cityChange(addr.city)"
+                                                :disabled="userInfo.roleId == 2 || userInfo.roleId == 3 "
                                                 @clear="clear">
                                             <el-option
                                                     v-for="item in regionData"
@@ -151,7 +152,8 @@
                                                 v-model="addr.district"
                                                 placeholder="市/县/区/镇"
                                                 :clearable="true"
-                                                filterable>
+                                                filterable
+                                                :disabled="!addr.city ||districtData.length == 0 || userInfo.roleId == 3 ">
                                             <el-option
                                                     v-for="item in districtData"
                                                     :value="item.name"
@@ -581,27 +583,27 @@
                 userInfo: {
                     // 页面跳转
                     action: "",
-                    account: "测试",
+                    account: "",
                     address: null,
                     city: "",
-                    createTime: "2023-01-10 03:59:30",
+                    createTime: "",
                     creditCode: null,
                     district: "",
                     email: "",
-                    id: 177,
+                    id: 0,
                     management: null,
                     newPassword: null,
-                    password: "52f24ccfeef7e6a0f4a17fbc45647361ebb06a839ec6172064a2167299e33d1d",
-                    phone: "13922108999",
+                    password: "",
+                    phone: "",
                     principal: null,
                     principalTel: null,
                     province: null,
-                    realname: "魏",
-                    roleId: 1,
+                    realname: "",
+                    roleId: 0,
                     roleName: null,
                     storeName: null,
                     town: null,
-                    updateTime: "2023-01-10 03:59:30",
+                    updateTime: "",
                     usertype: 1,
                     zipcode: ""
                 },
@@ -620,13 +622,7 @@
                     city: "",
                     district: "",
                     address: "",
-                    addrs: [
-                        {
-                            city: "",
-                            district: "",
-                            address: "",
-                        }
-                    ],
+                    addrs: [],
                     creditCode: "",
                     management: "",
                     details: "",
@@ -659,6 +655,7 @@
             // 获取该商家数据
             getList() {
                 ms.http.get("/xwh/applicants/" + this.consumerId + '.do').then((res) => {
+                    console.log(res)
                     this.formData = res.data
                     let cityArr = this.formData.city.split(",");
                     let districtArr = this.formData.district.split(",");
@@ -672,13 +669,16 @@
                         });
                     });
                     this.getManagerType();
-
                 })
             },
             // 获取地区信息
             getRegionData() {
                 ms.http.get('/xwh/gd-regin.do').then((res) => {
-                    this.regionData = res.data
+                    console.log(res)
+                    if(res.code == 200){
+                        this.regionData = res.data
+                        this.getUserInfo()
+                    }
                 })
             },
             clear(){
@@ -714,13 +714,16 @@
                     district: userInfo.district || "",
                     address: "",
                 });
-                let data = this.resetRegion(userInfo.city);
-                this.districtDataArr[this.formData.addrs.length - 1] = data;
-                this.$forceUpdate();
+                this.$nextTick(()=>{
+                    let data = this.resetRegion(userInfo.city);
+                    this.districtDataArr[this.formData.addrs.length - 1] = data;
+                    this.$forceUpdate();
+                })
             },
             resetRegion(cityName) {
                 if (cityName) {
-                    let data = this.regionData.find((value) => value.value == cityName,).children || [];
+                    let data = this.regionData.find((value) => value.name == cityName).children || [];
+                    console.log(data)
                     this.districtDataArr.push(data);
                     return data;
                     // if (this.formData.district) {
@@ -809,6 +812,19 @@
                 ms.http.post('/xwh/applicants/updateApplicantsStatus.do', params,
                     {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
 
+                })
+            },
+            // 获取用户信息
+            getUserInfo() {
+                let id = sessionStorage.getItem('userId')
+                ms.http.get('/xwh/user/userInfo.do', {id}).then((res) => {
+                    if (res.code == 200) {
+                        this.userInfo = {...res.data, id}
+                        this.district = this.userInfo.district
+                        this.city = this.userInfo.city
+                        this.cityChange(this.userInfo.city)
+                        this.districtChange(this.userInfo.district)
+                    }
                 })
             }
         },

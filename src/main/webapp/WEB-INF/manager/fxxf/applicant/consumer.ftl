@@ -992,7 +992,7 @@
             },
             uploadConfirm() {
                 // 确认上传
-                ms.http.post('/xwh/applicants/import/' + this.uploadId + '.do')
+                ms.http.post('/xwh/applicants/import/'+this.type+ "/" + this.uploadId + '.do')
                     .then((res) => {
                         if (res.code == 200) {
                             this.$message({
@@ -1062,7 +1062,6 @@
                 })
                 try {
                     let url = '/xwh/applicants/export.do?status=' + command + '&type=' + this.type
-                    this.downFile(url, timeout)
                     setTimeout(() => {
                         t = true
                     }, timeout)
@@ -1226,7 +1225,7 @@
             },
             resetRegion(cityName) {
                 if (cityName) {
-                    let data = this.regionData.find((value) => value.name == cityName,).children || [];
+                    let data = this.regionData.find((value) => value.name == cityName).children || [];
                     this.districtDataArr.push(data);
                     return data;
                     // if (this.formData.district) {

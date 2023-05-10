@@ -58,7 +58,8 @@
                             <el-form-item prop="oldManagerPassword">
                   <span class="input input--hoshi">
                           <input v-model="resetPasswordForm.oldManagerPassword" class="input__field input__field--hoshi"
-                                 type="password" id="oldManagerPassword"/>
+                                 :type="showPassword ? 'password' : 'text'" id="oldManagerPassword"/>
+                      <i class="el-icon-view showPass" @click="showPassword = !showPassword"></i>
                           <label class="input__label input__label--hoshi input__label--hoshi-color-1"
                                  for="oldManagerPassword">
                               <span class="input__label-content input__label-content--hoshi">旧密码</span>
@@ -73,7 +74,8 @@
                             <el-form-item prop="newManagerPassword">
                   <span class="input input--hoshi">
                           <input v-model="resetPasswordForm.newManagerPassword" class="input__field input__field--hoshi"
-                                 type="password" id="newManagerPassword"/>
+                                 :type="showPassword ? 'password' : 'text'" id="newManagerPassword"/>
+                      <i class="el-icon-view showPass"  @click="showPassword = !showPassword"></i>
                           <label class="input__label input__label--hoshi input__label--hoshi-color-1"
                                  for="newManagerPassword">
                               <span class="input__label-content input__label-content--hoshi">新密码</span>
@@ -88,8 +90,9 @@
                             <el-form-item prop="newComfirmManagerPassword">
                   <span class="input input--hoshi">
                           <input v-model="resetPasswordForm.newComfirmManagerPassword"
-                                 class="input__field input__field--hoshi" type="password"
+                                 class="input__field input__field--hoshi" :type="showPassword ? 'password' : 'text'"
                                  id="newComfirmManagerPassword"/>
+                      <i class="el-icon-view showPass" @click="showPassword = !showPassword"></i>
                           <label class="input__label input__label--hoshi input__label--hoshi-color-1"
                                  for="newComfirmManagerPassword">
                               <span class="input__label-content input__label-content--hoshi">确认新密码</span>
@@ -126,6 +129,7 @@
     var resetPasswordVue = new Vue({
         el: '#reset-password',
         data: {
+            showPassword: true,
             base: ms.base,
             // 是否直接打开该页面
             isDirect: true,
@@ -140,11 +144,11 @@
             resetPasswordFormRule: {
                 oldManagerPassword: [
                     {required: true, message: '请输入旧密码', trigger: 'blur'},
-                    {min: 6, max: 30, message: '长度在 6 到 30 个字符', trigger: 'blur'}
+                    {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'}
                 ],
                 newManagerPassword: [
                     {required: true, message: '请输入新密码', trigger: 'blur'},
-                    {min: 8, max: 30, message: '长度在 8 到 30 个字符', trigger: 'blur'},
+                    {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
                     {
                         validator: function (rule, value, callback) {
                             if (resetPasswordVue.resetPasswordForm.oldManagerPassword === value) {
@@ -155,8 +159,8 @@
                         }
                     },
                     {
-                        pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&,.*]).{8,30}$/,
-                        message: '请输入8-30位，由大小写字母、数字和特殊符号组合的密码'
+                        pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/,
+                        message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'
                     }
                 ],
                 newComfirmManagerPassword: [
@@ -172,8 +176,8 @@
                         }
                     },
                     {
-                        pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&,.*]).{8,30}$/,
-                        message: '请输入8-30位，由大小写字母、数字和特殊符号组合的密码'
+                        pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/,
+                        message: '至少包含数字、大写字母、小写字母和特殊字符中的三种'
                     }
                 ]
             }
@@ -649,4 +653,11 @@
         height: calc(100% - 10px);
         border-bottom: 1px solid #B9C1CA;
     }
+    .showPass{
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        cursor: pointer;
+    }
+
 </style>
