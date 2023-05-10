@@ -297,7 +297,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
             // 输出全部的sheet
             params.setScanAllsheet(true);
             Workbook workbook = ExcelExportUtil.exportExcel(params, new HashMap<>());
-            String fileName = "线下无理由退货承诺店导入模板（备注：请启用宏）.xlsm";
+            String fileName = ApplicantsTypeEnum.UNIT.getCode().equals(type) ? "放心消费承诺单位导入模板（备注：请启用宏）.xlsm" : "线下无理由退货承诺店导入模板（备注：请启用宏）.xlsm";
             ExcelUtil.downLoadExcel(fileName, request, response, workbook);
         } catch (Exception e) {
             e.printStackTrace();
