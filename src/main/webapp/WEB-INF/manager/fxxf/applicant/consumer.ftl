@@ -593,6 +593,19 @@
                 style="float: right">
         </el-pagination>
     </el-main>
+    <el-dialog
+            :visible.sync="dialogVisible"
+            width="40%"
+            center>
+        <span slot="title" class="el-dialog__header">
+            <span style="color: #F56C6C; font-size: 16px"><i class="el-icon-warning"></i> 警告</span>
+        </span>
+        <span>{{comfirmContent}}</span>
+        <span slot="footer" class="dialog-footer">
+    <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
+    <el-button size="mini" type="primary" @click="uploadConfirm">确 定</el-button>
+  </span>
+    </el-dialog>
     <iframe :src="action" class="ms-iframe-style" v-show="action" id="check" ref="check" v-cloak></iframe>
 </div>
 </body>
@@ -733,6 +746,7 @@
                     {id: "8", value: "行业协会审核不通过"}
                 ],
                 management: "",
+                dialogVisible: false, // 导入弹窗
                 isShowComfirm: false, //显示弹窗
                 comfirmContent: "", //弹窗内容
                 uploadId: null,
@@ -992,28 +1006,78 @@
             },
             uploadConfirm() {
                 // 确认上传
-                ms.http.post('/xwh/applicants/import/'+this.type+ "/" + this.uploadId + '.do')
-                    .then((res) => {
-                        if (res.code == 200) {
+                ms.http
+                    .post('/xwh/applicants/import/'+this.type+ "/" + this.uploadId + '.do')
+                    .then((even) => {
+                        if (even.code == 200) {
                             this.$message({
                                 message: "导入成功",
                                 type: 'success'
                             });
                             this.getUnitList(this.searchMessage);
-                        }else{
-                            this.$message.error('导入失败')
+                        }else if (
+                            even.code == 200 &&
+                            even.data.length > 0
+                        ) {
+                            this.$message.error("导入失败")
+                            this.uploadId = even.data[0].fileId;
+                            let errorMes = "";
+                            even.data.forEach((item) => {
+                                errorMes = errorMes + '行:' + (item.rowNum || null) + '错误:' + item.errorMsg ;
+                            });
+                            this.$notify.error({
+                                title: '导入失败详细信息',
+                                message: errorMes
+                            });
+                        }  else{
+                            this.$message.error("导入失败");
+                            let errorMes = "";
+                            even.data.forEach((item) => {
+                                errorMes = errorMes + '行:' + (item.rowNum || null) + '错误:' + item.errorMsg + '\n';
+                            });
+                            this.$notify.error({
+                                title: "导入失败详细信息",
+                                message: errorMes,
+                            });
                         }
-                        this.isShowComfirm = false;
+                        this.dialogVisible = false;
                     });
             },
             uploadSucAction(even) {
-                console.log(even)
                 // console.log("导入成功", even);
                 if (even.code == 200 && even.data.length > 0 && !even.data[0].errorMsg) {
                     this.uploadId = even.data[0].fileId;
                     this.uploadConfirm();
-                } else if (even.code == 500) {
-                    this.$message.error(even.data[0].errorMsg || "导入失败")
+                }
+                else if (
+                    even.code == 200 &&
+                    even.data.length > 0 &&
+                    even.data[0].errorMsg
+                ) {
+                    this.uploadId = even.data[0].fileId;
+                    let errorMes = "";
+                    even.data.forEach((item) => {
+                        errorMes = errorMes + '行:' + (item.rowNum || null) + '错误:' + item.errorMsg + "\n"  ;
+                    });
+                    this.comfirmContent = errorMes;
+                    this.dialogVisible = true;
+                }
+                else if (
+                    even.code == 500 &&
+                    even.data.length > 0 &&
+                    even.data[0].errorMsg
+                ) {
+                    this.uploadId = even.data[0].fileId;
+                    let errorMes = "";
+                    even.data.forEach((item) => {
+                        errorMes = errorMes + '行:' + (item.rowNum || null) + '错误:' + item.errorMsg + "\n" ;
+                    });
+                    this.$notify.error({
+                        title: '错误',
+                        message: errorMes
+                    });
+                }  else if (even.code == 500) {
+                    this.$message.error("导入失败")
                 }
             },
             uploadErrAction() {
