@@ -1027,7 +1027,7 @@
                     this.uploadId = even.data[0].fileId;
                     this.uploadConfirm();
                 } else if (even.code == 500) {
-                    this.$message.error(even.data[0].errorMsg)
+                    this.$message.error(even.data[0].errorMsg || "导入失败")
                 }
             },
             uploadErrAction() {
