@@ -546,20 +546,24 @@
                     this.$refs[msg].validate(valid => {
                         if (valid) {
                             if (msg == "modify") {
-                                let params = JSON.stringify(this.formData)
-                                ms.http.post('/xwh/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
-                                    if (res.code == '200') {
-                                        this.$message({
-                                            message: '修改成功',
-                                            type: 'success'
-                                        })
-                                        this.modify = false
-                                        this.reset()
-                                        this.getUserList()
-                                    } else {
-                                        this.$message.error(res.msg)
-                                    }
-                                })
+                                if(this.formData.password == this.formData.newPassword){
+                                    let params = JSON.stringify(this.formData)
+                                    ms.http.post('/xwh/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
+                                        if (res.code == '200') {
+                                            this.$message({
+                                                message: '修改成功',
+                                                type: 'success'
+                                            })
+                                            this.modify = false
+                                            this.reset()
+                                            this.getUserList()
+                                        } else {
+                                            this.$message.error(res.msg)
+                                        }
+                                    })
+                                }else {
+                                    this.$message.error("两次密码输入不一致")
+                                }
                             } else {
                                 if (this.formData.password == this.formData.newPassword) {
                                     let params = JSON.stringify(this.formData)
