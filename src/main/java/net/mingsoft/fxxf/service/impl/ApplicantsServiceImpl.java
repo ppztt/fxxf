@@ -541,7 +541,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
     public BaseResult templateImport(Integer type, String fileId) {
         File file = null;
         try {
-            String path = ResourceUtils.getURL("classpath:").getPath() + importFileTmp;
+            String path = importFileTmp;
             file = ResourceUtils.getFile(path + fileId);
 
             ImportParams importParams = new ImportParams();
