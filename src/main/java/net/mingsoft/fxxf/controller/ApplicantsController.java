@@ -159,7 +159,7 @@ public class ApplicantsController {
     @PostMapping(value = "/preImport")
     @ApiOperation(value = "经营者列表-预导入，检查导入的在期单位名称中是否存在与现有在期名单相同项")
     public BaseResult<ArrayList<ExcelImportErrorMsgVo>> templatePreImport(@RequestParam("type") Integer type,
-                                                                          @RequestParam("file") MultipartFile file) throws IOException {
+                                                                          @RequestParam("file") MultipartFile file) {
 
         if (!Objects.isNull(file) && !file.getOriginalFilename().endsWith(".xlsm")) {
             return BaseResult.fail("上传失败，请上传xlsm格式文件");

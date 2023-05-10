@@ -58,7 +58,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -306,7 +305,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
     }
 
     @Override
-    public BaseResult templatePreImport(Integer type, MultipartFile file) throws IOException {
+    public BaseResult templatePreImport(Integer type, MultipartFile file) {
         String yyyyMMddPattern = "yyyy-MM-dd";
         DateFormat dateformat = new SimpleDateFormat(yyyyMMddPattern);
 
