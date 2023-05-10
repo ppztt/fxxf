@@ -51,11 +51,11 @@ public interface ApplicantsService extends IService<Applicants> {
      */
     void downTemplateFile(Integer type, HttpServletRequest request, HttpServletResponse response);
 
-    BaseResult templatePreImport(Integer type,MultipartFile file);
+    BaseResult templatePreImport(Integer type, MultipartFile file);
 
     BaseResult audit(Integer id, Integer type, String notes);
 
-    BaseResult<ArrayList<Applicants>> templateImport(String fileId);
+    BaseResult<ArrayList<Applicants>> templateImport(Integer type, String fileId);
 
     void export(Integer type, String status, HttpServletRequest request, HttpServletResponse response);
 

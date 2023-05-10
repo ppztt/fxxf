@@ -404,7 +404,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                     Date curApplicantDate = applicantsExcelImportVo.getApplicationDate();
                     String strdate = dateformat.format(curApplicantDate);
                     if (strdate.length() != yyyyMMddPattern.length()) {
-                        errorMsgVoList.add(new ExcelImportErrorMsgVo(String.format("经营者注册名称：%s，企业申请日期格式不对，应为yyyy-MM-dd",applicantsExcelImportVo.getRegName())));
+                        errorMsgVoList.add(new ExcelImportErrorMsgVo(String.format("经营者注册名称：%s，企业申请日期格式不对，应为yyyy-MM-dd", applicantsExcelImportVo.getRegName())));
                         return BaseResult.fail(errorMsgVoList);
                     }
                 }
@@ -831,7 +831,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
 
                         if (user.getRoleId() == 1 || user.getRoleId() == 2) {
                             //市级用户和省级用户导入，直接在期
-                            Applicants applicants = newApplicants(a);
+                            Applicants applicants = newApplicants(a, type);
                             applicants.setStatus(1);
                             applicants.setStartTime(LocalDate.now());
                             LocalDate localDate3After = applicants.getStartTime().plusYears(3).minusMonths(1);
@@ -860,19 +860,19 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                                     // 摘牌时间不超过3个月，更新为连续承诺，连续承诺次数加1
                                     if (months <= 3) {
                                         Integer commNum = applicantsByDb.getCommNum();
-                                        Applicants applicants = newApplicants(a);
+                                        Applicants applicants = newApplicants(a, type);
                                         applicants.setContCommitment("是");
                                         applicants.setCommNum(commNum == 0 || commNum == null ? 2 : commNum + 1);
                                         applicantsByDb.setUpdateTime(LocalDateTime.now());
                                         applicantsList.add(applicants);
                                     } else {
-                                        Applicants applicants = newApplicants(a);
+                                        Applicants applicants = newApplicants(a, type);
                                         applicantsByDb.setUpdateTime(LocalDateTime.now());
                                         applicantsList.add(applicants);
                                     }
                                 }
                             } else if (applicantsByDb.getStatus() == 2) {
-                                Applicants applicants = newApplicants(a);
+                                Applicants applicants = newApplicants(a, type);
                                 applicantsByDb.setUpdateTime(LocalDateTime.now());
                                 applicantsList.add(applicants);
                             }
@@ -880,10 +880,10 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
 
                         applicantsListNeedUpdate.add(applicantsByDb);
                     } else {
-                        applicantsList.add(newApplicants(a));
+                        applicantsList.add(newApplicants(a, type));
                     }
                 } else {
-                    Applicants applicants = newApplicants(a);
+                    Applicants applicants = newApplicants(a, type);
 
                     if (user.getRoleId() == 1 || user.getRoleId() == 2) {
                         //市级用户和省级用户导入，直接在期
@@ -939,10 +939,10 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
 
     }
 
-    private Applicants newApplicants(ApplicantsExcelImportVo a) {
+    private Applicants newApplicants(ApplicantsExcelImportVo a, Integer type) {
         Applicants applicants = new Applicants();
         BeanUtils.copyProperties(a, applicants);
-        applicants.setType(1);
+        applicants.setType(type);
         applicants.setStatus(4);
         applicants.setContCommitment("否");
         applicants.setCreateTime(LocalDateTime.now());
@@ -951,7 +951,6 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
             applicants.setApplicationDate(LocalDateTime.ofInstant(a.getApplicationDate().toInstant(), ZoneId.systemDefault()));
         }
         if (a.getIndustryDate() != null) {
-            // todo 日期格式提醒
             applicants.setIndustryDate(LocalDateTime.ofInstant(a.getIndustryDate().toInstant(), ZoneId.systemDefault()));
         }
         if (a.getCcDate() != null) {
