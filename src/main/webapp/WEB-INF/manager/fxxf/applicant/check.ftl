@@ -537,7 +537,7 @@
                 <el-button size="mini" v-if="detailType=='3'" type="primary" @click="auditUnitTnfo('2')">
                     审核不通过
                 </el-button>
-                <el-button size="mini" v-if="detailType=='2'" type="primary">提交</el-button>
+                <el-button size="mini" v-if="detailType=='2'" type="primary" @click="delistUnitTnfo">提交</el-button>
                 <el-button type="primary" icon="iconfont icon-fanhui" size="mini" @click="returnBack">返回</el-button>
             </div>
         </el-main>
@@ -808,11 +808,16 @@
                     applicantsId: this.consumerId,
                     delOther: this.formData.delOther,
                     delReason: this.formData.delOther,
-                    status
+                    status: 0
                 })
                 ms.http.post('/xwh/applicants/updateApplicantsStatus.do', params,
                     {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
-
+                    if (res.code == 200) {
+                        this.returnBack()
+                        this.currentTopic('申请摘牌成功')
+                    } else {
+                        this.$message.error('')
+                    }
                 })
             },
             // 获取用户信息
