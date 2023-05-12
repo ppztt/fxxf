@@ -1007,7 +1007,7 @@
             uploadConfirm() {
                 // 确认上传
                 ms.http
-                    .post('/xwh/applicants/import/'+this.type+ "/" + this.uploadId + '.do')
+                    .post('/xwh/applicants/import/' + this.type + "/" + this.uploadId + '.do')
                     .then((even) => {
                         if (even.code == 200) {
                             this.$message({
@@ -1015,7 +1015,7 @@
                                 type: 'success'
                             });
                             this.getUnitList(this.searchMessage);
-                        }else if (
+                        } else if (
                             even.code == 200 &&
                             even.data.length > 0
                         ) {
@@ -1023,7 +1023,7 @@
                             this.uploadId = even.data[0].fileId;
                             let errorMes = "";
                             even.data.forEach((item) => {
-                                errorMes =  errorMes + "<p>" + (item.rowNum ? '行:' + item.rowNum : "") + '错误:' + item.errorMsg + "</p>" + '<br/>' ;
+                                errorMes = errorMes + "<p>" + (item.rowNum ? '行:' + item.rowNum : "") + '错误:' + item.errorMsg + "</p>" + '<br/>';
                             });
                             this.$notify.error({
                                 title: '导入失败详细信息',
@@ -1031,11 +1031,11 @@
                                 dangerouslyUseHTMLString: true,
                                 duration: 0
                             });
-                        }  else{
+                        } else {
                             this.$message.error("导入失败");
                             let errorMes = "";
                             even.data.forEach((item) => {
-                                errorMes =  errorMes + "<p>" + (item.rowNum ? '行:' + item.rowNum : "") + '错误:' + item.errorMsg + "</p>" + '<br/>' ;
+                                errorMes = errorMes + "<p>" + (item.rowNum ? '行:' + item.rowNum : "") + '错误:' + item.errorMsg + "</p>" + '<br/>';
                             });
                             this.$notify.error({
                                 title: "导入失败详细信息",
@@ -1052,8 +1052,7 @@
                 if (even.code == 200 && even.data.length > 0 && !even.data[0].errorMsg) {
                     this.uploadId = even.data[0].fileId;
                     this.uploadConfirm();
-                }
-                else if (
+                } else if (
                     even.code == 200 &&
                     even.data.length > 0 &&
                     even.data[0].errorMsg
@@ -1061,12 +1060,11 @@
                     this.uploadId = even.data[0].fileId;
                     let errorMes = "";
                     even.data.forEach((item) => {
-                        errorMes =  errorMes  + (item.rowNum ? '行:' + item.rowNum : "") + '错误:' + item.errorMsg ;
+                        errorMes = errorMes + (item.rowNum ? '行:' + item.rowNum : "") + '错误:' + item.errorMsg;
                     });
                     this.comfirmContent = errorMes;
                     this.dialogVisible = true;
-                }
-                else if (
+                } else if (
                     even.code == 500 &&
                     even.data.length > 0 &&
                     even.data[0].errorMsg
@@ -1074,7 +1072,7 @@
                     this.uploadId = even.data[0].fileId;
                     let errorMes = "";
                     even.data.forEach((item) => {
-                        errorMes =  errorMes + "<p>" + (item.rowNum ? '行:' + item.rowNum : "") + '错误:' + item.errorMsg + "</p>" + '<br/>' ;
+                        errorMes = errorMes + "<p>" + (item.rowNum ? '行:' + item.rowNum : "") + '错误:' + item.errorMsg + "</p>" + '<br/>';
                     });
                     this.$notify.error({
                         title: '错误',
@@ -1082,7 +1080,7 @@
                         dangerouslyUseHTMLString: true,
                         duration: 0
                     });
-                }  else if (even.code == 500) {
+                } else if (even.code == 500) {
                     this.$message.error("导入失败")
                 }
             },
@@ -1126,43 +1124,31 @@
                 }
             },
             exportData(command) {
-                let timeout = 60000
-                let t = false
                 // 导出数据
                 this.$message({
                     showClose: true,
                     message: "正在导出"
                 })
-                try {
-                    let url = '/xwh/applicants/export.do?status=' + command + '&type=' + this.type
-                    // this.downFile(url, timeout)
-                    setTimeout(() => {
-                        t = true
-                    }, timeout)
-                    ms.http.get('/xwh/applicants/export.do', {
-                        status: command,
-                        type: this.type
-                    }, {timeout, responseType: 'blob'}).then((res) => {
-                        const blob = new Blob(res.data)
-                        const link = document.createElement('a')
-                        link.href = window.URL.createObjectURL(blob)
-                        // link.download = 'file_name.extension' // 文件名和扩展名
-                        link.click()
-                        // if (t) {
-                        //     this.$message.error('导出失败')
-                        // } else {
-                        //     this.$message({
-                        //         showClose: true,
-                        //         message: '导出成功',
-                        //         type: "success"
-                        //     })
-                        // }
-                    }).catch(err => {
-                        this.$message.error('导出失败')
-                    })
-                } catch (err) {
-                    this.$message.error('导出失败')
-                }
+                axios({
+                    url: '/xwh/applicants/export.do?status=' + command + '&type=' + this.type,
+                    responseType: 'blob',
+                    noHandleResponse: true,
+                    timeout: 60000
+                }).then(res => {
+                    if(res.code && res.code == 500){
+                        this.$message.error(res.msg || "导出失败")
+                    }else{
+                        let filename = decodeURIComponent(res.headers['content-disposition'].match(/filename=(.*)$/)[1]);
+                        let blob= new Blob([res.data],{type: "application/vnd.ms-excel"});
+                        let url = window.URL.createObjectURL(blob);
+                        let a =document.createElement('a');
+                        a.href = url;
+                        a.setAttribute('download',filename);
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                    }
+                })
             },
             regionReset() {
                 // 地区重设
@@ -1234,7 +1220,7 @@
             // 获取地区信息
             getRegionData() {
                 ms.http.get('/xwh/gd-regin.do').then((res) => {
-                    if(res.code == 200){
+                    if (res.code == 200) {
                         this.regionData = res.data
                         this.getUserInfo();
                     }
@@ -1335,7 +1321,7 @@
                                 message: '删除成功!'
                             });
                             this.getUnitList(this.searchMessage)
-                        }else{
+                        } else {
                             this.$message.error('删除失败')
                         }
                     })
@@ -1362,7 +1348,7 @@
                     type: 'error',
                     center: true
                 }).then(() => {
-                    ms.http.post('/xwh/applicants/remove.do', ids, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res)=>{
+                    ms.http.post('/xwh/applicants/remove.do', ids, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
                         console.log(res)
                         if (res.code == 200) {
                             this.$message({
@@ -1370,7 +1356,7 @@
                                 message: '删除成功!'
                             });
                             this.getUnitList(this.searchMessage)
-                        }else{
+                        } else {
                             this.$message.error('删除失败')
                         }
                     })
@@ -1434,8 +1420,6 @@
                 that.getUnitList();
             }
             window.currentTopic = this.currentTopic
-            let str = "123"+'\n'+'123'
-            console.log(str)
         }
     })
 </script>
@@ -1633,7 +1617,8 @@
     .el-pagination {
         text-align: right;
     }
-    .el-notification{
+
+    .el-notification {
         overflow: auto !important;
         max-height: 80% !important;
     }
