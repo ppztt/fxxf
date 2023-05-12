@@ -324,7 +324,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
 
                 result.setVerifyFail(unitApplicantsImportRes.isVerifyFail());
                 result.setList(BeanUtil.copyToList(unitApplicantsImportRes.getList(), ApplicantsExcelImportVo.class));
-                result.setFailList(BeanUtil.copyToList(unitApplicantsImportRes.getList(), ApplicantsExcelImportVo.class));
+                result.setFailList(BeanUtil.copyToList(unitApplicantsImportRes.getFailList(), ApplicantsExcelImportVo.class));
             }
 
             if (ApplicantsTypeEnum.STORE.getCode().equals(type)) {
@@ -335,7 +335,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
 
                 result.setVerifyFail(storeApplicantsImportRes.isVerifyFail());
                 result.setList(BeanUtil.copyToList(storeApplicantsImportRes.getList(), ApplicantsExcelImportVo.class));
-                result.setFailList(BeanUtil.copyToList(storeApplicantsImportRes.getList(), ApplicantsExcelImportVo.class));
+                result.setFailList(BeanUtil.copyToList(storeApplicantsImportRes.getFailList(), ApplicantsExcelImportVo.class));
             }
 
 
