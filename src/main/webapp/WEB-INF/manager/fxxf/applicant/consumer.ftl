@@ -925,9 +925,9 @@
                     details: "",
                     principal: "",
                     principalTel: "",
-                    contents1: "",
-                    contents2: "",
-                    contents3: "",
+                    contents1: "不提供假冒伪劣商品，不提供“三无”产品，不提供不合格商品，不提供来源不明商品，不提供过期商品，不提供缺陷商品，不提供侵犯知识产权商品。",
+                    contents2: "不作虚假宣传，不搞低价诱导；恪守服务承诺，履行合同约定；明码实价，明白消费；守法经营，诚信待客。",
+                    contents3: "履行保护消费者权益第一责任，提供便捷售后服务，高效处理消费纠纷，承担先行赔付和首问责任。",
                     applicationDate: "",
                 }
                 this.formData.addrs.push({
@@ -1126,7 +1126,7 @@
                 }
             },
             exportData(command) {
-                let timeout = 180000
+                let timeout = 60000
                 let t = false
                 // 导出数据
                 this.$message({
@@ -1135,22 +1135,28 @@
                 })
                 try {
                     let url = '/xwh/applicants/export.do?status=' + command + '&type=' + this.type
+                    // this.downFile(url, timeout)
                     setTimeout(() => {
                         t = true
                     }, timeout)
                     ms.http.get('/xwh/applicants/export.do', {
                         status: command,
                         type: this.type
-                    }, {timeout}).then((res) => {
-                        if (t) {
-                            this.$message.error('导出失败')
-                        } else {
-                            this.$message({
-                                showClose: true,
-                                message: '导出成功',
-                                type: "success"
-                            })
-                        }
+                    }, {timeout, responseType: 'blob'}).then((res) => {
+                        const blob = new Blob(res.data)
+                        const link = document.createElement('a')
+                        link.href = window.URL.createObjectURL(blob)
+                        // link.download = 'file_name.extension' // 文件名和扩展名
+                        link.click()
+                        // if (t) {
+                        //     this.$message.error('导出失败')
+                        // } else {
+                        //     this.$message({
+                        //         showClose: true,
+                        //         message: '导出成功',
+                        //         type: "success"
+                        //     })
+                        // }
                     }).catch(err => {
                         this.$message.error('导出失败')
                     })
@@ -1267,8 +1273,8 @@
             },
             // 录入功能
             setApply(type) {
-                let params = JSON.stringify(this.formData)
-                ms.http.post('/xwh/applicants/apply/input.do', {params},
+                let params = JSON.stringify({...this.formData, type, addrs: JSON.stringify(this.formData.addrs)})
+                ms.http.post('/xwh/applicants/apply/input.do', params,
                     {headers: {'Content-type': 'application/json;charset=UTF-8'}}).then((res) => {
                     if (res.code == 200) {
                         this.$message({
@@ -1277,7 +1283,7 @@
                         })
                         this.isShowEnteringModal = false
                     } else {
-                        this.$message.error("录入失败")
+                        this.$message.error(res.msg || "录入失败")
                     }
                 })
             },

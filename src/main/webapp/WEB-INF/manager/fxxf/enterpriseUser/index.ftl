@@ -585,6 +585,7 @@
                     this.$nextTick(() => {
                         this.$refs['reviseForm'].validate(valid => {
                             if (valid) {
+                                this.formData.password = this.reviseForm.oldPassword
                                 this.formData.newPassword = this.reviseForm.newPassword
                                 let params = JSON.stringify(this.formData)
                                 ms.http.post('/xwh/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
@@ -595,7 +596,7 @@
                                         })
                                     }
                                     if (res.code == 500) {
-                                        this.$message.error(res.msg || "修改失败")
+                                        this.$message.error( res.msg || "修改失败")
                                     }
                                 })
                             } else {
