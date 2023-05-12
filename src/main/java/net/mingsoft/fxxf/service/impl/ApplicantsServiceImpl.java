@@ -648,9 +648,9 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
         File file = new File(fileName);
         try {
             FileInputStream inputStream = new FileInputStream(fileName);
-            response.setCharacterEncoding("UTF-8");
-            response.setHeader("content-Type", "application/vnd.ms-excel");
-            response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+            response.setContentType("application/octet-stream");
+            response.setHeader("x-content-type-options", "nosniff");
+            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
             Utils.copy(inputStream, response.getOutputStream());
             response.getOutputStream().flush();
             response.getOutputStream().close();
