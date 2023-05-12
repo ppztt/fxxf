@@ -9,6 +9,11 @@ import cn.afterturn.easypoi.excel.entity.result.ExcelImportResult;
 import cn.afterturn.easypoi.exception.excel.ExcelImportException;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.text.CharSequenceUtil;
+import com.alibaba.druid.util.Utils;
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.EasyExcelFactory;
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -57,8 +62,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.InputStream;
+import java.io.*;
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -639,8 +644,27 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
         if (CollectionUtils.isEmpty(applicantsExcelVos)) {
             applicantsExcelVos.add(new ApplicantsExcelVo());
         }
-
-        ExcelUtil.exportExcel(applicantsExcelVos, "", "", ApplicantsExcelVo.class, fileName, request, response);
+        EasyExcelFactory.write(fileName, ApplicantsExcelVo.class).sheet("").doWrite(applicantsExcelVos);
+        File file = new File(fileName);
+        try {
+            FileInputStream inputStream = new FileInputStream(fileName);
+            response.setCharacterEncoding("UTF-8");
+            response.setHeader("content-Type", "application/vnd.ms-excel");
+            response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+            Utils.copy(inputStream, response.getOutputStream());
+            response.getOutputStream().flush();
+            response.getOutputStream().close();
+        } catch (FileNotFoundException | UnsupportedEncodingException e) {
+            log.error(e.getMessage());
+            throw new BusinessException("文件不存在");
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            throw new BusinessException("文件导出失败请重试");
+        } finally {
+            if (file.exists()){
+                file.delete();
+            }
+        }
     }
 
     @Override
