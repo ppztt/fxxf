@@ -8,7 +8,6 @@
     <script src="${base}/static/plugins/stomp/2.3.3/stomp.min.js"></script>
     <!-- 此部分是铭飞平台MStroe的客户端（MStore不在铭飞开源产品范围），如果不需要使用MStore可以删除掉 -->
     <script src="https://cdn.mingsoft.net/platform/ms-store.umd.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 </head>
 <body>
 <div id="index" class="ms-index" v-cloak>
@@ -1140,38 +1139,63 @@
                 }
             },
             exportData(command) {
-                let timeout = 60000
-                let t = false
-                // 导出数据
+                // let timeout = 60000
+                // let t = false
+                // // 导出数据
                 // this.$message({
                 //     showClose: true,
                 //     message: "正在导出"
                 // })
-                try {
-                    let url = '/xwh/applicants/export.do?status=' + command + '&type=' + this.type
-                    this.downFile(url, timeout)
-                    setTimeout(() => {
-                        t = true
-                    }, timeout)
-                    // ms.http.get('/xwh/applicants/export.do', {
-                    //     status: command,
-                    //     type: this.type
-                    // }, {timeout}).then((res) => {
-                    //     if (t) {
-                    //         this.$message.error('导出失败')
-                    //     } else {
-                    //         this.$message({
-                    //             showClose: true,
-                    //             message: '导出成功',
-                    //             type: "success"
-                    //         })
-                    //     }
-                    // }).catch(err => {
-                    //     this.$message.error('导出失败')
-                    // })
-                } catch (err) {
-                    this.$message.error('导出失败')
-                }
+                // try {
+                //     let url = '/xwh/applicants/export.do?status=' + command + '&type=' + this.type
+                //     this.downFile(url, timeout)
+                //     setTimeout(() => {
+                //         t = true
+                //     }, timeout)
+                //     ms.http.get('/xwh/applicants/export.do', {
+                //         status: command,
+                //         type: this.type
+                //     }, {timeout}).then((res) => {
+                //         if (t) {
+                //             this.$message.error('导出失败')
+                //         } else {
+                //             this.$message({
+                //                 showClose: true,
+                //                 message: '导出成功',
+                //                 type: "success"
+                //             })
+                //         }
+                //     }).catch(err => {
+                //         this.$message.error('导出失败')
+                //     })
+                // } catch (err) {
+                //     this.$message.error('导出失败')
+                // }
+                // 导出数据
+                this.$message({
+                    showClose: true,
+                    message: "正在导出"
+                })
+                axios({
+                    url: '/xwh/applicants/export.do?status=' + command + '&type=' + 4,
+                    responseType: 'blob',
+                    noHandleResponse: true,
+                    timeout: 60000
+                }).then(res => {
+                    if(res.code && res.code == 500){
+                        this.$message.error(res.msg || "导出失败")
+                    }else{
+                        let filename = decodeURIComponent(res.headers['content-disposition'].match(/filename=(.*)$/)[1]);
+                        let blob= new Blob([res.data],{type: "application/vnd.ms-excel"});
+                        let url = window.URL.createObjectURL(blob);
+                        let a =document.createElement('a');
+                        a.href = url;
+                        a.setAttribute('download',filename);
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                    }
+                })
             },
             regionReset() {
                 // 地区重设
