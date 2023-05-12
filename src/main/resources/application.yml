@@ -120,3 +120,7 @@ mybatis-plus:
       select-strategy: not_empty
   configuration:
     database-id: mysql
+
+task:
+  # 每天0点执行
+  applicants: 0 0 0 * * ?
