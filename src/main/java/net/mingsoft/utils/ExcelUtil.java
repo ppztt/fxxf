@@ -8,6 +8,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -59,7 +60,7 @@ public class ExcelUtil {
 
             response.setCharacterEncoding("UTF-8");
             response.setHeader("content-Type", "application/vnd.ms-excel");
-            response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName));
             workbook.write(response.getOutputStream());
         } catch (IOException e) {
             log.error("downLoadExcel下载文件异常", e);
