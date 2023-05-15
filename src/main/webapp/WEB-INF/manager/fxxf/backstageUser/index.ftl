@@ -438,12 +438,12 @@
                             trigger: "blur",
                         },
                         {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
-                        {pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
+                        {pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+_!@#$%^&*.,;'"`~=?])[A-Za-z0-9-+_!@#$%^&*.,?]{8,}$/, message: '请输入包含数字、大写字母、小写字母和特殊字符中的密码', trigger: 'blur'}
                     ],
                     newPassword: [
                         {required: false, message: '不能为空', trigger: "blur",},
                         {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
-                        {pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
+                        {pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+_!@#$%^&*.,;'"`~=?])[A-Za-z0-9-+_!@#$%^&*.,?]{8,}$/, message: '请输入包含数字、大写字母、小写字母和特殊字符中的密码', trigger: 'blur'}
                     ],
                     roleId: [
                         {
@@ -477,12 +477,12 @@
                     password: [
                         {required: true, message: '密码不能为空', trigger: "blur",},
                         {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
-                        {pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
+                        {pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+_!@#$%^&*.,;'"`~=?])[A-Za-z0-9-+_!@#$%^&*.,?]{8,}$/, message: '请输入包含数字、大写字母、小写字母和特殊字符中的密码', trigger: 'blur'}
                     ],
                     newPassword: [
                         {required: true, message: '不能为空', trigger: "blur",},
                         {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
-                        {pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
+                        {pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+_!@#$%^&*.,;'"`~=?])[A-Za-z0-9-+_!@#$%^&*.,?]{8,}$/, message: '请输入包含数字、大写字母、小写字母和特殊字符中的密码', trigger: 'blur'}
                     ],
                     roleId: [
                         {required: true, type: "number", message: "所属组不能为空", trigger: "change",},
