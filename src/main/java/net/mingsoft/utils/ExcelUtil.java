@@ -55,6 +55,7 @@ public class ExcelUtil {
             if (request.getHeader("USER-AGENT").toLowerCase().contains("firefox")) {
                 fileName = "=?UTF-8?B?" + (new String(Base64.getEncoder().encode(fileName.getBytes(StandardCharsets.UTF_8)))) + "?=";
             }
+            response.setCharacterEncoding("UTF-8");
             response.setHeader("content-Type", "application/vnd.ms-excel");
             response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
             workbook.write(response.getOutputStream());
