@@ -32,6 +32,7 @@ import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.basic.util.RedisUtil;
 import net.mingsoft.basic.util.StringUtil;
 import net.mingsoft.config.MSProperties;
+import net.mingsoft.utils.CheckPassword;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -178,7 +179,7 @@ public class MainAction extends BaseAction {
 		}
 		// 判断新密码是否符合规则
 		if (!checkManagerPass(newManagerPassword)) {
-			return ResultData.build().error("请输入由大小写字母、数字和特殊符号组合的密码");
+			return ResultData.build().error("密码最小长度为8位，至少包含数字、大写字母、小写字母和特殊字符中的三种");
 		}
 		//判断旧的密码是否正确
 		if (!DigestUtils.sha256Hex(oldManagerPassword).equals(manager.getManagerPassword())) {
@@ -237,7 +238,7 @@ public class MainAction extends BaseAction {
 		}
 		// 判断新密码是否符合规则
 		if (!checkManagerPass(newManagerPassword)) {
-			return ResultData.build().error("请输入由大小写字母、数字和特殊符号组合的密码");
+			return ResultData.build().error("密码最小长度为8位，至少包含数字、大写字母、小写字母和特殊字符中的三种");
 		}
 		//判断旧的密码是否正确
 		if(!DigestUtils.sha256Hex(managerModifyPwdBean.getOldManagerPassword()).equals(manager.getManagerPassword())){
@@ -346,6 +347,6 @@ public class MainAction extends BaseAction {
 	 * @return
 	 */
 	private boolean checkManagerPass(String pass) {
-		return ReUtil.isMatch("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&,.*]).{8,30}$", pass);
+		return CheckPassword.checkPasswordRule(pass);
 	}
 }
