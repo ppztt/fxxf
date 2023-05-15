@@ -41,7 +41,7 @@
                             <el-col span="10" offset="3" >
                                 <@shiro.hasPermission name="wlythcn:jdtstj">
                                     <el-button type="primary" icon="el-icon-top"
-                                               @click="derive" size="mini">导出
+                                               @click="derive" size="mini" v-loading.fullscreen.lock="fullscreenLoading">导出
                                     </el-button>
                                 </@shiro.hasPermission>
                             </el-col>
@@ -106,6 +106,7 @@
         el: "#app",
         data() {
             return {
+                fullscreenLoading: false,
                 startTime: '',//开始日期
                 endTime: '',//结束日期
                 tableHeight: 'calc(100vh - 100px)',//表格高度
@@ -168,24 +169,31 @@
             },
             derive() {
                 let url = ms.manager + '/applicants/operatorStatistics/export.do?type=1'
-                this.$message({
-                    showClose: true,
-                    message: "正在导出"
-                })
-                ms.http.get(ms.manager + '/applicants/operatorStatistics/export.do?type=1').then(async(res)=>{
-                    if(res != ""){
-                        this.downFile(url)
-                        await this.$message({
-                            showClose: true,
-                            message: '导出成功',
-                            type: "success"
-                        })
-                    }else {
-                        await this.$message({
-                            showClose: true,
-                            message: '导出失败',
-                            type: "error"
-                        })
+                // this.$message({
+                //     showClose: true,
+                //     message: "正在导出"
+                // })
+                this.fullscreenLoading = true
+                axios({
+                    url: ms.manager +  '/applicants/operatorStatistics/export.do?type=1',
+                    responseType: 'blob',
+                    noHandleResponse: true,
+                    timeout: 60000
+                }).then(res => {
+                    console.log(res)
+                    if(res.code && res.code == 500){
+                        this.$message.error(res.msg || "导出失败")
+                    }else{
+                        let filename = decodeURIComponent(res.headers['content-disposition'].match(/filename=(.*)$/)[1]);
+                        let blob= new Blob([res.data],{type: "application/vnd.ms-excel"});
+                        let url = window.URL.createObjectURL(blob);
+                        let a =document.createElement('a');
+                        a.href = url;
+                        a.setAttribute('download',filename);
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                        this.fullscreenLoading = false
                     }
                 })
             },
