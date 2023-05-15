@@ -45,6 +45,7 @@ import net.mingsoft.fxxf.service.ManagerInfoService;
 import net.mingsoft.fxxf.vaild.ApplicantsStoreExcelVerifyHandlerImpl;
 import net.mingsoft.fxxf.vaild.ApplicantsUnitExcelVerifyHandlerImpl;
 import net.mingsoft.utils.ApplicantsImportUtil;
+import net.mingsoft.utils.EasyExcelUtil;
 import net.mingsoft.utils.ExcelUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -647,27 +648,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
         if (CollectionUtils.isEmpty(applicantsExcelVos)) {
             applicantsExcelVos.add(new ApplicantsExcelVo());
         }
-        EasyExcelFactory.write(fileName, ApplicantsExcelVo.class).sheet("").doWrite(applicantsExcelVos);
-        File file = new File(fileName);
-        try {
-            FileInputStream inputStream = new FileInputStream(fileName);
-            response.setContentType("application/octet-stream");
-            response.setHeader("x-content-type-options", "nosniff");
-            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
-            Utils.copy(inputStream, response.getOutputStream());
-            response.getOutputStream().flush();
-            response.getOutputStream().close();
-        } catch (FileNotFoundException | UnsupportedEncodingException e) {
-            log.error(e.getMessage());
-            throw new BusinessException("文件不存在");
-        } catch (IOException e) {
-            log.error(e.getMessage());
-            throw new BusinessException("文件导出失败请重试");
-        } finally {
-            if (file.exists()){
-                file.delete();
-            }
-        }
+        EasyExcelUtil.exportExcel(response, ApplicantsExcelVo.class, StringUtils.EMPTY, fileName, applicantsExcelVos);
     }
 
     @Override
@@ -719,12 +700,10 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
             operatorStatisticsVos.add(new OperatorStatisticsVo());
         }
         if (ApplicantsTypeEnum.UNIT.getCode().equals(type)) {
-            ExcelUtil.exportExcel(BeanUtil.copyToList(operatorStatisticsVos, UnitOperatorStatisticsVo.class)
-                    , "", "", UnitOperatorStatisticsVo.class, fileName, request, response);
+            EasyExcelUtil.exportExcel(response, UnitOperatorStatisticsVo.class, StringUtils.EMPTY, fileName, operatorStatisticsVos);
         }
         if (ApplicantsTypeEnum.STORE.getCode().equals(type)) {
-            ExcelUtil.exportExcel(BeanUtil.copyToList(operatorStatisticsVos, StoreOperatorStatisticsVo.class),
-                    "", "", StoreOperatorStatisticsVo.class, fileName, request, response);
+            EasyExcelUtil.exportExcel(response, StoreOperatorStatisticsVo.class, StringUtils.EMPTY, fileName, operatorStatisticsVos);
         }
     }
 
