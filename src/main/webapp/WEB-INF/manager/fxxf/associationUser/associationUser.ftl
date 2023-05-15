@@ -97,6 +97,7 @@
                    center
                    :visible.sync="modify"
                    width="30%"
+                   @close="close('modify')"
                    >
             <el-form
                     ref="modify"
@@ -172,7 +173,8 @@
         <el-dialog title="新增行业协会用户"
                    center
                    :visible.sync="newAdd"
-                   width="30%">
+                   width="30%"
+                    @close="close('newAdd')">
             <el-form
                     ref="newAdd"
                     :model="formData"
@@ -465,6 +467,22 @@
                     this.total = Number(data.total)
                     this.loading = false
                 })
+            },
+            close(msg){
+                this.formData = {
+                    account: "", //用户名
+                    realname: "", // 行业协会名称
+                    // industryUserName: "", // 行业协会用户名
+                    email: "", //邮箱
+                    city: this.userInfo.city, //市
+                    district: "", // 区县
+                    zipcode: "", //邮政编码
+                    phone: "", //手机
+                    password: "", //密码
+                    newPassword: "", //确认密码
+                    roleId: '', //所属组
+                }
+                this.$refs[msg].resetFields()
             },
             showEditUser() {
                 this.formData = {
