@@ -1272,6 +1272,7 @@
                             message: "录入成功"
                         })
                         this.isShowEnteringModal = false
+                        this.getUnitList()
                     } else {
                         this.$message.error(res.msg || "录入失败")
                     }
