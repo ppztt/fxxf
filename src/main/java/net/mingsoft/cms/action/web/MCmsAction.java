@@ -7,10 +7,10 @@
  * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
  * the Software, and to permit persons to whom the Software is furnished to do so,
  * subject to the following conditions:
-
+ * <p>
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
-
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
  * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
@@ -20,16 +20,12 @@
  */
 
 
-
-
 package net.mingsoft.cms.action.web;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.PageUtil;
 import com.alibaba.fastjson.JSON;
-import freemarker.core.ParseException;
-import freemarker.template.MalformedTemplateNameException;
-import freemarker.template.TemplateNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import net.mingsoft.base.constant.Const;
 import net.mingsoft.basic.exception.BusinessException;
 import net.mingsoft.basic.util.BasicUtil;
@@ -73,6 +69,7 @@ import java.util.Map;
  * @date 2018年12月17日
  * @date 2021年8月26日取消默认search.htm
  */
+@Slf4j
 @ApiIgnore
 @Controller("dynamicPageAction")
 @RequestMapping("/mcms")
@@ -125,20 +122,14 @@ public class MCmsAction extends net.mingsoft.cms.action.BaseAction {
         map.put(ParserUtil.IS_DO, true);
         //设置动态请求的模块路径
         map.put(ParserUtil.MODEL_NAME, "mcms");
-        map.put(ParserUtil.HTML,htmlDir);
+        map.put(ParserUtil.HTML, htmlDir);
         //解析后的内容
         String content = "";
         try {
             //根据模板路径，参数生成
             content = ParserUtil.rendering(ParserUtil.INDEX + ParserUtil.HTM_SUFFIX, map);
-        } catch (TemplateNotFoundException e) {
-            e.printStackTrace();
-        } catch (MalformedTemplateNameException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("动态列表页index.do接口异常", e);
         }
         return content;
     }
@@ -190,20 +181,14 @@ public class MCmsAction extends net.mingsoft.cms.action.BaseAction {
         try {
             //根据模板路径，参数生成
             content = ParserUtil.rendering(columnArticles.get(0).getCategoryListUrl(), map);
-        } catch (TemplateNotFoundException e) {
-            e.printStackTrace();
-        } catch (MalformedTemplateNameException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("动态列表页list.do接口异常", e);
         }
         return content;
     }
 
     /**
-     * 动态详情页
+     * 动态详情页view.do
      */
     @GetMapping("/view.do")
     @ResponseBody
@@ -242,7 +227,7 @@ public class MCmsAction extends net.mingsoft.cms.action.BaseAction {
         map.put(ParserUtil.URL, BasicUtil.getUrl());
         map.put(ParserUtil.PAGE, page);
         map.put(ParserUtil.ID, article.getId());
-        map.put(ParserUtil.HTML,htmlDir);
+        map.put(ParserUtil.HTML, htmlDir);
 
         ContentBean contentBean = new ContentBean();
         contentBean.setCategoryId(String.valueOf(typeId));
@@ -293,15 +278,9 @@ public class MCmsAction extends net.mingsoft.cms.action.BaseAction {
         }
         try {
             //根据模板路径，参数生成
-            content =  ParserUtil.rendering(column.getCategoryUrl(), map);
-        } catch (TemplateNotFoundException e) {
-            e.printStackTrace();
-        } catch (MalformedTemplateNameException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
+            content = ParserUtil.rendering(column.getCategoryUrl(), map);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("动态详情页view.do接口异常", e);
         }
         return content;
     }
@@ -313,7 +292,7 @@ public class MCmsAction extends net.mingsoft.cms.action.BaseAction {
      * @param request  搜索id
      * @param response
      */
-    @RequestMapping(value = "search",method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "search", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public String search(SearchBean searchBean, HttpServletRequest request, HttpServletResponse response) {
         String search = BasicUtil.getString("tmpl", "search.htm");
@@ -418,7 +397,7 @@ public class MCmsAction extends net.mingsoft.cms.action.BaseAction {
                         try {
                             value = new String(value.getBytes("ISO-8859-1"), Const.UTF8);
                         } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
+                            log.error("get方法请求地址参数转码异常", e);
                         }
                     }
 
@@ -455,7 +434,7 @@ public class MCmsAction extends net.mingsoft.cms.action.BaseAction {
 //                LOG.warn("过滤非法key：" + entry.getKey());
 //            }
 //        }
-        searchMap.put("categoryIds",categoryIds);
+        searchMap.put("categoryIds", categoryIds);
         StringBuilder urlParams = new StringBuilder();
 
         searchMap.forEach((k, v) -> {
@@ -528,14 +507,8 @@ public class MCmsAction extends net.mingsoft.cms.action.BaseAction {
         try {
             //根据模板路径，参数生成
             content = ParserUtil.rendering(search, params);
-        } catch (TemplateNotFoundException e) {
-            e.printStackTrace();
-        } catch (MalformedTemplateNameException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("实现前端页面的文章搜索search接口异常", e);
         }
         return content;
     }

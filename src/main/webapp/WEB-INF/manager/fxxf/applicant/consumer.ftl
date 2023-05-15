@@ -392,7 +392,8 @@
             </@shiro.hasPermission>
             <@shiro.hasPermission name="wlythcn:list">
                 <div class="item">
-                    <el-dropdown @command="exportData">
+                    <el-dropdown @command="exportData"
+                                 v-loading.fullscreen.lock="fullscreenLoading">
                         <el-button size="mini" type="primary" icon="el-icon-top">
                             <!-- <img class="left" src="@/assets/images/1_20.png" alt /> -->
                             导出
@@ -616,6 +617,7 @@
         el: '#index',
         data() {
             return {
+                fullscreenLoading: false,
                 loading: true,
                 // 用户信息临时
                 userInfo: {
@@ -925,9 +927,9 @@
                     details: "",
                     principal: "",
                     principalTel: "",
-                    contents1: "",
-                    contents2: "",
-                    contents3: "",
+                    contents1: "不提供假冒伪劣商品，不提供“三无”产品，不提供不合格商品，不提供来源不明商品，不提供过期商品，不提供缺陷商品，不提供侵犯知识产权商品。",
+                    contents2: "不作虚假宣传，不搞低价诱导；恪守服务承诺，履行合同约定；明码实价，明白消费；守法经营，诚信待客。",
+                    contents3: "履行保护消费者权益第一责任，提供便捷售后服务，高效处理消费纠纷，承担先行赔付和首问责任。",
                     applicationDate: "",
                 }
                 this.formData.addrs.push({
@@ -1007,7 +1009,7 @@
             uploadConfirm() {
                 // 确认上传
                 ms.http
-                    .post('/xwh/applicants/import/'+this.type+ "/" + this.uploadId + '.do')
+                    .post('/xwh/applicants/import/' + this.type + "/" + this.uploadId + '.do')
                     .then((even) => {
                         if (even.code == 200) {
                             this.$message({
@@ -1015,7 +1017,7 @@
                                 type: 'success'
                             });
                             this.getUnitList(this.searchMessage);
-                        }else if (
+                        } else if (
                             even.code == 200 &&
                             even.data.length > 0
                         ) {
@@ -1023,7 +1025,7 @@
                             this.uploadId = even.data[0].fileId;
                             let errorMes = "";
                             even.data.forEach((item) => {
-                                errorMes =  errorMes + "<p>" + (item.rowNum ? '行:' + item.rowNum : "") + '错误:' + item.errorMsg + "</p>" + '<br/>' ;
+                                errorMes = errorMes + "<p>" + (item.rowNum ? '行:' + item.rowNum : "") + '错误:' + item.errorMsg + "</p>" + '<br/>';
                             });
                             this.$notify.error({
                                 title: '导入失败详细信息',
@@ -1031,11 +1033,11 @@
                                 dangerouslyUseHTMLString: true,
                                 duration: 0
                             });
-                        }  else{
+                        } else {
                             this.$message.error("导入失败");
                             let errorMes = "";
                             even.data.forEach((item) => {
-                                errorMes =  errorMes + "<p>" + (item.rowNum ? '行:' + item.rowNum : "") + '错误:' + item.errorMsg + "</p>" + '<br/>' ;
+                                errorMes = errorMes + "<p>" + (item.rowNum ? '行:' + item.rowNum : "") + '错误:' + item.errorMsg + "</p>" + '<br/>';
                             });
                             this.$notify.error({
                                 title: "导入失败详细信息",
@@ -1052,8 +1054,7 @@
                 if (even.code == 200 && even.data.length > 0 && !even.data[0].errorMsg) {
                     this.uploadId = even.data[0].fileId;
                     this.uploadConfirm();
-                }
-                else if (
+                } else if (
                     even.code == 200 &&
                     even.data.length > 0 &&
                     even.data[0].errorMsg
@@ -1061,12 +1062,11 @@
                     this.uploadId = even.data[0].fileId;
                     let errorMes = "";
                     even.data.forEach((item) => {
-                        errorMes =  errorMes  + (item.rowNum ? '行:' + item.rowNum : "") + '错误:' + item.errorMsg ;
+                        errorMes = errorMes + (item.rowNum ? '行:' + item.rowNum : "") + '错误:' + item.errorMsg;
                     });
                     this.comfirmContent = errorMes;
                     this.dialogVisible = true;
-                }
-                else if (
+                } else if (
                     even.code == 500 &&
                     even.data.length > 0 &&
                     even.data[0].errorMsg
@@ -1074,7 +1074,7 @@
                     this.uploadId = even.data[0].fileId;
                     let errorMes = "";
                     even.data.forEach((item) => {
-                        errorMes =  errorMes + "<p>" + (item.rowNum ? '行:' + item.rowNum : "") + '错误:' + item.errorMsg + "</p>" + '<br/>' ;
+                        errorMes = errorMes + "<p>" + (item.rowNum ? '行:' + item.rowNum : "") + '错误:' + item.errorMsg + "</p>" + '<br/>';
                     });
                     this.$notify.error({
                         title: '错误',
@@ -1082,7 +1082,7 @@
                         dangerouslyUseHTMLString: true,
                         duration: 0
                     });
-                }  else if (even.code == 500) {
+                } else if (even.code == 500) {
                     this.$message.error("导入失败")
                 }
             },
@@ -1101,62 +1101,58 @@
             },
             downLoadTemplate: function () {
                 // 模板下载
-                let t = false
-                let timeout = 60000
-                try {
-                    let url = '/xwh/applicants/downTemplateFile/' + this.type + '.do'
-                    this.downFile(url, timeout)
-                    setTimeout(() => {
-                        t = true
-                    }, timeout)
-                    ms.http.get('/xwh/applicants/downTemplateFile/' + this.type + '.do', {}, {timeout}).then(
-                        (res) => {
-                            if (t) {
-                                this.$message.error('下载失败')
-                            } else {
-                                this.$message({
-                                    showClose: true,
-                                    message: '下载成功',
-                                    type: "success"
-                                })
-                            }
-                        })
-                } catch (err) {
-                    this.$message.error("下载失败")
-                }
+                this.fullscreenLoading = true
+                // this.$message({
+                //     showClose: true,
+                //     message: "开始下载"
+                // })
+                axios({
+                    url: '/xwh/applicants/downTemplateFile/' + this.type + '.do',
+                    responseType: 'blob',
+                    noHandleResponse: true,
+                    timeout: 60000
+                }).then(res => {
+                    console.log(res)
+                    if(res.code && res.code == 500){
+                        this.$message.error(res.msg || "下载失败")
+                    }else{
+                        let filename = decodeURIComponent(res.headers['content-disposition'].match(/filename=(.*)$/)[1]);
+                        let blob= new Blob([res.data],{type: "application/vnd.ms-excel"});
+                        let url = window.URL.createObjectURL(blob);
+                        let a =document.createElement('a');
+                        a.href = url;
+                        a.setAttribute('download',filename);
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                        this.fullscreenLoading = false
+                    }
+                })
             },
             exportData(command) {
-                let timeout = 180000
-                let t = false
                 // 导出数据
-                this.$message({
-                    showClose: true,
-                    message: "正在导出"
+                this.fullscreenLoading = true
+                axios({
+                    url: '/xwh/applicants/export.do?status=' + command + '&type=' + this.type,
+                    responseType: 'blob',
+                    noHandleResponse: true,
+                    timeout: 60000
+                }).then(res => {
+                    if(res.code && res.code == 500){
+                        this.$message.error(res.msg || "导出失败")
+                    }else{
+                        let filename = decodeURIComponent(res.headers['content-disposition'].match(/filename=(.*)$/)[1]);
+                        let blob= new Blob([res.data],{type: "application/vnd.ms-excel"});
+                        let url = window.URL.createObjectURL(blob);
+                        let a =document.createElement('a');
+                        a.href = url;
+                        a.setAttribute('download',filename);
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                        this.fullscreenLoading = false
+                    }
                 })
-                try {
-                    let url = '/xwh/applicants/export.do?status=' + command + '&type=' + this.type
-                    setTimeout(() => {
-                        t = true
-                    }, timeout)
-                    ms.http.get('/xwh/applicants/export.do', {
-                        status: command,
-                        type: this.type
-                    }, {timeout}).then((res) => {
-                        if (t) {
-                            this.$message.error('导出失败')
-                        } else {
-                            this.$message({
-                                showClose: true,
-                                message: '导出成功',
-                                type: "success"
-                            })
-                        }
-                    }).catch(err => {
-                        this.$message.error('导出失败')
-                    })
-                } catch (err) {
-                    this.$message.error('导出失败')
-                }
             },
             regionReset() {
                 // 地区重设
@@ -1228,7 +1224,7 @@
             // 获取地区信息
             getRegionData() {
                 ms.http.get('/xwh/gd-regin.do').then((res) => {
-                    if(res.code == 200){
+                    if (res.code == 200) {
                         this.regionData = res.data
                         this.getUserInfo();
                     }
@@ -1267,8 +1263,8 @@
             },
             // 录入功能
             setApply(type) {
-                let params = JSON.stringify(this.formData)
-                ms.http.post('/xwh/applicants/apply/input.do', {params},
+                let params = JSON.stringify({...this.formData, type, addrs: JSON.stringify(this.formData.addrs)})
+                ms.http.post('/xwh/applicants/apply/input.do', params,
                     {headers: {'Content-type': 'application/json;charset=UTF-8'}}).then((res) => {
                     if (res.code == 200) {
                         this.$message({
@@ -1276,8 +1272,9 @@
                             message: "录入成功"
                         })
                         this.isShowEnteringModal = false
+                        this.getUnitList()
                     } else {
-                        this.$message.error("录入失败")
+                        this.$message.error(res.msg || "录入失败")
                     }
                 })
             },
@@ -1329,7 +1326,7 @@
                                 message: '删除成功!'
                             });
                             this.getUnitList(this.searchMessage)
-                        }else{
+                        } else {
                             this.$message.error('删除失败')
                         }
                     })
@@ -1356,7 +1353,7 @@
                     type: 'error',
                     center: true
                 }).then(() => {
-                    ms.http.post('/xwh/applicants/remove.do', ids, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res)=>{
+                    ms.http.post('/xwh/applicants/remove.do', ids, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
                         console.log(res)
                         if (res.code == 200) {
                             this.$message({
@@ -1364,7 +1361,7 @@
                                 message: '删除成功!'
                             });
                             this.getUnitList(this.searchMessage)
-                        }else{
+                        } else {
                             this.$message.error('删除失败')
                         }
                     })
@@ -1428,8 +1425,6 @@
                 that.getUnitList();
             }
             window.currentTopic = this.currentTopic
-            let str = "123"+'\n'+'123'
-            console.log(str)
         }
     })
 </script>
@@ -1627,7 +1622,8 @@
     .el-pagination {
         text-align: right;
     }
-    .el-notification{
+
+    .el-notification {
         overflow: auto !important;
         max-height: 80% !important;
     }

@@ -62,7 +62,7 @@ public class RegisterController {
             ecodeLocalCache.put(email, code);
             return BaseResult.success(code);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("企业端注册邮箱验证码发送失败,", e);
         }
         return BaseResult.fail();
     }

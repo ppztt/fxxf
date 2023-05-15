@@ -97,6 +97,7 @@
                    center
                    :visible.sync="modify"
                    width="30%"
+                   @close="close('modify')"
                    >
             <el-form
                     ref="modify"
@@ -172,7 +173,8 @@
         <el-dialog title="新增行业协会用户"
                    center
                    :visible.sync="newAdd"
-                   width="30%">
+                   width="30%"
+                    @close="close('newAdd')">
             <el-form
                     ref="newAdd"
                     :model="formData"
@@ -333,12 +335,12 @@
                     password: [
                         {required: false, message: '不能为空', trigger: "blur",},
                         {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
-                        {pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
+                        {pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
                     ],
                     newPassword: [
                         {required: false, message: '不能为空', trigger: "blur",},
                         {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
-                        {pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
+                        {pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
                     ],
                     roleId: [
                         {
@@ -396,12 +398,12 @@
                     password: [
                         {required: true, message: '不能为空', trigger: "blur",},
                         {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
-                        {pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
+                        {pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
                     ],
                     newPassword: [
                         {required: true, message: '不能为空', trigger: "blur",},
                         {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
-                        {pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
+                        {pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
                     ],
                     roleId: [
                         {
@@ -465,6 +467,22 @@
                     this.total = Number(data.total)
                     this.loading = false
                 })
+            },
+            close(msg){
+                this.formData = {
+                    account: "", //用户名
+                    realname: "", // 行业协会名称
+                    // industryUserName: "", // 行业协会用户名
+                    email: "", //邮箱
+                    city: this.userInfo.city, //市
+                    district: "", // 区县
+                    zipcode: "", //邮政编码
+                    phone: "", //手机
+                    password: "", //密码
+                    newPassword: "", //确认密码
+                    roleId: '', //所属组
+                }
+                this.$refs[msg].resetFields()
             },
             showEditUser() {
                 this.formData = {

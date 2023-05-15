@@ -165,20 +165,25 @@
                     showClose: true,
                     message: "正在导出"
                 })
-                ms.http.get(ms.manager+'/applicants/operatorStatistics/export.do?type=2').then(async(res)=>{
-                    if(res != ""){
-                        this.downFile(url)
-                        await this.$message({
-                            showClose: true,
-                            message: '导出成功',
-                            type: "success"
-                        })
-                    }else {
-                        await this.$message({
-                            showClose: true,
-                            message: '导出失败',
-                            type: "error"
-                        })
+                axios({
+                    url: ms.manager +  '/applicants/operatorStatistics/export.do?type=2',
+                    responseType: 'blob',
+                    noHandleResponse: true,
+                    timeout: 60000
+                }).then(res => {
+                    console.log(res)
+                    if(res.code && res.code == 500){
+                        this.$message.error(res.msg || "导出失败")
+                    }else{
+                        let filename = decodeURIComponent(res.headers['content-disposition'].match(/filename=(.*)$/)[1]);
+                        let blob= new Blob([res.data],{type: "application/vnd.ms-excel"});
+                        let url = window.URL.createObjectURL(blob);
+                        let a =document.createElement('a');
+                        a.href = url;
+                        a.setAttribute('download',filename);
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
                     }
                 })
             },

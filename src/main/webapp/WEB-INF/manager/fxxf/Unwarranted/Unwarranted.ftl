@@ -8,7 +8,6 @@
     <script src="${base}/static/plugins/stomp/2.3.3/stomp.min.js"></script>
     <!-- 此部分是铭飞平台MStroe的客户端（MStore不在铭飞开源产品范围），如果不需要使用MStore可以删除掉 -->
     <script src="https://cdn.mingsoft.net/platform/ms-store.umd.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 </head>
 <body>
 <div id="index" class="ms-index" v-cloak>
@@ -394,7 +393,8 @@
             </@shiro.hasPermission>
             <@shiro.hasPermission name="wlythcn:list">
                 <div class="item">
-                    <el-dropdown @command="exportData">
+                    <el-dropdown @command="exportData"
+                                 v-loading.fullscreen.lock="fullscreenLoading">
                         <el-button size="mini" type="primary" icon="el-icon-top">
                             导出
                         </el-button>
@@ -686,9 +686,9 @@
                     details: "",
                     principal: "",
                     principalTel: "",
-                    contents1: "",
-                    contents2: "",
-                    contents3: "",
+                    contents1: "不提供假冒伪劣商品，不提供“三无”产品，不提供不合格商品，不提供来源不明商品，不提供过期商品，不提供缺陷商品，不提供侵犯知识产权商品。",
+                    contents2: "不作虚假宣传，不搞低价诱导；恪守服务承诺，履行合同约定；明码实价，明白消费；守法经营，诚信待客。",
+                    contents3: "履行保护消费者权益第一责任，提供便捷售后服务，高效处理消费纠纷，承担先行赔付和首问责任。",
                     applicationDate: "",
                 },
                 formrules: {
@@ -910,7 +910,8 @@
                 details: "",
                 // 被删除的id
                 ids: {ids: []},
-                searchMessage: {}
+                searchMessage: {},
+                fullscreenLoading: false
             }
         },
         watch: {
@@ -971,9 +972,9 @@
                     details: "",
                     principal: "",
                     principalTel: "",
-                    contents1: "",
-                    contents2: "",
-                    contents3: "",
+                    contents1: "不提供假冒伪劣商品，不提供“三无”产品，不提供不合格商品，不提供来源不明商品，不提供过期商品，不提供缺陷商品，不提供侵犯知识产权商品。",
+                    contents2: "不作虚假宣传，不搞低价诱导；恪守服务承诺，履行合同约定；明码实价，明白消费；守法经营，诚信待客。",
+                    contents3: "履行保护消费者权益第一责任，提供便捷售后服务，高效处理消费纠纷，承担先行赔付和首问责任。",
                     applicationDate: "",
                 }
                 this.formData.addrs.push({
@@ -1115,63 +1116,86 @@
             },
             downLoadTemplate: function () {
                 // 模板下载
-                let t = false
-                let timeout = 60000
-                try {
-                    let url = '/xwh/applicants/downTemplateFile/' + this.type + '.do'
-                    this.downFile(url, timeout)
-                    setTimeout(() => {
-                        t = true
-                    }, timeout)
-                    ms.http.get('/xwh/applicants/downTemplateFile/' + this.type + '.do', {}, {timeout}).then(
-                        (res) => {
-                            if (t) {
-                                this.$message.error('下载失败')
-                            } else {
-                                this.$message({
-                                    showClose: true,
-                                    message: '下载成功',
-                                    type: "success"
-                                })
-                            }
-                        })
-                } catch (err) {
-                    this.$message.error("下载失败")
-                }
+                this.fullscreenLoading = true
+                axios({
+                    url: '/xwh/applicants/downTemplateFile/' + this.type + '.do',
+                    responseType: 'blob',
+                    noHandleResponse: true,
+                    timeout: 60000
+                }).then(res => {
+                    console.log(res)
+                    if(res.code && res.code == 500){
+                        this.$message.error(res.msg || "下载失败")
+                    }else{
+                        let filename = decodeURIComponent(res.headers['content-disposition'].match(/filename=(.*)$/)[1]);
+                        let blob= new Blob([res.data],{type: "application/vnd.ms-excel"});
+                        let url = window.URL.createObjectURL(blob);
+                        let a =document.createElement('a');
+                        a.href = url;
+                        a.setAttribute('download',filename);
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                        this.fullscreenLoading = false
+                    }
+                })
             },
             exportData(command) {
-                let timeout = 180000
-                let t = false
+                // let timeout = 60000
+                // let t = false
+                // // 导出数据
+                // this.$message({
+                //     showClose: true,
+                //     message: "正在导出"
+                // })
+                // try {
+                //     let url = '/xwh/applicants/export.do?status=' + command + '&type=' + this.type
+                //     this.downFile(url, timeout)
+                //     setTimeout(() => {
+                //         t = true
+                //     }, timeout)
+                //     ms.http.get('/xwh/applicants/export.do', {
+                //         status: command,
+                //         type: this.type
+                //     }, {timeout}).then((res) => {
+                //         if (t) {
+                //             this.$message.error('导出失败')
+                //         } else {
+                //             this.$message({
+                //                 showClose: true,
+                //                 message: '导出成功',
+                //                 type: "success"
+                //             })
+                //         }
+                //     }).catch(err => {
+                //         this.$message.error('导出失败')
+                //     })
+                // } catch (err) {
+                //     this.$message.error('导出失败')
+                // }
                 // 导出数据
-                this.$message({
-                    showClose: true,
-                    message: "正在导出"
+                this.fullscreenLoading = true
+                axios({
+                    url: '/xwh/applicants/export.do?status=' + command + '&type=' + 4,
+                    responseType: 'blob',
+                    noHandleResponse: true,
+                    timeout: 60000
+                }).then(res => {
+                    if(res.code && res.code == 500){
+                        this.$message.error(res.msg || "导出失败")
+                    }else{
+                        let filename = decodeURIComponent(res.headers['content-disposition'].match(/filename=(.*)$/)[1]);
+                        let blob= new Blob([res.data],{type: "application/vnd.ms-excel"});
+                        let url = window.URL.createObjectURL(blob);
+                        let a =document.createElement('a');
+                        a.href = url;
+                        a.setAttribute('download',filename);
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                        this.fullscreenLoading = false
+                    }
                 })
-                try {
-                    let url = '/xwh/applicants/export.do?status=' + command + '&type=' + this.type
-                    this.downFile(url, timeout)
-                    setTimeout(() => {
-                        t = true
-                    }, timeout)
-                    ms.http.get('/xwh/applicants/export.do', {
-                        status: command,
-                        type: this.type
-                    }, {timeout}).then((res) => {
-                        if (t) {
-                            this.$message.error('导出失败')
-                        } else {
-                            this.$message({
-                                showClose: true,
-                                message: '导出成功',
-                                type: "success"
-                            })
-                        }
-                    }).catch(err => {
-                        this.$message.error('导出失败')
-                    })
-                } catch (err) {
-                    this.$message.error('导出失败')
-                }
             },
             regionReset() {
                 // 地区重设
@@ -1294,17 +1318,18 @@
             },
             // 录入功能
             setApply(type) {
-                let params = JSON.stringify(this.formData)
-                ms.http.post('/xwh/applicants/apply/input.do', {params},
+                let params = JSON.stringify({...this.formData, type, addrs: JSON.stringify(this.formData.addrs)})
+                ms.http.post('/xwh/applicants/apply/input.do', params,
                     {headers: {'Content-type': 'application/json;charset=UTF-8'}}).then((res) => {
                     if (res.code == 200) {
                         this.$message({
                             type: "success",
                             message: "录入成功"
                         })
+                        this.getUnitList()
                         this.isShowEnteringModal = false
                     } else {
-                        this.$message.error("录入失败")
+                        this.$message.error(res.msg ||"录入失败")
                     }
                 })
 

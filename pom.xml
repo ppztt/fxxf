@@ -59,6 +59,11 @@
 
         </dependency>
         <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>3.3.1</version>
+        </dependency>
+        <dependency>
             <groupId>net.mingsoft</groupId>
             <artifactId>ms-basic</artifactId>
             <version>2.1.15</version>
