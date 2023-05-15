@@ -36,7 +36,7 @@
     <div>
         <h3 style="  clear: both;  line-height: 40px;  font-size: 40px;  color: #333;">系统错误</h3>
         <p style="  clear: both;  margin: 30px auto 20px auto;  line-height: 35px;  font-size: 20px;  color: #999;">提示：${msg}</p>
-        <a href="javascript:location.reload();" class="u_button u_button_gray">刷新该页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="u_button u_button_blue" href="/">返回首页</a>
+        <a href="javascript:location.reload();" class="u_button u_button_gray">刷新该页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     </div>
 </center>
 </body>
