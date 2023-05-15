@@ -18,10 +18,10 @@
             <!-- 工具栏 -->
             <el-col span="6">
                 <el-input size="mini"
-                        style="margin-left: 5px"
-                        v-model="keyword"
-                        placeholder="请输入关键字"
-                        :clearable="true"
+                          style="margin-left: 5px"
+                          v-model="keyword"
+                          placeholder="请输入关键字"
+                          :clearable="true"
                 ></el-input>
             </el-col>
 
@@ -59,12 +59,12 @@
                 <template slot-scope="{row}">
                     <div class="actions" :id="row.id">
                         <@shiro.hasPermission name="qyyhgl:detail">
-                        <el-button class="action_btn blue_text" icon="el-icon-search" @click="modifyUser(row.id)">查看
-                        </el-button>
+                            <el-button class="action_btn blue_text" icon="el-icon-search" @click="modifyUser(row.id)">查看
+                            </el-button>
                         </@shiro.hasPermission>
                         <@shiro.hasPermission name="qyyhgl:resetPwd">
-                        <el-button class="action_btn blue_text" icon="el-icon-edit" @click="modifyPW(row.id)">重置密码
-                        </el-button>
+                            <el-button class="action_btn blue_text" icon="el-icon-edit" @click="modifyPW(row.id)">重置密码
+                            </el-button>
                         </@shiro.hasPermission>
                     </div>
                 </template>
@@ -92,32 +92,32 @@
                     label-width="150px">
                 <el-form-item label="经营者注册名称" prop="realname">
                     <el-input size="mini"
-                            v-model="formData.realname"
-                            placeholder="请输入经营者注册名称"
-                            disabled
+                              v-model="formData.realname"
+                              placeholder="请输入经营者注册名称"
+                              disabled
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="统一社会信用代码" prop="creditCode">
                     <el-input size="mini"
-                            disabled
-                            v-model="formData.creditCode"
-                            placeholder="请输入统一社会信用代码"
+                              disabled
+                              v-model="formData.creditCode"
+                              placeholder="请输入统一社会信用代码"
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="门店名称" prop="storeName">
                     <el-input size="mini"
-                            disabled
-                            v-model="formData.storeName"
-                            placeholder="请输入门店名称">
+                              disabled
+                              v-model="formData.storeName"
+                              placeholder="请输入门店名称">
                     </el-input>
                 </el-form-item>
                 <el-form-item
                         label="经营场所-所在市"
                         prop="city">
                     <el-input size="mini"
-                            v-model="formData.city"
-                            placeholder="请选择所属市"
-                            disabled>
+                              v-model="formData.city"
+                              placeholder="请选择所属市"
+                              disabled>
                     </el-input>
                 </el-form-item>
 
@@ -125,33 +125,34 @@
                         label="经营场所-所在区县"
                         prop="district">
                     <el-input size="mini"
-                            v-model="formData.district"
-                            placeholder="请输入经营场所-所在区县"
-                            disabled>
+                              v-model="formData.district"
+                              placeholder="请输入经营场所-所在区县"
+                              disabled>
                     </el-input>
                 </el-form-item>
                 <el-form-item label="经营场所-详细地址" prop="address">
-                    <el-input size="mini" v-model="formData.address" placeholder="请输入经营场所-详细地址" disabled></el-input>
+                    <el-input size="mini" v-model="formData.address" placeholder="请输入经营场所-详细地址"
+                              disabled></el-input>
                 </el-form-item>
                 <el-form-item label="经营类别" prop="management">
                     <el-input size="mini"
-                            v-model="formData.management"
-                            placeholder="请输入经营类别"
-                            disabled
+                              v-model="formData.management"
+                              placeholder="请输入经营类别"
+                              disabled
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="负责人姓名" prop="principal">
                     <el-input size="mini"
-                            v-model="formData.principal"
-                            placeholder="请输入负责人姓名"
-                            disabled
+                              v-model="formData.principal"
+                              placeholder="请输入负责人姓名"
+                              disabled
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="负责人电话" prop="principalTel">
                     <el-input size="mini"
-                            v-model="formData.principalTel"
-                            placeholder="请输入负责人电话"
-                            disabled
+                              v-model="formData.principalTel"
+                              placeholder="请输入负责人电话"
+                              disabled
                     ></el-input>
                 </el-form-item>
             </el-form>
@@ -169,14 +170,14 @@
                     label-width="90px">
                 <el-form-item label="用户名" prop="account">
                     <el-input size="mini"
-                            v-model="formData.account"
-                            placeholder="请输入用户名"
+                              v-model="formData.account"
+                              placeholder="请输入用户名"
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="真实姓名" prop="realname">
                     <el-input size="mini"
-                            v-model="formData.realname"
-                            placeholder="请输入真实姓名"
+                              v-model="formData.realname"
+                              placeholder="请输入真实姓名"
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="所属角色" prop="roleId">
@@ -237,19 +238,19 @@
                 </el-form-item>
                 <el-form-item label="登录密码" prop="password">
                     <el-input size="mini"
-                            type="password"
-                            :password="true"
-                            v-model="formData.password"
-                            placeholder="请输入登录密码"
+                              type="password"
+                              :password="true"
+                              v-model="formData.password"
+                              placeholder="请输入登录密码"
                               show-password
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="确认密码" prop="newPassword">
                     <el-input size="mini"
-                            type="password"
-                            :password="true"
-                            v-model="formData.newPassword"
-                            placeholder="请输入确认密码"
+                              type="password"
+                              :password="true"
+                              v-model="formData.newPassword"
+                              placeholder="请输入确认密码"
                               show-password
                     ></el-input>
                 </el-form-item>
@@ -262,7 +263,8 @@
         <el-dialog title="修改密码"
                    center
                    :visible.sync="modifyPw"
-                   width="30%">
+                   width="30%"
+                   @close="close('reviseForm')">
             <el-form
                     ref="reviseForm"
                     :model="reviseForm"
@@ -270,22 +272,22 @@
                     label-width="120px">
                 <el-form-item label="旧密码" prop="oldPassword">
                     <el-input size="mini"
-                            v-model="reviseForm.oldPassword"
-                            placeholder="请输入旧密码"
+                              v-model="reviseForm.oldPassword"
+                              placeholder="请输入旧密码"
                               show-password
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="设置新密码" prop="newPassword">
                     <el-input size="mini"
-                            v-model="reviseForm.newPassword"
-                            placeholder="请输入新密码"
+                              v-model="reviseForm.newPassword"
+                              placeholder="请输入新密码"
                               show-password
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="确认新密码" prop="reNewPassword">
                     <el-input size="mini"
-                            v-model="reviseForm.reNewPassword"
-                            placeholder="请输入确认密码"
+                              v-model="reviseForm.reNewPassword"
+                              placeholder="请输入确认密码"
                               show-password></el-input>
                 </el-form-item>
             </el-form>
@@ -424,8 +426,12 @@
                                 message: "旧密码不能为空",
                                 trigger: "blur",
                             },
-                            { min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur' },
-                            {pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
+                            {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
+                            {
+                                pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/,
+                                message: '至少包含数字、大写字母、小写字母和特殊字符中的三种',
+                                trigger: 'blur'
+                            }
                         ],
                         newPassword: [
                             {
@@ -433,8 +439,12 @@
                                 message: "新密码不能为空",
                                 trigger: "blur",
                             },
-                            { min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur' },
-                            {pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
+                            {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
+                            {
+                                pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/,
+                                message: '至少包含数字、大写字母、小写字母和特殊字符中的三种',
+                                trigger: 'blur'
+                            }
                         ],
                         reNewPassword: [
                             {
@@ -442,14 +452,18 @@
                                 message: "密码不能为空",
                                 trigger: "blur",
                             },
-                            { min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur' },
-                            {pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
+                            {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
+                            {
+                                pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/,
+                                message: '至少包含数字、大写字母、小写字母和特殊字符中的三种',
+                                trigger: 'blur'
+                            }
                         ],
                     },
                 }
             },
             methods: {
-                searchInfo(){
+                searchInfo() {
                     this.current = 1
                     this.getUserList()
                 },
@@ -465,8 +479,10 @@
                         this.total = Number(data.total)
                         this.loading = false
                     })
-                }
-                ,
+                },
+                close(msg){
+                    this.$refs[msg].resetFields()
+                },
                 showEditUser() {
                     this.formData = {
                         account: "",
@@ -575,7 +591,7 @@
                     this.modifyPw = true
                     this.userId = id
                     ms.http.get('/xwh/user/userInfo.do', {id}).then((res) => {
-                        if(res.code == 200){
+                        if (res.code == 200) {
                             this.formData = res.data
                         }
                     })
@@ -589,14 +605,14 @@
                                 this.formData.newPassword = this.reviseForm.newPassword
                                 let params = JSON.stringify(this.formData)
                                 ms.http.post('/xwh/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
-                                    if(res.code == 200){
+                                    if (res.code == 200) {
                                         this.$message({
                                             message: '修改成功',
                                             type: 'success'
                                         })
                                     }
                                     if (res.code == 500) {
-                                        this.$message.error( res.msg || "修改失败")
+                                        this.$message.error(res.msg || "修改失败")
                                     }
                                 })
                             } else {
@@ -609,7 +625,7 @@
                 // 提交修改
                 sub(msg) {
                     if (msg == "modify") {
-                        if(this.formData.password == this.formData.newPassword){
+                        if (this.formData.password == this.formData.newPassword) {
                             let params = JSON.stringify(this.formData)
                             ms.http.post('/xwh/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
                                 if (res.code == '200') {
@@ -625,7 +641,7 @@
                                     this.$message.error(res.msg)
                                 }
                             })
-                        }else {
+                        } else {
                             this.$message.error("两次密码输入不一致")
                         }
                     } else {
@@ -797,13 +813,16 @@
         width: 90%;
         margin-left: 10% !important;
     }
+
     .el-pagination {
         text-align: right;
     }
-    .el-button_groud{
+
+    .el-button_groud {
         line-height: 36px;
     }
-    .el-input{
+
+    .el-input {
         line-height: 36px;
     }
 </style>
