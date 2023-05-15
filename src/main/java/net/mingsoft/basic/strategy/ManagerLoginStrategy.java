@@ -5,12 +5,10 @@
  */
 
 
-
-
-
 package net.mingsoft.basic.strategy;
 
 import cn.hutool.core.util.ObjectUtil;
+import lombok.extern.slf4j.Slf4j;
 import net.mingsoft.basic.biz.IManagerBiz;
 import net.mingsoft.basic.entity.ManagerEntity;
 import net.mingsoft.basic.util.BasicUtil;
@@ -34,7 +32,8 @@ import java.util.concurrent.TimeUnit;
  * @version 创建日期：2020/11/18 18:12<br/>
  * 历史修订：<br/>
  */
-public class ManagerLoginStrategy implements ILoginStrategy{
+@Slf4j
+public class ManagerLoginStrategy implements ILoginStrategy {
 
 
     @Autowired
@@ -60,12 +59,12 @@ public class ManagerLoginStrategy implements ILoginStrategy{
     public Boolean login(ManagerEntity manager) {
         managerBiz.updateCache();
         boolean rememberMe = BasicUtil.getBoolean("rememberMe");
-        if(ObjectUtil.isNull(manager) || StringUtils.isEmpty(manager.getManagerName()) || StringUtils.isEmpty(manager.getManagerPassword())){
+        if (ObjectUtil.isNull(manager) || StringUtils.isEmpty(manager.getManagerName()) || StringUtils.isEmpty(manager.getManagerPassword())) {
             return false;
         }
         // 根据账号获取当前管理员信息
         ManagerEntity _manager = managerBiz.getManagerByManagerName(manager.getManagerName());
-        if (_manager == null ) {
+        if (_manager == null) {
             // 系统不存在此用户
             return false;
         } else {
@@ -96,7 +95,7 @@ public class ManagerLoginStrategy implements ILoginStrategy{
                         times = Integer.parseInt(passErrTimes);
                         times++;
                     } catch (NumberFormatException e) {
-                        e.printStackTrace();
+                        log.error("redis键PassErrTimes数值转换异常", e);
                     }
                 }
                 if (times >= passErrorMaxTimes) {

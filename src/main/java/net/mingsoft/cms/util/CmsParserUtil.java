@@ -22,13 +22,13 @@
 
 package net.mingsoft.cms.util;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.PageUtil;
 import freemarker.core.ParseException;
 import freemarker.template.MalformedTemplateNameException;
 import freemarker.template.TemplateNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import net.mingsoft.base.constant.Const;
 import net.mingsoft.basic.entity.AppEntity;
 import net.mingsoft.basic.util.BasicUtil;
@@ -56,6 +56,7 @@ import java.util.Map;
 /**
  * 文章解析工具类
  */
+@Slf4j
 public class CmsParserUtil {
 
 
@@ -181,7 +182,7 @@ public class CmsParserUtil {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("生成静态列表页generateList异常",e);
         }
     }
 
@@ -311,7 +312,7 @@ public class CmsParserUtil {
                 content = ParserUtil.rendering(columnUrl, cloneMap);
                 FileUtil.writeString(content, finalWritePath, Const.UTF8);
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("generateBasic生成内容写入异常",e);
             }
             artId++;
         }

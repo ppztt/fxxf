@@ -98,8 +98,7 @@ public class TransportController {
 
             applicantsService.saveBatch(applicantsList);
         } catch (Exception e) {
-            e.printStackTrace();
-
+            log.error("传输放心消费承诺数据异常", e);
             return BaseResult.fail("请求异常。" + e.getMessage());
         }
 
@@ -157,8 +156,7 @@ public class TransportController {
 
             applicantsService.saveBatch(applicantsList);
         } catch (Exception e) {
-            e.printStackTrace();
-
+            log.error("传输无理由退货承诺数据接口异常", e);
             return BaseResult.fail("请求异常。" + e.getMessage());
         }
 

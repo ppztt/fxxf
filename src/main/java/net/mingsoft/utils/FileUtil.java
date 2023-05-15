@@ -21,10 +21,10 @@ public class FileUtil {
         try {
             file = ResourceUtils.getFile(filePath);
         } catch (FileNotFoundException e) {
-            log.error("{}",e);
+            log.error("downTemplateFile文件不存在异常",e);
             return new ResponseEntity(fileName + " 文件不存在",HttpStatus.INTERNAL_SERVER_ERROR);
         }catch (Exception e){
-            log.error("{}",e);
+            log.error("downTemplateFile请求失败异常",e);
             return new ResponseEntity("请求失败",HttpStatus.INTERNAL_SERVER_ERROR);
         }
         try {
@@ -49,7 +49,7 @@ public class FileUtil {
                     headers, HttpStatus.OK);
 
         } catch (Exception e) {
-            log.error("{}",e);
+            log.error("downTemplateFile异常",e);
         }
         return new ResponseEntity("请求失败",HttpStatus.INTERNAL_SERVER_ERROR);
     }

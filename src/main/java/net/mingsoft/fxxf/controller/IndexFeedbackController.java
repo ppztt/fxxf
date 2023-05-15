@@ -5,7 +5,10 @@ import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import net.mingsoft.basic.entity.ManagerEntity;
 import net.mingsoft.fxxf.bean.base.BaseResult;
-import net.mingsoft.fxxf.bean.entity.*;
+import net.mingsoft.fxxf.bean.entity.Applicants;
+import net.mingsoft.fxxf.bean.entity.Feedback;
+import net.mingsoft.fxxf.bean.entity.FeedbackType;
+import net.mingsoft.fxxf.bean.entity.FeedbackUpload;
 import net.mingsoft.fxxf.bean.vo.FeedbackMsgVo;
 import net.mingsoft.fxxf.bean.vo.ManagerInfoVo;
 import net.mingsoft.fxxf.mapper.FeedbackMapper;
@@ -49,8 +52,6 @@ public class IndexFeedbackController {
 
     @Resource
     private ManagerInfoService managerInfoService;
-
-
 
 
     @ApiOperation(value = "保存留言反馈", notes = "留言反馈/保存留言反馈")
@@ -126,22 +127,13 @@ public class IndexFeedbackController {
     @ApiOperation(value = "留言反馈温馨提示", notes = "留言反馈温馨提示")
     @GetMapping(value = "/msg")
     public BaseResult<FeedbackMsgVo> feedbackMsg() {
-        try {
-            // 获取登录用户
-            ManagerEntity managerEntity = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
-            // roleId == 1 ，说明是管理员，可以查看全部，否则根据地市去查
-            Integer roleId = managerEntity.getRoleId();
+        // 获取登录用户
+        ManagerEntity managerEntity = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
+        // roleId == 1 ，说明是管理员，可以查看全部，否则根据地市去查
+        ManagerInfoVo user = managerInfoService.getManagerInfoById(String.valueOf(managerEntity.getIntegerId()));
+        FeedbackMsgVo feedbacks = feedbackMapper.getMsgCnt(managerEntity.getRoleId(), user.getCity(), user.getDistrict());
 
-
-            ManagerInfoVo user = managerInfoService.getManagerInfoById(String.valueOf(managerEntity.getIntegerId()));
-            FeedbackMsgVo feedbacks = feedbackMapper.getMsgCnt(roleId, user.getCity(), user.getDistrict());
-
-            return BaseResult.success(feedbacks);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return BaseResult.fail();
+        return BaseResult.success(feedbacks);
     }
 
 
@@ -154,12 +146,12 @@ public class IndexFeedbackController {
                 || f.getOriginalFilename().endsWith(".jpg")
                 || f.getOriginalFilename().endsWith(".jpeg")
                 || f.getOriginalFilename().endsWith(".png"));
-        if(match){
+        if (match) {
             return BaseResult.fail("上传失败，请上传zip、jpg、jpeg、png格式文件");
         }
         match = Arrays.stream(files).anyMatch(f -> f.getSize() > 10485760);
 
-        if(match){
+        if (match) {
             return BaseResult.fail("上传失败，请上传10M内的文件", null);
         }
         ArrayList<FeedbackUpload> resultList = Lists.newArrayList();
@@ -180,7 +172,7 @@ public class IndexFeedbackController {
             //UUID保证文件名称的唯一
             absolutePath = feedbackAbsolutePath + File.separator + uuid + fileName;
             relativePath = feedbackAbsolutePath + File.separator + uuid + fileName;
-            try (FileOutputStream fos = new FileOutputStream(absolutePath)){
+            try (FileOutputStream fos = new FileOutputStream(absolutePath)) {
                 //2.写入磁盘
                 in = file.getInputStream();
                 byte[] b = new byte[1024];

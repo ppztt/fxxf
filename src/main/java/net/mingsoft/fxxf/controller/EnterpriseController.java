@@ -7,16 +7,15 @@ import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import net.mingsoft.fxxf.bean.base.BasePageResult;
 import net.mingsoft.fxxf.bean.base.BaseResult;
 import net.mingsoft.fxxf.bean.entity.Applicants;
-import net.mingsoft.fxxf.bean.base.BasePageResult;
 import net.mingsoft.fxxf.bean.vo.*;
 import net.mingsoft.fxxf.mapper.AuditLogMapper;
 import net.mingsoft.fxxf.service.ApplicantsService;
 import net.mingsoft.fxxf.service.impl.EnterpriseService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeansException;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,36 +45,26 @@ public class EnterpriseController {
     @GetMapping("/info/{userId}")
     @ApiOperation(value = "获取企业信息", notes = "获取企业信息")
     public BaseResult<EnterpriseInfoVo> getEnterpriseInfo(@PathVariable(value = "userId") Integer id) {
-        try {
-            ManagerInfoVo user = enterpriseService.getEnterpriseInfo(id);
+        ManagerInfoVo user = enterpriseService.getEnterpriseInfo(id);
 
-            EnterpriseInfoVo enterpriseInfoVo = new EnterpriseInfoVo();
+        EnterpriseInfoVo enterpriseInfoVo = new EnterpriseInfoVo();
 
-            BeanUtils.copyProperties(user, enterpriseInfoVo);
+        BeanUtils.copyProperties(user, enterpriseInfoVo);
 
-            return BaseResult.success(enterpriseInfoVo);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return BaseResult.fail(e.getMessage());
-        }
+        return BaseResult.success(enterpriseInfoVo);
     }
 
     @PostMapping("/info/{userId}")
     @ApiOperation(value = "更新企业信息")
     public BaseResult updateEnterpriseInfo(@PathVariable(value = "userId") Integer id, @RequestBody EnterpriseInfoVo enterpriseInfoVo) {
-        try {
-            ManagerInfoVo user = enterpriseService.getEnterpriseInfo(id);
+        ManagerInfoVo user = enterpriseService.getEnterpriseInfo(id);
 
-            BeanUtils.copyProperties(enterpriseInfoVo, user, "id");
-            user.setManagerNickName(enterpriseInfoVo.getRealname());
+        BeanUtils.copyProperties(enterpriseInfoVo, user, "id");
+        user.setManagerNickName(enterpriseInfoVo.getRealname());
 
-            enterpriseService.updateEnterpriseInfo(user);
+        enterpriseService.updateEnterpriseInfo(user);
 
-            return BaseResult.success();
-        } catch (BeansException e) {
-            e.printStackTrace();
-            return BaseResult.fail(e.getMessage());
-        }
+        return BaseResult.success("更新企业信息成功！");
     }
 
 
@@ -84,48 +73,38 @@ public class EnterpriseController {
     public BaseResult<BasePageResult<Applicants>> getEnterpriseApplyInfo(
             @RequestParam(name = "current", defaultValue = "1") Integer current,
             @RequestParam(name = "size", defaultValue = "10") Integer size,
-            @RequestParam(name = "userId") Integer userId
-    ) {
+            @RequestParam(name = "userId") Integer userId) {
 
-        try {
-            BasePageResult<Applicants> applyInfo = enterpriseService.getEnterpriseApplyInfo(current, size, userId);
+        BasePageResult<Applicants> applyInfo = enterpriseService.getEnterpriseApplyInfo(current, size, userId);
 
-            return BaseResult.success(applyInfo);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return BaseResult.fail(e.getMessage());
-        }
+        return BaseResult.success(applyInfo);
+
     }
 
     @GetMapping("/apply/{id}")
     @ApiOperation(value = "根据id获取申请信息", notes = "根据id获取申请信息")
     public BaseResult<ApplicantsParamsVo> getEnterpriseApplyInfoById(@PathVariable(value = "id") Integer id) {
-        try {
-            Applicants applicants = enterpriseService.getEnterpriseApplyInfoById(id);
+        Applicants applicants = enterpriseService.getEnterpriseApplyInfoById(id);
 
-            ApplicantsParamsVo applicantsParamsVo = new ApplicantsParamsVo();
-            if (applicants != null) {
-                BeanUtils.copyProperties(applicants, applicantsParamsVo);
-                applicantsParamsVo.setManagement(applicants.getManagement());
-                if (applicants.getDetails() != null && StringUtils.isNotBlank(applicants.getDetails())) {
-                    applicantsParamsVo.setDetails(Arrays.asList(applicants.getDetails().split(",")));
-                }
-
-                List<AuditLogVo> auditLogs = auditLogMapper.getAuditLog(id, 2);
-                if (!Objects.equals(applicants.getStatus(), 1) || !Objects.equals(applicants.getStatus(), 7)) {
-                    if (!CollectionUtils.isEmpty(auditLogs)) {
-                        auditLogs.get(0).setContents("");
-                    }
-                }
-
-                applicantsParamsVo.setAuditLogs(auditLogs);
+        ApplicantsParamsVo applicantsParamsVo = new ApplicantsParamsVo();
+        if (applicants != null) {
+            BeanUtils.copyProperties(applicants, applicantsParamsVo);
+            applicantsParamsVo.setManagement(applicants.getManagement());
+            if (applicants.getDetails() != null && StringUtils.isNotBlank(applicants.getDetails())) {
+                applicantsParamsVo.setDetails(Arrays.asList(applicants.getDetails().split(",")));
             }
 
-            return BaseResult.success(applicantsParamsVo);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return BaseResult.fail(e.getMessage());
+            List<AuditLogVo> auditLogs = auditLogMapper.getAuditLog(id, 2);
+            if (!Objects.equals(applicants.getStatus(), 1) || !Objects.equals(applicants.getStatus(), 7)) {
+                if (!CollectionUtils.isEmpty(auditLogs)) {
+                    auditLogs.get(0).setContents("");
+                }
+            }
+
+            applicantsParamsVo.setAuditLogs(auditLogs);
         }
+
+        return BaseResult.success(applicantsParamsVo);
     }
 
     @PostMapping("/apply/1")
@@ -192,7 +171,7 @@ public class EnterpriseController {
 
             return BaseResult.success();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("申请信息-放心消费承诺新申请enterprise/apply/1接口异常", e);
             return BaseResult.fail(e.getMessage());
         }
     }
@@ -204,7 +183,7 @@ public class EnterpriseController {
         try {
             List<Applicants> applicantsByCreditCode = applicantsService.findApplicantsByCreditCode(2, enterpriseStoreNewApplyVo.getCreditCode());
 
-            if (applicantsByCreditCode != null && applicantsByCreditCode.size() > 0) {
+            if (!CollectionUtils.isEmpty(applicantsByCreditCode)) {
                 return BaseResult.fail("存在相同统一社会信用代码");
             }
 
@@ -217,7 +196,7 @@ public class EnterpriseController {
                 applicants.setAuditRoleId(3);
             }
 
-            if (enterpriseStoreNewApplyVo.getDetails() != null && enterpriseStoreNewApplyVo.getDetails().size() > 0) {
+            if (!CollectionUtils.isEmpty(enterpriseStoreNewApplyVo.getDetails())) {
                 applicants.setDetails(String.join(",", enterpriseStoreNewApplyVo.getDetails()));
             }
 
@@ -259,7 +238,7 @@ public class EnterpriseController {
 
             return BaseResult.success();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("申请信息-无理由退货承诺新申请enterprise/apply/2接口异常", e);
             return BaseResult.fail(e.getMessage());
         }
     }
@@ -328,7 +307,7 @@ public class EnterpriseController {
 
             return BaseResult.success();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("申请信息-更新放心消费承诺新申请/apply/u/1接口异常", e);
             return BaseResult.fail(e.getMessage());
         }
     }
@@ -397,7 +376,7 @@ public class EnterpriseController {
 
             return BaseResult.success();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("申请信息-更新无理由退货承诺新申请/enterprise/apply/u/2接口异常", e);
             return BaseResult.fail(e.getMessage());
         }
     }
