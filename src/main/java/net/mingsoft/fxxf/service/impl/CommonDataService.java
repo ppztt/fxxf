@@ -69,12 +69,11 @@ public class CommonDataService implements ApplicationRunner {
             List<Region> regionsByCitys = regionService.list(new QueryWrapper<Region>().eq("level", 2).groupBy("name,id,code,short_name,pcode,lng,lat,sort,create_time,update_time,memo,status,tenant_code,level"));
             List<Region> regionsByAreas = regionService.list(new QueryWrapper<Region>().eq("level", 3).groupBy("name,id,code,short_name,pcode,lng,lat,sort,create_time,update_time,memo,status,tenant_code,level"));
 
-            regionsByCitys.stream().forEach(r -> citys.add(r.getName()));
-            regionsByAreas.stream().forEach(r -> areas.add(r.getName()));
+            regionsByCitys.forEach(r -> citys.add(r.getName()));
+            regionsByAreas.forEach(r -> areas.add(r.getName()));
             regionsByAreas.stream().filter(r -> Objects.equals(r.getPcode(), "440100")).forEach(r -> gzareas.add(r.getName()));
         } catch (Exception e) {
             log.error("获取静态数据出错");
-            e.printStackTrace();
         }
     }
 

@@ -24,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -50,12 +49,7 @@ public class ApplicantsController {
     @PostMapping("/listPage")
     @ApiOperation(value = "经营者列表-分页列表查询")
     public BaseResult<BasePageResult<Applicants>> list(@RequestBody ApplicantsPageRequest applicantsPageRequest) {
-        try {
-            return applicantsService.listPage(applicantsPageRequest);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return BaseResult.fail(e.getMessage());
-        }
+        return applicantsService.listPage(applicantsPageRequest);
     }
 
     /**
@@ -65,17 +59,12 @@ public class ApplicantsController {
     @ApiOperation(value = "经营者列表-根据id查询单位")
     @ApiImplicitParams({@ApiImplicitParam(name = "id", value = "单位id", required = true)})
     public BaseResult<ApplicantsParamsVo> findApplicantsById(@PathVariable(value = "id") Integer id) {
-        try {
-            Applicants applicants = applicantsService.getById(id);
-            if (applicants != null) {
-                return BaseResult.success(applicantsService.findApplicants(applicants));
-            } else {
-                return BaseResult.success();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        Applicants applicants = applicantsService.getById(id);
+        if (applicants != null) {
+            return BaseResult.success(applicantsService.findApplicants(applicants));
         }
-        return BaseResult.fail();
+
+        return BaseResult.success();
     }
 
     @GetMapping("/find")
@@ -83,12 +72,7 @@ public class ApplicantsController {
     public BaseResult<ApplicantsFindVo> findApplicantsByRegName(@RequestParam(value = "id") Integer id,
                                                                 @RequestParam(value = "creditCode") String creditCode,
                                                                 @RequestParam(value = "type") String type) {
-        try {
-            return BaseResult.success(applicantsService.findApplicantsByRegName(id, creditCode, type));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return BaseResult.fail();
+        return BaseResult.success(applicantsService.findApplicantsByRegName(id, creditCode, type));
     }
 
     /**
@@ -97,43 +81,29 @@ public class ApplicantsController {
     @PostMapping("/update")
     @ApiOperation(value = "经营者列表-编辑保存")
     public BaseResult<String> updateApplicants(@RequestBody ApplicantsParamsVo applicants) {
-        try {
-            return applicantsService.updateApplicants(applicants);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return BaseResult.fail();
+        return applicantsService.updateApplicants(applicants);
     }
 
     @PostMapping("/remove/{id}")
     @ApiOperation(value = "经营者列表-根据id删除单位")
     @ApiImplicitParams({@ApiImplicitParam(name = "id", value = "承诺单位id", required = true)})
-    public BaseResult delApplicantsById(@PathVariable(value = "id") Integer id) {
-        try {
-            applicantsService.removeById(id);
-            return BaseResult.success();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return BaseResult.fail();
+    public BaseResult<String> delApplicantsById(@PathVariable(value = "id") Integer id) {
+
+        return applicantsService.removeById(id) ? BaseResult.success(String.format("经营者列表-根据id：%d删除单位成功", id)) :
+                BaseResult.fail(String.format("经营者列表-根据id：%d删除单位失败", id));
     }
 
 
     @PostMapping("/remove")
-    @ApiOperation(value = "经营者列表-根据 ids 删除承诺单位", notes = "经营者列表-根据 ids 删除承诺单位")
+    @ApiOperation(value = "经营者列表-根据id批量删除承诺单位", notes = "经营者列表-根据 ids 删除承诺单位")
     public BaseResult delApplicantsById(@RequestBody Map map) {
-        try {
-            List<String> ids = (List<String>) map.get("ids");
-            if (!ids.isEmpty()) {
-                applicantsService.removeByIds(ids);
-                return BaseResult.success();
-            }
-
-            return BaseResult.fail("ids为空", null);
-        } catch (Exception e) {
-            e.printStackTrace();
+        List<String> ids = (List<String>) map.get("ids");
+        if (!ids.isEmpty()) {
+            return applicantsService.removeByIds(ids) ? BaseResult.success(String.format("经营者列表-根据id：%s批量删除单位成功", ids)) :
+                    BaseResult.fail(String.format("经营者列表-根据id：%s批量删除单位失败", ids));
         }
-        return BaseResult.fail();
+
+        return BaseResult.fail("ids为空", null);
     }
 
     /**
@@ -142,12 +112,7 @@ public class ApplicantsController {
     @PostMapping("/updateApplicantsStatus")
     @ApiOperation(value = "根据经营者id更新状态及原因", notes = "根据经营者id更新状态及原因")
     public BaseResult<String> updateApplicantsStatus(@RequestBody ApplicantsStatusUpdateRequest applicantsStatusUpdateRequest) {
-        try {
-            return applicantsService.updateApplicantsStatus(applicantsStatusUpdateRequest);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return BaseResult.fail();
+        return applicantsService.updateApplicantsStatus(applicantsStatusUpdateRequest);
     }
 
     @GetMapping(value = "/downTemplateFile/{type}")
@@ -179,19 +144,14 @@ public class ApplicantsController {
     )
     public BaseResult audit(@RequestParam(value = "type") Integer type, @RequestParam(value = "id") Integer id,
                             @RequestParam(value = "notes", required = false) String notes) {
-        try {
-            return applicantsService.audit(id, type, notes);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return BaseResult.fail(e.getMessage());
-        }
+        return applicantsService.audit(id, type, notes);
     }
 
     @RequiresPermissions("wlythcn:upload")
     @PostMapping(value = "/import/{type}/{fileId}")
     @ApiOperation(value = "经营者列表-导入")
-    public BaseResult<ArrayList<Applicants>> templateImport(@PathVariable(value = "type") Integer type,@PathVariable("fileId") String fileId) {
-        return applicantsService.templateImport(type,fileId);
+    public BaseResult<ArrayList<Applicants>> templateImport(@PathVariable(value = "type") Integer type, @PathVariable("fileId") String fileId) {
+        return applicantsService.templateImport(type, fileId);
     }
 
     @RequiresPermissions("wlythcn:list")
@@ -224,7 +184,7 @@ public class ApplicantsController {
         try {
             applicantsService.operatorStatisticsExport(type, startTime, endTime, request, response);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("经营者统计-导出接口异常", e);
         }
     }
 
@@ -235,7 +195,7 @@ public class ApplicantsController {
         try {
             return applicantsService.saveEnterpriseApplyInfo(enterpriseNewApplyRequest);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("经营者企业数据记录录入异常", e);
             return BaseResult.fail(e.getMessage());
         }
     }

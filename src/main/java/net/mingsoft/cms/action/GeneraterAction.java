@@ -196,7 +196,7 @@ public class GeneraterAction extends BaseAction {
                         try {
                             CmsParserUtil.generateList(column, articleIdList.size(), htmlDir);
                         } catch (IOException e) {
-                            LOG.error("生成列表错误：{}", e.getMessage(), e);
+                            LOG.error("生成列表错误", e);
                         }
                         break;
                     case COVER:// 单页
