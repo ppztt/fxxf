@@ -187,7 +187,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
 
         BeanUtils.copyProperties(applicants, applicantsParamsVo);
         applicantsParamsVo.setManagement(applicants.getManagement());
-        if (applicants.getDetails() != null && StringUtils.isNotBlank(applicants.getDetails())) {
+        if (StringUtils.isNotBlank(applicants.getDetails())) {
             applicantsParamsVo.setDetails(Arrays.asList(applicants.getDetails().split(",")));
         }
 
@@ -203,7 +203,8 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
      */
     @Override
     public BaseResult<String> updateApplicantsStatus(ApplicantsStatusUpdateRequest applicantsStatusUpdateRequest) {
-        Applicants applicants = getById(applicantsStatusUpdateRequest.getApplicantsId());
+        Integer applicantsId = applicantsStatusUpdateRequest.getApplicantsId();
+        Applicants applicants = getById(applicantsId);
 
         if (applicants != null) {
             applicants.setDelReason(applicantsStatusUpdateRequest.getDelReason());
@@ -212,9 +213,9 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
             applicants.setUpdateTime(LocalDateTime.now());
             applicants.setStatus(applicantsStatusUpdateRequest.getStatus());
 
-            applicants.updateById();
+            return applicants.updateById() ? BaseResult.success(String.format("经营者列表-根据单位id:%d更新状态及原因成功", applicantsId)) :
+                    BaseResult.fail(String.format("经营者列表-根据单位id:%d更新状态及原因失败！", applicantsId));
 
-            return BaseResult.success();
         } else {
             return BaseResult.fail("单位不存在");
         }
@@ -225,7 +226,8 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
      */
     @Override
     public BaseResult updateApplicants(ApplicantsParamsVo applicantsParamsVo) {
-        Applicants applicantsById = getById(applicantsParamsVo.getId());
+        Integer paramsVoId = applicantsParamsVo.getId();
+        Applicants applicantsById = getById(paramsVoId);
         if (applicantsById == null) {
             return BaseResult.fail("承诺单位不存在");
         }
@@ -286,9 +288,10 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
             applicantsById.setAddress(addressStr.toString());
         }
 
-        updateById(applicantsById);
 
-        return BaseResult.success();
+        return updateById(applicantsById) ? BaseResult.success(String.format("经营者列表-根据id：%d更新单位成功", paramsVoId)) :
+                BaseResult.fail(String.format("经营者列表-根据id：%d更新单位失败", paramsVoId));
+
     }
 
     /**
@@ -303,10 +306,10 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
             // 输出全部的sheet
             params.setScanAllsheet(true);
             Workbook workbook = ExcelExportUtil.exportExcel(params, new HashMap<>());
-            String fileName = ApplicantsTypeEnum.UNIT.getCode().equals(type) ? "放心消费承诺单位导入模板（备注：请启用宏）.xlsm" : "线下无理由退货承诺店导入模板（备注：请启用宏）.xlsm";
+            String fileName = ApplicantsTypeEnum.UNIT.getCode().equals(type) ? "放心消费承诺单位导入模板（备注：请启用宏）v1.xlsm" : "线下无理由退货承诺店导入模板（备注：请启用宏）v1.xlsm";
             ExcelUtil.downLoadExcel(fileName, request, response, workbook);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("经营者列表-模板下载接口异常", e);
         }
     }
 
@@ -537,7 +540,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
 
         String flagStr = updateApplicantsStatusByAudit(type, id, notes);
 
-        if (flagStr == "success") {
+        if (flagStr.equals("success")) {
             return BaseResult.success();
         }
         return BaseResult.fail(flagStr);
@@ -583,7 +586,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
 
             return BaseResult.fail("导入文件为空，请重新选择");
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("经营者列表-导入接口异常", e);
         }
 
         return BaseResult.fail("导入失败");

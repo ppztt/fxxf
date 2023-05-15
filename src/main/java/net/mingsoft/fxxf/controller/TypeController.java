@@ -4,8 +4,8 @@ package net.mingsoft.fxxf.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import net.mingsoft.fxxf.bean.entity.Type;
 import net.mingsoft.fxxf.bean.base.BaseResult;
+import net.mingsoft.fxxf.bean.entity.Type;
 import net.mingsoft.fxxf.bean.vo.TypeVo;
 import net.mingsoft.fxxf.service.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/${ms.manager.path}/type")
-@Api(tags = { "类型"})
+@Api(tags = {"类型"})
 public class TypeController {
 
     @Autowired
@@ -38,25 +38,21 @@ public class TypeController {
     @ApiOperation(value = "获取type为5和6的数据", notes = "获取type为5和6的数据")
     public BaseResult<TypeVo> types() {
 
-        try {
-            List<Type> types = typeService.list(new QueryWrapper<Type>().in("type", Arrays.asList("5", "6")));
+        List<Type> types = typeService.list(new QueryWrapper<Type>().in("type", Arrays.asList("5", "6")));
 
-            ArrayList<String> list1 = new ArrayList<>();
-            ArrayList<String> list2 = new ArrayList<>();
-            if (!types.isEmpty()) {
-                types.stream()
-                        .filter(t -> t.getType() == 5)
-                        .forEach(t -> list1.add(t.getName()));
-                types.stream()
-                        .filter(t -> t.getType() == 6)
-                        .forEach(t -> list2.add(t.getName()));
+        ArrayList<String> list1 = new ArrayList<>();
+        ArrayList<String> list2 = new ArrayList<>();
+        if (!types.isEmpty()) {
+            types.stream()
+                    .filter(t -> t.getType() == 5)
+                    .forEach(t -> list1.add(t.getName()));
+            types.stream()
+                    .filter(t -> t.getType() == 6)
+                    .forEach(t -> list2.add(t.getName()));
 
-            }
-            return BaseResult.success(new TypeVo(list1, list2));
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return BaseResult.fail();
+
+        return BaseResult.success(new TypeVo(list1, list2));
 
     }
 

@@ -393,7 +393,8 @@
             </@shiro.hasPermission>
             <@shiro.hasPermission name="wlythcn:list">
                 <div class="item">
-                    <el-dropdown @command="exportData">
+                    <el-dropdown @command="exportData"
+                                 v-loading.fullscreen.lock="fullscreenLoading">
                         <el-button size="mini" type="primary" icon="el-icon-top">
                             导出
                         </el-button>
@@ -909,7 +910,8 @@
                 details: "",
                 // 被删除的id
                 ids: {ids: []},
-                searchMessage: {}
+                searchMessage: {},
+                fullscreenLoading: false
             }
         },
         watch: {
@@ -1114,29 +1116,29 @@
             },
             downLoadTemplate: function () {
                 // 模板下载
-                let t = false
-                let timeout = 60000
-                try {
-                    let url = '/xwh/applicants/downTemplateFile/' + this.type + '.do'
-                    this.downFile(url, timeout)
-                    setTimeout(() => {
-                        t = true
-                    }, timeout)
-                    ms.http.get('/xwh/applicants/downTemplateFile/' + this.type + '.do', {}, {timeout}).then(
-                        (res) => {
-                            if (t) {
-                                this.$message.error('下载失败')
-                            } else {
-                                this.$message({
-                                    showClose: true,
-                                    message: '下载成功',
-                                    type: "success"
-                                })
-                            }
-                        })
-                } catch (err) {
-                    this.$message.error("下载失败")
-                }
+                this.fullscreenLoading = true
+                axios({
+                    url: '/xwh/applicants/downTemplateFile/' + this.type + '.do',
+                    responseType: 'blob',
+                    noHandleResponse: true,
+                    timeout: 60000
+                }).then(res => {
+                    console.log(res)
+                    if(res.code && res.code == 500){
+                        this.$message.error(res.msg || "下载失败")
+                    }else{
+                        let filename = decodeURIComponent(res.headers['content-disposition'].match(/filename=(.*)$/)[1]);
+                        let blob= new Blob([res.data],{type: "application/vnd.ms-excel"});
+                        let url = window.URL.createObjectURL(blob);
+                        let a =document.createElement('a');
+                        a.href = url;
+                        a.setAttribute('download',filename);
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                        this.fullscreenLoading = false
+                    }
+                })
             },
             exportData(command) {
                 // let timeout = 60000
@@ -1172,10 +1174,7 @@
                 //     this.$message.error('导出失败')
                 // }
                 // 导出数据
-                this.$message({
-                    showClose: true,
-                    message: "正在导出"
-                })
+                this.fullscreenLoading = true
                 axios({
                     url: '/xwh/applicants/export.do?status=' + command + '&type=' + 4,
                     responseType: 'blob',
@@ -1194,6 +1193,7 @@
                         document.body.appendChild(a);
                         a.click();
                         a.remove();
+                        this.fullscreenLoading = false
                     }
                 })
             },
@@ -1326,6 +1326,7 @@
                             type: "success",
                             message: "录入成功"
                         })
+                        this.getUnitList()
                         this.isShowEnteringModal = false
                     } else {
                         this.$message.error(res.msg ||"录入失败")

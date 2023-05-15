@@ -36,15 +36,15 @@
                         </el-button>
                     </el-col>
                     <@shiro.hasPermission name="manage:user">
-                    <el-col span="23" offset="1">
-                        <el-button
-                                size="mini"
-                                class="blue_btn btns_type"
-                                icon="el-icon-plus"
-                                @click="showEditUser()">
-                            新增
-                        </el-button>
-                    </el-col>
+                        <el-col span="23" offset="1">
+                            <el-button
+                                    size="mini"
+                                    class="blue_btn btns_type"
+                                    icon="el-icon-plus"
+                                    @click="showEditUser()">
+                                新增
+                            </el-button>
+                        </el-col>
                     </@shiro.hasPermission>
                 </el-row>
             </el-col>
@@ -71,12 +71,12 @@
                 <template slot-scope="{row}">
                     <div class="actions" :id="row.id">
                         <@shiro.hasPermission name="manage:userinfo">
-                        <el-button class="action_btn blue_text" icon="el-icon-edit" @click="modifyUser(row.id)">修改
-                        </el-button>
+                            <el-button class="action_btn blue_text" icon="el-icon-edit" @click="modifyUser(row.id)">修改
+                            </el-button>
                         </@shiro.hasPermission>
                         <@shiro.hasPermission name="manage:user">
-                        <el-button class="action_btn red_text" icon="el-icon-delete" @click="deleteBack(row.id)">删除
-                        </el-button>
+                            <el-button class="action_btn red_text" icon="el-icon-delete" @click="deleteBack(row.id)">删除
+                            </el-button>
                         </@shiro.hasPermission>
                     </div>
                 </template>
@@ -97,7 +97,8 @@
         <el-dialog title="修改后台用户"
                    center
                    :visible.sync="modify"
-                   width="30%">
+                   width="30%"
+                   @close="close('formData')">
             <el-form
                     ref="formData"
                     :model="formData"
@@ -322,7 +323,7 @@
         el: '#form',
         data: function () {
             return {
-                userInfo:{},
+                userInfo: {},
                 loading: false,
                 from: '',
                 userId: '',
@@ -438,12 +439,20 @@
                             trigger: "blur",
                         },
                         {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
-                        {pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
+                        {
+                            pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/,
+                            message: '至少包含数字、大写字母、小写字母和特殊字符中的三种',
+                            trigger: 'blur'
+                        }
                     ],
                     newPassword: [
                         {required: false, message: '不能为空', trigger: "blur",},
                         {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
-                        {pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
+                        {
+                            pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/,
+                            message: '至少包含数字、大写字母、小写字母和特殊字符中的三种',
+                            trigger: 'blur'
+                        }
                     ],
                     roleId: [
                         {
@@ -477,12 +486,20 @@
                     password: [
                         {required: true, message: '密码不能为空', trigger: "blur",},
                         {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
-                        {pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
+                        {
+                            pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/,
+                            message: '至少包含数字、大写字母、小写字母和特殊字符中的三种',
+                            trigger: 'blur'
+                        }
                     ],
                     newPassword: [
                         {required: true, message: '不能为空', trigger: "blur",},
                         {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
-                        {pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
+                        {
+                            pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/,
+                            message: '至少包含数字、大写字母、小写字母和特殊字符中的三种',
+                            trigger: 'blur'
+                        }
                     ],
                     roleId: [
                         {required: true, type: "number", message: "所属组不能为空", trigger: "change",},
@@ -531,7 +548,7 @@
             }
         },
         methods: {
-            searchInfo(){
+            searchInfo() {
                 this.current = 1
                 this.getUserList()
             },
@@ -547,6 +564,9 @@
                     this.total = Number(data.total)
                     this.loading = false
                 })
+            },
+            close(msg){
+                this.$refs[msg].resetFields()
             },
             showEditUser() {
                 this.formData = {
@@ -575,12 +595,12 @@
             },
             getRegionData() {
                 ms.http.get('/xwh/gd-regin.do').then((res) => {
-                    if(res.code == 200){
+                    if (res.code == 200) {
                         this.regionData = res.data
                     }
                 })
             },
-            clear(){
+            clear() {
                 this.district = "";
                 this.formData.district = ""
             },
@@ -633,12 +653,12 @@
             },
             // 提交修改
             sub(msg) {
-                if(this.formData.password == this.formData.newPassword){
+                if (this.formData.password == this.formData.newPassword) {
                     this.$nextTick(() => {
                         this.$refs["formData"].validate(valid => {
                             if (valid) {
                                 if (msg == "modify") {
-                                    if(this.formData.password == this.formData.newPassword){
+                                    if (this.formData.password == this.formData.newPassword) {
                                         let params = JSON.stringify(this.formData)
                                         ms.http.post('/xwh/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
                                             if (res.code == '200') {
@@ -654,7 +674,7 @@
                                                 this.$message.error(res.msg)
                                             }
                                         })
-                                    }else{
+                                    } else {
                                         this.$message.error("两次密码输入不一致")
                                     }
                                 } else {
@@ -683,7 +703,7 @@
                             }
                         })
                     })
-                }else{
+                } else {
                     this.$message.error('两次密码不一致')
                 }
             },
@@ -842,7 +862,8 @@
         width: 100%;
         margin-left: 10px !important;
     }
-    .el-col-2{
+
+    .el-col-2 {
         line-height: 36px;
     }
 
@@ -850,10 +871,12 @@
         position: relative !important;
         margin-bottom: -15px !important;
     }
+
     .el-pagination {
         text-align: right;
     }
-    .el-input{
+
+    .el-input {
         line-height: 36px;
     }
 </style>

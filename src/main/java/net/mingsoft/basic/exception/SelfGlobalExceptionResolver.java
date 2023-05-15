@@ -67,7 +67,7 @@ public class SelfGlobalExceptionResolver extends GlobalExceptionResolver {
 //        map.put("msg", message.toString());
 //        map.put("exc", e.getClass()); //详细异常信息
         LOG.debug("url: {}", request.getRequestURI());
-        e.printStackTrace();
+        LOG.error("全局异常ExceptionHandler", e);
         if (BasicUtil.isAjaxRequest(request)) {
             try {
                 response.setContentType("application/json;charset=UTF-8");

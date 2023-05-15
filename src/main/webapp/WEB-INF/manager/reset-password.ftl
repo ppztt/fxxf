@@ -67,7 +67,7 @@
                             }
                         }
                     },
-                    {pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
+                    {pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
                 ],
                 newComfirmManagerPassword: [
                     {required: true, message: '不能为空', trigger: "blur",},
@@ -81,7 +81,7 @@
                             }
                         }
                     },
-                    {pattern: /^(?=.*[a-zA-Z])(?=.*[1-9])(?=.*[\W]).{6,}$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
+                    {pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
                 ]
             }
         },
@@ -122,3 +122,8 @@
         }
     });
 </script>
+<style>
+    .el-form-item__error{
+        position: relative;
+    }
+</style>
