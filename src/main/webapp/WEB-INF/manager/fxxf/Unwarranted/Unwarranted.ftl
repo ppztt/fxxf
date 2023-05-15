@@ -1326,6 +1326,7 @@
                             type: "success",
                             message: "录入成功"
                         })
+                        this.getUnitList()
                         this.isShowEnteringModal = false
                     } else {
                         this.$message.error(res.msg ||"录入失败")
