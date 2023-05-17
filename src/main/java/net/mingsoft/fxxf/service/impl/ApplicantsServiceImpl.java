@@ -1385,11 +1385,12 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
     }
 
     private boolean canExtension(Applicants applicant) {
+        Integer status = applicant.getStatus();
         // 状态为续期
-        if (applicant.getStatus() == 3) {
+        if (status == 3) {
             return true;
         }
-        if (applicant.getEndTime() == null) {
+        if (applicant.getEndTime() == null || status != 1) {
             return false;
         }
         // 有效期到期前一个月的提供续期按钮
@@ -1399,7 +1400,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
         return applicant.getEndTime().isBefore(oneMonthAfter);
     }
 
-    private static void setStartAndEndTime(Applicants applicants) {
+    private void setStartAndEndTime(Applicants applicants) {
         LocalDate startTime = applicants.getStartTime();
         LocalDate newStartTime = startTime == null ? LocalDate.now() : startTime;
         applicants.setStartTime(newStartTime);
