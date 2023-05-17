@@ -76,4 +76,11 @@ public interface ApplicantsMapper extends BaseMapper<Applicants> {
             @Param("statisticType")int statisticType,
             @Param("startTime")String startTime,
             @Param("endTime")String endTime);
+
+    List<OperatorStatisticsVo> statisticTransitionPeriodCount(
+            @Param("areaField")String areaField,
+            @Param("city")String city,
+            @Param("statisticType")int statisticType,
+            @Param("startTime")String startTime,
+            @Param("endTime")String endTime);
 }

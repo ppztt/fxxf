@@ -430,8 +430,14 @@
                 and a.city like concat('%', #{cityAccess},'%') and a.district like concat('%', #{districtAccess},'%')
             </if>
         </where>
-
-        order by field(a.status,'4','6','5') desc, a.start_time desc
+        ORDER BY
+        CASE status
+        WHEN 4 THEN 1
+        WHEN 3 THEN 2
+        WHEN 6 THEN 3
+        WHEN 5 THEN 4
+        ELSE 5
+        END ASC , a.start_time desc
     </select>
 
     <select id="applicantsExport" resultType="net.mingsoft.fxxf.bean.entity.Applicants">
@@ -471,7 +477,14 @@
                 and a.city like concat('%', #{cityAccess},'%') and a.district like concat('%', #{districtAccess},'%')
             </if>
         </where>
-        order by field(a.status,'4','6','5') desc,sr.sort , a.start_time desc
+        ORDER BY
+        CASE status
+        WHEN 4 THEN 1
+        WHEN 3 THEN 2
+        WHEN 6 THEN 3
+        WHEN 5 THEN 4
+        ELSE 5
+        END ASC, sr.sort , a.start_time desc
     </select>
 
     <select id="applicantsTotalTakeOffStatistics"
@@ -551,6 +564,27 @@
         </where>
         GROUP BY
         regName,area
+    </select>
+
+    <select id="statisticTransitionPeriodCount" resultType="net.mingsoft.fxxf.bean.vo.OperatorStatisticsVo">
+        select if(#{areaField}='city',a.city, a.district) area,
+        count(*) transitionPeriodCnt
+        from cc_applicants a
+        <where>
+            a.type = #{statisticType}
+            AND a.`status` = 3
+            <if test="areaField == 'district'">
+                and city like concat('%',#{city},'%')
+            </if>
+            <if test="startTime != null and startTime != ''">
+                and start_time &gt;= #{startTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                and start_time &lt;= #{endTime}
+            </if>
+        </where>
+        GROUP BY
+        area
     </select>
 
 </mapper>
