@@ -8,7 +8,6 @@
 package net.mingsoft.basic.action;
 
 
-import cn.hutool.core.util.ReUtil;
 import cn.hutool.system.oshi.CpuInfo;
 import cn.hutool.system.oshi.OshiUtil;
 import com.alibaba.fastjson.JSONObject;
@@ -28,6 +27,7 @@ import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.basic.util.RedisUtil;
 import net.mingsoft.basic.util.StringUtil;
 import net.mingsoft.config.MSProperties;
+import net.mingsoft.utils.CheckPassword;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -346,6 +346,6 @@ public class MainAction extends BaseAction {
      * @return
      */
     private boolean checkManagerPass(String pass) {
-        return ReUtil.isMatch("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&,.*]).{8,30}$", pass);
+        return CheckPassword.checkPasswordRule(pass);
     }
 }

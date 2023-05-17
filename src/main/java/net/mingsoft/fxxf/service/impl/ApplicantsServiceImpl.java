@@ -676,7 +676,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
         // 获取登录用户
         ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
         if (user == null) {
-            throw new BusinessException("当前登录用户扩展信息为空，请前往补充");
+            throw new BusinessException("当前登录用户为空，请重新登陆");
         }
 
         ManagerInfoVo extensionInfo = managerInfoService.getManagerInfoById(user.getId());
