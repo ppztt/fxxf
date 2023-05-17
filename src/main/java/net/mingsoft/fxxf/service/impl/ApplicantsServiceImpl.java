@@ -9,15 +9,12 @@ import cn.afterturn.easypoi.excel.entity.result.ExcelImportResult;
 import cn.afterturn.easypoi.exception.excel.ExcelImportException;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.text.CharSequenceUtil;
-import com.alibaba.druid.util.Utils;
-import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.EasyExcelFactory;
-import com.alibaba.excel.ExcelWriter;
-import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -63,8 +60,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.net.URLEncoder;
+import java.io.File;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -161,7 +158,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
         IPage<Applicants> applicantsIPage = applicantsMapper.listPage(new Page<>(
                         applicantsPageRequest.getCurrent(), applicantsPageRequest.getSize()), applicantsPageRequest, user.getRoleId(),
                 extensionInfo.getCity(), extensionInfo.getDistrict());
-
+        setExtension(applicantsIPage);
         return BaseResult.success(new BasePageResult<>(applicantsIPage.getCurrent(), applicantsIPage.getSize(), applicantsIPage.getPages(),
                 applicantsIPage.getTotal(), applicantsIPage.getRecords()));
     }
@@ -1026,10 +1023,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                 // 省级审核
                 if (type == 1) {
                     applicants.setStatus(1);
-
-                    applicants.setStartTime(LocalDate.now());
-                    LocalDate localDate3After = applicants.getStartTime().plusYears(3).minusMonths(1);
-                    applicants.setEndTime(LocalDate.of(localDate3After.getYear(), localDate3After.getMonthValue(), 01));
+                    setStartAndEndTime(applicants);
                     applicants.setCcDate(LocalDateTime.now());
                 } else if (type == 2) {
                     applicants.setStatus(7);
@@ -1049,9 +1043,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                                 //市级审核通过
                                 applicants.setStatus(1);
 
-                                applicants.setStartTime(LocalDate.now());
-                                LocalDate localDate3After = applicants.getStartTime().plusYears(3).minusMonths(1);
-                                applicants.setEndTime(LocalDate.of(localDate3After.getYear(), localDate3After.getMonthValue(), 01));
+                                setStartAndEndTime(applicants);
                                 applicants.setCcDate(LocalDateTime.now());
 
                                 applicants.setAuditRoleId(1);
@@ -1108,9 +1100,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                                 //市级审核通过
                                 applicants.setStatus(1);
 
-                                applicants.setStartTime(LocalDate.now());
-                                LocalDate localDate3After = applicants.getStartTime().plusYears(3).minusMonths(1);
-                                applicants.setEndTime(LocalDate.of(localDate3After.getYear(), localDate3After.getMonthValue(), 01));
+                                setStartAndEndTime(applicants);
                                 applicants.setCcDate(LocalDateTime.now());
 
                                 applicants.setAuditRoleId(1);
@@ -1249,6 +1239,36 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
         return list(new QueryWrapper<Applicants>().eq("credit_code", creditCode).eq("type", type).notIn("status", 0, 2, 7).notIn("id", id));
     }
 
+    @Override
+    public void extensionDate(Integer id) {
+        ManagerEntity user = (ManagerEntity) SecurityUtils.getSubject().getPrincipal();
+        int roleId = user.getRoleId();
+        Applicants applicants = applicantsMapper.selectById(id);
+        if (applicants == null) {
+            throw new BusinessException("数据不存在");
+        }
+        if (!canExtension(applicants)) {
+            throw new BusinessException("当前数据不允许续期");
+        }
+        LambdaUpdateWrapper<Applicants> updateWrapper = new UpdateWrapper<Applicants>().lambda();
+        updateWrapper
+                .eq(Applicants::getId, id)
+                .set(Applicants::getContCommitment, "是")
+                .set(Applicants::getCommNum, applicants.getCommNum() + 1)
+                .set(Applicants::getUpdateTime, LocalDateTime.now());
+        // 省级、地市工作人员续期不用审核
+        if (roleId == 1 || roleId == 2) {
+            updateWrapper
+                    .set(Applicants::getStatus, 1)
+                    .set(Applicants::getEndTime, applicants.getEndTime().plusYears(3));
+        } else {
+            // 需要审核
+            updateWrapper.set(Applicants::getStatus, 4)
+                    .set(Applicants::getAuditRoleId, 3);
+        }
+        applicantsMapper.update(null, updateWrapper);
+    }
+
     public List<Applicants> findApplicantsByRegName(Integer type, Object[] creditCodes) {
         return list(new QueryWrapper<Applicants>().in("credit_code", creditCodes).eq("type", type).eq("status", 1));
     }
@@ -1271,10 +1291,13 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
         // 按地区统计承诺单位总数、增加其他承诺的单位数量、连续承诺单位数量
         List<OperatorStatisticsVo> operatorStatisticsVosList = statisticApplicantsCount(areaField, city, statisticType,
                 startTime, endTime);
+        // 按地区统计‘过渡期’单位数量
+        List<OperatorStatisticsVo> transitionPeriodList = applicantsMapper.statisticTransitionPeriodCount(areaField, city, statisticType,
+                startTime, endTime);
         // 按单位统计处理结果为摘牌、监督告诫、其他的次数
         List<HandleResultStatisticsVo> resultStatisticList = applicantsMapper.statisticResultCount(areaField, city, statisticType,
                 startTime, endTime);
-        calc(operatorStatisticsVosList, resultStatisticList);
+        calc(operatorStatisticsVosList, transitionPeriodList, resultStatisticList);
         return new ArrayList<>(operatorStatisticsVosList);
     }
 
@@ -1312,12 +1335,21 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
         return result;
     }
 
-    private void calc(List<OperatorStatisticsVo> operatorStatisticsVosList, List<HandleResultStatisticsVo> resultStatisticList) {
+    private void calc(List<OperatorStatisticsVo> operatorStatisticsVosList, List<OperatorStatisticsVo> transitionPeriodList, List<HandleResultStatisticsVo> resultStatisticList) {
         for (OperatorStatisticsVo operatorStatisticsVo : operatorStatisticsVosList) {
             String area = operatorStatisticsVo.getArea();
+            int transitionPeriodCnt = 0;
             int beSupervisedCnt = 0;
             int delCnt = 0;
             int nullCnt = operatorStatisticsVo.getApplicantsCnt();
+
+            for (OperatorStatisticsVo transitionPeriodVo : transitionPeriodList) {
+                String voArea = transitionPeriodVo.getArea();
+                if (CharSequenceUtil.contains(voArea, area)) {
+                    transitionPeriodCnt += transitionPeriodVo.getTransitionPeriodCnt();
+                }
+            }
+
             for (HandleResultStatisticsVo handleResultStatisticsVo : resultStatisticList) {
                 String voArea = handleResultStatisticsVo.getArea();
                 if (CharSequenceUtil.contains(voArea, area)) {
@@ -1335,11 +1367,50 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                     }
                 }
             }
+            operatorStatisticsVo.setTransitionPeriodCnt(transitionPeriodCnt);
             operatorStatisticsVo.setBeSupervisedCnt(beSupervisedCnt);
             operatorStatisticsVo.setDelCnt(delCnt);
             operatorStatisticsVo.setNullCnt(nullCnt);
         }
     }
 
+    /**
+     * 设置是否需要续期
+     */
+    private void setExtension(IPage<Applicants> page) {
+        List<Applicants> records = page.getRecords();
+        for (Applicants applicant : records) {
+            applicant.setIsExtension(canExtension(applicant));
+        }
+    }
+
+    private boolean canExtension(Applicants applicant) {
+        // 状态为续期
+        if (applicant.getStatus() == 3) {
+            return true;
+        }
+        if (applicant.getEndTime() == null) {
+            return false;
+        }
+        // 有效期到期前一个月的提供续期按钮
+        LocalDate currentDate = LocalDate.now();
+        // 当前时间的下一个月日期
+        LocalDate oneMonthAfter = currentDate.plus(Period.ofMonths(1));
+        return applicant.getEndTime().isBefore(oneMonthAfter);
+    }
+
+    private static void setStartAndEndTime(Applicants applicants) {
+        LocalDate startTime = applicants.getStartTime();
+        LocalDate newStartTime = startTime == null ? LocalDate.now() : startTime;
+        applicants.setStartTime(newStartTime);
+        LocalDate endTime = applicants.getEndTime();
+        if (endTime == null) {
+            endTime = applicants.getStartTime().plusYears(3).minusMonths(1);
+            endTime = LocalDate.of(endTime.getYear(), endTime.getMonthValue(), 1);
+        } else {
+            endTime = endTime.plusYears(3);
+        }
+        applicants.setEndTime(endTime);
+    }
 
 }

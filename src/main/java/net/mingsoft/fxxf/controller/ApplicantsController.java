@@ -199,4 +199,12 @@ public class ApplicantsController {
             return BaseResult.fail(e.getMessage());
         }
     }
+
+    @PostMapping("/extensionDate")
+    @ApiOperation(value = "续期")
+    public BaseResult<String> extensionDate(Integer id) {
+        applicantsService.extensionDate(id);
+        return BaseResult.success();
+    }
+
 }

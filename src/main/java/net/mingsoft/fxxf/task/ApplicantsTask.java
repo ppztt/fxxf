@@ -43,8 +43,9 @@ public class ApplicantsTask {
             UpdateWrapper<Applicants> updateWrapper = new UpdateWrapper<>();
             updateWrapper.lambda()
                     .in(Applicants::getId, needUpdateIdList)
-                    .set(Applicants::getStatus, 2)
-                    .set(Applicants::getDelReason, "过期")
+                    // 过渡期
+                    .set(Applicants::getStatus, 3)
+                    // .set(Applicants::getDelReason, "过期")
                     .set(Applicants::getDelTime, LocalDateTime.now())
                     .set(Applicants::getUpdateTime, LocalDateTime.now());
 

@@ -71,4 +71,9 @@ public interface ApplicantsService extends IService<Applicants> {
 
     List<Applicants> findApplicantsByCreditCode(Integer id, Integer type, String creditCode);
 
+    /**
+     * 续期
+     * @param id 数据id
+     */
+    void extensionDate(Integer id);
 }

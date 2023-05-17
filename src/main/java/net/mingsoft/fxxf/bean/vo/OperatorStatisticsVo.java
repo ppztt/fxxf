@@ -82,4 +82,8 @@ public class OperatorStatisticsVo implements Serializable {
     @Excel(name = "被摘牌单位数量")
     private Integer delCnt;
 
+    @ApiModelProperty(value = "过渡期单位数量")
+    @Excel(name = "过渡期单位数量")
+    private Integer transitionPeriodCnt;
+
 }

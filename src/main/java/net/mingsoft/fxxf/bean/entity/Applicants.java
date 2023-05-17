@@ -370,6 +370,10 @@ public class Applicants extends Model<Applicants> {
     @TableField(exist = false)
     private String account;
 
+    @ApiModelProperty(value = "是否需展示续期按钮")
+    @TableField(exist = false)
+    private Boolean isExtension = false;
+
     public void setCreditCode(String creditCode) {
         if (!Objects.isNull(creditCode)) {
             this.creditCode = creditCode.trim();
