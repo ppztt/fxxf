@@ -929,7 +929,7 @@
                 this.current = v;
                 let info = {
                     ...this.searchMessage,
-                    size: this.size
+                    current: this.current
                 }
                 this.debounce(this.getUnitList(info), 1000)
             },
