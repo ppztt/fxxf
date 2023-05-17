@@ -937,6 +937,7 @@
                     district: this.userInfo.district,
                     address: ""
                 })
+                this.$refs['formApply'].resetFields()
             },
             currentChange: function (v) {
                 this.current = v;
@@ -1113,15 +1114,17 @@
                     timeout: 60000
                 }).then(res => {
                     console.log(res)
-                    if(res.code && res.code == 500){
+                    if (res.code && res.code == 500) {
                         this.$message.error(res.msg || "下载失败")
-                    }else{
-                        let filename = decodeURIComponent(res.headers['content-disposition'].match(/filename=(.*)$/)[1]);
-                        let blob= new Blob([res.data],{type: "application/vnd.ms-excel"});
+                    } else {
+                        let filename = decodeURIComponent(res.headers['content-disposition'].match(/filename=(.*)$/)[1],
+                            "utf-8");
+                        console.log(encodeURIComponent(filename))
+                        let blob = new Blob([res.data], {type: "application/vnd.ms-excel"});
                         let url = window.URL.createObjectURL(blob);
-                        let a =document.createElement('a');
+                        let a = document.createElement('a');
                         a.href = url;
-                        a.setAttribute('download',filename);
+                        a.setAttribute('download', filename);
                         document.body.appendChild(a);
                         a.click();
                         a.remove();
@@ -1138,15 +1141,15 @@
                     noHandleResponse: true,
                     timeout: 60000
                 }).then(res => {
-                    if(res.code && res.code == 500){
+                    if (res.code && res.code == 500) {
                         this.$message.error(res.msg || "导出失败")
-                    }else{
-                        let filename = decodeURIComponent(res.headers['content-disposition'].match(/filename=(.*)$/)[1]);
-                        let blob= new Blob([res.data],{type: "application/vnd.ms-excel"});
+                    } else {
+                        let filename = decodeURIComponent(res.headers['content-disposition'].match(/filename=(.*)$/)[1],'utf-8');
+                        let blob = new Blob([res.data], {type: "application/vnd.ms-excel"});
                         let url = window.URL.createObjectURL(blob);
-                        let a =document.createElement('a');
+                        let a = document.createElement('a');
                         a.href = url;
-                        a.setAttribute('download',filename);
+                        a.setAttribute('download', filename);
                         document.body.appendChild(a);
                         a.click();
                         a.remove();

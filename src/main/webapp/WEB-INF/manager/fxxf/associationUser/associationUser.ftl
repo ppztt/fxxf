@@ -474,7 +474,7 @@
                     realname: "", // 行业协会名称
                     // industryUserName: "", // 行业协会用户名
                     email: "", //邮箱
-                    city: this.userInfo.city, //市
+                    city: msg === 'modify' ? '' : this.userInfo.city, //市
                     district: "", // 区县
                     zipcode: "", //邮政编码
                     phone: "", //手机
