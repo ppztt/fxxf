@@ -982,6 +982,7 @@
                     district: this.userInfo.district,
                     address: ""
                 })
+                this.$refs['formApply'].resetFields()
             },
             changeStartTime(value) {
                 this.startTime = value;
