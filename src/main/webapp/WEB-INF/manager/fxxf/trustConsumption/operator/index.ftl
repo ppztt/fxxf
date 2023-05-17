@@ -96,6 +96,11 @@
                 label="被摘牌单位数量"
                 align=left">
         </el-table-column>
+        <el-table-column
+                prop="transitionPeriodCnt"
+                label="过渡期单位数量"
+                align=left">
+        </el-table-column>
     </el-table>
 </el-main>
 </body>

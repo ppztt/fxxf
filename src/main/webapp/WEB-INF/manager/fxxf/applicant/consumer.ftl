@@ -485,6 +485,7 @@
                     <span v-show="scope.row.status == 1">在期</span>
                     <span v-show="scope.row.status == 0">摘牌</span>
                     <span v-show="scope.row.status == 2">过期</span>
+                    <span v-show="scope.row.status == 3">过渡期</span>
                     <span v-if="scope.row.status == '4'">待审核</span>
                     <span v-if="scope.row.status == '5'">县级审核通过</span>
                     <span v-if="scope.row.status == '6'">行业协会审核通过</span>
@@ -575,9 +576,21 @@
                         <@shiro.hasPermission name="jyzlb:del">
                             <el-button type="text" class="action_btn red_text" icon="el-icon-delete"
                                        @click="deleteConsumer(row.id)">
-                                删除
+                                    删除
                             </el-button>
                         </@shiro.hasPermission>
+
+
+                        <div class="action_btn" :class="[row.isExtension ? 'skyblue_text' : 'grey_text']"  @click="renew(row.id)">
+                            <img
+                                    style="margin-right: 2px;width:12px"
+                                    src="${base}/static/images/renew%20.png"
+                                    alt=""
+                            />
+                            <el-button type="text"  >
+                                续期
+                            </el-button>
+                        </div>
                     </div>
                 </template>
             </el-table-column>
@@ -741,6 +754,7 @@
                     {id: "1", value: "在期"},
                     {id: "0", value: "摘牌"},
                     {id: "2", value: "过期"},
+                    {id: "3", value: "过渡期"},
                     {id: "4", value: "待审核"},
                     {id: "5", value: "县级审核通过"},
                     {id: "6", value: "行业协会审核通过"},
@@ -1340,6 +1354,32 @@
                     });
                 });
             },
+            //续期
+            renew(id) {
+                this.$confirm('确认续期该项数据?', '续期提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'error',
+                    center: true
+                }).then(() => {
+                    ms.http.post('/xwh/applicants/extensionDate.do' + '?id='+id  ).then((res) => {
+                        if (res.code == 200) {
+                            this.$message({
+                                type: 'success',
+                                message: '续期成功!'
+                            });
+                            this.getUnitList(this.searchMessage)
+                        } else {
+                            this.$message.error('续期失败')
+                        }
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消续期'
+                    });
+                });
+            },
             // 为删除添加id
             addIDs(selection) {
                 this.ids.ids = []
@@ -1497,7 +1537,14 @@
     .red_text {
         color: #f05858;
     }
-
+    .skyblue_text{
+        width: 52px;
+        color: #57a3f3;
+    }
+    .grey_text{
+        display: none !important;
+        width: 52px;
+    }
     .blue_btn {
         background: #5d7cc9 !important;
         color: #fff !important;
