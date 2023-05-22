@@ -59,8 +59,8 @@
                             <el-form-item prop="oldManagerPassword">
                   <span class="input input--hoshi">
                           <input v-model="resetPasswordForm.oldManagerPassword" class="input__field input__field--hoshi"
-                                 :type="showPassword ? 'password' : 'text'" id="oldManagerPassword"/>
-                      <i class="el-icon-view showPass" @click="showPassword = !showPassword"></i>
+                                 :type="showPassword1 ? 'password' : 'text'" id="oldManagerPassword"/>
+                      <i class="el-icon-view showPass" @click="showPassword1 = !showPassword1"></i>
                           <label class="input__label input__label--hoshi input__label--hoshi-color-1 bug"
                                  for="oldManagerPassword">
                               <span class="input__label-content input__label-content--hoshi">旧密码</span>
@@ -75,8 +75,8 @@
                             <el-form-item prop="newManagerPassword">
                   <span class="input input--hoshi">
                           <input v-model="resetPasswordForm.newManagerPassword" class="input__field input__field--hoshi"
-                                 :type="showPassword ? 'password' : 'text'" id="newManagerPassword"/>
-                      <i class="el-icon-view showPass"  @click="showPassword = !showPassword"></i>
+                                 :type="showPassword2 ? 'password' : 'text'" id="newManagerPassword"/>
+                      <i class="el-icon-view showPass"  @click="showPassword2 = !showPassword2"></i>
                           <label class="input__label input__label--hoshi input__label--hoshi-color-1 bug"
                                  for="newManagerPassword">
                               <span class="input__label-content input__label-content--hoshi">新密码</span>
@@ -91,9 +91,9 @@
                             <el-form-item prop="newComfirmManagerPassword">
                   <span class="input input--hoshi">
                           <input v-model="resetPasswordForm.newComfirmManagerPassword"
-                                 class="input__field input__field--hoshi" :type="showPassword ? 'password' : 'text'"
+                                 class="input__field input__field--hoshi" :type="showPassword3 ? 'password' : 'text'"
                                  id="newComfirmManagerPassword"/>
-                      <i class="el-icon-view showPass" @click="showPassword = !showPassword"></i>
+                      <i class="el-icon-view showPass" @click="showPassword3 = !showPassword3"></i>
                           <label class="input__label input__label--hoshi input__label--hoshi-color-1 bug"
                                  for="newComfirmManagerPassword">
                               <span class="input__label-content input__label-content--hoshi">确认新密码</span>
@@ -129,7 +129,9 @@
     var resetPasswordVue = new Vue({
         el: '#reset-password',
         data: {
-            showPassword: true,
+            showPassword1: true,
+            showPassword2: true,
+            showPassword3: true,
             base: ms.base,
             // 是否直接打开该页面
             isDirect: true,
@@ -186,22 +188,24 @@
             // 更新密码
             updatePassword: function () {
                 var that = this;
+                let win = window
                 this.$refs['resetPasswordForm'].validate(function (valid) {
                     if (valid) {
                         that.loading = true;
                         ms.http.post(ms.manager + "/updatePasswordForce.do", that.resetPasswordForm).then(function (data) {
                             if (data.result == true) {
+                                win.localStorage.setItem('managerName', that.resetPasswordForm.managerName)
                                 that.resetPasswordForm.oldManagerPassword = '';
                                 that.resetPasswordForm.newManagerPassword = '';
                                 that.$notify({
                                     title: '提示',
                                     message: "修改成功,重新登录系统！",
                                     type: 'success'
-                                }).then(function () {
+                                })
+                                setTimeout(function () {
                                     location.href = ms.manager + "/login.do";
-                                });
-                                //location.reload();
-
+                                    location.reload();
+                                },500)
                             } else {
                                 that.$notify({
                                     title: '错误',
