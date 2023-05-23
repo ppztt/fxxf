@@ -95,7 +95,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col span="3">
-                            <el-form-item prop="principalTel" style="margin-left: -160px">
+                            <el-form-item label="负责人联系电话：" prop="principalTel" style="margin-left: -160px">
                                 <p>{{ formData.principalTel }}</p>
                             </el-form-item>
                         </el-col>
@@ -293,7 +293,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col span="6">
-                            <el-form-item prop="principalTel">
+                            <el-form-item label="负责人联系电话：" prop="principalTel">
                                 <el-input size="mini" v-model="formData.principalTel" placeholder="手机号码"></el-input>
                             </el-form-item>
                         </el-col>
@@ -645,6 +645,16 @@
                     services: [],
                 },
                 districtData: [], //某市县数据
+            }
+        },
+        watch: {
+            'formData.commNum': function(n, o) {
+                // this.$set(this.formData, 'commNum', 0);
+                if (isNaN(Number(n))) {
+                   this.$set(this.formData, 'commNum', 0);
+                   this.$message.error('请输入正整数')
+                }
+                this.$set(this.formData, 'commNum', Number(n));
             }
         },
         methods: {

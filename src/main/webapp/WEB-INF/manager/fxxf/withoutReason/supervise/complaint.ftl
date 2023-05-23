@@ -151,7 +151,7 @@
                         </el-col>
                         <el-col :offset="1" :span="7">
                             <el-formItem>
-                                <el-button class="blue_btn" @click="handleSubmit('formValidate')">提交
+                                <el-button  @click="handleSubmit('formValidate')" type="primary" size="mini">提交
                                 </el-button>
                             </el-formItem>
                         </el-col>

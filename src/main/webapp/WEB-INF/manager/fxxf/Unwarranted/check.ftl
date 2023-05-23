@@ -56,7 +56,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col span="3">
-                            <el-form-item prop="principalTel" style="margin-left: -160px">
+                            <el-form-item label="负责人联系电话：" prop="principalTel" style="margin-left: -160px">
                                 <p>{{ formData.principalTel }}</p>
                             </el-form-item>
                         </el-col>
@@ -174,7 +174,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col span="6">
-                            <el-form-item prop="principalTel">
+                            <el-form-item label="负责人联系电话：" prop="principalTel">
                                 <el-input size="mini" v-model="formData.principalTel" placeholder="手机号码"></el-input>
                             </el-form-item>
                         </el-col>

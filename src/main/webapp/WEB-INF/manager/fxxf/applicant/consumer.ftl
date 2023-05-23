@@ -52,13 +52,13 @@
             </el-col>
             <el-col span="6">
                 <el-date-picker size="mini" format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="startTime"
-                                placeholder="开始时间"
+                                placeholder="审核通过开始时间"
                                 :picker-options="pickerBeginDate"
                                 @change="changeStartTime"></el-date-picker>
             </el-col>
             <el-col span="6">
                 <el-date-picker size="mini" format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="endTime"
-                                placeholder="结束时间"
+                                placeholder="审核通过结束时间"
                                 :picker-options="pickerEndDate"
                                 @change="changeEndTime"></el-date-picker>
             </el-col>
