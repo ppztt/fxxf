@@ -226,11 +226,13 @@
                     </el-row>
                     <el-row>
                         <el-col span="24">
-                            <el-form-item label="企业申请日期：" prop="createTime">
+                            <el-form-item label="企业申请日期：" prop="applicationDate">
                                 <el-date-picker size="mini"
-                                                v-model="formData.createTime"
+                                                v-model="formData.applicationDate"
                                                 type="datetime"
                                                 value-format="yyyy-MM-dd HH:mm:ss"
+                                                format="yyyy-MM-dd"
+                                                :picker-options="applicant"
                                                 placeholder="请选择时间">
                                 </el-date-picker>
                             </el-form-item>
@@ -330,7 +332,8 @@
                                 <el-date-picker size="mini"
                                                 v-model="formData.createTime"
                                                 type="date"
-                                                value-format="yyyy-MM-dd HH-mm-ss"
+                                                value-format="yyyy-MM-dd HH:mm:ss"
+                                                format="yyyy-MM-dd"
                                                 placeholder="选择日期"
                                                 disabled>
                                 </el-date-picker>
@@ -522,6 +525,14 @@
                     services: [],
                 },
                 districtData: [], //某市县数据
+                applicant: {
+                    disabledDate: (time) => {
+                        return (
+                            time.getTime() >= new Date().getTime()
+                        );
+
+                    }
+                },
             }
         },
         watch: {
