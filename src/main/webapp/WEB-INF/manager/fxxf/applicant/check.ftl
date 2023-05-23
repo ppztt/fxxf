@@ -16,6 +16,7 @@
                     ref="checkForm"
                     label-width="160px"
                     :model="formData"
+                    :rules="formrules"
                     label-position="right"
             >
                 <div class="check-item">详情信息- {{ textList[detailType] }}</div>
@@ -656,6 +657,9 @@
                     services: [],
                 },
                 districtData: [], //某市县数据
+                formrules: {
+                    ccContent: [{required: true}]
+                },
             }
         },
         watch: {

@@ -16,6 +16,7 @@
                     ref="formRef"
                     label-width="160px"
                     :model="formData"
+                    :rules="formrules"
                     label-position="right"
             >
                 <div class="check-item">详情信息- {{ textList[detailType] }}</div>
@@ -532,6 +533,9 @@
                         );
 
                     }
+                },
+                formrules: {
+                    ccContent: [{required: true}]
                 },
             }
         },
