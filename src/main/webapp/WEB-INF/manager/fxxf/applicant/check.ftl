@@ -308,9 +308,11 @@
                         <el-col span="24">
                             <el-form-item label="企业申请日期：" prop="applicationDate">
                                 <el-date-picker size="mini"
-                                                value-format="yyyy-MM-dd"
+                                                value-format="yyyy-MM-dd HH:mm:ss"
+                                                format="yyyy-MM-dd"
                                                 v-model="formData.applicationDate"
                                                 type="date"
+                                                :picker-options="applicant"
                                                 placeholder="请选择时间">
                                 </el-date-picker>
                             </el-form-item>
@@ -428,7 +430,7 @@
                     <el-row>
                         <el-col span="24">
                             <el-form-item label="日期：" prop="applicationDate">
-                                <p>{{ formData.applicationDate }}</p>
+                                <p>{{ formData.createTime }}</p>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -438,8 +440,9 @@
                         <el-col span="24">
                             <el-form-item label="日期：" prop="applicationDate">
                                 <el-date-picker size="mini"
-                                                value-format="yyyy-MM-dd"
-                                                v-model="formData.applicationDate"
+                                                value-format="yyyy-MM-dd HH:mm:ss"
+                                                format="yyyy-MM-dd"
+                                                v-model="formData.createTime"
                                                 type="date"
                                                 placeholder="选择日期"
                                                 disabled>
@@ -574,6 +577,14 @@
                         }
                     }
                 },
+                applicant: {
+                    disabledDate: (time) => {
+                        return (
+                            time.getTime() >= new Date().getTime()
+                        );
+
+                    }
+                },
                 // 详情后的名字，根据query参数来切换
                 textList: [
                     "编辑",
@@ -648,11 +659,11 @@
             }
         },
         watch: {
-            'formData.commNum': function(n, o) {
+            'formData.commNum': function (n, o) {
                 // this.$set(this.formData, 'commNum', 0);
                 if (isNaN(Number(n))) {
-                   this.$set(this.formData, 'commNum', 0);
-                   this.$message.error('请输入正整数')
+                    this.$set(this.formData, 'commNum', 0);
+                    this.$message.error('请输入正整数')
                 }
                 this.$set(this.formData, 'commNum', Number(n));
             }
@@ -665,7 +676,6 @@
             // 获取该商家数据
             getList() {
                 ms.http.get("/xwh/applicants/" + this.consumerId + '.do').then((res) => {
-                    console.log(res)
                     this.formData = res.data
                     let cityArr = this.formData.city.split(",");
                     let districtArr = this.formData.district.split(",");
@@ -684,7 +694,6 @@
             // 获取地区信息
             getRegionData() {
                 ms.http.get('/xwh/gd-regin.do').then((res) => {
-                    console.log(res)
                     if (res.code == 200) {
                         this.regionData = res.data
                         this.getUserInfo()
@@ -842,13 +851,17 @@
                 })
             }
         },
-        mounted: function () {
-            this.detailType = window.location.href.split("?")[1].split("&")[0].split('=')[1]
-            this.consumerId = Number(window.location.href.split("?")[1].split("&")[1].split('=')[1])
-            this.getRegionData()
-            this.getList();
-        }
-    });
+        mounted
+    :
+
+    function () {
+        this.detailType = window.location.href.split("?")[1].split("&")[0].split('=')[1]
+        this.consumerId = Number(window.location.href.split("?")[1].split("&")[1].split('=')[1])
+        this.getRegionData()
+        this.getList();
+    }
+    })
+    ;
 </script>
 <style>
     #index .ms-container {

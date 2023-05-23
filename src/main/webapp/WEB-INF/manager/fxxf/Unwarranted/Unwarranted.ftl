@@ -288,7 +288,8 @@
                                                 <el-form-item prop="applicationDate">
                                                     <el-date-picker
                                                             size="mini"
-                                                            value-format="yyyy-MM-dd"
+                                                            value-format="yyyy-MM-dd HH:mm:ss"
+                                                            format="yyyy-MM-dd"
                                                             v-model="formData.applicationDate"
                                                             type="date"
                                                             placeholder="请选择时间"
