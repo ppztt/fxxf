@@ -581,7 +581,7 @@
                         </@shiro.hasPermission>
 
 
-                        <div class="action_btn" :class="[row.isExtension ? 'skyblue_text' : 'grey_text']"  @click="renew(row.id)">
+                        <div class="action_btn" :class="[row.isExtension ? 'skyblue_text' : 'grey_text']"  @click="renew(row)">
                             <img
                                     style="margin-right: 2px;width:12px"
                                     src="${base}/static/images/renew%20.png"
@@ -1355,14 +1355,19 @@
                 });
             },
             //续期
-            renew(id) {
-                this.$confirm('确认续期该项数据?', '续期提示', {
+            renew(row) {
+                // 将 row.endTime 解析为 Date 对象
+                const endTime = new Date(row.endTime);
+                endTime.setFullYear(endTime.getFullYear() + 3);
+                const newEndTime = endTime.toISOString().substring(0, 7);
+                const time = '是否确定续期到：'+row.endTime+'~'+newEndTime;
+                this.$confirm(time, '续期提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'error',
                     center: true
                 }).then(() => {
-                    ms.http.post('/xwh/applicants/extensionDate.do' + '?id='+id  ).then((res) => {
+                    ms.http.post('/xwh/applicants/extensionDate.do' + '?id='+row.id  ).then((res) => {
                         if (res.code == 200) {
                             this.$message({
                                 type: 'success',
