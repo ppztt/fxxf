@@ -41,7 +41,7 @@
                         <div  class="class-8" >
                             <el-form-item prop="managerName">
                      <span class="input input--hoshi" :class="{'input--filled': form.managerName }">
-                          <input v-model="form.managerName" class="input__field input__field--hoshi" type="text" id="input-name" />
+                          <input ref="management" v-model="form.managerName" class="input__field input__field--hoshi" type="text" id="input-name" />
                           <label class="input__label input__label--hoshi input__label--hoshi-color-1 bug" for="input-name">
                               <span class="input__label-content input__label-content--hoshi">账号</span>
                           </label>
@@ -68,7 +68,7 @@
                             <div  class="class-17" >
                                 <!--文本开始-->
                                 <el-form-item prop="rand_code">
-                     <span class="input input--hoshi" :class="{'input--filled': form.rand_code }" >
+                     <span class="input input--hoshi" :class="{'input--filled': form.rand_code != '' }" >
                      <span class="input input--hoshi" :class="{'input--filled': form.rand_code }" >
                           <input v-model="form.rand_code" class="input__field input__field--hoshi" type="text" id="input-rand-code" />
                           <label class="input__label input__label--hoshi input__label--hoshi-color-1 bug" for="input-rand-code">
@@ -140,9 +140,6 @@
 <script>
     var app = new Vue({
         el: '#app',
-        watch:{
-
-        },
         data: {
             base:ms.base,
             loading:false,
@@ -173,7 +170,6 @@
             //登录
             login:function () {
                 var that = this;
-                console.log(this)
                 that.$refs.form.validate(function(valid){
                     if (valid) {
                         that.loading = true;
@@ -184,7 +180,6 @@
                             rememberMe:that.form.rememberMe
                         }).then(function (res) {
                             if(res.result){
-                                localStorage.setItem('managerName', that.form.managerName);
                                 if (res.msg) {
                                     localStorage.setItem('managerName', that.form.managerName);
                                     localStorage.setItem('passChangeMaxDay', res.data);
@@ -208,23 +203,25 @@
                 });
             },
             //获取验证码
-            code:function(){
+            code(){
                 this.verifCode = ms.web + "/code.do?t=" + new Date().getTime();
             },
             //初始
-            initial:function(){
-                this.form.managerName = localStorage.getItem('managerName');
-                this.form.managerPassword =  localStorage.getItem('managerPassword');
-                top.location != self.location?(top.location = self.location):'';
+            initialt(){
+               this.$nextTick(()=>{
+                   this.form.managerName = localStorage.getItem('managerName');
+                   this.form.managerPassword =  localStorage.getItem('managerPassword');
+                   top.location != self.location?(top.location = self.location):'';
+                   localStorage.setItem('managerName','');
+               })
             }
         },
         created:function(){
             this.code();
-            this.initial();
-            if(sessionStorage.getItem('managerName') != ''){
-                this.form.managerName = localStorage.getItem('managerName')
-            }
         },
+        mounted(){
+            this.initialt();
+        }
 
     })
 </script>

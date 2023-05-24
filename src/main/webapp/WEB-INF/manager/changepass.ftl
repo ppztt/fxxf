@@ -194,7 +194,7 @@
                         that.loading = true;
                         ms.http.post(ms.manager + "/updatePasswordForce.do", that.resetPasswordForm).then(function (data) {
                             if (data.result == true) {
-                                win.localStorage.setItem('managerName', that.resetPasswordForm.managerName)
+                                localStorage.setItem('managerName', that.resetPasswordForm.managerName)
                                 that.resetPasswordForm.oldManagerPassword = '';
                                 that.resetPasswordForm.newManagerPassword = '';
                                 that.$notify({
@@ -233,7 +233,6 @@
                 if (this.passChangeMaxDay > 0) {
                     this.isDirect = false
                 }
-                localStorage.setItem('managerName', '');
                 localStorage.setItem('passChangeMaxDay', 0);
             }
         },

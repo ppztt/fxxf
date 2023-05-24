@@ -1124,7 +1124,6 @@
                     noHandleResponse: true,
                     timeout: 60000
                 }).then(res => {
-                    console.log(res)
                     if (res.code && res.code == 500) {
                         this.$message.error(res.msg || "下载失败")
                     } else {
