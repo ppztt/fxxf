@@ -179,7 +179,6 @@
                             rand_code:that.form.rand_code,
                             rememberMe:that.form.rememberMe
                         }).then(function (res) {
-                            console.log(res)
                             if(res.result){
                                 if (res.msg) {
                                     localStorage.setItem('managerName', that.form.managerName);

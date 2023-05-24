@@ -1128,13 +1128,11 @@
                     noHandleResponse: true,
                     timeout: 60000
                 }).then(res => {
-                    console.log(res)
                     if (res.code && res.code == 500) {
                         this.$message.error(res.msg || "下载失败")
                     } else {
                         let filename = decodeURIComponent(res.headers['content-disposition'].match(/filename=(.*)$/)[1],
                             "utf-8");
-                        console.log(encodeURIComponent(filename))
                         let blob = new Blob([res.data], {type: "application/vnd.ms-excel"});
                         let url = window.URL.createObjectURL(blob);
                         let a = document.createElement('a');
@@ -1403,7 +1401,6 @@
                     center: true
                 }).then(() => {
                     ms.http.post('/xwh/applicants/remove.do', ids, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
-                        console.log(res)
                         if (res.code == 200) {
                             this.$message({
                                 type: 'success',

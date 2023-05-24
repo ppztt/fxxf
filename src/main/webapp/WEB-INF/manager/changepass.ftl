@@ -241,7 +241,6 @@
             if (this.isDirect) {
                 location.href = ms.manager + "/login.do";
             }
-            console.log(this.resetPasswordForm.managerName)
         },
 
     });
