@@ -16,6 +16,7 @@
                     ref="checkForm"
                     label-width="160px"
                     :model="formData"
+                    :rules="formrules"
                     label-position="right"
             >
                 <div class="check-item">详情信息- {{ textList[detailType] }}</div>
@@ -202,7 +203,8 @@
                             <el-form-item label="有效期：" prop="validity">
                                 <el-date-picker size="mini"
                                                 v-model="formData.startTime"
-                                                type="date"
+                                                type="month"
+                                                format="yyyy-MM"
                                                 value-format="yyyy-MM-dd"
                                                 :picker-options="pickerBeginDate"
                                                 placeholder="开始有效期">
@@ -210,7 +212,8 @@
                                 ~
                                 <el-date-picker size="mini"
                                                 v-model="formData.endTime"
-                                                type="date"
+                                                type="month"
+                                                format="yyyy-MM"
                                                 :picker-options="pickerEndDate"
                                                 value-format="yyyy-MM-dd"
                                                 placeholder="结束有效期">
@@ -320,7 +323,7 @@
                     </el-row>
                 </div>
                 <div class="check-item">承诺事项及具体内容</div>
-                <div class="check-form-item" v-if="detailType == '1' || detailType == '3'">
+                <div class="check-form-item" v-if="detailType == '1' || detailType == '3' || detailType == '2'">
                     <el-row>
                         <el-col span="8">
                             <el-form-item label="品质保证：" prop="contents1">
@@ -508,25 +511,36 @@
                         </el-col>
                     </el-row>
                 </div>
-                <div class="check-item" v-if="detailType == '2'">摘牌信息</div>
-                <div class="check-form-item" v-if="detailType == '2'">
+                <div class="check-item" v-if="detailType == '2' || detailType == '1'">摘牌信息</div>
+                <div class="check-form-item"
+                     v-if="detailType == '2' || detailType == '1'">
                     <el-row>
                         <el-col span="11">
-                            <el-form-item label="具体摘牌信息：" prop="delReason">
-                                <el-input size="mini"
-                                          placeholder="请输入具体摘牌信息"
-                                          v-model="formData.delReason"
-                                          type="textarea"
+                            <el-form-item v-if="formData.status == '1'" label="具体摘牌信息：" prop="delReason">
+                                <el-input
+                                        size="mini"
+                                        placeholder="请输入具体摘牌信息"
+                                        v-model="formData.delReason"
+                                        type="textarea"
                                 />
+                            </el-form-item>
+                            <el-form-item
+                                    v-if="formData.status === 0"
+                                    label="具体摘牌信息：" prop="delReason">
+                                <p>{{formData.delReason}}</p>
                             </el-form-item>
                         </el-col>
                         <el-col span="11">
-                            <el-form-item label="其他必要信息：" prop="delOther">
-                                <el-input size="mini"
-                                          placeholder="请输入其他必要信息"
-                                          v-model="formData.delOther"
-                                          type="textarea"
+                            <el-form-item v-if="formData.status == '1'" label="其他必要信息：" prop="delOther">
+                                <el-input
+                                        size="mini"
+                                        placeholder="请输入其他必要信息"
+                                        v-model="formData.delOther"
+                                        type="textarea"
                                 />
+                            </el-form-item>
+                            <el-form-item v-if="formData.status === 0" label="其他必要信息：" prop="delOther">
+                                <p>{{formData.delOther}}</p>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -656,6 +670,9 @@
                     services: [],
                 },
                 districtData: [], //某市县数据
+                formrules: {
+                    ccContent: [{required: true}]
+                },
             }
         },
         watch: {
@@ -830,7 +847,7 @@
                     status: 0
                 })
                 ms.http.post('/xwh/applicants/updateApplicantsStatus.do', params,
-                    {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
+                    {headers: {'Content-type': 'application/json;charset=UTF-8'}}).then((res) => {
                     if (res.code == 200) {
                         this.returnBack()
                         this.currentTopic('申请摘牌成功')

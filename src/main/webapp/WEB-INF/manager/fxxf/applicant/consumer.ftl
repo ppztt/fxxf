@@ -570,7 +570,7 @@
                                 审核
                             </el-button>
                         </@shiro.hasPermission>
-                        <el-button class="action_btn green_text" v-if="row.status == 1" icon="el-icon-s-promotion"
+                        <el-button class="action_btn blue_text" v-if="row.status == 1" icon="el-icon-s-promotion"
                                    @click="openNew(2,row)">
                             摘牌
                         </el-button>
@@ -707,7 +707,7 @@
                 formrules: {
                     regName: [{required: true, message: '经营者注册名称不能为空', trigger: 'blur'}],
                     creditCode: [{required: true, message: '统一社会信用代码不能为空，且为18位', trigger: 'blur'},
-                        {min: 18, message: '统一社会信用代码应为18位', trigger: 'blur'}],
+                        {min: 18,max: 18, message: '统一社会信用代码应为18位', trigger: 'blur'}],
                     onlineName: [{required: true, message: '网店名称不能为空', trigger: 'blur'}],
                     platform: [{required: true, message: '所属平台不能为空', trigger: 'blur'}],
                     storeName: [{required: true, message: '门店名称不能为空', trigger: 'blur'}],
