@@ -570,7 +570,7 @@
                                 审核
                             </el-button>
                         </@shiro.hasPermission>
-                        <el-button class="action_btn green_text" v-if="row.status == 1" icon="el-icon-s-promotion"
+                        <el-button class="action_btn blue_text" v-if="row.status == 1" icon="el-icon-s-promotion"
                                    @click="openNew(2,row)">
                             摘牌
                         </el-button>

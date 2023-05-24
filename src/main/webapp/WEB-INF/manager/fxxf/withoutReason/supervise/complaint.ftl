@@ -204,7 +204,7 @@
         </el-form>
         <#--    返回按钮-->
         <el-button id="backSupervise" type="primary" size="mini" @click="checkSupervise">返回</el-button>
-<#--        图片预览框-->
+        <#--    图片预览框-->
         <el-dialog width="70%"  :visible.sync="dialogImageVisible">
             <img style="object-fit: cover;width: 100%" v-show="imageURL" :src="imageURL" alt="image" />
         </el-dialog>
