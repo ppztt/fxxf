@@ -16,7 +16,8 @@
         <el-row class="tools" ref="tools" type="flex" justify="center" align="middle">
             <!-- 工具栏 -->
             <el-col span="24">
-                <el-input size="mini" placeholder="请输入关键字" v-model="searchMsg" :clearable="true"></el-input>
+                <el-input size="mini" placeholder="请输入经营者注册名称关键字" v-model="searchMsg"
+                          :clearable="true"></el-input>
             </el-col>
             <el-col span="20">
                 <el-select size="mini" ref="city" v-model="city" placeholder="市" :clearable="true" filterable
@@ -53,12 +54,12 @@
             </el-col>
             <el-col span="6">
                 <el-date-picker size="mini" format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="startTime"
-                                placeholder="开始时间" :picker-options="pickerBeginDate"
+                                placeholder="审核通过开始时间" :picker-options="pickerBeginDate"
                                 @change="changeStartTime"></el-date-picker>
             </el-col>
             <el-col span="6">
                 <el-date-picker size="mini" format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="endTime"
-                                placeholder="结束时间" :picker-options="pickerEndDate"
+                                placeholder="审核通过结束时间" :picker-options="pickerEndDate"
                                 @change="changeEndTime"></el-date-picker>
             </el-col>
             <el-col>
@@ -288,7 +289,8 @@
                                                 <el-form-item prop="applicationDate">
                                                     <el-date-picker
                                                             size="mini"
-                                                            value-format="yyyy-MM-dd"
+                                                            value-format="yyyy-MM-dd HH:mm:ss"
+                                                            format="yyyy-MM-dd"
                                                             v-model="formData.applicationDate"
                                                             type="date"
                                                             placeholder="请选择时间"
@@ -603,7 +605,7 @@
             <span style="color: #F56C6C; font-size: 16px"><i class="el-icon-warning"></i> 警告</span>
         </span>
         <span>{{comfirmContent}}</span>
-    <span slot="footer" class="dialog-footer">
+        <span slot="footer" class="dialog-footer">
     <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
     <el-button size="mini" type="primary" @click="uploadConfirm">确 定</el-button>
   </span>
@@ -694,7 +696,7 @@
                 formrules: {
                     regName: [{required: true, message: '经营者注册名称不能为空', trigger: 'blur'}],
                     creditCode: [{required: true, message: '统一社会信用代码不能为空，且为18位', trigger: 'blur'},
-                        {min: 18, message: '统一社会信用代码应为18位', trigger: 'blur'}],
+                        {min: 18, max: 18, message: '统一社会信用代码应为18位', trigger: 'blur'}],
                     onlineName: [{required: true, message: '网店名称不能为空', trigger: 'blur'}],
                     platform: [{required: true, message: '所属平台不能为空', trigger: 'blur'}],
                     storeName: [{required: true, message: '门店名称不能为空', trigger: 'blur'}],
@@ -929,7 +931,7 @@
                 this.current = v;
                 let info = {
                     ...this.searchMessage,
-                    size: this.size
+                    current: this.current
                 }
                 this.debounce(this.getUnitList(info), 1000)
             },
@@ -1023,7 +1025,7 @@
             uploadConfirm() {
                 // 确认上传
                 ms.http
-                    .post('/xwh/applicants/import/'+this.type+ "/" + this.uploadId + '.do')
+                    .post('/xwh/applicants/import/' + this.type + "/" + this.uploadId + '.do')
                     .then((even) => {
                         if (even.code == 200) {
                             this.$message({
@@ -1031,7 +1033,7 @@
                                 type: 'success'
                             });
                             this.getUnitList(this.searchMessage);
-                        }else if (
+                        } else if (
                             even.code == 200 &&
                             even.data.length > 0
                         ) {
@@ -1039,7 +1041,7 @@
                             this.uploadId = even.data[0].fileId;
                             let errorMes = "";
                             even.data.forEach((item) => {
-                                errorMes =  errorMes + "<p>" + (item.rowNum ? '行:' + item.rowNum : "") + '错误:' + item.errorMsg + "</p>" + '<br/>' ;
+                                errorMes = errorMes + "<p>" + (item.rowNum ? '行:' + item.rowNum : "") + '错误:' + item.errorMsg + "</p>" + '<br/>';
                             });
                             this.$notify.error({
                                 title: '导入失败详细信息',
@@ -1047,11 +1049,11 @@
                                 dangerouslyUseHTMLString: true,
                                 duration: 0
                             });
-                        }  else{
+                        } else {
                             this.$message.error("导入失败");
                             let errorMes = "";
                             even.data.forEach((item) => {
-                                errorMes =  errorMes + "<p>" + (item.rowNum ? '行:' + item.rowNum : "") + '错误:' + item.errorMsg + "</p>" + '<br/>' ;
+                                errorMes = errorMes + "<p>" + (item.rowNum ? '行:' + item.rowNum : "") + '错误:' + item.errorMsg + "</p>" + '<br/>';
                             });
                             this.$notify.error({
                                 title: "导入失败详细信息",
@@ -1068,8 +1070,7 @@
                 if (even.code == 200 && even.data.length > 0 && !even.data[0].errorMsg) {
                     this.uploadId = even.data[0].fileId;
                     this.uploadConfirm();
-                }
-                else if (
+                } else if (
                     even.code == 200 &&
                     even.data.length > 0 &&
                     even.data[0].errorMsg
@@ -1077,12 +1078,11 @@
                     this.uploadId = even.data[0].fileId;
                     let errorMes = "";
                     even.data.forEach((item) => {
-                        errorMes =  errorMes + (item.rowNum ? '行:' + item.rowNum : "") + '错误:' + item.errorMsg ;
+                        errorMes = errorMes + (item.rowNum ? '行:' + item.rowNum : "") + '错误:' + item.errorMsg;
                     });
                     this.comfirmContent = errorMes;
                     this.dialogVisible = true;
-                }
-                else if (
+                } else if (
                     even.code == 500 &&
                     even.data.length > 0 &&
                     even.data[0].errorMsg
@@ -1090,7 +1090,7 @@
                     this.uploadId = even.data[0].fileId;
                     let errorMes = "";
                     even.data.forEach((item) => {
-                        errorMes =  errorMes + "<p>" + (item.rowNum ? '行:' + item.rowNum : "") + '错误:' + item.errorMsg + "</p>" + '<br/>' ;
+                        errorMes = errorMes + "<p>" + (item.rowNum ? '行:' + item.rowNum : "") + '错误:' + item.errorMsg + "</p>" + '<br/>';
                     });
                     this.$notify.error({
                         title: '导入失败详细信息',
@@ -1098,7 +1098,7 @@
                         dangerouslyUseHTMLString: true,
                         duration: 0
                     });
-                }  else if (even.code == 500) {
+                } else if (even.code == 500) {
                     this.$message.error("导入失败")
                 }
             },
@@ -1125,15 +1125,15 @@
                     timeout: 60000
                 }).then(res => {
                     console.log(res)
-                    if(res.code && res.code == 500){
+                    if (res.code && res.code == 500) {
                         this.$message.error(res.msg || "下载失败")
-                    }else{
+                    } else {
                         let filename = decodeURIComponent(res.headers['content-disposition'].match(/filename=(.*)$/)[1]);
-                        let blob= new Blob([res.data],{type: "application/vnd.ms-excel"});
+                        let blob = new Blob([res.data], {type: "application/vnd.ms-excel"});
                         let url = window.URL.createObjectURL(blob);
-                        let a =document.createElement('a');
+                        let a = document.createElement('a');
                         a.href = url;
-                        a.setAttribute('download',filename);
+                        a.setAttribute('download', filename);
                         document.body.appendChild(a);
                         a.click();
                         a.remove();
@@ -1182,15 +1182,15 @@
                     noHandleResponse: true,
                     timeout: 60000
                 }).then(res => {
-                    if(res.code && res.code == 500){
+                    if (res.code && res.code == 500) {
                         this.$message.error(res.msg || "导出失败")
-                    }else{
+                    } else {
                         let filename = decodeURIComponent(res.headers['content-disposition'].match(/filename=(.*)$/)[1]);
-                        let blob= new Blob([res.data],{type: "application/vnd.ms-excel"});
+                        let blob = new Blob([res.data], {type: "application/vnd.ms-excel"});
                         let url = window.URL.createObjectURL(blob);
-                        let a =document.createElement('a');
+                        let a = document.createElement('a');
                         a.href = url;
-                        a.setAttribute('download',filename);
+                        a.setAttribute('download', filename);
                         document.body.appendChild(a);
                         a.click();
                         a.remove();
@@ -1330,7 +1330,7 @@
                         this.getUnitList()
                         this.isShowEnteringModal = false
                     } else {
-                        this.$message.error(res.msg ||"录入失败")
+                        this.$message.error(res.msg || "录入失败")
                     }
                 })
 
@@ -1383,7 +1383,7 @@
                                 message: '删除成功!'
                             });
                             this.getUnitList(this.searchMessage)
-                        }else{
+                        } else {
                             this.$message.error('删除失败')
                         }
                     })
@@ -1418,7 +1418,7 @@
                                 message: '删除成功!'
                             });
                             this.getUnitList(this.searchMessage)
-                        }else{
+                        } else {
                             this.$message.error('删除失败')
                         }
                     })
@@ -1686,7 +1686,8 @@
     .ms-container {
         display: flex !important;
     }
-    .el-notification{
+
+    .el-notification {
         overflow: auto !important;
         max-height: 80% !important;
     }

@@ -15,7 +15,7 @@
         <el-row class="tools" ref="tools" type="flex" justify="center" align="middle">
             <!-- 工具栏 -->
             <el-col span="24">
-                <el-input size="mini" placeholder="请输入关键字" v-model="searchMsg" :clearable="true"></el-input>
+                <el-input size="mini" placeholder="请输入经营者注册名称关键字" v-model="searchMsg" :clearable="true"></el-input>
             </el-col>
             <el-col span="20">
                 <el-select size="mini" ref="city" v-model="city" placeholder="市" :clearable="true" filterable
@@ -52,13 +52,13 @@
             </el-col>
             <el-col span="6">
                 <el-date-picker size="mini" format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="startTime"
-                                placeholder="开始时间"
+                                placeholder="审核通过开始时间"
                                 :picker-options="pickerBeginDate"
                                 @change="changeStartTime"></el-date-picker>
             </el-col>
             <el-col span="6">
                 <el-date-picker size="mini" format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="endTime"
-                                placeholder="结束时间"
+                                placeholder="审核通过结束时间"
                                 :picker-options="pickerEndDate"
                                 @change="changeEndTime"></el-date-picker>
             </el-col>
@@ -287,7 +287,8 @@
                                                 <el-form-item prop="applicationDate">
                                                     <el-date-picker
                                                             size="mini"
-                                                            value-format="yyyy-MM-dd"
+                                                            value-format="yyyy-MM-dd HH:mm:ss"
+                                                            format="yyyy-MM-dd"
                                                             v-model="formData.applicationDate"
                                                             type="date"
                                                             placeholder="请选择时间"
@@ -569,7 +570,7 @@
                                 审核
                             </el-button>
                         </@shiro.hasPermission>
-                        <el-button class="action_btn green_text" v-if="row.status == 1" icon="el-icon-s-promotion"
+                        <el-button class="action_btn blue_text" v-if="row.status == 1" icon="el-icon-s-promotion"
                                    @click="openNew(2,row)">
                             摘牌
                         </el-button>
@@ -706,7 +707,7 @@
                 formrules: {
                     regName: [{required: true, message: '经营者注册名称不能为空', trigger: 'blur'}],
                     creditCode: [{required: true, message: '统一社会信用代码不能为空，且为18位', trigger: 'blur'},
-                        {min: 18, message: '统一社会信用代码应为18位', trigger: 'blur'}],
+                        {min: 18,max: 18, message: '统一社会信用代码应为18位', trigger: 'blur'}],
                     onlineName: [{required: true, message: '网店名称不能为空', trigger: 'blur'}],
                     platform: [{required: true, message: '所属平台不能为空', trigger: 'blur'}],
                     storeName: [{required: true, message: '门店名称不能为空', trigger: 'blur'}],
@@ -957,7 +958,7 @@
                 this.current = v;
                 let info = {
                     ...this.searchMessage,
-                    size: this.size
+                    current: this.current
                 }
                 this.debounce(this.getUnitList(info), 1000)
             },

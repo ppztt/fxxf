@@ -40,7 +40,7 @@
                     <el-form :model="form" ref="form" :rules="rules">
                         <div  class="class-8" >
                             <el-form-item prop="managerName">
-                     <span class="input input--hoshi">
+                     <span class="input input--hoshi" :class="{'input--filled': form.managerName }">
                           <input v-model="form.managerName" class="input__field input__field--hoshi" type="text" id="input-name" />
                           <label class="input__label input__label--hoshi input__label--hoshi-color-1 bug" for="input-name">
                               <span class="input__label-content input__label-content--hoshi">账号</span>
@@ -53,7 +53,7 @@
                         <div  class="class-13" >
                             <!--文本开始-->
                             <el-form-item prop="managerPassword">
-                  <span class="input input--hoshi">
+                  <span class="input input--hoshi " :class="{'input--filled': form.managerPassword }">
                           <input v-model="form.managerPassword" class="input__field input__field--hoshi" type="password" id="input-password" />
                           <label class="input__label input__label--hoshi input__label--hoshi-color-1 bug" for="input-password">
                               <span class="input__label-content input__label-content--hoshi">密码</span>
@@ -68,7 +68,8 @@
                             <div  class="class-17" >
                                 <!--文本开始-->
                                 <el-form-item prop="rand_code">
-                     <span class="input input--hoshi">
+                     <span class="input input--hoshi" :class="{'input--filled': form.rand_code }" >
+                     <span class="input input--hoshi" :class="{'input--filled': form.rand_code }" >
                           <input v-model="form.rand_code" class="input__field input__field--hoshi" type="text" id="input-rand-code" />
                           <label class="input__label input__label--hoshi input__label--hoshi-color-1 bug" for="input-rand-code">
                               <span class="input__label-content input__label-content--hoshi">验证码</span>
@@ -172,6 +173,7 @@
             //登录
             login:function () {
                 var that = this;
+                console.log(this)
                 that.$refs.form.validate(function(valid){
                     if (valid) {
                         that.loading = true;
@@ -182,8 +184,8 @@
                             rememberMe:that.form.rememberMe
                         }).then(function (res) {
                             if(res.result){
+                                localStorage.setItem('managerName', that.form.managerName);
                                 if (res.msg) {
-                                    console.log(res.msg);
                                     localStorage.setItem('managerName', that.form.managerName);
                                     localStorage.setItem('passChangeMaxDay', res.data);
                                     location.href = res.msg;
@@ -219,8 +221,11 @@
         created:function(){
             this.code();
             this.initial();
+            if(sessionStorage.getItem('managerName') != ''){
+                this.form.managerName = localStorage.getItem('managerName')
+            }
+        },
 
-        }
     })
 </script>
 <script>
