@@ -790,7 +790,7 @@
                             }
                         })
                     } else {
-                        this.$message.error('经营者注册名称重复,请确认单位名称后提交')
+                        this.$message.error('社会信用代码重复,请确认社会信用代码后提交')
                     }
                 })
                 // let params = JSON.stringify(this.formData)
