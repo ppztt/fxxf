@@ -20,7 +20,7 @@
                 <el-input size="mini"
                           style="margin-left: 5px"
                           v-model="keyword"
-                          placeholder="请输入关键字"
+                          placeholder="请输入经营者注册名称"
                           :clearable="true"
                 ></el-input>
             </el-col>
@@ -396,7 +396,7 @@
                         },
 
                         {
-                            title: "经营注册名称",
+                            title: "经营者注册名称",
                             key: "realname",
                             //   width: "200px",
                             align: "left",

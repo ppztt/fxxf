@@ -16,7 +16,7 @@
         <el-row class="tools" ref="tools" type="flex" justify="center" align="middle">
             <!-- 工具栏 -->
             <el-col span="24">
-                <el-input size="mini" placeholder="请输入经营者注册名称关键字" v-model="searchMsg"
+                <el-input size="mini" placeholder="请输入经营者注册名称" v-model="searchMsg"
                           :clearable="true"></el-input>
             </el-col>
             <el-col span="20">

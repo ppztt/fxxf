@@ -16,7 +16,7 @@
             <el-col span="6">
                 <el-input
                         size="mini"
-                        placeholder="请输入关键字"
+                        placeholder="请输入经营者注册名称"
                         v-model="search"
                         :clearable="true"
                         @clear="clearQuery"
