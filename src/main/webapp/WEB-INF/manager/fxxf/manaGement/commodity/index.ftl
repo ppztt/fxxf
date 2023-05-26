@@ -253,4 +253,10 @@
         justify-content: space-between;
         align-items: center;
     }
+    .el-button--primary:focus{
+        color: #FFF;
+        background-color: #409EFF;
+        border-color: #409EFF;
+        background: #409EFF
+    }
 </style>

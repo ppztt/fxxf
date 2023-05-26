@@ -438,7 +438,7 @@
                             message: '密码不能为空',
                             trigger: "blur",
                         },
-                        {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
+                        {min: 8, max: 18, message: '密码长度在8-18位，且至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'},
                         {
                             pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/,
                             message: '至少包含数字、大写字母、小写字母和特殊字符中的三种',
@@ -447,7 +447,7 @@
                     ],
                     newPassword: [
                         {required: false, message: '不能为空', trigger: "blur",},
-                        {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
+                        {min: 8, max: 18, message: '密码长度在8-18位，且至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'},
                         {
                             pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/,
                             message: '至少包含数字、大写字母、小写字母和特殊字符中的三种',
@@ -485,7 +485,7 @@
                     ],
                     password: [
                         {required: true, message: '密码不能为空', trigger: "blur",},
-                        {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
+                        {min: 8, max: 18, message: '密码长度在8-18位，且至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'},
                         {
                             pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/,
                             message: '至少包含数字、大写字母、小写字母和特殊字符中的三种',
@@ -494,7 +494,7 @@
                     ],
                     newPassword: [
                         {required: true, message: '不能为空', trigger: "blur",},
-                        {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
+                        {min: 8, max: 18, message: '密码长度在8-18位，且至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'},
                         {
                             pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/,
                             message: '至少包含数字、大写字母、小写字母和特殊字符中的三种',
@@ -837,6 +837,10 @@
         color: #f05858;
     }
 
+    .red_text:focus {
+        color: #f05858 !important;
+    }
+
     .actions {
         display: flex;
         justify-content: flex-start;
@@ -878,5 +882,11 @@
 
     .el-input {
         line-height: 36px;
+    }
+    .el-button--primary:focus{
+        color: #FFF;
+        background-color: #409EFF;
+        border-color: #409EFF;
+        background: #409EFF
     }
 </style>

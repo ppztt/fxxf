@@ -34,17 +34,17 @@
                                 class="blue_btn btns_type" icon="el-icon-search" @click="searchInfo">
                             查询
                         </el-button>
-                    </el-col >
-                    <@shiro.hasPermission name="manage:industryAssociation">
-                    <el-col span="23" offset="1">
-                        <el-button
-                                size="mini"
-                                class="blue_btn btns_type"
-                                icon="el-icon-plus"
-                                @click="showEditUser()">
-                            新增
-                        </el-button>
                     </el-col>
+                    <@shiro.hasPermission name="manage:industryAssociation">
+                        <el-col span="23" offset="1">
+                            <el-button
+                                    size="mini"
+                                    class="blue_btn btns_type"
+                                    icon="el-icon-plus"
+                                    @click="showEditUser()">
+                                新增
+                            </el-button>
+                        </el-col>
                     </@shiro.hasPermission>
                 </el-row>
             </el-col>
@@ -71,12 +71,13 @@
                 <template slot-scope="{row}">
                     <div class="actions" :id="row.id">
                         <@shiro.hasPermission name="manage:userinfo">
-                        <el-button class="action_btn blue_text" icon="el-icon-edit" @click="modifyUser(row.id)">修改
-                        </el-button>
+                            <el-button class="action_btn blue_text" icon="el-icon-edit" @click="modifyUser(row.id)">修改
+                            </el-button>
                         </@shiro.hasPermission>
                         <@shiro.hasPermission name="manage:user">
-                        <el-button class="action_btn red_text" icon="el-icon-delete" @click="deleteBack(row.id)">删除
-                        </el-button>
+                            <el-button autofocus class="red_text" type="text" icon="el-icon-delete"
+                                       @click="deleteBack(row.id)">删除
+                            </el-button>
                         </@shiro.hasPermission>
                     </div>
                 </template>
@@ -98,7 +99,7 @@
                    :visible.sync="modify"
                    width="30%"
                    @close="close('modify')"
-                   >
+        >
             <el-form
                     ref="modify"
                     :model="formData"
@@ -174,7 +175,7 @@
                    center
                    :visible.sync="newAdd"
                    width="30%"
-                    @close="close('newAdd')">
+                   @close="close('newAdd')">
             <el-form
                     ref="newAdd"
                     :model="formData"
@@ -188,12 +189,12 @@
                     ></el-input>
                 </el-form-item>
                 <el-form-item
-                        label="行业协会"
+                        label="所属行业协会"
                         prop="realname">
                     <el-input
                             size="mini"
                             v-model="formData.realname"
-                            placeholder="请输入行业协会名称"
+                            placeholder="请输入所属行业协会名称"
                     ></el-input>
                 </el-form-item>
                 <el-form-item
@@ -256,7 +257,7 @@
         el: '#form',
         data: function () {
             return {
-                userInfo:{},
+                userInfo: {},
                 from: 'industry',
                 userId: '',
                 loading: false,
@@ -334,13 +335,31 @@
                     ],
                     password: [
                         {required: false, message: '不能为空', trigger: "blur",},
-                        {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
-                        {pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
+                        {
+                            min: 8,
+                            max: 18,
+                            message: '密码长度在8-18位，且至少包含数字、大写字母、小写字母和特殊字符中的三种',
+                            trigger: 'blur'
+                        },
+                        {
+                            pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/,
+                            message: '至少包含数字、大写字母、小写字母和特殊字符中的三种',
+                            trigger: 'blur'
+                        }
                     ],
                     newPassword: [
                         {required: false, message: '不能为空', trigger: "blur",},
-                        {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
-                        {pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
+                        {
+                            min: 8,
+                            max: 18,
+                            message: '密码长度在8-18位，且至少包含数字、大写字母、小写字母和特殊字符中的三种',
+                            trigger: 'blur'
+                        },
+                        {
+                            pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/,
+                            message: '至少包含数字、大写字母、小写字母和特殊字符中的三种',
+                            trigger: 'blur'
+                        }
                     ],
                     roleId: [
                         {
@@ -397,13 +416,31 @@
                     ],
                     password: [
                         {required: true, message: '不能为空', trigger: "blur",},
-                        {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
-                        {pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
+                        {
+                            min: 8,
+                            max: 18,
+                            message: '密码长度在8-18位，且至少包含数字、大写字母、小写字母和特殊字符中的三种',
+                            trigger: 'blur'
+                        },
+                        {
+                            pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/,
+                            message: '至少包含数字、大写字母、小写字母和特殊字符中的三种',
+                            trigger: 'blur'
+                        }
                     ],
                     newPassword: [
                         {required: true, message: '不能为空', trigger: "blur",},
-                        {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
-                        {pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/, message: '至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
+                        {
+                            min: 8,
+                            max: 18,
+                            message: '密码长度在8-18位，且至少包含数字、大写字母、小写字母和特殊字符中的三种',
+                            trigger: 'blur'
+                        },
+                        {
+                            pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/,
+                            message: '至少包含数字、大写字母、小写字母和特殊字符中的三种',
+                            trigger: 'blur'
+                        }
                     ],
                     roleId: [
                         {
@@ -451,7 +488,7 @@
             }
         },
         methods: {
-            searchInfo(){
+            searchInfo() {
                 this.current = 1
                 this.getUserList()
             },
@@ -468,7 +505,7 @@
                     this.loading = false
                 })
             },
-            close(msg){
+            close(msg) {
                 this.formData = {
                     account: "", //用户名
                     realname: "", // 行业协会名称
@@ -510,7 +547,7 @@
             },
             getRegionData() {
                 ms.http.get('/xwh/gd-regin.do').then((res) => {
-                    if(res.code == 200){
+                    if (res.code == 200) {
                         this.regionData = res.data
                         this.getUserInfo()
                     }
@@ -547,7 +584,7 @@
             // 重置修改的用户信息
             reset() {
                 this.formData = {
-                    account: "", //用户名
+                    account: this.formData.account, //用户名
                     realname: "", //真实姓名
                     realname: "", // 行业协会名称
                     // industryUserName: "", // 行业协会用户名
@@ -568,7 +605,7 @@
                     this.$refs[msg].validate(valid => {
                         if (valid) {
                             if (msg == "modify") {
-                                if(this.formData.password == this.formData.newPassword){
+                                if (this.formData.password == this.formData.newPassword) {
                                     let params = JSON.stringify(this.formData)
                                     ms.http.post('/xwh/user/updateById.do', params, {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
                                         if (res.code == '200') {
@@ -583,7 +620,7 @@
                                             this.$message.error(res.msg)
                                         }
                                     })
-                                }else {
+                                } else {
                                     this.$message.error("两次密码输入不一致")
                                 }
                             } else {
@@ -624,8 +661,8 @@
                         this.$message({
                             type: 'success',
                             message: '删除成功!'
-                        });
-                        this.getUnitList()
+                        })
+                        this.getUserInfo()
                     })
                 }).catch(() => {
                     this.$message({
@@ -747,6 +784,10 @@
         color: #f05858;
     }
 
+    .red_text:focus {
+        color: #f05858 !important;
+    }
+
     .actions {
         display: flex;
         justify-content: flex-start;
@@ -772,7 +813,8 @@
         width: 100%;
         margin-left: 10px !important;
     }
-    .el-col-2{
+
+    .el-col-2 {
         line-height: 36px;
     }
 
@@ -780,10 +822,18 @@
         position: relative !important;
         margin-bottom: -15px !important;
     }
+
     .el-pagination {
         text-align: right;
     }
-    .el-input{
+
+    .el-input {
         line-height: 36px;
+    }
+    .el-button--primary:focus{
+        color: #FFF;
+        background-color: #409EFF;
+        border-color: #409EFF;
+        background: #409EFF
     }
 </style>

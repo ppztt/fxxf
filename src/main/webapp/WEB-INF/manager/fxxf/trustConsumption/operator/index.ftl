@@ -58,6 +58,8 @@
             v-loading="loadingShow"
             class="table"
             :data="dataList"
+            height="80%"
+            :summary-method="getSummaries"
             show-summary
             border
             style="width: 100%">
@@ -142,6 +144,31 @@
         computed: {},
         watch: {},
         methods: {
+            getSummaries(param) {
+                const {columns, data} = param;
+                const sums = [];
+                columns.forEach((column, index) => {
+                    if (index === 0) {
+                        sums[index] = '合计';
+                        return;
+                    }
+                    const values = data.map(item => Number(item[column.property]));
+                    if (!values.every(value => isNaN(value))) {
+                        sums[index] = values.reduce((prev, curr) => {
+                            const value = Number(curr);
+                            if (!isNaN(value)) {
+                                return prev + curr;
+                            } else {
+                                return prev;
+                            }
+                        }, 0);
+                        sums[index] += '';
+                    } else {
+                        sums[index] = 'N/A';
+                    }
+                });
+                return sums;
+            },
             //获取数据
             getList(startTime, endTime) {
                 if (startTime === undefined && endTime === undefined) {
@@ -251,6 +278,14 @@
         font-size: 16px;
         font-weight: bold;
     }
-
-
+    .el-table__footer-wrapper{
+        position: absolute;
+        bottom: 0;
+    }
+    .el-button--primary:focus{
+        color: #FFF;
+        background-color: #409EFF;
+        border-color: #409EFF;
+        background: #409EFF
+    }
 </style>

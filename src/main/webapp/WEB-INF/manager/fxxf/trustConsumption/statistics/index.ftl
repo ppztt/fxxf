@@ -34,11 +34,14 @@
                         ></el-date-picker>
                         <el-row>
                             <el-col span="10" offset="1">
-                                <el-button type="primary" icon="el-icon-search" @click="getOperatorStatisticList" size="mini">查询</el-button>
+                                <el-button type="primary" icon="el-icon-search" @click="getOperatorStatisticList"
+                                           size="mini">查询
+                                </el-button>
                             </el-col>
                             <el-col span="10" offset="3">
                                 <@shiro.hasPermission name="wlythcn:jdtstj">
-                                    <el-button type="primary" icon="el-icon-top" @click="derive" size="mini">导出</el-button>
+                                    <el-button type="primary" icon="el-icon-top" @click="derive" size="mini">导出
+                                    </el-button>
                                 </@shiro.hasPermission>
                             </el-col>
                         </el-row>
@@ -50,13 +53,16 @@
     </el-row>
 
     <el-table
-            element-loading-text = "加载中，请稍后..."
+            element-loading-text="加载中，请稍后..."
+            ref="table"
             v-loading="loadingShow"
             class="table"
             :data="dataList"
+            height="80%"
+            :summary-method="getSummaries"
             show-summary
             border
-            style="width: 100%">
+            style="width: 100%; height: 30%">
         <el-table-column
                 prop="city"
                 label="地区"
@@ -82,7 +88,6 @@
                 label="监督投诉的总条数"
                 align="center">
         </el-table-column>
-
         <el-table-column
                 label="处理结果"
                 align="center">
@@ -121,8 +126,8 @@
 <script>
     var indexVue = new Vue({
         el: "#app",
-        data(){
-            return{
+        data() {
+            return {
                 startTime: '',//开始日期
                 endTime: '',//结束日期
                 tableHeight: 'calc(100vh - 100px)',//表格高度
@@ -153,6 +158,31 @@
         computed: {},
         watch: {},
         methods: {
+            getSummaries(param) {
+                const {columns, data} = param;
+                const sums = [];
+                columns.forEach((column, index) => {
+                    if (index === 0) {
+                        sums[index] = '合计';
+                        return;
+                    }
+                    const values = data.map(item => Number(item[column.property]));
+                    if (!values.every(value => isNaN(value))) {
+                        sums[index] = values.reduce((prev, curr) => {
+                            const value = Number(curr);
+                            if (!isNaN(value)) {
+                                return prev + curr;
+                            } else {
+                                return prev;
+                            }
+                        }, 0);
+                        sums[index] += '';
+                    } else {
+                        sums[index] = 'N/A';
+                    }
+                });
+                return sums;
+            },
             //获取数据
             getList(startTime, endTime) {
                 if (startTime === undefined && endTime === undefined) {
@@ -160,7 +190,7 @@
                     endTime = ''
                 }
                 ms.http.get(ms.manager + '/feedback/statistic.do?type=1&startTime=' + startTime + '&endTime=' + endTime).then((res) => {
-                    if(res.code!=200)return
+                    if (res.code != 200) return
                     this.dataList = res.data.records
                     this.loadingShow = false
                 })
@@ -187,21 +217,21 @@
                 // })
                 this.fullscreenLoading = true
                 axios({
-                    url: ms.manager +  '/feedback/exportStatistic.do?type=1',
+                    url: ms.manager + '/feedback/exportStatistic.do?type=1',
                     responseType: 'blob',
                     noHandleResponse: true,
                     timeout: 60000
                 }).then(res => {
                     console.log(res)
-                    if(res.code && res.code == 500){
+                    if (res.code && res.code == 500) {
                         this.$message.error(res.msg || "导出失败")
-                    }else{
+                    } else {
                         let filename = decodeURIComponent(res.headers['content-disposition'].match(/filename=(.*)$/)[1]);
-                        let blob= new Blob([res.data],{type: "application/vnd.ms-excel"});
+                        let blob = new Blob([res.data], {type: "application/vnd.ms-excel"});
                         let url = window.URL.createObjectURL(blob);
-                        let a =document.createElement('a');
+                        let a = document.createElement('a');
                         a.href = url;
-                        a.setAttribute('download',filename);
+                        a.setAttribute('download', filename);
                         document.body.appendChild(a);
                         a.click();
                         a.remove();
@@ -228,7 +258,6 @@
             this.getList()
         },
         mounted: function () {
-
         },
     })
 </script>
@@ -259,7 +288,17 @@
         font-weight: bold;
     }
 
-    .el-table thead.is-group th.el-table__cell{
+    .el-table thead.is-group th.el-table__cell {
         background: none;
+    }
+    .el-table__footer-wrapper{
+        position: absolute;
+        bottom: 0;
+    }
+    .el-button--primary:focus{
+        color: #FFF;
+        background-color: #409EFF;
+        border-color: #409EFF;
+        background: #409EFF
     }
 </style>

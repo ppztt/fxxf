@@ -15,7 +15,19 @@
             font-size: 18px;
             margin: -2px 9px 0px 3px
         }
-    </style>
+
+        .el-button:focus {
+            background-color: #409EFF;
+            opacity: 1;
+            cursor: pointer;
+        }
+        .el-button--primary:focus{
+        color: #FFF;
+        background-color: #409EFF;
+        border-color: #409EFF;
+        background: #409EFF
+    }
+</style>
 </head>
 <body>
 <#include 'reset-password.ftl'/>
@@ -869,11 +881,15 @@
         z-index: 2;
         transform: translateY(-50%);
     }
-    .userIcon i{
+
+    .userIcon i {
         font-size: 20px;
     }
-    .manager-icon span{
+
+    .manager-icon span {
         margin-left: 8px;
     }
+
+
 
 </style>

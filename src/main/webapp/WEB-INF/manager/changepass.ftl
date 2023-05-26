@@ -146,11 +146,11 @@
             resetPasswordFormRule: {
                 oldManagerPassword: [
                     {required: true, message: '请输入旧密码', trigger: 'blur'},
-                    {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'}
+                    {min: 8, max: 18, message: '密码长度在8-18位，且至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
                 ],
                 newManagerPassword: [
                     {required: true, message: '请输入新密码', trigger: 'blur'},
-                    {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
+                    {min: 8, max: 18, message: '密码长度在8-18位，且至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'},
                     {
                         validator: function (rule, value, callback) {
                             if (resetPasswordVue.resetPasswordForm.oldManagerPassword === value) {
@@ -167,7 +167,7 @@
                 ],
                 newComfirmManagerPassword: [
                     {required: true, message: '请再次输入确认密码', trigger: 'blur'},
-                    {min: 8, max: 30, message: '长度在 8 到 30 个字符', trigger: 'blur'},
+                    {min: 8, max: 30, message: '密码长度在8-18位，且至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'},
                     {
                         validator: function (rule, value, callback) {
                             if (resetPasswordVue.resetPasswordForm.newManagerPassword === value) {

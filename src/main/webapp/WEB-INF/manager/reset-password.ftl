@@ -17,23 +17,14 @@
                 <el-form-item label="旧密码" prop="oldManagerPassword">
                     <el-input v-model="resetPasswordForm.oldManagerPassword" size="mini" autocomplete="off"
                               show-password></el-input>
-                    <div class="ms-form-tip">
-                        长度在 8 到 30 字符
-                    </div>
                 </el-form-item>
                 <el-form-item label="新密码" prop="newManagerPassword">
                     <el-input v-model="resetPasswordForm.newManagerPassword" size="mini" autocomplete="off"
                               show-password></el-input>
-                    <div class="ms-form-tip">
-                        长度在 8 到 30 字符
-                    </div>
                 </el-form-item>
                 <el-form-item label="确认新密码" prop="newComfirmManagerPassword" style="margin-bottom: 30px;">
                     <el-input v-model="resetPasswordForm.newComfirmManagerPassword" size="mini" autocomplete="off"
                               show-password></el-input>
-                    <div class="ms-form-tip">
-                        新密码必须和确认密码一致
-                    </div>
                 </el-form-item>
             </el-form>
         </el-scrollbar>
@@ -61,11 +52,11 @@
             resetPasswordFormRule: {
                 oldManagerPassword: [
                     {required: true, message: '请输入旧密码', trigger: 'blur'},
-                    {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'}
+                    {min: 8, max: 18, message: '密码长度在8-18位，且至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'}
                 ],
                 newManagerPassword: [
                     {required: true, message: '请输入新密码', trigger: 'blur'},
-                    {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
+                    {min: 8, max: 18, message: '密码长度在8-18位，且至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'},
                     {
                         validator: function (rule, value, callback) {
                             if (resetPasswordVue.resetPasswordForm.oldManagerPassword === value) {
@@ -83,7 +74,7 @@
                 ],
                 newComfirmManagerPassword: [
                     {required: true, message: '不能为空', trigger: "blur",},
-                    {min: 8, max: 18, message: '长度在 8 到 18 个字符', trigger: 'blur'},
+                    {min: 8, max: 18, message: '密码长度在8-18位，且至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'},
                     {
                         validator: function (rule, value, callback) {
                             if (resetPasswordVue.resetPasswordForm.newManagerPassword === value) {
