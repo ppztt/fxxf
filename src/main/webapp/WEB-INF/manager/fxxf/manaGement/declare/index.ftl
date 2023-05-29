@@ -26,7 +26,8 @@
                             :http-request="uploadFile"
                             :show-file-list="false"
                     >
-                        <el-button class="upDateItemBox" type="primary" icon="el-icon-top" size="mini">上传</el-button>
+                        <el-button class="upDateItemBox blue_btn" type="primary" icon="el-icon-top" size="mini">上传
+                        </el-button>
                     </el-upload>
                 </@shiro.hasPermission>
                 <@shiro.hasPermission name="sbclgl:del">
@@ -169,7 +170,7 @@
                                 type: 'success',
                                 message: '删除成功!'
                             });
-                        }else{
+                        } else {
                             this.$message.error("删除失败")
                         }
                     })
@@ -260,12 +261,22 @@
         display: inline-flex;
     }
 
+    .blue_btn {
+        background-color: #409EFF;
+    }
+
     .item-Box {
         /*display: inline-block;*/
         /*width: 150px;*/
         margin-left: 10px;
     }
-    .red-btn{
+    .el-button:focus {
+        background-color: #409EFF;
+        opacity: 1;
+        cursor: pointer;
+    }
+
+    .red-btn {
         margin-left: 10px;
         border: 0;
         color: #fff !important;
@@ -282,5 +293,10 @@
     .upDateItemBox {
         margin-left: 10px;
     }
-
+    .el-button--primary:focus{
+        color: #FFF;
+        background-color: #409EFF;
+        border-color: #409EFF;
+        background: #409EFF
+    }
 </style>

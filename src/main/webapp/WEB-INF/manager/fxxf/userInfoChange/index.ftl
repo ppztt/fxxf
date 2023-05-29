@@ -230,4 +230,10 @@
     .el-form-item p{
         margin: 0 !important;
     }
+    .el-button--primary:focus{
+        color: #FFF;
+        background-color: #409EFF;
+        border-color: #409EFF;
+        background: #409EFF
+    }
 </style>

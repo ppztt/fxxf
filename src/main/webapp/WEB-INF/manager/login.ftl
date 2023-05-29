@@ -10,7 +10,8 @@
         [v-cloak] {
             display: none;
         }
-    </style>
+
+</style>
 </head>
 <body class="custom-body">
 <div id="app" v-cloak>

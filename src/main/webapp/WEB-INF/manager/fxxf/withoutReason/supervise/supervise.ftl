@@ -225,4 +225,10 @@
         align-items: center;
         margin-top: 10px;
     }
+    .el-button--primary:focus{
+        color: #FFF;
+        background-color: #409EFF;
+        border-color: #409EFF;
+        background: #409EFF
+    }
 </style>
