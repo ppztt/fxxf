@@ -465,6 +465,9 @@
                             }
 
                             that.saveDisabled = false;
+                        }).catch((err)=>{
+                            that.saveDisabled = false;
+                            that.$message.error('保存失败')
                         });
                     } else {
                         return false;

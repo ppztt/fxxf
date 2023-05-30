@@ -285,7 +285,8 @@
                         <el-col span="9">
                             <el-form-item label="连续承诺次数：" prop="commNum">
                                 <el-input size="mini" v-model="formData.commNum"
-                                          placeholder="请输入连续承诺次数："></el-input>
+                                          placeholder="请输入连续承诺次数："
+                                          @input="commNumChange(formData.commNum)"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -676,16 +677,26 @@
             }
         },
         watch: {
-            'formData.commNum': function (n, o) {
-                // this.$set(this.formData, 'commNum', 0);
-                if (isNaN(Number(n))) {
-                    this.$set(this.formData, 'commNum', 0);
-                    this.$message.error('请输入正整数')
-                }
-                this.$set(this.formData, 'commNum', Number(n));
-            }
+            // 'formData.commNum': function (n, o) {
+            //     // this.$set(this.formData, 'commNum', 0);
+            //     console.log(111)
+            //     if (isNaN(Number(n))) {
+            //         this.$set(this.formData, 'commNum', 0);
+            //         this.$message.error('请输入正整数')
+            //     }
+            //     this.$set(this.formData, 'commNum', Number(n));
+            // }
         },
         methods: {
+            commNumChange(v) {
+                console.log(v)
+                if (isNaN(Number(v)) || !Number.isInteger(Number(v)) || Number(v) < 0) {
+                    this.formData.commNum = 0
+                    this.$message.error('请输入正整数')
+                } else {
+                    this.formData.commNum = Number(v)
+                }
+            },
             // 返回上一级页面
             returnBack() {
                 window.parent.returnBack()
@@ -938,7 +949,8 @@
         overflow-y: auto !important;
         max-height: 28px;
     }
-    .el-button--primary:focus{
+
+    .el-button--primary:focus {
         color: #FFF;
         background-color: #409EFF;
         border-color: #409EFF;
