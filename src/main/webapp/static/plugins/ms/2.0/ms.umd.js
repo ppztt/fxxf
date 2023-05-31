@@ -63,6 +63,9 @@
           headers: null == e.headers ? null : e.headers
         });
         return t.interceptors.response.use((function (e) {
+          if(e.request.responseURL === window.location.origin + '/xwh/login.do'){
+            window.location.reload()
+          }
           return e
         }), (function (e) {
           if (e.response) {

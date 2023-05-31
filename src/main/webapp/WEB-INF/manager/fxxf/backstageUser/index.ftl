@@ -235,8 +235,7 @@
                                 :value="item.id"
                                 :label="item.name"
                                 :key="item.id">
-                        </el-option
-                        >
+                        </el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item
@@ -438,7 +437,12 @@
                             message: '密码不能为空',
                             trigger: "blur",
                         },
-                        {min: 8, max: 18, message: '密码长度在8-18位，且至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'},
+                        {
+                            min: 8,
+                            max: 18,
+                            message: '密码长度在8-18位，且至少包含数字、大写字母、小写字母和特殊字符中的三种',
+                            trigger: 'blur'
+                        },
                         {
                             pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/,
                             message: '至少包含数字、大写字母、小写字母和特殊字符中的三种',
@@ -447,7 +451,12 @@
                     ],
                     newPassword: [
                         {required: false, message: '不能为空', trigger: "blur",},
-                        {min: 8, max: 18, message: '密码长度在8-18位，且至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'},
+                        {
+                            min: 8,
+                            max: 18,
+                            message: '密码长度在8-18位，且至少包含数字、大写字母、小写字母和特殊字符中的三种',
+                            trigger: 'blur'
+                        },
                         {
                             pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/,
                             message: '至少包含数字、大写字母、小写字母和特殊字符中的三种',
@@ -485,7 +494,12 @@
                     ],
                     password: [
                         {required: true, message: '密码不能为空', trigger: "blur",},
-                        {min: 8, max: 18, message: '密码长度在8-18位，且至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'},
+                        {
+                            min: 8,
+                            max: 18,
+                            message: '密码长度在8-18位，且至少包含数字、大写字母、小写字母和特殊字符中的三种',
+                            trigger: 'blur'
+                        },
                         {
                             pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/,
                             message: '至少包含数字、大写字母、小写字母和特殊字符中的三种',
@@ -494,7 +508,12 @@
                     ],
                     newPassword: [
                         {required: true, message: '不能为空', trigger: "blur",},
-                        {min: 8, max: 18, message: '密码长度在8-18位，且至少包含数字、大写字母、小写字母和特殊字符中的三种', trigger: 'blur'},
+                        {
+                            min: 8,
+                            max: 18,
+                            message: '密码长度在8-18位，且至少包含数字、大写字母、小写字母和特殊字符中的三种',
+                            trigger: 'blur'
+                        },
                         {
                             pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,18}$$/,
                             message: '至少包含数字、大写字母、小写字母和特殊字符中的三种',
@@ -547,6 +566,17 @@
                 ],
             }
         },
+        watch: {
+            'formData.roleId': function (n, o) {
+                if (n == 1 && (o == 2 || o == 3)) {
+                    this.formData.city = ""
+                    this.formData.district = ""
+                }
+                if (n == 2 && o == 3) {
+                    this.formData.district = ""
+                }
+            }
+        },
         methods: {
             searchInfo() {
                 this.current = 1
@@ -565,7 +595,7 @@
                     this.loading = false
                 })
             },
-            close(msg){
+            close(msg) {
                 this.$refs[msg].resetFields()
             },
             showEditUser() {
@@ -883,7 +913,8 @@
     .el-input {
         line-height: 36px;
     }
-    .el-button--primary:focus{
+
+    .el-button--primary:focus {
         color: #FFF;
         background-color: #409EFF;
         border-color: #409EFF;

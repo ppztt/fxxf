@@ -121,8 +121,6 @@
                         }];
                     }
                     that.$nextTick(() => {
-                        console.log(that.$refs['nodeSpan'])
-                        console.log(document.getElementsByClassName('el'))
                         const els = document.getElementsByClassName('el')
                         for (let i = 0; i < els.length; i++) {
                             els[i].parentNode.classList.add('els')
@@ -136,7 +134,6 @@
                             });
                         }
                     })
-                    console.log(that.treeData)
                 });
                 setTimeout(function () {
                     if (that.loadState) {

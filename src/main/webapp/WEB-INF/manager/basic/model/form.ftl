@@ -210,7 +210,7 @@
                                 that.saveDisabled = false;
                                 that.dialogVisible = false;
                                 indexVue.list();
-                                //window.location.href = ms.manager + "/model/index.do";
+                                window.location.href = ms.manager + "/model/index.do";
                             } else {
                                 that.$notify({
                                     title: '失败',
