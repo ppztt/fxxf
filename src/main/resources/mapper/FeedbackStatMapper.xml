@@ -67,7 +67,8 @@
                 ifnull(sum(other), 0)                   AS other
         FROM (
                 SELECT city,
-                    count(*) AS companyTotal,
+#                     count(*) AS companyTotal,
+        count( CASE WHEN `status` = 1 THEN 1 END ) AS companyTotal,
                     0 AS complaintCompanyNum,
                     0 AS complaintTotal,
                     0 AS takeOff,
