@@ -153,6 +153,8 @@
                                     :readonly="false"
                                     :style="{width:  '100%'}"
                                     :clearable="true"
+                                    maxlength="20"
+                                    show-word-limit
                                     placeholder="请输入栏目生成路径，默认栏目名称拼音全拼">
                             </el-input>
                             <div class="ms-form-tip">
@@ -185,7 +187,9 @@
                             :disabled="false"
                             v-model="form.categoryKeyword"
                             :style="{width: '100%'}"
-                            placeholder="关键字，有助于搜索">
+                            placeholder="关键字，有助于搜索"
+                            maxlength="500"
+                            show-word-limit>
                     </el-input>
                     <div class="ms-form-tip">
                         标签：<a href="http://doc.mingsoft.net/mcms/biao-qian/lan-mu-lie-biao-ms-channel.html" target="_blank">${'$'}{field.typekeyword}</a>，
@@ -198,7 +202,9 @@
                             :disabled="false"
                             v-model="form.categoryDescrip"
                             :style="{width: '100%'}"
-                            placeholder="栏目描述，有助于搜索">
+                            placeholder="栏目描述，有助于搜索"
+                            maxlength="500"
+                            show-word-limit>
                     </el-input>
                     <div class="ms-form-tip">
                         标签：<a href="http://doc.mingsoft.net/mcms/biao-qian/lan-mu-lie-biao-ms-channel.html" target="_blank">${'$'}{field.typedescrip}</a>
@@ -465,6 +471,9 @@
                             }
 
                             that.saveDisabled = false;
+                        }).catch((err)=>{
+                            that.saveDisabled = false;
+                            that.$message.error('保存失败')
                         });
                     } else {
                         return false;

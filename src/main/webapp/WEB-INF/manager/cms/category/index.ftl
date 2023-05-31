@@ -31,7 +31,7 @@
 					{{emptyText}}
 				</template>
 				<el-table-column type="selection" width="40"></el-table-column>
-				<el-table-column label="编号" width="100" prop="id" show-overflow-tooltip>
+				<el-table-column label="编号" width="auto" prop="id" show-overflow-tooltip>
 					<template slot='header'>编号
 						<el-popover placement="top-start" title="提示" trigger="hover" >
 							标签：<a href="http://doc.mingsoft.net/mcms/biao-qian/lan-mu-lie-biao-ms-channel.html" target="_blank">${'$'}{field.id}</a>
