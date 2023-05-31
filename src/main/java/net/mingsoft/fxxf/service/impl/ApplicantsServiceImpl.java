@@ -1220,7 +1220,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                 }
             } else {
                 // 无权审核
-                return "抱歉您没有权限审核！！！";
+                return "抱歉您没有权限审核";
             }
         }
 
