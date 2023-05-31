@@ -104,7 +104,7 @@
                     ref="modify"
                     :model="formData"
                     :rules="ruleValidate"
-                    label-width="90px">
+                    label-width="120px">
                 <el-form-item label="用户名" prop="account">
                     <el-input
                             size="mini"
@@ -114,12 +114,12 @@
                     ></el-input>
                 </el-form-item>
                 <el-form-item
-                        label="行业协会"
+                        label="所属行业协会"
                         prop="realname">
                     <el-input
                             size="mini"
                             v-model="formData.realname"
-                            placeholder="请输入行业协会名称"
+                            placeholder="请输入所属行业协会名称"
                     ></el-input>
                 </el-form-item>
                 <el-form-item
@@ -180,7 +180,7 @@
                     ref="newAdd"
                     :model="formData"
                     :rules="newAddRules"
-                    label-width="90px">
+                    label-width="120px">
                 <el-form-item label="用户名" prop="account">
                     <el-input
                             size="mini"
