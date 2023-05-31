@@ -184,6 +184,14 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
 
         BeanUtils.copyProperties(applicants, applicantsParamsVo);
         applicantsParamsVo.setManagement(applicants.getManagement());
+        if (applicants.getStartTime() != null) {
+            applicantsParamsVo.setStartTime(applicants.getStartTime().toString());
+        }
+        if (applicants.getEndTime() != null) {
+            applicantsParamsVo.setEndTime(applicants.getEndTime().toString());
+        }
+
+
         if (StringUtils.isNotBlank(applicants.getDetails())) {
             applicantsParamsVo.setDetails(Arrays.asList(applicants.getDetails().split(",")));
         }
@@ -1220,7 +1228,7 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
                 }
             } else {
                 // 无权审核
-                return "抱歉您没有权限审核！！！";
+                return "抱歉您没有权限审核";
             }
         }
 

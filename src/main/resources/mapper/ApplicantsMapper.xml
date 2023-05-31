@@ -515,7 +515,7 @@
         <choose>
             <when test="statisticType == 1">
                 count( CASE WHEN cont_commitment = '是' THEN '是' END ) commitmentCnt,
-                count( CASE WHEN add_contents4_cnt IS NOT NULL OR add_contents4_cnt != '' THEN '是' END ) addContents1Cnt
+                count( CASE WHEN contents4 IS NOT NULL AND contents4 != '' THEN '是' END ) addContents1Cnt
             </when>
             <when test="statisticType == 2">
                 count( CASE WHEN contents2 &gt; 7 THEN '是' END ) contents2Cnt
