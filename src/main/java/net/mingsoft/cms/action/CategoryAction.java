@@ -243,6 +243,19 @@ public class CategoryAction extends BaseAction {
 		if(!StringUtil.checkLength(category.getCategoryParentIds()+"", 0, 100)){
 			return ResultData.build().error(getResString("err.length", this.getResString("category.parent.id"), "1", "100"));
 		}
+
+		 if(!StringUtil.checkLength(category.getCategoryPinyin()+"", 1, 20)){
+			 return ResultData.build().error("生成路径最大长度限制20位");
+		 }
+
+		 if(!StringUtil.checkLength(category.getCategoryKeyword()+"", 1, 500)){
+			 return ResultData.build().error("关键字最大长度限制500位");
+		 }
+
+		 if(!StringUtil.checkLength(category.getCategoryDescrip()+"", 1, 500)){
+			 return ResultData.build().error("描述最大长度限制500位");
+		 }
+
 		 //判断拼音是否重复并且是否和原拼音相同
 		 if(StrUtil.isNotBlank(category.getCategoryPinyin()) && !categoryBiz.getById(category.getId()).getCategoryPinyin().equals(category.getCategoryPinyin())) {
 			 CategoryEntity _category = new CategoryEntity();

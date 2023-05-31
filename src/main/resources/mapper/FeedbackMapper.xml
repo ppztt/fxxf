@@ -51,7 +51,7 @@
         GROUP BY
         cf.reg_name,cf.applicants_id
 
-        ORDER BY isNew DESC,handleCnt DESC,count DESC
+        ORDER BY isNew DESC,handleCnt ASC,count DESC
     </select>
 
     <select id="getMsgCnt" resultType="net.mingsoft.fxxf.bean.vo.FeedbackMsgVo">
