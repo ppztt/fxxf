@@ -184,6 +184,14 @@ public class ApplicantsServiceImpl extends ServiceImpl<ApplicantsMapper, Applica
 
         BeanUtils.copyProperties(applicants, applicantsParamsVo);
         applicantsParamsVo.setManagement(applicants.getManagement());
+        if (applicants.getStartTime() != null) {
+            applicantsParamsVo.setStartTime(applicants.getStartTime().toString());
+        }
+        if (applicants.getEndTime() != null) {
+            applicantsParamsVo.setEndTime(applicants.getEndTime().toString());
+        }
+
+
         if (StringUtils.isNotBlank(applicants.getDetails())) {
             applicantsParamsVo.setDetails(Arrays.asList(applicants.getDetails().split(",")));
         }
