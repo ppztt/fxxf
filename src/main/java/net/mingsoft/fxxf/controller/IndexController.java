@@ -7,10 +7,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import net.mingsoft.fxxf.bean.entity.Attachment;
 import net.mingsoft.fxxf.bean.base.BasePageResult;
-import net.mingsoft.fxxf.bean.vo.ApplicantsExtend;
 import net.mingsoft.fxxf.bean.base.BaseResult;
+import net.mingsoft.fxxf.bean.entity.Attachment;
+import net.mingsoft.fxxf.bean.vo.ApplicantsExtend;
 import net.mingsoft.fxxf.service.AttachmentService;
 import net.mingsoft.fxxf.service.IndexService;
 import net.mingsoft.utils.DateUtil;
@@ -141,7 +141,12 @@ public class IndexController {
         if (id == null) {
             return BaseResult.fail("文件id不允许为空");
         }
+
         Attachment attachment = attachmentService.getById(id);
+        // 下载次数+1
+        attachment.setDownloads(attachment.getDownloads() + 1);
+        attachment.updateById();
+
         String filePath = attachment.getStorage();
         String fileName = attachment.getFilename();
         //根据文件路径、文件id下载文件
