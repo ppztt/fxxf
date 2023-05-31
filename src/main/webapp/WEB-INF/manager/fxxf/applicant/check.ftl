@@ -672,7 +672,9 @@
                 },
                 districtData: [], //某市县数据
                 formrules: {
-                    ccContent: [{required: true}]
+                    ccContent: [{required: true}],
+                    creditCode: [{required: true, message: '请输入社会信用代码', trigger: 'blur'},
+                        {min: 18, max: 18, message: '长度应为18位', trigger: 'blur'}]
                 },
             }
         },
@@ -785,26 +787,31 @@
             // 编辑保存按钮
             perEditUnitTnfo() {
                 let adds = JSON.stringify(this.formData.addrs)
-                ms.http.get('/xwh/applicants/find.do',
-                    {
-                        creditCode: this.formData.creditCode,
-                        id: this.formData.id,
-                        type: this.type
-                    }).then((res) => {
-                    let isReapt = res.data.isRepeatRegName
-                    if (!isReapt) {
-                        ms.http.post('/xwh/applicants/update.do', {...this.formData, addrs: adds},
-                            {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
-                            if (res.code == 200) {
-                                this.returnBack()
-                                this.currentTopic("保存成功")
+                this.$refs['checkForm'].validate((valid) => {
+                    if (valid) {
+                        ms.http.get('/xwh/applicants/find.do',
+                            {
+                                creditCode: this.formData.creditCode,
+                                id: this.formData.id,
+                                type: this.type
+                            }).then((res) => {
+                            let isReapt = res.data.isRepeatRegName
+                            if (!isReapt) {
+                                ms.http.post('/xwh/applicants/update.do', {...this.formData, addrs: adds},
+                                    {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
+                                    if (res.code == 200) {
+                                        this.returnBack()
+                                        this.currentTopic("保存成功")
+                                    }
+                                })
+                            } else {
+                                this.$message.error('社会信用代码重复,请确认社会信用代码后提交')
                             }
                         })
-                    } else {
-                        this.$message.error('社会信用代码重复,请确认社会信用代码后提交')
+                    }else {
+                        this.$message.error('请按规则进行填写')
                     }
                 })
-                // let params = JSON.stringify(this.formData)
             },
             // 获取类别信息
             getManagerType() {
