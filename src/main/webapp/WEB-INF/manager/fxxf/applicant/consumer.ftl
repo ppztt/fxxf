@@ -1325,8 +1325,9 @@
             // 打开编辑等页面
             openNew(num, row) {
                 console.log(num)
+                console.log(row)
                 this.$refs.check.style.display = "block"
-                this.action = ms.manager + "/route/check.do?type=" + num + "&id=" + row.id;
+                this.action = ms.manager + "/route/check.do?type=" + num + "&id=" + row.id +"&status=" + 'row.status' ;
             },
             // 删除单个单位
             deleteConsumer(id) {

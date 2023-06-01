@@ -53,7 +53,7 @@
                         </el-col>
                         <el-col span="12">
                             <el-form-item label="有效期：" prop="validity">
-                                <p>{{ formData.startTime.slice(0,7) }}~{{ formData.endTime.slice(0,7) }}</p>
+                                <p>{{ formData.startTime.slice(0, 7) }}~{{ formData.endTime.slice(0, 7) }}</p>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -512,9 +512,9 @@
                         </el-col>
                     </el-row>
                 </div>
-                <div class="check-item" v-if="detailType == '2' || detailType == '1'">摘牌信息</div>
+                <div class="check-item" v-if="detailType == '2' || (detailType == '1' && status === 0 )">摘牌信息</div>
                 <div class="check-form-item"
-                     v-if="detailType == '2' || detailType == '1'">
+                     v-if="detailType == '2' || (detailType == '1' && status === 0 )">
                     <el-row>
                         <el-col span="11">
                             <el-form-item v-if="formData.status == '1'" label="具体摘牌信息：" prop="delReason">
@@ -567,335 +567,334 @@
 <script>
     // window.parent.exec_success_callback();
     var indexVue = new Vue({
-        el: "#index",
-        data() {
-            return {
-                // 放心消费 1  无理由 2
-                type: '1',
-                // 开始结束日期限制
-                pickerBeginDate: {
-                    disabledDate: (time) => {
-                        if (this.endTime) {
-                            return (
-                                time.getTime() >= new Date(this.endTime).getTime()
-                            );
+            el: "#index",
+            data() {
+                return {
+                    status: '' ,
+                    // 放心消费 1  无理由 2
+                    type: '1',
+                    // 开始结束日期限制
+                    pickerBeginDate: {
+                        disabledDate: (time) => {
+                            if (this.endTime) {
+                                return (
+                                    time.getTime() >= new Date(this.endTime).getTime()
+                                );
+                            }
                         }
-                    }
-                },
-                //结束日期限制
-                pickerEndDate: {
-                    disabledDate: (time) => {
-                        if (this.startTime) {
-                            return (
-                                time.getTime() <= new Date(this.startTime).getTime()
-                            );
+                    },
+                    //结束日期限制
+                    pickerEndDate: {
+                        disabledDate: (time) => {
+                            if (this.startTime) {
+                                return (
+                                    time.getTime() <= new Date(this.startTime).getTime()
+                                );
+                            }
                         }
-                    }
-                },
-                applicant: {
-                    disabledDate: (time) => {
-                        return (
-                            time.getTime() >= new Date().getTime()
-                        );
+                    },
+                    applicant: {
+                        disabledDate: (time) => {
+                            return (
+                                time.getTime() >= new Date().getTime()
+                            );
 
-                    }
-                },
-                // 详情后的名字，根据query参数来切换
-                textList: [
-                    "编辑",
-                    "查看",
-                    "摘牌",
-                    "审核",
-                ],
-                // 用户信息
-                userInfo: {
-                    // 页面跳转
-                    action: "",
-                    account: "",
-                    address: null,
-                    city: "",
-                    createTime: "",
-                    creditCode: null,
-                    district: "",
-                    email: "",
-                    id: 0,
-                    management: null,
-                    newPassword: null,
-                    password: "",
-                    phone: "",
-                    principal: null,
-                    principalTel: null,
-                    province: null,
-                    realname: "",
-                    roleId: 0,
-                    roleName: null,
-                    storeName: null,
-                    town: null,
-                    updateTime: "",
-                    usertype: 1,
-                    zipcode: ""
-                },
-                // 类型代号：查看，编辑.....
-                detailType: '',
-                // 对应的信息id
-                consumerId: -1,
-                // 表单数据
-                regionData: [], //地区数据 一级市数据
-                districtDataArr: [],
-                formData: {
-                    regName: "",
-                    storeName: "",
-                    platform: "",
-                    onlineName: "",
-                    city: "",
-                    district: "",
-                    address: "",
-                    addrs: [],
-                    creditCode: "",
-                    management: "",
-                    details: "",
-                    principal: "",
-                    principalTel: "",
-                    contents1: "",
-                    contents2: "",
-                    contents3: "",
-                    applicationDate: "",
-                    delReason: "",
-                    delOther: "",
-                },
-                // 当前经营类别数据
-                activeManageType: [],
-                // 经营类别
-                manageType: {
-                    commodities: [],
-                    services: [],
-                },
-                districtData: [], //某市县数据
-                formrules: {
-                    ccContent: [{required: true}],
-                    creditCode: [{required: true, message: '请输入社会信用代码', trigger: 'blur'},
-                        {min: 18, max: 18, message: '长度应为18位', trigger: 'blur'}]
-                },
-            }
-        },
-        watch: {
-            // 'formData.commNum': function (n, o) {
-            //     // this.$set(this.formData, 'commNum', 0);
-            //     console.log(111)
-            //     if (isNaN(Number(n))) {
-            //         this.$set(this.formData, 'commNum', 0);
-            //         this.$message.error('请输入正整数')
-            //     }
-            //     this.$set(this.formData, 'commNum', Number(n));
-            // }
-        },
-        methods: {
-            commNumChange(v) {
-                console.log(v)
-                if (isNaN(Number(v)) || !Number.isInteger(Number(v)) || Number(v) < 0) {
-                    this.formData.commNum = 0
-                    this.$message.error('请输入正整数')
-                } else {
-                    this.formData.commNum = Number(v)
+                        }
+                    },
+                    // 详情后的名字，根据query参数来切换
+                    textList: [
+                        "编辑",
+                        "查看",
+                        "摘牌",
+                        "审核",
+                    ],
+                    // 用户信息
+                    userInfo: {
+                        // 页面跳转
+                        action: "",
+                        account: "",
+                        address: null,
+                        city: "",
+                        createTime: "",
+                        creditCode: null,
+                        district: "",
+                        email: "",
+                        id: 0,
+                        management: null,
+                        newPassword: null,
+                        password: "",
+                        phone: "",
+                        principal: null,
+                        principalTel: null,
+                        province: null,
+                        realname: "",
+                        roleId: 0,
+                        roleName: null,
+                        storeName: null,
+                        town: null,
+                        updateTime: "",
+                        usertype: 1,
+                        zipcode: ""
+                    },
+                    // 类型代号：查看，编辑.....
+                    detailType: '',
+                    // 对应的信息id
+                    consumerId: -1,
+                    // 表单数据
+                    regionData: [], //地区数据 一级市数据
+                    districtDataArr: [],
+                    formData: {
+                        regName: "",
+                        storeName: "",
+                        platform: "",
+                        onlineName: "",
+                        city: "",
+                        district: "",
+                        address: "",
+                        addrs: [],
+                        creditCode: "",
+                        management: "",
+                        details: "",
+                        principal: "",
+                        principalTel: "",
+                        contents1: "",
+                        contents2: "",
+                        contents3: "",
+                        applicationDate: "",
+                        delReason: "",
+                        delOther: "",
+                    },
+                    // 当前经营类别数据
+                    activeManageType: [],
+                    // 经营类别
+                    manageType: {
+                        commodities: [],
+                        services: [],
+                    },
+                    districtData: [], //某市县数据
+                    formrules: {
+                        ccContent: [{required: true}],
+                        creditCode: [{required: true, message: '请输入社会信用代码', trigger: 'blur'},
+                            {min: 18, max: 18, message: '长度应为18位', trigger: 'blur'}]
+                    },
                 }
             },
-            // 返回上一级页面
-            returnBack() {
-                window.parent.returnBack()
+            watch: {
+                // 'formData.commNum': function (n, o) {
+                //     // this.$set(this.formData, 'commNum', 0);
+                //     console.log(111)
+                //     if (isNaN(Number(n))) {
+                //         this.$set(this.formData, 'commNum', 0);
+                //         this.$message.error('请输入正整数')
+                //     }
+                //     this.$set(this.formData, 'commNum', Number(n));
+                // }
             },
-            // 获取该商家数据
-            getList() {
-                ms.http.get("/xwh/applicants/" + this.consumerId + '.do').then((res) => {
-                    this.formData = res.data
-                    let cityArr = this.formData.city.split(",");
-                    let districtArr = this.formData.district.split(",");
-                    let addressArr = this.formData.address.split(",");
-                    this.formData.addrs = [];
-                    cityArr.forEach((item, index) => {
-                        this.formData.addrs.push({
-                            city: cityArr[index],
-                            district: districtArr[index],
-                            address: addressArr[index],
-                        });
-                    });
-                    this.getManagerType();
-                })
-            },
-            // 获取地区信息
-            getRegionData() {
-                ms.http.get('/xwh/gd-regin.do').then((res) => {
-                    if (res.code == 200) {
-                        this.regionData = res.data
-                        this.getUserInfo()
+            methods: {
+                commNumChange(v) {
+                    console.log(v)
+                    if (isNaN(Number(v)) || !Number.isInteger(Number(v)) || Number(v) < 0) {
+                        this.formData.commNum = 0
+                        this.$message.error('请输入正整数')
+                    } else {
+                        this.formData.commNum = Number(v)
                     }
-                })
-            },
-            clear() {
-                this.district = "";
-                this.formData.district = ""
-            },
-            cityChange: function (name) {
-                // 一级市发生改变
-                if (name) {
-                    let cityData_active = this.regionData.find((value) => value.name == name);
-                    this.districtData = cityData_active.children;
+                },
+                // 返回上一级页面
+                returnBack() {
+                    window.parent.returnBack()
+                },
+                // 获取该商家数据
+                getList() {
+                    ms.http.get("/xwh/applicants/" + this.consumerId + '.do').then((res) => {
+                        this.formData = res.data
+                        let cityArr = this.formData.city.split(",");
+                        let districtArr = this.formData.district.split(",");
+                        let addressArr = this.formData.address.split(",");
+                        this.formData.addrs = [];
+                        cityArr.forEach((item, index) => {
+                            this.formData.addrs.push({
+                                city: cityArr[index],
+                                district: districtArr[index],
+                                address: addressArr[index],
+                            });
+                        });
+                        this.getManagerType();
+                    })
+                },
+                // 获取地区信息
+                getRegionData() {
+                    ms.http.get('/xwh/gd-regin.do').then((res) => {
+                        if (res.code == 200) {
+                            this.regionData = res.data
+                            this.getUserInfo()
+                        }
+                    })
+                },
+                clear() {
                     this.district = "";
                     this.formData.district = ""
-                    // this.town = "";
-                }
-            },
-            districtChange: function (name) {
-                // 二级地 县等发生改变
-                if (name) {
-                    let districtData_active = this.districtData.find((value => value.name == name));
-                    // this.townData = districtData_active.children;
-                    // this.town = "";
-                }
-            },
-            deleteAddr(index) {
-                this.formData.addrs.splice(index, 1);
-                this.districtDataArr.splice(index, 1);
-                this.$forceUpdate();
-            },
-            addAddress() {
-                let userInfo = this.userInfo
-                if (this.formData.addrs === undefined) {
-                    this.formData.addrs = []
-                }
-                this.formData.addrs.push({
-                    city: userInfo.city || "",
-                    district: userInfo.district || "",
-                    address: "",
-                });
-                let data = this.resetRegion(userInfo.city);
-                this.districtDataArr[this.formData.addrs.length - 1] = data;
-                this.$forceUpdate();
-            },
-            resetRegion(cityName) {
-                if (cityName) {
-                    let data = this.regionData.find((value) => value.name == cityName).children || [];
-                    this.districtDataArr.push(data);
-                    return data;
-                    // if (this.formData.district) {
-                    //   this.townData =
-                    //     Lodash.find(this.districtData, {
-                    //       name: this.formData.district,
-                    //     }).children || [];
-                    // }
-                }
-            },
-            // 编辑保存按钮
-            perEditUnitTnfo() {
-                let adds = JSON.stringify(this.formData.addrs)
-                this.$refs['checkForm'].validate((valid) => {
-                    if (valid) {
-                        ms.http.get('/xwh/applicants/find.do',
-                            {
-                                creditCode: this.formData.creditCode,
-                                id: this.formData.id,
-                                type: this.type
-                            }).then((res) => {
-                            let isReapt = res.data.isRepeatRegName
-                            if (!isReapt) {
-                                ms.http.post('/xwh/applicants/update.do', {...this.formData, addrs: adds},
-                                    {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
-                                    if (res.code == 200) {
-                                        this.returnBack()
-                                        this.currentTopic("保存成功")
-                                    }
-                                })
-                            } else {
-                                this.$message.error('社会信用代码重复,请确认社会信用代码后提交')
-                            }
-                        })
-                    }else {
-                        this.$message.error('请按规则进行填写')
+                },
+                cityChange: function (name) {
+                    // 一级市发生改变
+                    if (name) {
+                        let cityData_active = this.regionData.find((value) => value.name == name);
+                        this.districtData = cityData_active.children;
+                        this.district = "";
+                        this.formData.district = ""
+                        // this.town = "";
                     }
-                })
-            },
-            // 获取类别信息
-            getManagerType() {
-                ms.http.get('/xwh/type/listGoodsAndServiceType.do').then((res) => {
-                    this.manageType = res.data
-                    this.managementChange(this.formData.management)
-                })
-            },
-            managementChange(data) {
-                // 主经营类别改变
-                if (data == "商品类") {
-                    // 商品类
-                    this.activeManageType = this.manageType.commodities || [];
-                } else if (data == "服务类") {
-                    // 经营类
-                    this.activeManageType = this.manageType.services || [];
-                } else if (data == "商品及服务类") {
-                    this.activeManageType = [
-                        ...this.manageType.commodities,
-                        ...this.manageType.services,
-                    ];
+                },
+                districtChange: function (name) {
+                    // 二级地 县等发生改变
+                    if (name) {
+                        let districtData_active = this.districtData.find((value => value.name == name));
+                        // this.townData = districtData_active.children;
+                        // this.town = "";
+                    }
+                },
+                deleteAddr(index) {
+                    this.formData.addrs.splice(index, 1);
+                    this.districtDataArr.splice(index, 1);
+                    this.$forceUpdate();
+                },
+                addAddress() {
+                    let userInfo = this.userInfo
+                    if (this.formData.addrs === undefined) {
+                        this.formData.addrs = []
+                    }
+                    this.formData.addrs.push({
+                        city: userInfo.city || "",
+                        district: userInfo.district || "",
+                        address: "",
+                    });
+                    let data = this.resetRegion(userInfo.city);
+                    this.districtDataArr[this.formData.addrs.length - 1] = data;
+                    this.$forceUpdate();
+                },
+                resetRegion(cityName) {
+                    if (cityName) {
+                        let data = this.regionData.find((value) => value.name == cityName).children || [];
+                        this.districtDataArr.push(data);
+                        return data;
+                        // if (this.formData.district) {
+                        //   this.townData =
+                        //     Lodash.find(this.districtData, {
+                        //       name: this.formData.district,
+                        //     }).children || [];
+                        // }
+                    }
+                },
+                // 编辑保存按钮
+                perEditUnitTnfo() {
+                    let adds = JSON.stringify(this.formData.addrs)
+                    this.$refs['checkForm'].validate((valid) => {
+                        if (valid) {
+                            ms.http.get('/xwh/applicants/find.do',
+                                {
+                                    creditCode: this.formData.creditCode,
+                                    id: this.formData.id,
+                                    type: this.type
+                                }).then((res) => {
+                                let isReapt = res.data.isRepeatRegName
+                                if (!isReapt) {
+                                    ms.http.post('/xwh/applicants/update.do', {...this.formData, addrs: adds},
+                                        {headers: {'Content-type': 'application/json;charset=UTF-8'},}).then((res) => {
+                                        if (res.code == 200) {
+                                            this.returnBack()
+                                            this.currentTopic("保存成功")
+                                        }
+                                    })
+                                } else {
+                                    this.$message.error('社会信用代码重复,请确认社会信用代码后提交')
+                                }
+                            })
+                        } else {
+                            this.$message.error('请按规则进行填写')
+                        }
+                    })
+                },
+                // 获取类别信息
+                getManagerType() {
+                    ms.http.get('/xwh/type/listGoodsAndServiceType.do').then((res) => {
+                        this.manageType = res.data
+                        this.managementChange(this.formData.management)
+                    })
+                },
+                managementChange(data) {
+                    // 主经营类别改变
+                    if (data == "商品类") {
+                        // 商品类
+                        this.activeManageType = this.manageType.commodities || [];
+                    } else if (data == "服务类") {
+                        // 经营类
+                        this.activeManageType = this.manageType.services || [];
+                    } else if (data == "商品及服务类") {
+                        this.activeManageType = [
+                            ...this.manageType.commodities,
+                            ...this.manageType.services,
+                        ];
+                    }
+                },
+                // 审核按钮
+                auditUnitTnfo(status) {
+                    let query = {
+                        id: this.consumerId,
+                        notes: this.formData.ccContent,
+                        type: status
+                    }
+                    ms.http.get('/xwh/applicants/audit.do', query).then(async (res) => {
+                        if (res.code == 200) {
+                            this.returnBack()
+                            this.currentTopic("审核成功")
+                        }
+                        if (res.code == 500) {
+                            this.$message.error(res.msg)
+                        }
+                    })
+                },
+                // 返回到上一个界面的提示
+                currentTopic(msg) {
+                    window.parent.currentTopic(msg)
+                },
+                // 根据id更新状态
+                delistUnitTnfo(status) {
+                    let params = JSON.stringify({
+                        applicantsId: this.consumerId,
+                        delOther: this.formData.delOther,
+                        delReason: this.formData.delOther,
+                        status: 0
+                    })
+                    ms.http.post('/xwh/applicants/updateApplicantsStatus.do', params,
+                        {headers: {'Content-type': 'application/json;charset=UTF-8'}}).then((res) => {
+                        if (res.code == 200) {
+                            this.returnBack()
+                            this.currentTopic('申请摘牌成功')
+                        } else {
+                            this.$message.error('')
+                        }
+                    })
+                },
+                // 获取用户信息
+                getUserInfo() {
+                    let id = sessionStorage.getItem('userId')
+                    ms.http.get('/xwh/user/userInfo.do', {id}).then((res) => {
+                        if (res.code == 200) {
+                            this.userInfo = {...res.data, id}
+                            this.cityChange(this.userInfo.city)
+                            this.districtChange(this.userInfo.district)
+                        }
+                    })
                 }
             },
-            // 审核按钮
-            auditUnitTnfo(status) {
-                let query = {
-                    id: this.consumerId,
-                    notes: this.formData.ccContent,
-                    type: status
-                }
-                ms.http.get('/xwh/applicants/audit.do', query).then(async (res) => {
-                    if (res.code == 200) {
-                        this.returnBack()
-                        this.currentTopic("审核成功")
-                    }
-                    if (res.code == 500) {
-                        this.$message.error(res.msg)
-                    }
-                })
-            },
-            // 返回到上一个界面的提示
-            currentTopic(msg) {
-                window.parent.currentTopic(msg)
-            },
-            // 根据id更新状态
-            delistUnitTnfo(status) {
-                let params = JSON.stringify({
-                    applicantsId: this.consumerId,
-                    delOther: this.formData.delOther,
-                    delReason: this.formData.delOther,
-                    status: 0
-                })
-                ms.http.post('/xwh/applicants/updateApplicantsStatus.do', params,
-                    {headers: {'Content-type': 'application/json;charset=UTF-8'}}).then((res) => {
-                    if (res.code == 200) {
-                        this.returnBack()
-                        this.currentTopic('申请摘牌成功')
-                    } else {
-                        this.$message.error('')
-                    }
-                })
-            },
-            // 获取用户信息
-            getUserInfo() {
-                let id = sessionStorage.getItem('userId')
-                ms.http.get('/xwh/user/userInfo.do', {id}).then((res) => {
-                    if (res.code == 200) {
-                        this.userInfo = {...res.data, id}
-                        this.cityChange(this.userInfo.city)
-                        this.districtChange(this.userInfo.district)
-                    }
-                })
+            mounted: function () {
+                this.detailType = window.location.href.split("?")[1].split("&")[0].split('=')[1]
+                this.consumerId = Number(window.location.href.split("?")[1].split("&")[1].split('=')[1])
+                this.status = Number(window.location.href.split("?")[1].split("&")[2].split('=')[1])
+                this.getRegionData()
+                this.getList();
             }
-        },
-        mounted
-    :
-
-    function () {
-        this.detailType = window.location.href.split("?")[1].split("&")[0].split('=')[1]
-        this.consumerId = Number(window.location.href.split("?")[1].split("&")[1].split('=')[1])
-        this.getRegionData()
-        this.getList();
-    }
-    })
+        })
     ;
 </script>
 <style>
