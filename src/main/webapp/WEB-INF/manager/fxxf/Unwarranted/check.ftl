@@ -546,7 +546,9 @@
                     }
                 },
                 formrules: {
-                    ccContent: [{required: true}]
+                    ccContent: [{required: true}],
+                    creditCode: [{required: true, message: '请输入社会信用代码', trigger: 'blur'},
+                        {min: 18, max: 18, message: '长度应为18位', trigger: 'blur'}]
                 },
             }
         },
