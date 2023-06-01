@@ -53,7 +53,7 @@
                         </el-col>
                         <el-col span="12">
                             <el-form-item label="有效期：" prop="validity">
-                                <p>{{ formData.startTime }} {{ formData.endTime }}</p>
+                                <p>{{ formData.startTime.slice(0,7) }}~{{ formData.endTime.slice(0,7) }}</p>
                             </el-form-item>
                         </el-col>
                     </el-row>
