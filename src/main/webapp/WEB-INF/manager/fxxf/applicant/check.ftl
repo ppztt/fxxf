@@ -890,6 +890,7 @@
             mounted: function () {
                 this.detailType = window.location.href.split("?")[1].split("&")[0].split('=')[1]
                 this.consumerId = Number(window.location.href.split("?")[1].split("&")[1].split('=')[1])
+                console.log(window.location.href.split("?")[1].split("&")[2].split('=')[1])
                 this.status = Number(window.location.href.split("?")[1].split("&")[2].split('=')[1])
                 this.getRegionData()
                 this.getList();

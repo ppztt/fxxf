@@ -1325,7 +1325,7 @@
             // 打开编辑等页面
             openNew(num, row) {
                 this.$refs.check.style.display = "block"
-                this.action = ms.manager + "/route/check.do?type=" + num + "&id=" + row.id +"&status=" + 'row.status' ;
+                this.action = ms.manager + "/route/check.do?type=" + num + "&id=" + row.id +"&status=" + row.status ;
             },
             // 删除单个单位
             deleteConsumer(id) {
